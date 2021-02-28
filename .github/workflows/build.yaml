@@ -1,7 +1,7 @@
 on: [push, pull_request]
 
 jobs:
-  lint:
+  build:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -19,11 +19,5 @@ jobs:
       - name: yarn install
         run: yarn --frozen-lockfile
 
-      - name: Lint
-        run: make lint
-
-      - name: Prettier
-        run: make format.check
-
-      - name: Typecheck
-        run: make typecheck
+      - name: Build
+        run: make build
