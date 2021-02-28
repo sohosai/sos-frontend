@@ -1,7 +1,10 @@
+import { ReactElement } from "react"
+
+import type { AppProps } from "next/app"
+
 import "../../styles/globals.css"
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, react/prop-types
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps): ReactElement {
   return <Component {...pageProps} />
 }
 
