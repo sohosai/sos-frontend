@@ -2,7 +2,7 @@ install:
 	yarn install
 
 dev: install
-	yarn next dev
+	yarn next dev -p 3131
 
 build: install
 	yarn next build
