@@ -19,9 +19,10 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: "module",
   },
-  plugins: ["react", "@typescript-eslint"],
+  plugins: ["react", "@typescript-eslint", "jsx-a11y"],
   rules: {
     "react/react-in-jsx-scope": 0,
+    "jsx-a11y/anchor-is-valid": 1,
   },
   settings: {
     react: {
