@@ -21,7 +21,7 @@
     "lint-staged": "10.5.4",
     "next-secure-headers": "2.2.0",
     "prettier": "2.2.1",
-    "typescript": "4.2.2"
+    "typescript": "4.2.3"
   },
   "husky": {
     "hooks": {
