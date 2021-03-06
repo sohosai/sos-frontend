@@ -2,17 +2,19 @@ import { FC } from "react"
 
 import styles from "./index.module.scss"
 
-type Props = Partial<{
-  color: string
-  radius: number
-  lineWidth: number
-}>
+declare namespace Spinner {
+  type Props = Partial<{
+    color: string
+    radius: number
+    lineWidth: number
+  }>
+}
 
-const Spinner: FC<Props> = ({
+const Spinner: FC<Spinner.Props> = ({
   color = "#000",
   radius = 28,
   lineWidth = 2,
-}: Props) => {
+}: Spinner.Props) => {
   return (
     <div
       className={styles.wrapper}
