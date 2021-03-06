@@ -27,3 +27,9 @@ typecheck: install
 
 typecheck.watch: install
 	yarn tsc --noEmit --watch
+
+storybook: install
+	yarn start-storybook -p 6161
+
+build.storybook: install
+	yarn build-storybook
