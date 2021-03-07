@@ -14,7 +14,7 @@ const Spinner: FC<Spinner.Props> = ({
   color = "#000",
   radius = 28,
   lineWidth = 2,
-}: Spinner.Props) => {
+}) => {
   return (
     <div
       className={styles.wrapper}

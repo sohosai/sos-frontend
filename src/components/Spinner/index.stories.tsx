@@ -7,11 +7,7 @@ export default {
   component: Spinner,
 }
 
-export const Index: Story<Spinner.Props> = ({
-  color,
-  radius,
-  lineWidth,
-}: Spinner.Props) => {
+export const Index: Story<Spinner.Props> = ({ color, radius, lineWidth }) => {
   return <Spinner {...{ color, radius, lineWidth }} />
 }
 
