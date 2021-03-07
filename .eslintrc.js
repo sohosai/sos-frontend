@@ -24,6 +24,7 @@ module.exports = {
     "@typescript-eslint/no-var-requires": 0,
     "@typescript-eslint/no-namespace": 0,
     "react/react-in-jsx-scope": 0,
+    "react/prop-types": 0,
     "jsx-a11y/anchor-is-valid": 1,
   },
   settings: {
