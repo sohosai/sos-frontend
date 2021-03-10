@@ -1,7 +1,8 @@
-import { FC } from "react"
+import type { PageFC } from "next"
 
-const Index: FC = () => {
+const Index: PageFC = () => {
   return <></>
 }
+Index.layout = "default"
 
 export default Index

@@ -2,10 +2,17 @@ import { ReactElement } from "react"
 
 import type { AppProps } from "next/app"
 import Head from "next/head"
+import type { PageOptions } from "next"
 
 import "../styles/globals.scss"
 
-function MyApp({ Component, pageProps }: AppProps): ReactElement {
+function MyApp({
+  Component,
+  pageProps,
+}: {
+  Component: AppProps["Component"] & PageOptions
+  pageProps: AppProps["pageProps"]
+}): ReactElement {
   return (
     <>
       <Head>
