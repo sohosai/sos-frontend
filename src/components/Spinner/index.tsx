@@ -3,29 +3,25 @@ import { FC } from "react"
 import styles from "./index.module.scss"
 
 declare namespace Spinner {
-  type Props = Partial<{
-    color: string
-    radius: number
-    lineWidth: number
-  }>
+  type Props = Readonly<
+    Partial<{
+      color: string
+      size: "sm" | "md"
+    }>
+  >
 }
 
-const Spinner: FC<Spinner.Props> = ({
-  color = "#000",
-  radius = 28,
-  lineWidth = 2,
-}) => {
+const Spinner: FC<Spinner.Props> = ({ color = "#000", size = "md" }) => {
   return (
     <div
       className={styles.wrapper}
       style={{
         ["--spinner-color" as any]: color,
-        ["--spinner-radius" as any]: `${radius}px`,
-        ["--spinner-line-width" as any]: `${lineWidth}px`,
       }}
+      data-size={size}
     >
       <svg className={styles.circular}>
-        <circle className={styles.path} />
+        <circle className={styles.path} pathLength="100" />
       </svg>
     </div>
   )

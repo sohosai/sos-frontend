@@ -1,27 +1,47 @@
+$radius-sm: 8px;
+$radius-md: 12px;
+
+$lineWidth: 2px;
+
 .wrapper {
   display: inline-block;
-  height: calc(var(--spinner-radius) * 2);
-  width: calc(var(--spinner-radius) * 2);
-  margin: 0;
+  position: relative;
+  width: $radius-md * 2 + $lineWidth * 2;
+  height: $radius-md * 2 + $lineWidth * 2;
+
+  &[data-size="sm"] {
+    width: $radius-sm * 2 + $lineWidth * 2;
+    height: $radius-sm * 2 + $lineWidth * 2;
+
+    .circular {
+      width: $radius-sm * 2 + $lineWidth * 2;
+      height: $radius-sm * 2 + $lineWidth * 2;
+    }
+
+    .path {
+      cx: $radius-sm + $lineWidth;
+      cy: $radius-sm + $lineWidth;
+      r: $radius-sm;
+    }
+  }
 }
 
 .circular {
   animation: rotate 2s linear infinite;
-  height: calc(var(--spinner-radius) * 2);
-  position: relative;
-  width: calc(var(--spinner-radius) * 2);
+  width: $radius-md * 2 + $lineWidth * 2;
+  height: $radius-md * 2 + $lineWidth * 2;
 }
 
 .path {
   animation: dash 1.5s ease-in-out infinite;
-  cx: var(--spinner-radius);
-  cy: var(--spinner-radius);
+  cx: $radius-md + $lineWidth;
+  cy: $radius-md + $lineWidth;
+  r: $radius-md;
   fill: none;
-  r: calc(var(--spinner-radius) / 5 * 2);
   stroke: var(--spinner-color);
-  stroke-dasharray: 1%, 200%;
+  stroke-dasharray: 1, 200;
   stroke-dashoffset: 0;
-  stroke-width: var(--spinner-line-width);
+  stroke-width: $lineWidth;
 }
 
 @keyframes rotate {
@@ -32,17 +52,17 @@
 
 @keyframes dash {
   0% {
-    stroke-dasharray: 1%, 200%;
+    stroke-dasharray: 1, 200;
     stroke-dashoffset: 0;
   }
 
   50% {
-    stroke-dasharray: 89%, 200%;
-    stroke-dashoffset: -35%;
+    stroke-dasharray: 80, 200;
+    stroke-dashoffset: -20;
   }
 
   100% {
-    stroke-dasharray: 89%, 200%;
-    stroke-dashoffset: -124%;
+    stroke-dasharray: 80, 200;
+    stroke-dashoffset: -100;
   }
 }
