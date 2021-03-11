@@ -7,21 +7,13 @@ export default {
   component: Spinner,
 }
 
-export const Index: Story<Spinner.Props> = ({ color, radius, lineWidth }) => {
-  return <Spinner {...{ color, radius, lineWidth }} />
+export const Index: Story<Spinner.Props> = (options) => {
+  return <Spinner {...options} />
 }
 
 Index.argTypes = {
   color: {
     control: { type: "color" },
     defaultValue: "#000",
-  },
-  radius: {
-    control: { type: "range", min: 10, max: 50 },
-    defaultValue: 28,
-  },
-  lineWidth: {
-    control: { type: "range", min: 1, max: 5 },
-    defaultValue: 2,
   },
 }
