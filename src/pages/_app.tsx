@@ -4,6 +4,8 @@ import type { AppProps } from "next/app"
 import Head from "next/head"
 import type { PageOptions } from "next"
 
+import { AuthProvider } from "../contexts/auth"
+
 import "../styles/globals.scss"
 
 function MyApp({
@@ -23,7 +25,9 @@ function MyApp({
         <meta name="robots" content="noindex" key="robots" />
         <meta name="googlebot" content="noindex" key="googlebot" />
       </Head>
-      <Component {...pageProps} />
+      <AuthProvider>
+        <Component {...pageProps} />
+      </AuthProvider>
     </>
   )
 }
