@@ -9,6 +9,7 @@ declare namespace Button {
     kind?: "primary" | "secondary"
     size?: "default" | "small"
     type?: "button" | "submit" | "reset"
+    disabled?: boolean
   }>
 }
 
@@ -16,10 +17,16 @@ const Button: FC<Button.Props> = ({
   kind = "primary",
   size = "default",
   type = "button",
+  disabled = false,
   children,
 }) => {
   return (
-    <button type={type} className={styles.button} {...dataset({ kind, size })}>
+    <button
+      type={type}
+      className={styles.button}
+      {...dataset({ kind, size, disabled })}
+      disabled={disabled}
+    >
       {children}
     </button>
   )

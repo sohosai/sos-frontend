@@ -18,6 +18,11 @@
     background-color: $color-brand-tint-200;
   }
 
+  &[data-disabled] {
+    background-color: $color-brand-tint-600;
+    cursor: not-allowed;
+  }
+
   &[data-kind="secondary"] {
     background-color: white;
     border-color: $color-brand;
@@ -27,6 +32,11 @@
     &:focus {
       background-color: $color-brand;
       color: white;
+    }
+
+    &[data-disabled] {
+      background-color: $color-gray-200;
+      color: $color-brand-shade-200;
     }
   }
 
