@@ -8,6 +8,7 @@ import { AuthProvider } from "../contexts/auth"
 
 import { useIfSupported } from "../hooks/useIfSupported"
 
+import "normalize.css"
 import "../styles/globals.scss"
 
 function MyApp({
