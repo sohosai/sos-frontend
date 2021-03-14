@@ -6,6 +6,8 @@ import type { PageOptions } from "next"
 
 import { AuthProvider } from "../contexts/auth"
 
+import { useIfSupported } from "../hooks/useIfSupported"
+
 import "../styles/globals.scss"
 
 function MyApp({
@@ -15,6 +17,8 @@ function MyApp({
   Component: AppProps["Component"] & PageOptions
   pageProps: AppProps["pageProps"]
 }): ReactElement {
+  useIfSupported()
+
   return (
     <>
       <Head>
