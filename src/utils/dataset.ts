@@ -7,7 +7,7 @@ export const dataset = (obj: {
     Object.entries(obj)
       .map(([key, value]) => {
         if (!value) return
-        return [`--data-${paramCase(key)}`, String(value)]
+        return [`data-${paramCase(key)}`, String(value)]
       })
       .filter((nullable) => nullable != null)
   )
