@@ -6,7 +6,13 @@ import { useForm } from "react-hook-form"
 
 import { useAuth } from "../hooks/useAuth"
 
-import { Button, FormItemSpacer, TextField, PasswordField } from "../components"
+import {
+  Button,
+  FormItemSpacer,
+  TextField,
+  Panel,
+  PasswordField,
+} from "../components"
 
 import styles from "./login.module.scss"
 
@@ -48,48 +54,53 @@ const Login: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <FormItemSpacer>
-          <TextField
-            label="メールアドレス"
-            name="email"
-            autocomplete="email"
-            description={[
-              "tsukuba.ac.jpで終わるメールアドレスを使用してください",
-            ]}
-            error={[
-              errors?.email?.types?.required && "必須項目です",
-              errors?.email?.types?.pattern && "使用できないメールアドレスです",
-              errors?.email?.type === "userNotFound" &&
-                "このメールアドレスで登録されたユーザーが存在しません",
-            ]}
-            required
-            register={register({
-              required: true,
-              pattern: /^[\w\-._]+@([\w\-._]+\.)?tsukuba\.ac\.jp$/,
-            })}
-          />
-        </FormItemSpacer>
-        <FormItemSpacer>
-          <PasswordField
-            label="パスワード"
-            name="password"
-            autocomplete="current-password"
-            error={[
-              errors?.password?.types?.required && "必須項目です",
-              errors?.password?.type === "wrongPassword" &&
-                "パスワードが一致しません",
-            ]}
-            required
-            register={register({
-              required: true,
-            })}
-          />
-        </FormItemSpacer>
-        <Button type="submit" processing={processing}>
-          ログインする
-        </Button>
-      </form>
+      <div className={styles.formWrapper}>
+        <Panel padding="48px">
+          <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+            <FormItemSpacer>
+              <TextField
+                label="メールアドレス"
+                name="email"
+                autocomplete="email"
+                description={[
+                  "tsukuba.ac.jpで終わるメールアドレスを使用してください",
+                ]}
+                error={[
+                  errors?.email?.types?.required && "必須項目です",
+                  errors?.email?.types?.pattern &&
+                    "使用できないメールアドレスです",
+                  errors?.email?.type === "userNotFound" &&
+                    "このメールアドレスで登録されたユーザーが存在しません",
+                ]}
+                required
+                register={register({
+                  required: true,
+                  pattern: /^[\w\-._]+@([\w\-._]+\.)?tsukuba\.ac\.jp$/,
+                })}
+              />
+            </FormItemSpacer>
+            <FormItemSpacer>
+              <PasswordField
+                label="パスワード"
+                name="password"
+                autocomplete="current-password"
+                error={[
+                  errors?.password?.types?.required && "必須項目です",
+                  errors?.password?.type === "wrongPassword" &&
+                    "パスワードが一致しません",
+                ]}
+                required
+                register={register({
+                  required: true,
+                })}
+              />
+            </FormItemSpacer>
+            <Button type="submit" processing={processing}>
+              ログインする
+            </Button>
+          </form>
+        </Panel>
+      </div>
     </div>
   )
 }
