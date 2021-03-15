@@ -1,6 +1,8 @@
 @import "../../styles/variables";
+@import "../../styles/mixins";
 
 .button {
+  position: relative;
   width: 100%;
   height: 48px;
   padding: 0 40px;
@@ -30,8 +32,7 @@
 
     &:hover,
     &:focus {
-      background-color: $color-brand;
-      color: white;
+      background-color: $color-brand-tint-900;
     }
 
     &[data-disabled] {
@@ -44,4 +45,19 @@
     height: 32px;
     padding: 0 32px;
   }
+
+  &[data-processing] {
+    .spinnerWrapper {
+      display: block;
+    }
+
+    .children {
+      visibility: hidden;
+    }
+  }
+}
+
+.spinnerWrapper {
+  display: none;
+  @include absoluteCenter;
 }
