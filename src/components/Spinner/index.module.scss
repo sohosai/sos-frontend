@@ -1,3 +1,5 @@
+@import "../../styles/variables";
+
 $radius-sm: 8px;
 $radius-md: 12px;
 
@@ -24,6 +26,18 @@ $lineWidth: 2px;
       r: $radius-sm;
     }
   }
+
+  &[data-color="white"] {
+    .path {
+      stroke: white;
+    }
+  }
+
+  &[data-color="brand"] {
+    .path {
+      stroke: $color-brand-tint-500;
+    }
+  }
 }
 
 .circular {
@@ -38,7 +52,7 @@ $lineWidth: 2px;
   cy: $radius-md + $lineWidth;
   r: $radius-md;
   fill: none;
-  stroke: var(--spinner-color);
+  stroke: $color-gray-300;
   stroke-dasharray: 1, 200;
   stroke-dashoffset: 0;
   stroke-width: $lineWidth;
