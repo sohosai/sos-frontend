@@ -48,6 +48,14 @@ const Login: PageFC = () => {
           setError("email", {
             type: "userNotFound",
           })
+        } else if (res.code === "auth/invalid-email") {
+          setError("email", {
+            type: "invalidEmail",
+          })
+        } else if (res.code === "auth/user-disabled") {
+          setError("email", {
+            type: "userDisabled",
+          })
         }
       })
   }
@@ -69,8 +77,12 @@ const Login: PageFC = () => {
                   errors?.email?.types?.required && "必須項目です",
                   errors?.email?.types?.pattern &&
                     "使用できないメールアドレスです",
+                  errors?.email?.type === "invalidEmail" &&
+                    "使用できないメールアドレスです",
                   errors?.email?.type === "userNotFound" &&
                     "このメールアドレスで登録されたユーザーが存在しません",
+                  errors?.email?.type === "userDisabled" &&
+                    "アカウントが無効化されています",
                 ]}
                 required
                 register={register({
