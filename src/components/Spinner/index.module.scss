@@ -6,7 +6,7 @@ $radius-md: 12px;
 $lineWidth: 2px;
 
 .wrapper {
-  display: inline-block;
+  display: block;
   position: relative;
   width: $radius-md * 2 + $lineWidth * 2;
   height: $radius-md * 2 + $lineWidth * 2;
@@ -21,8 +21,6 @@ $lineWidth: 2px;
     }
 
     .path {
-      cx: $radius-sm + $lineWidth;
-      cy: $radius-sm + $lineWidth;
       r: $radius-sm;
     }
   }
@@ -48,8 +46,8 @@ $lineWidth: 2px;
 
 .path {
   animation: dash 1.5s ease-in-out infinite;
-  cx: $radius-md + $lineWidth;
-  cy: $radius-md + $lineWidth;
+  cx: 50%;
+  cy: 50%;
   r: $radius-md;
   fill: none;
   stroke: $color-gray-300;
