@@ -1,3 +1,9 @@
+@mixin flexCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @mixin absoluteCenter {
   position: absolute;
   top: 50%;
