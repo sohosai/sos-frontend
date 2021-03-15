@@ -2,6 +2,8 @@ import { FC } from "react"
 
 import { dataset } from "../../utils/dataset"
 
+import type { Register } from "../../types/form"
+
 import styles from "./index.module.scss"
 
 declare namespace PasswordField {
@@ -12,6 +14,7 @@ declare namespace PasswordField {
     description?: string[] | string
     error?: string[] | string
     autocomplete: "current-password" | "new-password"
+    register?: Register
   }>
 }
 
@@ -22,6 +25,7 @@ const PasswordField: FC<PasswordField.Props> = ({
   description,
   error,
   autocomplete,
+  register,
 }) => {
   const descriptions = (Array.isArray(description)
     ? description
@@ -40,6 +44,7 @@ const PasswordField: FC<PasswordField.Props> = ({
         name={name}
         className={styles.input}
         autoComplete={autocomplete}
+        ref={register}
         {...dataset({ error: Boolean(errors?.length) })}
       />
       {Boolean(descriptions?.length + errors?.length) && (
