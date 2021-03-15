@@ -1,3 +1,5 @@
+@import "../styles/variables";
+
 .wrapper {
   position: absolute;
   width: 100%;
@@ -14,10 +16,12 @@
 .title {
   margin-top: 0;
   margin-bottom: 1em;
+  color: $color-text-primary;
 }
 
 .paragraph {
   margin: 0;
+  color: $color-text-sub;
 }
 
 @media not all and (min-width: 768px) {
