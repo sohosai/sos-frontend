@@ -2,6 +2,8 @@ import { FC } from "react"
 
 import { dataset } from "../../utils/dataset"
 
+import type { Register } from "../../types/form"
+
 import styles from "./index.module.scss"
 
 declare namespace TextField {
@@ -12,6 +14,7 @@ declare namespace TextField {
     description?: string[] | string
     error?: string[] | string
     autocomplete?: string
+    register?: Register
   }>
 }
 
@@ -22,6 +25,7 @@ const TextField: FC<TextField.Props> = ({
   description,
   error,
   autocomplete,
+  register,
 }) => {
   const descriptions = (Array.isArray(description)
     ? description
@@ -40,6 +44,7 @@ const TextField: FC<TextField.Props> = ({
         name={name}
         className={styles.input}
         autoComplete={autocomplete}
+        ref={register}
         {...dataset({ error: Boolean(errors?.length) })}
       />
       {Boolean(descriptions?.length + errors?.length) && (
