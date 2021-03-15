@@ -31,11 +31,9 @@ const Button: FC<Button.Props> = ({
       {...dataset({ kind, size, disabled, processing })}
       disabled={disabled}
     >
-      {/* {processing && ( */}
       <div className={styles.spinnerWrapper}>
         <Spinner size="sm" color={kind === "primary" ? "white" : "brand"} />
       </div>
-      {/* )} */}
       <div className={styles.children}>{children}</div>
     </button>
   )
