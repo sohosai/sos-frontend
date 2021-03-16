@@ -19,6 +19,10 @@ declare namespace Panel {
   >
 }
 
+const normalize = (value: string | number): string => {
+  return typeof value === "string" ? value : `${value}px`
+}
+
 const Panel: FC<Panel.Props> = ({
   padding = 32,
   margin,
@@ -32,31 +36,22 @@ const Panel: FC<Panel.Props> = ({
   marginButtom,
   children,
 }) => {
+  // インラインスタイルに書くとページ遷移後に効かなくなる(バグ?)ので一回オブジェクトに入れる
+  const style = {
+    padding: normalize(padding),
+    margin: normalize(margin),
+    paddingRight: normalize(paddingRight),
+    paddingLeft: normalize(paddingLeft),
+    paddingTop: normalize(paddingTop),
+    paddingButtom: normalize(paddingButtom),
+    marginRight: normalize(marginRight),
+    marginLeft: normalize(marginLeft),
+    marginTop: normalize(marginTop),
+    marginButtom: normalize(marginButtom),
+  }
+
   return (
-    <div
-      className={styles.wrapper}
-      style={{
-        padding: typeof padding === "number" ? `${padding}px` : padding,
-        margin: typeof margin === "number" ? `${margin}px` : margin,
-        paddingRight:
-          typeof paddingRight === "number" ? `${paddingRight}px` : paddingRight,
-        paddingLeft:
-          typeof paddingLeft === "number" ? `${paddingLeft}px` : paddingLeft,
-        paddingTop:
-          typeof paddingTop === "number" ? `${paddingTop}px` : paddingTop,
-        paddingBottom:
-          typeof paddingButtom === "number"
-            ? `${paddingButtom}px`
-            : paddingButtom,
-        marginRight:
-          typeof marginRight === "number" ? `${marginRight}px` : marginRight,
-        marginLeft:
-          typeof marginLeft === "number" ? `${marginLeft}px` : marginLeft,
-        marginTop: typeof marginTop === "number" ? `${marginTop}px` : marginTop,
-        marginBottom:
-          typeof marginButtom === "number" ? `${marginButtom}px` : marginButtom,
-      }}
-    >
+    <div className={styles.wrapper} style={style}>
       {children}
     </div>
   )
