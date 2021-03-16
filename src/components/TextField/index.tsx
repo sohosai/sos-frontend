@@ -46,6 +46,7 @@ const TextField: FC<TextField.Props> = ({
         name={name}
         className={styles.input}
         autoComplete={autocomplete}
+        required={required}
         ref={register}
         {...dataset({ error: Boolean(errors?.length) })}
       />
