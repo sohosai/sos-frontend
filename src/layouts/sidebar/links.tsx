@@ -29,7 +29,7 @@ const links: Links = {
     {
       href: "/register",
       title: "アカウント登録",
-      active: (router) => router.pathname === "register",
+      active: (router) => router.pathname === "/register",
     },
   ],
 }
