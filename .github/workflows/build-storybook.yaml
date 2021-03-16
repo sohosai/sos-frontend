@@ -4,11 +4,15 @@ on:
       - "src/components/**"
       - ".storybook/**"
       - ".github/workflows/**"
+      - "package.json"
+      - "yarn.lock"
   pull_request:
     paths:
       - "src/components/**"
       - ".storybook/**"
       - ".github/workflows/**"
+      - "package.json"
+      - "yarn.lock"
 
 jobs:
   build-storybook:
