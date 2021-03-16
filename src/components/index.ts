@@ -1,6 +1,5 @@
 export { Button } from "./Button"
 export { FormItemSpacer } from "./FormItemSpacer"
 export { Panel } from "./Panel"
-export { PasswordField } from "./PasswordField"
 export { Spinner } from "./Spinner"
 export { TextField } from "./TextField"
