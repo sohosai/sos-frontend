@@ -18,6 +18,7 @@ export type Auth = Partial<{
   user: firebase.User
   signin: (email: string, password: string) => Promise<firebase.User>
   signup: (email: string, password: string) => Promise<firebase.User>
+  sendEmailVerification: () => Promise<void>
   signout: () => void
   sendPasswordResetEmail: (email: string) => Promise<boolean>
   confirmPasswordReset: (code: string, password: string) => Promise<boolean>
@@ -46,6 +47,11 @@ const AuthContextCore = (): Auth => {
         setUser(response.user)
         return response.user
       })
+  }
+
+  const sendEmailVerification = async () => {
+    if (!firebase.auth().currentUser) throw new Error("No logged in user found")
+    return await firebase.auth().currentUser.sendEmailVerification()
   }
 
   const signout = async () => {
@@ -91,6 +97,7 @@ const AuthContextCore = (): Auth => {
     user,
     signin,
     signup,
+    sendEmailVerification,
     signout,
     sendPasswordResetEmail,
     confirmPasswordReset,
