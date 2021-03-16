@@ -1,4 +1,14 @@
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - "src/components/**"
+      - ".storybook/**"
+      - ".github/workflows/**"
+  pull_request:
+    paths:
+      - "src/components/**"
+      - ".storybook/**"
+      - ".github/workflows/**"
 
 jobs:
   build-storybook:
