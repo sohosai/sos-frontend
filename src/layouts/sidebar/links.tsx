@@ -10,7 +10,7 @@ type Links = {
   [layoutName in PageOptions["layout"]]?: {
     href: string
     title: string
-    active: boolean | ((router: NextRouter) => boolean)
+    active: (router?: NextRouter) => boolean
   }[]
 }
 
