@@ -12,6 +12,7 @@ declare namespace TextField {
     label: string
     name: string
     required?: boolean
+    placeholder?: string
     description?: string[] | string
     error?: string[] | string
     autocomplete?: string
@@ -24,6 +25,7 @@ const TextField: FC<TextField.Props> = ({
   label,
   name,
   required = false,
+  placeholder,
   description,
   error,
   autocomplete,
@@ -47,6 +49,7 @@ const TextField: FC<TextField.Props> = ({
         className={styles.input}
         autoComplete={autocomplete}
         required={required}
+        placeholder={placeholder}
         ref={register}
         {...dataset({ error: Boolean(errors?.length) })}
       />
