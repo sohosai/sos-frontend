@@ -17,6 +17,7 @@ type Inputs = Readonly<{
 
 const Login: PageFC = () => {
   const [processing, setProcessing] = useState(false)
+  const [unknownError, setUnknownError] = useState(false)
 
   const { register, errors, setError, handleSubmit } = useForm<Inputs>({
     criteriaMode: "all",
@@ -50,6 +51,8 @@ const Login: PageFC = () => {
           setError("email", {
             type: "userDisabled",
           })
+        } else {
+          setUnknownError(true)
         }
       })
   }
@@ -106,6 +109,12 @@ const Login: PageFC = () => {
             <Button type="submit" processing={processing}>
               ログインする
             </Button>
+            {unknownError && (
+              <div className={styles.error}>
+                <p>不明なエラーが発生しました</p>
+                <p>時間をおいて再度お試しください</p>
+              </div>
+            )}
           </form>
         </Panel>
       </div>
