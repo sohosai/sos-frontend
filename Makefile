@@ -10,6 +10,9 @@ build: install
 start: install
 	yarn next start -p 3131
 
+export: build
+	yarn next export
+
 lint: install
 	yarn eslint .
 
