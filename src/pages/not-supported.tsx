@@ -27,6 +27,6 @@ const NotSupported: PageFC = () => {
     </div>
   )
 }
-NotSupported.layout = "default"
+NotSupported.layout = "empty"
 
 export default NotSupported
