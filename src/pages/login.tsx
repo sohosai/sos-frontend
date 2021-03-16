@@ -6,13 +6,7 @@ import { useForm } from "react-hook-form"
 
 import { useAuth } from "../hooks/useAuth"
 
-import {
-  Button,
-  FormItemSpacer,
-  TextField,
-  Panel,
-  PasswordField,
-} from "../components"
+import { Button, FormItemSpacer, TextField, Panel } from "../components"
 
 import styles from "./login.module.scss"
 
@@ -67,6 +61,7 @@ const Login: PageFC = () => {
           <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
             <FormItemSpacer>
               <TextField
+                type="email"
                 label="メールアドレス"
                 name="email"
                 autocomplete="email"
@@ -92,7 +87,8 @@ const Login: PageFC = () => {
               />
             </FormItemSpacer>
             <FormItemSpacer>
-              <PasswordField
+              <TextField
+                type="password"
                 label="パスワード"
                 name="password"
                 autocomplete="current-password"

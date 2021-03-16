@@ -14,6 +14,10 @@ export const Index: Story<TextField.Props> = (options) => (
 )
 
 Index.argTypes = {
+  type: {
+    control: { type: "select" },
+    defaultValue: "text",
+  },
   label: {
     defaultValue: "メールアドレス",
   },
@@ -30,5 +34,8 @@ Index.argTypes = {
   },
   autocomplete: {
     defaultValue: "email",
+  },
+  register: {
+    control: "none",
   },
 }
