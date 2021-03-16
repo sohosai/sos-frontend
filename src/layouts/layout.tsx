@@ -7,6 +7,8 @@ import { Sidebar } from "./sidebar"
 import styles from "./layout.module.scss"
 
 const Layout: FC<Pick<PageOptions, "layout">> = ({ layout, children }) => {
+  if (layout === "empty") return <>{children}</>
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.sidebar}>
