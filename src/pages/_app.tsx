@@ -8,6 +8,8 @@ import { AuthProvider } from "../contexts/auth"
 
 import { useIfSupported } from "../hooks/useIfSupported"
 
+import { Layout } from "../layouts/layout"
+
 import "normalize.css"
 import "../styles/globals.scss"
 
@@ -31,7 +33,9 @@ function MyApp({
         <meta name="googlebot" content="noindex" key="googlebot" />
       </Head>
       <AuthProvider>
-        <Component {...pageProps} />
+        <Layout layout={Component.layout}>
+          <Component {...pageProps} />
+        </Layout>
       </AuthProvider>
     </>
   )
