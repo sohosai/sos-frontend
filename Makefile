@@ -8,7 +8,7 @@ build: install
 	yarn next build
 
 start: install
-	yarn next start
+	yarn next start -p 3131
 
 lint: install
 	yarn eslint .
