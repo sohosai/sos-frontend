@@ -8,6 +8,7 @@ import styles from "./index.module.scss"
 
 declare namespace TextField {
   type Props = Readonly<{
+    type: "text" | "email" | "password"
     label: string
     name: string
     required?: boolean
@@ -19,6 +20,7 @@ declare namespace TextField {
 }
 
 const TextField: FC<TextField.Props> = ({
+  type,
   label,
   name,
   required = false,
@@ -40,7 +42,7 @@ const TextField: FC<TextField.Props> = ({
         {!required && <span className={styles.arbitrary}>(任意)</span>}
       </label>
       <input
-        type="text"
+        type={type}
         name={name}
         className={styles.input}
         autoComplete={autocomplete}

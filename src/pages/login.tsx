@@ -67,6 +67,7 @@ const Login: PageFC = () => {
           <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
             <FormItemSpacer>
               <TextField
+                type="email"
                 label="メールアドレス"
                 name="email"
                 autocomplete="email"
@@ -93,6 +94,7 @@ const Login: PageFC = () => {
             </FormItemSpacer>
             <FormItemSpacer>
               <PasswordField
+                type="password"
                 label="パスワード"
                 name="password"
                 autocomplete="current-password"
