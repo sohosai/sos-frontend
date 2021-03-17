@@ -51,7 +51,9 @@ const AuthContextCore = (): Auth => {
 
   const sendEmailVerification = async () => {
     if (!firebase.auth().currentUser) throw new Error("No logged in user found")
-    return await firebase.auth().currentUser.sendEmailVerification()
+    return await firebase.auth().currentUser.sendEmailVerification({
+      url: process.env.NEXT_PUBLIC_FRONTEND_URL,
+    })
   }
 
   const signout = async () => {
