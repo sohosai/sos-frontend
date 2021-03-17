@@ -57,10 +57,12 @@ const Register: PageFC = () => {
         } else if (res.code === "auth/invalid-email") {
           setError("email", {
             type: "invalidEmail",
+            shouldFocus: true,
           })
         } else if (res.code === "auth/weak-password") {
           setError("password", {
             type: "weakPassword",
+            shouldFocus: true,
           })
         } else {
           setUnknownError(true)
