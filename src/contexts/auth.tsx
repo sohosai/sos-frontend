@@ -16,6 +16,7 @@ if (!firebase.apps.length) {
 
 export type Auth = Partial<{
   user: firebase.User
+  idToken: string
   signin: (email: string, password: string) => Promise<firebase.User>
   signup: (email: string, password: string) => Promise<firebase.User>
   sendEmailVerification: () => Promise<void>
@@ -28,6 +29,7 @@ export const authContext = createContext<Auth>({})
 
 const AuthContextCore = (): Auth => {
   const [user, setUser] = useState(null)
+  const [idToken, setIdToken] = useState<string>(null)
 
   const signin = async (email: string, password: string) => {
     return await firebase
@@ -62,6 +64,7 @@ const AuthContextCore = (): Auth => {
       .signOut()
       .then(() => {
         setUser(false)
+        setIdToken(null)
       })
   }
 
@@ -87,6 +90,15 @@ const AuthContextCore = (): Auth => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         setUser(user)
+
+        user
+          .getIdToken()
+          .catch((err) => {
+            throw err
+          })
+          .then((fetchedIdToken) => {
+            setIdToken(fetchedIdToken)
+          })
       } else {
         setUser(false)
       }
@@ -97,6 +109,7 @@ const AuthContextCore = (): Auth => {
 
   return {
     user,
+    idToken,
     signin,
     signup,
     sendEmailVerification,
