@@ -133,7 +133,7 @@ const Register: PageFC = () => {
                         containsNumber: (value) => /\d/.test(value),
                         containsAlphabet: (value) => /[A-z]/.test(value),
                         safeChars: (value) =>
-                          /^[A-z0-9~!?@#$%^&*_\-+()[\]{}></\\|"'.,:;]+$/.test(
+                          /^[A-z0-9~!?@#$%^&*_\-+()[\]{}></\\|"'.,:;]*$/.test(
                             value
                           ),
                       },
