@@ -38,18 +38,22 @@ const Login: PageFC = () => {
         if (res.code === "auth/wrong-password") {
           setError("password", {
             type: "wrongPassword",
+            shouldFocus: true,
           })
         } else if (res.code === "auth/user-not-found") {
           setError("email", {
             type: "userNotFound",
+            shouldFocus: true,
           })
         } else if (res.code === "auth/invalid-email") {
           setError("email", {
             type: "invalidEmail",
+            shouldFocus: true,
           })
         } else if (res.code === "auth/user-disabled") {
           setError("email", {
             type: "userDisabled",
+            shouldFocus: true,
           })
         } else {
           setUnknownError(true)
