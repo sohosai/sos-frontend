@@ -25,6 +25,10 @@
   border: transparent 2px solid;
   transition: border-color 150ms;
 
+  &::placeholder {
+    color: $color-gray-400;
+  }
+
   &:focus {
     border-color: $color-brand;
   }
