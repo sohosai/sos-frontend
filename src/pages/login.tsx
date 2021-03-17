@@ -62,51 +62,54 @@ const Login: PageFC = () => {
       <div className={styles.formWrapper}>
         <Panel padding="48px">
           <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-            <FormItemSpacer>
-              <TextField
-                type="email"
-                label="メールアドレス"
-                name="email"
-                autocomplete="email"
-                description={[
-                  "tsukuba.ac.jpで終わるメールアドレスを使用してください",
-                ]}
-                error={[
-                  errors?.email?.types?.required && "必須項目です",
-                  errors?.email?.types?.pattern &&
-                    "使用できないメールアドレスです",
-                  errors?.email?.type === "invalidEmail" &&
-                    "使用できないメールアドレスです",
-                  errors?.email?.type === "userNotFound" &&
-                    "このメールアドレスで登録されたユーザーが存在しません",
-                  errors?.email?.type === "userDisabled" &&
-                    "アカウントが無効化されています",
-                ]}
-                placeholder="xxx@s.tsukuba.ac.jp"
-                required
-                register={register({
-                  required: true,
-                  pattern: /^[\w\-._]+@([\w\-._]+\.)?tsukuba\.ac\.jp$/,
-                })}
-              />
-            </FormItemSpacer>
-            <FormItemSpacer>
-              <TextField
-                type="password"
-                label="パスワード"
-                name="password"
-                autocomplete="current-password"
-                error={[
-                  errors?.password?.types?.required && "必須項目です",
-                  errors?.password?.type === "wrongPassword" &&
-                    "パスワードが一致しません",
-                ]}
-                required
-                register={register({
-                  required: true,
-                })}
-              />
-            </FormItemSpacer>
+            <fieldset>
+              <legend className={styles.legend}>ログイン</legend>
+              <FormItemSpacer>
+                <TextField
+                  type="email"
+                  label="メールアドレス"
+                  name="email"
+                  autocomplete="email"
+                  description={[
+                    "tsukuba.ac.jpで終わるメールアドレスを使用してください",
+                  ]}
+                  error={[
+                    errors?.email?.types?.required && "必須項目です",
+                    errors?.email?.types?.pattern &&
+                      "使用できないメールアドレスです",
+                    errors?.email?.type === "invalidEmail" &&
+                      "使用できないメールアドレスです",
+                    errors?.email?.type === "userNotFound" &&
+                      "このメールアドレスで登録されたユーザーが存在しません",
+                    errors?.email?.type === "userDisabled" &&
+                      "アカウントが無効化されています",
+                  ]}
+                  placeholder="xxx@s.tsukuba.ac.jp"
+                  required
+                  register={register({
+                    required: true,
+                    pattern: /^[\w\-._]+@([\w\-._]+\.)?tsukuba\.ac\.jp$/,
+                  })}
+                />
+              </FormItemSpacer>
+              <FormItemSpacer>
+                <TextField
+                  type="password"
+                  label="パスワード"
+                  name="password"
+                  autocomplete="current-password"
+                  error={[
+                    errors?.password?.types?.required && "必須項目です",
+                    errors?.password?.type === "wrongPassword" &&
+                      "パスワードが一致しません",
+                  ]}
+                  required
+                  register={register({
+                    required: true,
+                  })}
+                />
+              </FormItemSpacer>
+            </fieldset>
             <Button type="submit" processing={processing}>
               ログインする
             </Button>
