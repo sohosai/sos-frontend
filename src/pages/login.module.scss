@@ -12,6 +12,13 @@
   margin: 0 2em;
 }
 
+.legend {
+  color: $color-text-primary;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 32px;
+}
+
 .error {
   margin-top: 16px;
   color: $color-caution;
