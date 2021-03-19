@@ -8,14 +8,14 @@ import { useAuth } from "../hooks/useAuth"
 
 import { Button, FormItemSpacer, TextField, Panel } from "../components"
 
-import styles from "./register.module.scss"
+import styles from "./signup.module.scss"
 
 type Inputs = Readonly<{
   email: string
   password: string
 }>
 
-const Register: PageFC = () => {
+const Signup: PageFC = () => {
   const [processing, setProcessing] = useState(false)
   const [unknownError, setUnknownError] = useState(false)
   const [emailVerificationStatus, setEmailVerificationStatus] = useState<
@@ -181,6 +181,6 @@ const Register: PageFC = () => {
     </div>
   )
 }
-Register.layout = "default"
+Signup.layout = "default"
 
-export default Register
+export default Signup
