@@ -27,9 +27,9 @@ const links: Links = {
       active: (router) => router.pathname === "/login",
     },
     {
-      href: "/register",
+      href: "/signup",
       title: "アカウント登録",
-      active: (router) => router.pathname === "/register",
+      active: (router) => router.pathname === "/signup",
     },
   ],
 }
