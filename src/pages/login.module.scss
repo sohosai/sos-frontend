@@ -2,7 +2,8 @@
 @import "../styles/mixins";
 
 .wrapper {
-  height: 100%;
+  min-height: 100%;
+  padding: 64px 0;
   @include flexCenter;
 }
 
