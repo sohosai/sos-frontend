@@ -54,7 +54,7 @@ const Init: PageFC = () => {
           first: katakanaToHiragana(kanaNameFirst),
           last: katakanaToHiragana(kanaNameLast),
         },
-        phone_number: phoneNumber.replaceAll("-", ""),
+        phone_number: "+81" + phoneNumber.replaceAll("-", "").slice(1),
         affiliation,
       },
       idToken,
