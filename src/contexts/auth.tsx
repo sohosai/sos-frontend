@@ -3,6 +3,8 @@ import { useState, useEffect, createContext, FC } from "react"
 import firebase from "firebase/app"
 import "firebase/auth"
 
+import type { User } from "../types/models/user"
+
 // ref: https://usehooks.com/useAuth/
 
 if (!firebase.apps.length) {
@@ -14,8 +16,11 @@ if (!firebase.apps.length) {
   })
 }
 
+// TODO: sos の login/signup もこの context に生やした方が良いかも
 export type Auth = Partial<{
-  user: firebase.User
+  sosUser: User
+  setSosUser: (user: User) => void
+  firebaseUser: firebase.User
   idToken: string
   signin: (email: string, password: string) => Promise<firebase.User>
   signup: (email: string, password: string) => Promise<firebase.User>
@@ -28,15 +33,16 @@ export type Auth = Partial<{
 export const authContext = createContext<Auth>({})
 
 const AuthContextCore = (): Auth => {
-  const [user, setUser] = useState(null)
-  const [idToken, setIdToken] = useState<string>(null)
+  const [sosUser, setSosUser] = useState<User>()
+  const [firebaseUser, setFirebaseUser] = useState<firebase.User>()
+  const [idToken, setIdToken] = useState<string>()
 
   const signin = async (email: string, password: string) => {
     return await firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((response) => {
-        setUser(response.user)
+        setFirebaseUser(response.user)
         return response.user
       })
   }
@@ -46,7 +52,7 @@ const AuthContextCore = (): Auth => {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((response) => {
-        setUser(response.user)
+        setFirebaseUser(response.user)
         return response.user
       })
   }
@@ -63,7 +69,7 @@ const AuthContextCore = (): Auth => {
       .auth()
       .signOut()
       .then(() => {
-        setUser(false)
+        setFirebaseUser(null)
         setIdToken(null)
       })
   }
@@ -89,7 +95,7 @@ const AuthContextCore = (): Auth => {
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        setUser(user)
+        setFirebaseUser(user)
 
         user
           .getIdToken()
@@ -100,7 +106,7 @@ const AuthContextCore = (): Auth => {
             setIdToken(fetchedIdToken)
           })
       } else {
-        setUser(false)
+        setFirebaseUser(null)
       }
     })
 
@@ -108,7 +114,9 @@ const AuthContextCore = (): Auth => {
   }, [])
 
   return {
-    user,
+    sosUser,
+    setSosUser,
+    firebaseUser,
     idToken,
     signin,
     signup,
