@@ -1,6 +1,7 @@
 import { useState } from "react"
 
 import { PageFC } from "next"
+import { useRouter } from "next/router"
 
 import { useForm } from "react-hook-form"
 
@@ -25,9 +26,12 @@ type Inputs = Readonly<{
 
 const Init: PageFC = () => {
   const [processing, setProcessing] = useState(false)
+  const [otherError, setOtherError] = useState<string>()
   const [unknownError, setUnknownError] = useState(false)
 
   const { idToken } = useAuth()
+
+  const router = useRouter()
 
   const { register, errors, handleSubmit } = useForm<Inputs>({
     criteriaMode: "all",
@@ -59,16 +63,73 @@ const Init: PageFC = () => {
       },
       idToken,
     })
-      .then((res) => {
+      .then(() => {
         setProcessing(false)
         // TODO:
-        console.log(res)
+        // router.push("/mypage") ?
       })
-      .catch((err) => {
+      .catch(async (err) => {
         setProcessing(false)
-        // TODO:
-        console.error(err)
-        setUnknownError(true)
+
+        if (err.message === "IDTOKEN_UNDEFINED") {
+          router.push("/login")
+          return
+        }
+
+        const responseBody = await err.response.json()
+        console.log(responseBody)
+
+        switch (String(responseBody.status)) {
+          case "400": {
+            switch (responseBody.error.type) {
+              case "API": {
+                if (responseBody.error.info.type === "INVALID_FIELD") {
+                  setOtherError("入力内容が正しくありません")
+                } else {
+                  setUnknownError(true)
+                }
+                break
+              }
+              case "AUTHENTICATION": {
+                if (responseBody.error.info.type === "UNAUTHORIZED") {
+                  router.push("/login")
+                } else {
+                  // FIXME:
+                  setUnknownError(true)
+                }
+                break
+              }
+
+              // FIXME:
+              case "REQUEST": {
+                setUnknownError(true)
+                break
+              }
+              default: {
+                setUnknownError(true)
+                break
+              }
+            }
+            break
+          }
+          case "401": {
+            router.push("/login")
+            break
+          }
+          case "403": {
+            router.push("/login")
+            break
+          }
+          case "409": {
+            setOtherError("このアカウントの情報は登録済みです")
+            // TODO: router.push("mypage") ?
+            break
+          }
+          default: {
+            setUnknownError(true)
+            break
+          }
+        }
       })
   }
 
@@ -186,6 +247,11 @@ const Init: PageFC = () => {
             <Button type="submit" processing={processing}>
               情報を登録する
             </Button>
+            {otherError && (
+              <div className={styles.error}>
+                <p>{otherError}</p>
+              </div>
+            )}
             {unknownError && (
               <div className={styles.error}>
                 <p>不明なエラーが発生しました</p>
