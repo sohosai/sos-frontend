@@ -29,7 +29,7 @@ const Init: PageFC = () => {
   const [otherError, setOtherError] = useState<string>()
   const [unknownError, setUnknownError] = useState(false)
 
-  const { idToken } = useAuth()
+  const { idToken, setSosUser } = useAuth()
 
   const router = useRouter()
 
@@ -63,8 +63,10 @@ const Init: PageFC = () => {
       },
       idToken,
     })
-      .then(() => {
+      .then(({ user }) => {
         setProcessing(false)
+        setSosUser(user)
+
         // TODO:
         // router.push("/mypage") ?
       })

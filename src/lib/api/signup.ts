@@ -9,7 +9,10 @@ declare namespace signup {
   }>
 }
 
-const signup = async ({ props, idToken }: signup.Props): Promise<User> => {
+const signup = async ({
+  props,
+  idToken,
+}: signup.Props): Promise<{ user: User }> => {
   if (!idToken) throw new Error("IDTOKEN_UNDEFINED")
 
   return client({ idToken })
