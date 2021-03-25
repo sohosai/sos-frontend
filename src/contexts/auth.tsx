@@ -5,6 +5,11 @@ import "firebase/auth"
 
 import type { User } from "../types/models/user"
 
+import { getMe } from "../lib/api/me/getMe"
+
+import { FullScreenLoading } from "../foundations/fullScreenLoading"
+import { useRouter } from "next/router"
+
 // ref: https://usehooks.com/useAuth/
 
 if (!firebase.apps.length) {
@@ -33,8 +38,10 @@ export type Auth = Partial<{
 export const authContext = createContext<Auth>({})
 
 const AuthContextCore = (): Auth => {
-  const [sosUser, setSosUser] = useState<User>()
-  const [firebaseUser, setFirebaseUser] = useState<firebase.User>()
+  // null はチェック前
+  const [sosUser, setSosUser] = useState<User>(null)
+  const [firebaseUser, setFirebaseUser] = useState<firebase.User>(null)
+
   const [idToken, setIdToken] = useState<string>()
 
   const signin = async (email: string, password: string) => {
@@ -92,25 +99,53 @@ const AuthContextCore = (): Auth => {
       })
   }
 
+  const router = useRouter()
+
+  // TODO: rbpac が public のときは login にリダイレクトしない
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
         setFirebaseUser(user)
 
-        user
-          .getIdToken()
-          .catch((err) => {
-            throw err
-          })
-          .then((fetchedIdToken) => {
-            setIdToken(fetchedIdToken)
-          })
+        const fetchedIdToken = await user.getIdToken().catch((err) => {
+          throw err
+        })
+        setIdToken(fetchedIdToken)
+
+        const res = await getMe({
+          idToken: fetchedIdToken,
+        }).catch(async (err) => {
+          const resBody = await err.response.json()
+
+          switch (String(resBody.status)) {
+            case "401": {
+              router.push("/login")
+              setSosUser(undefined)
+              break
+            }
+            case "403": {
+              if (resBody.error.type === "NOT_SIGNED_UP") {
+                router.push("/init")
+                setSosUser(undefined)
+                return
+              }
+
+              router.push("/login")
+              setSosUser(undefined)
+              break
+            }
+          }
+
+          throw resBody
+        })
+        setSosUser(res ? res.user : undefined)
       } else {
-        setFirebaseUser(null)
+        setFirebaseUser(undefined)
+        setSosUser(undefined)
+
+        router.push("/login")
       }
     })
-
-    return () => unsubscribe()
   }, [])
 
   return {
@@ -129,7 +164,16 @@ const AuthContextCore = (): Auth => {
 
 const AuthProvider: FC = ({ children }) => {
   const auth = AuthContextCore()
-  return <authContext.Provider value={auth}>{children}</authContext.Provider>
+
+  return (
+    <>
+      {auth.firebaseUser === null || auth.sosUser === null ? (
+        <FullScreenLoading />
+      ) : (
+        <authContext.Provider value={auth}>{children}</authContext.Provider>
+      )}
+    </>
+  )
 }
 
 export { AuthProvider }
