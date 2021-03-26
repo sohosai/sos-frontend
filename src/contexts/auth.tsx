@@ -1,5 +1,8 @@
 import { useState, useEffect, createContext, FC } from "react"
 
+import type { PageOptions } from "next"
+import { useRouter } from "next/router"
+
 import firebase from "firebase/app"
 import "firebase/auth"
 
@@ -8,7 +11,6 @@ import type { User } from "../types/models/user"
 import { getMe } from "../lib/api/me/getMe"
 
 import { FullScreenLoading } from "../foundations/fullScreenLoading"
-import { useRouter } from "next/router"
 
 // ref: https://usehooks.com/useAuth/
 
@@ -37,7 +39,7 @@ export type Auth = Partial<{
 
 export const authContext = createContext<Auth>({})
 
-const AuthContextCore = (): Auth => {
+const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
   // null はチェック前
   const [sosUser, setSosUser] = useState<User>(null)
   const [firebaseUser, setFirebaseUser] = useState<firebase.User>(null)
@@ -101,7 +103,6 @@ const AuthContextCore = (): Auth => {
 
   const router = useRouter()
 
-  // TODO: rbpac が public のときは login にリダイレクトしない
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
@@ -119,7 +120,9 @@ const AuthContextCore = (): Auth => {
 
           switch (String(resBody.status)) {
             case "401": {
-              router.push("/login")
+              if (rbpac.type !== "public") {
+                router.push("/login")
+              }
               setSosUser(undefined)
               break
             }
@@ -130,7 +133,9 @@ const AuthContextCore = (): Auth => {
                 return
               }
 
-              router.push("/login")
+              if (rbpac.type !== "public") {
+                router.push("/login")
+              }
               setSosUser(undefined)
               break
             }
@@ -143,7 +148,9 @@ const AuthContextCore = (): Auth => {
         setFirebaseUser(undefined)
         setSosUser(undefined)
 
-        router.push("/login")
+        if (rbpac.type !== "public") {
+          router.push("/login")
+        }
       }
     })
   }, [])
@@ -162,8 +169,8 @@ const AuthContextCore = (): Auth => {
   }
 }
 
-const AuthProvider: FC = ({ children }) => {
-  const auth = AuthContextCore()
+const AuthProvider: FC<Pick<PageOptions, "rbpac">> = ({ rbpac, children }) => {
+  const auth = AuthContextCore({ rbpac })
 
   return (
     <>

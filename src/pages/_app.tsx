@@ -32,7 +32,7 @@ function MyApp({
         <meta name="robots" content="noindex" key="robots" />
         <meta name="googlebot" content="noindex" key="googlebot" />
       </Head>
-      <AuthProvider>
+      <AuthProvider rbpac={Component.rbpac}>
         <Layout layout={Component.layout}>
           <Component {...pageProps} />
         </Layout>
