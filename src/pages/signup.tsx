@@ -182,5 +182,6 @@ const Signup: PageFC = () => {
   )
 }
 Signup.layout = "default"
+Signup.rbpac = { type: "public" }
 
 export default Signup

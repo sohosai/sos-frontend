@@ -1,9 +1,16 @@
 import { useState, useEffect, createContext, FC } from "react"
 
+import type { PageOptions } from "next"
+import { useRouter } from "next/router"
+
 import firebase from "firebase/app"
 import "firebase/auth"
 
 import type { User } from "../types/models/user"
+
+import { getMe } from "../lib/api/me/getMe"
+
+import { FullScreenLoading } from "../foundations/fullScreenLoading"
 
 // ref: https://usehooks.com/useAuth/
 
@@ -32,9 +39,11 @@ export type Auth = Partial<{
 
 export const authContext = createContext<Auth>({})
 
-const AuthContextCore = (): Auth => {
-  const [sosUser, setSosUser] = useState<User>()
-  const [firebaseUser, setFirebaseUser] = useState<firebase.User>()
+const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
+  // null はチェック前
+  const [sosUser, setSosUser] = useState<User>(null)
+  const [firebaseUser, setFirebaseUser] = useState<firebase.User>(null)
+
   const [idToken, setIdToken] = useState<string>()
 
   const signin = async (email: string, password: string) => {
@@ -92,25 +101,58 @@ const AuthContextCore = (): Auth => {
       })
   }
 
+  const router = useRouter()
+
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
         setFirebaseUser(user)
 
-        user
-          .getIdToken()
-          .catch((err) => {
-            throw err
-          })
-          .then((fetchedIdToken) => {
-            setIdToken(fetchedIdToken)
-          })
+        const fetchedIdToken = await user.getIdToken().catch((err) => {
+          throw err
+        })
+        setIdToken(fetchedIdToken)
+
+        const res = await getMe({
+          idToken: fetchedIdToken,
+        }).catch(async (err) => {
+          const resBody = await err.response.json()
+
+          switch (String(resBody.status)) {
+            case "401": {
+              if (rbpac.type !== "public") {
+                router.push("/login")
+              }
+              setSosUser(undefined)
+              break
+            }
+            case "403": {
+              if (resBody.error.type === "NOT_SIGNED_UP") {
+                router.push("/init")
+                setSosUser(undefined)
+                return
+              }
+
+              if (rbpac.type !== "public") {
+                router.push("/login")
+              }
+              setSosUser(undefined)
+              break
+            }
+          }
+
+          throw resBody
+        })
+        setSosUser(res ? res.user : undefined)
       } else {
-        setFirebaseUser(null)
+        setFirebaseUser(undefined)
+        setSosUser(undefined)
+
+        if (rbpac.type !== "public") {
+          router.push("/login")
+        }
       }
     })
-
-    return () => unsubscribe()
   }, [])
 
   return {
@@ -127,9 +169,18 @@ const AuthContextCore = (): Auth => {
   }
 }
 
-const AuthProvider: FC = ({ children }) => {
-  const auth = AuthContextCore()
-  return <authContext.Provider value={auth}>{children}</authContext.Provider>
+const AuthProvider: FC<Pick<PageOptions, "rbpac">> = ({ rbpac, children }) => {
+  const auth = AuthContextCore({ rbpac })
+
+  return (
+    <>
+      {auth.firebaseUser === null || auth.sosUser === null ? (
+        <FullScreenLoading />
+      ) : (
+        <authContext.Provider value={auth}>{children}</authContext.Provider>
+      )}
+    </>
+  )
 }
 
 export { AuthProvider }

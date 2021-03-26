@@ -28,5 +28,6 @@ const NotSupported: PageFC = () => {
   )
 }
 NotSupported.layout = "empty"
+NotSupported.rbpac = { type: "public" }
 
 export default NotSupported
