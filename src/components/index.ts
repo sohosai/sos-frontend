@@ -1,4 +1,5 @@
 export { Button } from "./Button"
+export { Dropdown } from "./Dropdown"
 export { FormItemSpacer } from "./FormItemSpacer"
 export { Panel } from "./Panel"
 export { Spinner } from "./Spinner"
