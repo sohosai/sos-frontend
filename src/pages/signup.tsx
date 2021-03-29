@@ -4,7 +4,7 @@ import { PageFC } from "next"
 
 import { useForm } from "react-hook-form"
 
-import { useAuth } from "../hooks/useAuth"
+import { useAuth } from "../contexts/auth"
 
 import { Button, FormItemSpacer, TextField, Panel } from "../components"
 

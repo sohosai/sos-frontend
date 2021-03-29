@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form"
 
 import { signup } from "../lib/api/signup"
 
-import { useAuth } from "../hooks/useAuth"
+import { useAuth } from "../contexts/auth"
 
 import { Panel, FormItemSpacer, TextField, Button } from "../components"
 
