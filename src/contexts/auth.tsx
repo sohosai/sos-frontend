@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, FC } from "react"
+import { useState, useEffect, createContext, useContext, FC } from "react"
 
 import type { PageOptions } from "next"
 import { useRouter } from "next/router"
@@ -37,7 +37,11 @@ export type Auth = Partial<{
   confirmPasswordReset: (code: string, password: string) => Promise<boolean>
 }>
 
-export const authContext = createContext<Auth>({})
+const authContext = createContext<Auth>({})
+
+const useAuth = (): Auth => {
+  return useContext(authContext)
+}
 
 const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
   // null はチェック前
@@ -183,4 +187,4 @@ const AuthProvider: FC<Pick<PageOptions, "rbpac">> = ({ rbpac, children }) => {
   )
 }
 
-export { AuthProvider }
+export { AuthProvider, useAuth }
