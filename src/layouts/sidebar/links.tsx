@@ -4,10 +4,13 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { PageOptions } from "next"
 
+import { useAuth } from "../../contexts/auth"
+
 import styles from "./links.module.scss"
 
 export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
   const router = useRouter()
+  const { firebaseUser, sosUser } = useAuth()
 
   const links: {
     [layoutName in PageOptions["layout"]]?: Array<{
@@ -27,14 +30,20 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       {
         href: "/login",
         title: "ログイン",
-        visible: () => true,
+        visible: () => !firebaseUser,
         active: () => router.pathname === "/login",
       },
       {
         href: "/signup",
         title: "アカウント登録",
-        visible: () => true,
+        visible: () => !firebaseUser,
         active: () => router.pathname === "/signup",
+      },
+      {
+        href: "/init",
+        title: "アカウント情報登録",
+        visible: () => Boolean(firebaseUser) && !sosUser,
+        active: () => router.pathname === "/init",
       },
     ],
   }
