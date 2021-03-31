@@ -13,6 +13,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
     [layoutName in PageOptions["layout"]]?: Array<{
       href: string
       title: string
+      visible: () => boolean
       active: () => boolean
     }>
   } = {
@@ -20,16 +21,19 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       {
         href: "/",
         title: "トップページ",
+        visible: () => true,
         active: () => router.pathname === "/",
       },
       {
         href: "/login",
         title: "ログイン",
+        visible: () => true,
         active: () => router.pathname === "/login",
       },
       {
         href: "/signup",
         title: "アカウント登録",
+        visible: () => true,
         active: () => router.pathname === "/signup",
       },
     ],
@@ -38,15 +42,19 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
   return (
     <menu className={styles.wrapper}>
       <ul className={styles.links}>
-        {links[layout].map(({ href, title, active }, index) => (
-          <li key={index}>
-            <Link href={href}>
-              <a className={styles.link} data-active={active()}>
-                <p className={styles.label}>{title}</p>
-              </a>
-            </Link>
-          </li>
-        ))}
+        {links[layout].map(({ href, title, visible, active }, index) => {
+          if (!visible()) return
+
+          return (
+            <li key={index}>
+              <Link href={href}>
+                <a className={styles.link} data-active={active()}>
+                  <p className={styles.label}>{title}</p>
+                </a>
+              </Link>
+            </li>
+          )
+        })}
       </ul>
     </menu>
   )
