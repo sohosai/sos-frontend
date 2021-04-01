@@ -1,4 +1,17 @@
 @import "../../styles/variables";
+@import "../../styles/mixins";
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+
+.bottomWrapper {
+  margin-bottom: 48px;
+}
 
 .logotype {
   color: $color-brand;
@@ -8,4 +21,24 @@
   margin-top: 32px;
   padding: 0 32px;
   margin-bottom: 64px;
+}
+
+.mypageButtonWrapper {
+  background-color: $color-gray-100;
+  margin: 0 32px;
+  padding: 0 16px;
+  height: 48px;
+  border-radius: 10px;
+  transition: background-color 200ms;
+  @include flexCenter;
+
+  &:hover {
+    background-color: $color-gray-50;
+  }
+}
+
+.userName {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
