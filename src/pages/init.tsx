@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import { PageFC } from "next"
 import { useRouter } from "next/router"
@@ -29,9 +29,13 @@ const Init: PageFC = () => {
   const [otherError, setOtherError] = useState<string>()
   const [unknownError, setUnknownError] = useState(false)
 
-  const { idToken, setSosUser } = useAuth()
+  const { idToken, setSosUser, sosUser } = useAuth()
 
   const router = useRouter()
+
+  useEffect(() => {
+    if (sosUser) router.push("/mypage")
+  })
 
   const { register, errors, handleSubmit } = useForm<Inputs>({
     criteriaMode: "all",
@@ -67,8 +71,7 @@ const Init: PageFC = () => {
         setProcessing(false)
         setSosUser(user)
 
-        // TODO:
-        // router.push("/mypage") ?
+        router.push("/mypage")
       })
       .catch(async (err) => {
         setProcessing(false)
@@ -124,7 +127,7 @@ const Init: PageFC = () => {
           }
           case "409": {
             setOtherError("このアカウントの情報は登録済みです")
-            // TODO: router.push("mypage") ?
+            router.push("mypage")
             break
           }
           default: {
