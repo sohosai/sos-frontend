@@ -1,6 +1,7 @@
 import { useState } from "react"
 
 import { PageFC } from "next"
+import { useRouter } from "next/router"
 
 import { useForm } from "react-hook-form"
 
@@ -22,6 +23,8 @@ const Signup: PageFC = () => {
     undefined | "mailSent" | "error"
   >(undefined)
 
+  const router = useRouter()
+
   const { register, errors, setError, handleSubmit } = useForm<Inputs>({
     criteriaMode: "all",
     mode: "onBlur",
@@ -34,8 +37,9 @@ const Signup: PageFC = () => {
     await signup(email, password)
       .then((user) => {
         if (user.emailVerified) {
+          // 起こりえないはずだが一応ハンドリング
           setProcessing(false)
-          // TODO: リダイレクトなど
+          router.push("/init")
         } else {
           sendEmailVerification()
             .then(() => {
