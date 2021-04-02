@@ -3,6 +3,8 @@ import { useState, useEffect } from "react"
 import { PageFC } from "next"
 import { useRouter } from "next/router"
 
+import { pagesPath } from "../utils/$path"
+
 import { useForm } from "react-hook-form"
 
 import { signup } from "../lib/api/signup"
@@ -34,7 +36,7 @@ const Init: PageFC = () => {
   const router = useRouter()
 
   useEffect(() => {
-    if (sosUser) router.push("/mypage")
+    if (sosUser) router.push(pagesPath.mypage.$url())
   })
 
   const { register, errors, handleSubmit } = useForm<Inputs>({
@@ -71,13 +73,13 @@ const Init: PageFC = () => {
         setProcessing(false)
         setSosUser(user)
 
-        router.push("/mypage")
+        router.push(pagesPath.mypage.$url())
       })
       .catch(async (err) => {
         setProcessing(false)
 
         if (err.message === "IDTOKEN_UNDEFINED") {
-          router.push("/login")
+          router.push(pagesPath.login.$url())
           return
         }
 
@@ -97,7 +99,7 @@ const Init: PageFC = () => {
               }
               case "AUTHENTICATION": {
                 if (responseBody.error.info.type === "UNAUTHORIZED") {
-                  router.push("/login")
+                  router.push(pagesPath.login.$url())
                 } else {
                   // FIXME:
                   setUnknownError(true)
@@ -118,16 +120,16 @@ const Init: PageFC = () => {
             break
           }
           case "401": {
-            router.push("/login")
+            router.push(pagesPath.login.$url())
             break
           }
           case "403": {
-            router.push("/login")
+            router.push(pagesPath.login.$url())
             break
           }
           case "409": {
             setOtherError("このアカウントの情報は登録済みです")
-            router.push("mypage")
+            router.push(pagesPath.mypage.$url())
             break
           }
           default: {

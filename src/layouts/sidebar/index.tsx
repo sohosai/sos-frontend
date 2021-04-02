@@ -3,6 +3,8 @@ import { FC } from "react"
 import type { PageOptions } from "next"
 import Link from "next/link"
 
+import { pagesPath } from "../../utils/$path"
+
 import { useAuth } from "../../contexts/auth"
 
 import { Links } from "./links"
@@ -26,7 +28,7 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       </div>
       <div className={styles.bottomWrapper}>
         {sosUser && (
-          <Link href="/mypage">
+          <Link href={pagesPath.mypage.$url()}>
             <a className={styles.mypageButtonWrapper}>
               <i className={`jam-icon jam-user-circle ${styles.userIcon}`} />
               <p

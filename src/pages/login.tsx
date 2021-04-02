@@ -3,6 +3,8 @@ import { useState } from "react"
 import { PageFC } from "next"
 import { useRouter } from "next/router"
 
+import { pagesPath } from "../utils/$path"
+
 import { useForm } from "react-hook-form"
 
 import { useAuth } from "../contexts/auth"
@@ -36,7 +38,7 @@ const Login: PageFC = () => {
         setProcessing(false)
 
         // アカウント情報未登録だった場合は auth context 側で /init にリダイレクトしている
-        router.push("/mypage")
+        router.push(pagesPath.mypage.$url())
       })
       .catch((res) => {
         setProcessing(false)

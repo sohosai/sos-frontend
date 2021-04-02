@@ -3,6 +3,8 @@ import { useState, useEffect, createContext, useContext, FC } from "react"
 import type { PageOptions } from "next"
 import { useRouter } from "next/router"
 
+import { pagesPath } from "../utils/$path"
+
 import firebase from "firebase/app"
 import "firebase/auth"
 
@@ -125,20 +127,20 @@ const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
           switch (String(resBody.status)) {
             case "401": {
               if (rbpac.type !== "public") {
-                router.push("/login")
+                router.push(pagesPath.login.$url())
               }
               setSosUser(undefined)
               break
             }
             case "403": {
               if (resBody.error.type === "NOT_SIGNED_UP") {
-                router.push("/init")
+                router.push(pagesPath.init.$url())
                 setSosUser(undefined)
                 return
               }
 
               if (rbpac.type !== "public") {
-                router.push("/login")
+                router.push(pagesPath.login.$url())
               }
               setSosUser(undefined)
               break
@@ -153,7 +155,7 @@ const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
         setSosUser(undefined)
 
         if (rbpac.type !== "public") {
-          router.push("/login")
+          router.push(pagesPath.login.$url())
         }
       }
     })
