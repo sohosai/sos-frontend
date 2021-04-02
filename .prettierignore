@@ -31,3 +31,6 @@ yarn-error.log*
 .env.production.local
 
 *.md
+
+# pathpida
+src/utils/$path.ts
