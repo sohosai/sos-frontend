@@ -1,3 +1,4 @@
+import "!style-loader!css-loader!normalize.css"
 import "../src/styles/globals.scss"
 
 export const parameters = {
