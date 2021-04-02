@@ -8830,7 +8830,7 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-pathpida@^0.14.0:
+pathpida@0.14.0:
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/pathpida/-/pathpida-0.14.0.tgz#2dc698619b535909fe1a22bbe544eaecc11a2a42"
   integrity sha512-jJOQr/kTk59N4m7Gl+1lBACee+a/YXJ7+xEM7Depx3jbRrDU40NhY8SXe2XLVTqNMXSAl2tviQFH68WrK1KvCA==
