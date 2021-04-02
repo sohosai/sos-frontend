@@ -2,9 +2,12 @@ import { useEffect } from "react"
 
 import { useRouter } from "next/router"
 
+import { pagesPath } from "../utils/$path"
+
 const useIfSupported = (): void => {
   const router = useRouter()
-  const isInNotSupportedPage = router.pathname === "/not-supported"
+  const isInNotSupportedPage =
+    router.pathname === pagesPath.not_supported.$url().pathname
 
   useEffect(() => {
     const ua = window.navigator.userAgent.toLowerCase()
@@ -16,9 +19,9 @@ const useIfSupported = (): void => {
       !window.matchMedia("(hover: hover)").matches ||
       !window.matchMedia("(pointer: fine)").matches
     ) {
-      router.push("/not-supported")
+      router.push(pagesPath.not_supported.$url())
     } else {
-      if (isInNotSupportedPage) router.push("/")
+      if (isInNotSupportedPage) router.push(pagesPath.$url())
     }
   }, [isInNotSupportedPage])
 }

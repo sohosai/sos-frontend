@@ -3,6 +3,8 @@ import { useState } from "react"
 import { PageFC } from "next"
 import { useRouter } from "next/router"
 
+import { pagesPath } from "../utils/$path"
+
 import { useForm } from "react-hook-form"
 
 import { useAuth } from "../contexts/auth"
@@ -39,7 +41,7 @@ const Signup: PageFC = () => {
         if (user.emailVerified) {
           // 起こりえないはずだが一応ハンドリング
           setProcessing(false)
-          router.push("/init")
+          router.push(pagesPath.init.$url())
         } else {
           sendEmailVerification()
             .then(() => {

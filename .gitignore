@@ -34,3 +34,6 @@ yarn-error.log*
 .vercel
 
 .local
+
+# pathpida
+src/utils/$path.ts

@@ -4,6 +4,8 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { PageOptions } from "next"
 
+import { pagesPath } from "../../utils/$path"
+
 import { useAuth } from "../../contexts/auth"
 
 import styles from "./links.module.scss"
@@ -14,7 +16,10 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
 
   const links: {
     [layoutName in PageOptions["layout"]]?: Array<{
-      href: string
+      href: {
+        pathname: string
+        hash: string
+      }
       title: string
       icon: string
       visible: () => boolean
@@ -23,32 +28,32 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
   } = {
     default: [
       {
-        href: "/",
+        href: pagesPath.$url(),
         title: "トップページ",
         icon: "home",
         visible: () => true,
-        active: () => router.pathname === "/",
+        active: () => router.pathname === pagesPath.$url().pathname,
       },
       {
-        href: "/login",
+        href: pagesPath.login.$url(),
         title: "ログイン",
         icon: "log-in",
         visible: () => !firebaseUser,
-        active: () => router.pathname === "/login",
+        active: () => router.pathname === pagesPath.login.$url().pathname,
       },
       {
-        href: "/signup",
+        href: pagesPath.signup.$url(),
         title: "アカウント登録",
         icon: "user-plus",
         visible: () => !firebaseUser,
-        active: () => router.pathname === "/signup",
+        active: () => router.pathname === pagesPath.signup.$url().pathname,
       },
       {
-        href: "/init",
+        href: pagesPath.init.$url(),
         title: "アカウント情報登録",
         icon: "user-circle",
         visible: () => Boolean(firebaseUser) && !sosUser,
-        active: () => router.pathname === "/init",
+        active: () => router.pathname === pagesPath.init.$url().pathname,
       },
     ],
   }

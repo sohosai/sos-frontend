@@ -29,3 +29,6 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+
+# pathpida
+src/utils/$path.ts
