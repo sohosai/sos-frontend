@@ -17,6 +17,8 @@
   flex-direction: row;
   align-items: center;
   transition: background-color 200ms;
+  color: $color-text-sub;
+  transition: color 150ms;
 
   &:after {
     content: "";
@@ -36,17 +38,15 @@
   }
 
   &[data-active="true"] {
+    color: $color-brand;
+
     &:after {
       transform: scaleX(1);
-    }
-
-    .label {
-      color: $color-brand;
     }
   }
 }
 
-.label {
-  color: $color-text-sub;
-  transition: color 150ms;
+.linkIcon {
+  font-size: 1.5em;
+  margin-right: 8px;
 }

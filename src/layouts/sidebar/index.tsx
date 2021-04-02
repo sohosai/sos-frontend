@@ -28,6 +28,7 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         {sosUser && (
           <Link href="/mypage">
             <a className={styles.mypageButtonWrapper}>
+              <i className={`jam-icon jam-user-circle ${styles.userIcon}`} />
               <p
                 className={styles.userName}
                 title={`${sosUser.name.last} ${sosUser.name.first}`}
