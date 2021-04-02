@@ -3,6 +3,13 @@ module.exports = {
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "@storybook/preset-scss",
+    {
+      name: "@storybook/preset-scss",
+      options: {
+        cssLoaderOptions: {
+          url: false,
+        },
+      },
+    },
   ],
 }
