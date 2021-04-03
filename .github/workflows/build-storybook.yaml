@@ -1,18 +1,4 @@
-on:
-  push:
-    paths:
-      - "src/components/**"
-      - ".storybook/**"
-      - ".github/workflows/**"
-      - "package.json"
-      - "yarn.lock"
-  pull_request:
-    paths:
-      - "src/components/**"
-      - ".storybook/**"
-      - ".github/workflows/**"
-      - "package.json"
-      - "yarn.lock"
+on: push
 
 jobs:
   build-storybook:
