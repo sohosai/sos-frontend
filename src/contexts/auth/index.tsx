@@ -1,9 +1,6 @@
 import { useState, useEffect, createContext, useContext, FC } from "react"
 
 import type { PageOptions } from "next"
-import { useRouter } from "next/router"
-
-import { pagesPath } from "../../utils/$path"
 
 import { useRbpacRedirect } from "./useRbpacRedirect"
 
@@ -56,8 +53,8 @@ const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
 
   useRbpacRedirect({
     rbpac,
-    userRole:
-      sosUser === null ? null : sosUser === undefined ? "guest" : sosUser.role,
+    firebaseUser,
+    sosUser,
   })
 
   const signin = async (email: string, password: string) => {
@@ -115,8 +112,6 @@ const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
       })
   }
 
-  const router = useRouter()
-
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
@@ -130,29 +125,13 @@ const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
         const res = await getMe({
           idToken: fetchedIdToken,
         }).catch(async (err) => {
+          setSosUser(undefined)
+
           const resBody = await err.response.json()
 
-          switch (String(resBody.status)) {
-            case "401": {
-              if (rbpac.type !== "public") {
-                router.push(pagesPath.login.$url())
-              }
-              setSosUser(undefined)
-              break
-            }
-            case "403": {
-              if (resBody.error.type === "NOT_SIGNED_UP") {
-                router.push(pagesPath.init.$url())
-                setSosUser(undefined)
-                return
-              }
-
-              if (rbpac.type !== "public") {
-                router.push(pagesPath.login.$url())
-              }
-              setSosUser(undefined)
-              break
-            }
+          if (resBody.status === 403) {
+            if (resBody.error.id === "UNVERIFIED_EMAIL_ADDRESS") return
+            if (resBody.error.type === "NOT_SIGNED_UP") return
           }
 
           throw resBody
@@ -161,10 +140,6 @@ const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
       } else {
         setFirebaseUser(undefined)
         setSosUser(undefined)
-
-        if (rbpac.type !== "public") {
-          router.push(pagesPath.login.$url())
-        }
       }
     })
   }, [])

@@ -52,7 +52,8 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         href: pagesPath.init.$url(),
         title: "アカウント情報登録",
         icon: "user-circle",
-        visible: () => Boolean(firebaseUser) && !sosUser,
+        visible: () =>
+          Boolean(firebaseUser) && firebaseUser.emailVerified && !sosUser,
         active: () => router.pathname === pagesPath.init.$url().pathname,
       },
     ],

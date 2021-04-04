@@ -5,7 +5,10 @@ import type { PageOptions } from "next"
 
 import { pagesPath } from "../../utils/$path"
 
+import firebase from "firebase/app"
+
 import type { PageUserRole } from "../../types"
+import type { User } from "../../types/models/user"
 
 const roleToPermissionStrength = (role: PageUserRole) => {
   const permissionStrength: { [role in PageUserRole]: number } = {
@@ -20,15 +23,49 @@ const roleToPermissionStrength = (role: PageUserRole) => {
 
 export const useRbpacRedirect = ({
   rbpac,
-  userRole,
+  firebaseUser,
+  sosUser,
 }: {
   rbpac: PageOptions["rbpac"]
-  userRole: PageUserRole
+  firebaseUser: firebase.User
+  sosUser: User
 }): void => {
   const router = useRouter()
 
   useEffect(() => {
-    if (userRole == null) return
+    if (firebaseUser === null || sosUser === null) return
+
+    if (firebaseUser && !firebaseUser.emailVerified) {
+      if (router.pathname !== pagesPath.email_verification.$url().pathname) {
+        router.push(pagesPath.email_verification.$url())
+      }
+      return
+    }
+
+    if (firebaseUser && sosUser === undefined) {
+      if (router.pathname !== pagesPath.init.$url().pathname) {
+        router.push(pagesPath.init.$url())
+      }
+      return
+    }
+
+    const userRole = sosUser ? sosUser?.role : "guest"
+
+    // TODO: toast
+    const redirect = (): void => {
+      if (firebaseUser === undefined) {
+        if (router.pathname !== pagesPath.login.$url().pathname) {
+          router.push(pagesPath.login.$url())
+        }
+        return
+      }
+
+      if (userRole === "guest") {
+        router.push(pagesPath.login.$url())
+      } else {
+        router.push(pagesPath.mypage.$url())
+      }
+    }
 
     switch (rbpac.type) {
       case "public": {
@@ -39,12 +76,7 @@ export const useRbpacRedirect = ({
           roleToPermissionStrength(rbpac.role) >
           roleToPermissionStrength(userRole)
         ) {
-          // TODO: toast
-          if (userRole === "guest") {
-            router.push(pagesPath.login.$url())
-          } else {
-            router.push(pagesPath.mypage.$url())
-          }
+          redirect()
         }
         return
       }
@@ -53,20 +85,13 @@ export const useRbpacRedirect = ({
           roleToPermissionStrength(rbpac.role) <
           roleToPermissionStrength(userRole)
         ) {
-          // userRole: "guest" の可能性はない
-          // TODO: toast
-          router.push(pagesPath.mypage.$url())
+          redirect()
         }
         return
       }
       case "enum": {
         if (!rbpac.role.includes(userRole)) {
-          // TODO: toast
-          if (userRole === "guest") {
-            router.push(pagesPath.login.$url())
-          } else {
-            router.push(pagesPath.mypage.$url())
-          }
+          redirect()
         }
         return
       }
