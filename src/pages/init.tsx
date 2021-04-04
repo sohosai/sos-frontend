@@ -123,10 +123,6 @@ const Init: PageFC = () => {
             router.push(pagesPath.login.$url())
             break
           }
-          case "403": {
-            router.push(pagesPath.login.$url())
-            break
-          }
           case "409": {
             setOtherError("このアカウントの情報は登録済みです")
             router.push(pagesPath.mypage.$url())
