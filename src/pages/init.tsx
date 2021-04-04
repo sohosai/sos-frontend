@@ -80,7 +80,7 @@ const Init: PageFC = () => {
         }
 
         const responseBody = await err.response.json()
-        console.log(responseBody)
+        console.error(responseBody)
 
         switch (String(responseBody.status)) {
           case "400": {
