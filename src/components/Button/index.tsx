@@ -1,4 +1,4 @@
-import { FC } from "react"
+import type { ButtonHTMLAttributes, FC } from "react"
 
 import { dataset } from "../../utils/dataset"
 
@@ -13,6 +13,7 @@ declare namespace Button {
     type?: "button" | "submit" | "reset"
     disabled?: boolean
     processing?: boolean
+    buttonOtherAttributes?: ButtonHTMLAttributes<HTMLButtonElement>
   }>
 }
 
@@ -22,6 +23,7 @@ const Button: FC<Button.Props> = ({
   type = "button",
   disabled = false,
   processing = false,
+  buttonOtherAttributes,
   children,
 }) => {
   return (
@@ -30,6 +32,7 @@ const Button: FC<Button.Props> = ({
       className={styles.button}
       {...dataset({ kind, size, disabled, processing })}
       disabled={disabled}
+      {...buttonOtherAttributes}
     >
       <div className={styles.spinnerWrapper}>
         <Spinner size="sm" color={kind === "primary" ? "white" : "brand"} />
