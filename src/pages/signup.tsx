@@ -1,9 +1,6 @@
 import { useState } from "react"
 
 import { PageFC } from "next"
-import { useRouter } from "next/router"
-
-import { pagesPath } from "../utils/$path"
 
 import { useForm } from "react-hook-form"
 
@@ -22,8 +19,6 @@ const Signup: PageFC = () => {
   const [processing, setProcessing] = useState(false)
   const [unknownError, setUnknownError] = useState(false)
 
-  const router = useRouter()
-
   const { register, errors, setError, handleSubmit } = useForm<Inputs>({
     criteriaMode: "all",
     mode: "onBlur",
@@ -34,20 +29,14 @@ const Signup: PageFC = () => {
   const onSubmit = async ({ email, password }: Inputs) => {
     setProcessing(true)
     await signup(email, password)
-      .then((user) => {
-        if (user.emailVerified) {
-          // 起こりえないはずだが一応ハンドリング
-          setProcessing(false)
-          router.push(pagesPath.init.$url())
-        } else {
-          sendEmailVerification()
-            .then(() => {
-              setProcessing(false)
-            })
-            .catch(() => {
-              setProcessing(false)
-            })
-        }
+      .then(() => {
+        sendEmailVerification()
+          .then(() => {
+            setProcessing(false)
+          })
+          .catch(() => {
+            setProcessing(false)
+          })
       })
       .catch((res) => {
         setProcessing(false)
