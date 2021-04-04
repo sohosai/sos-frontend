@@ -5,6 +5,8 @@ import { useRouter } from "next/router"
 
 import { pagesPath } from "../../utils/$path"
 
+import { useRbpacRedirect } from "./useRbpacRedirect"
+
 import firebase from "firebase/app"
 import "firebase/auth"
 
@@ -51,6 +53,12 @@ const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
   const [firebaseUser, setFirebaseUser] = useState<firebase.User>(null)
 
   const [idToken, setIdToken] = useState<string>()
+
+  useRbpacRedirect({
+    rbpac,
+    userRole:
+      sosUser === null ? null : sosUser === undefined ? "guest" : sosUser.role,
+  })
 
   const signin = async (email: string, password: string) => {
     return await firebase
