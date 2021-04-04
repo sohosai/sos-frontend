@@ -1,7 +1,7 @@
 install:
 	yarn install
 
-dev: install
+dev: install pathpida
 	yarn next dev -p 3131
 
 build: install pathpida
@@ -28,7 +28,7 @@ format.check: install
 typecheck: install pathpida
 	yarn tsc --noEmit
 
-typecheck.watch: install
+typecheck.watch: install pathpida
 	yarn tsc --noEmit --watch
 
 storybook: install
