@@ -34,8 +34,9 @@ const Signup: PageFC = () => {
           .then(() => {
             setProcessing(false)
           })
-          .catch(() => {
+          .catch((err) => {
             setProcessing(false)
+            console.error(err)
           })
       })
       .catch((res) => {
