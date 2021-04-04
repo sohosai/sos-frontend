@@ -137,6 +137,6 @@ const Login: PageFC = () => {
   )
 }
 Login.layout = "default"
-Login.rbpac = { type: "public" }
+Login.rbpac = { type: "lowerThanIncluding", role: "guest" }
 
 export default Login
