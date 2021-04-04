@@ -12,7 +12,7 @@ import { Links } from "./links"
 import styles from "./index.module.scss"
 
 const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
-  const { sosUser } = useAuth()
+  const { sosUser, signout } = useAuth()
 
   return (
     <div className={styles.wrapper}>
@@ -28,15 +28,27 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       </div>
       <div className={styles.bottomWrapper}>
         {sosUser && (
-          <Link href={pagesPath.mypage.$url()}>
-            <a className={styles.mypageButtonWrapper}>
-              <i className={`jam-icon jam-user-circle ${styles.userIcon}`} />
-              <p
-                className={styles.userName}
-                title={`${sosUser.name.last} ${sosUser.name.first}`}
-              >{`${sosUser.name.last} ${sosUser.name.first}`}</p>
-            </a>
-          </Link>
+          <>
+            <Link href={pagesPath.mypage.$url()}>
+              <a className={styles.mypageButtonWrapper}>
+                <i className={`jam-icon jam-user-circle ${styles.userIcon}`} />
+                <p
+                  className={styles.userName}
+                  title={`${sosUser.name.last} ${sosUser.name.first}`}
+                >{`${sosUser.name.last} ${sosUser.name.first}`}</p>
+              </a>
+            </Link>
+            <button
+              type="button"
+              className={styles.logoutButton}
+              onClick={() => {
+                signout()
+              }}
+            >
+              <i className={`jam-icon jam-log-out ${styles.logoutIcon}`} />
+              <p className={styles.logoutText}>ログアウト</p>
+            </button>
+          </>
         )}
       </div>
     </div>
