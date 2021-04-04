@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
 import { PageFC } from "next"
 import { useRouter } from "next/router"
@@ -31,13 +31,9 @@ const Init: PageFC = () => {
   const [otherError, setOtherError] = useState<string>()
   const [unknownError, setUnknownError] = useState(false)
 
-  const { idToken, setSosUser, sosUser } = useAuth()
+  const { idToken, setSosUser } = useAuth()
 
   const router = useRouter()
-
-  useEffect(() => {
-    if (sosUser) router.push(pagesPath.mypage.$url())
-  })
 
   const { register, errors, handleSubmit } = useForm<Inputs>({
     criteriaMode: "all",
