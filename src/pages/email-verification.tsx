@@ -58,7 +58,7 @@ const EmailVerification: PageFC = () => {
                   kind="secondary"
                   size="small"
                   processing={processing}
-                  buttonOtherAttributes={{
+                  buttonRestAttributes={{
                     onClick: resendVerification,
                   }}
                 >

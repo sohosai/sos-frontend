@@ -35,7 +35,7 @@ Index.argTypes = {
   autocomplete: {
     defaultValue: "email",
   },
-  register: {
-    control: "none",
+  inputRestAttributes: {
+    control: false,
   },
 }

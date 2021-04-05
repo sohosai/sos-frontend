@@ -1,6 +1,4 @@
-import { FC } from "react"
-
-import type { Register } from "../../types/form"
+import { FC, SelectHTMLAttributes } from "react"
 
 import { dataset } from "../../utils/dataset"
 
@@ -9,7 +7,7 @@ import styles from "./index.module.scss"
 declare namespace Dropdown {
   type Props = Readonly<{
     label: string
-    name: string
+    name?: string
     required?: boolean
     options: Array<{
       value: string
@@ -18,7 +16,7 @@ declare namespace Dropdown {
     }>
     description?: string[] | string
     error?: string[] | string
-    register?: Register
+    selectRestAttributes?: SelectHTMLAttributes<HTMLSelectElement>
   }>
 }
 
@@ -29,7 +27,7 @@ const Dropdown: FC<Dropdown.Props> = ({
   options,
   description,
   error,
-  register,
+  selectRestAttributes,
 }) => {
   const descriptions = (Array.isArray(description)
     ? description
@@ -47,7 +45,7 @@ const Dropdown: FC<Dropdown.Props> = ({
         {...{ name, required }}
         className={styles.select}
         {...dataset({ error: Boolean(errors.length) })}
-        ref={register}
+        {...selectRestAttributes}
       >
         {options.map(({ value, label, selected = false }, index) => (
           <option {...{ value, selected }} key={index}>

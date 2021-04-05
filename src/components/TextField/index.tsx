@@ -1,8 +1,6 @@
-import { FC } from "react"
+import { FC, InputHTMLAttributes } from "react"
 
 import { dataset } from "../../utils/dataset"
-
-import type { Register } from "../../types/form"
 
 import styles from "./index.module.scss"
 
@@ -10,13 +8,13 @@ declare namespace TextField {
   type Props = Readonly<{
     type: "text" | "email" | "password"
     label: string
-    name: string
+    name?: string
     required?: boolean
     placeholder?: string
     description?: string[] | string
     error?: string[] | string
     autocomplete?: string
-    register?: Register
+    inputRestAttributes?: InputHTMLAttributes<HTMLInputElement>
   }>
 }
 
@@ -29,7 +27,7 @@ const TextField: FC<TextField.Props> = ({
   description,
   error,
   autocomplete,
-  register,
+  inputRestAttributes,
 }) => {
   const descriptions = (Array.isArray(description)
     ? description
@@ -50,7 +48,7 @@ const TextField: FC<TextField.Props> = ({
         autoComplete={autocomplete}
         required={required}
         placeholder={placeholder}
-        ref={register}
+        {...inputRestAttributes}
         {...dataset({ error: Boolean(errors?.length) })}
       />
       {Boolean(descriptions?.length + errors?.length) && (
