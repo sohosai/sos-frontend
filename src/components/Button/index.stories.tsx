@@ -10,3 +10,8 @@ export default {
 export const Index: Story<Button.Props> = (options) => (
   <Button {...options}>送信する</Button>
 )
+Index.argTypes = {
+  buttonRestAttributes: {
+    control: false,
+  },
+}

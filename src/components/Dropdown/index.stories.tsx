@@ -41,7 +41,7 @@ Index.argTypes = {
     control: { type: "text" },
     defaultValue: "",
   },
-  register: {
+  selectRestAttributes: {
     control: null,
   },
 }
