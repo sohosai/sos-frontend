@@ -24,7 +24,12 @@ const Login: PageFC = () => {
 
   const router = useRouter()
 
-  const { register, errors, setError, handleSubmit } = useForm<Inputs>({
+  const {
+    register,
+    formState: { errors },
+    setError,
+    handleSubmit,
+  } = useForm<Inputs>({
     criteriaMode: "all",
     mode: "onBlur",
   })
@@ -43,25 +48,25 @@ const Login: PageFC = () => {
       .catch((res) => {
         setProcessing(false)
         if (res.code === "auth/wrong-password") {
-          setError("password", {
-            type: "wrongPassword",
-            shouldFocus: true,
-          })
+          setError(
+            "password",
+            {
+              type: "wrongPassword",
+            },
+            { shouldFocus: true }
+          )
         } else if (res.code === "auth/user-not-found") {
-          setError("email", {
-            type: "userNotFound",
-            shouldFocus: true,
-          })
+          setError("email", { type: "userNotFound" }, { shouldFocus: true })
         } else if (res.code === "auth/invalid-email") {
-          setError("email", {
-            type: "invalidEmail",
-            shouldFocus: true,
-          })
+          setError("email", { type: "invalidEmail" }, { shouldFocus: true })
         } else if (res.code === "auth/user-disabled") {
-          setError("email", {
-            type: "userDisabled",
-            shouldFocus: true,
-          })
+          setError(
+            "email",
+            { type: "userDisabled" },
+            {
+              shouldFocus: true,
+            }
+          )
         } else {
           setUnknownError(true)
         }
@@ -79,7 +84,6 @@ const Login: PageFC = () => {
                 <TextField
                   type="email"
                   label="メールアドレス"
-                  name="email"
                   autocomplete="email"
                   description={[
                     "tsukuba.ac.jpで終わるメールアドレスを使用してください",
@@ -97,7 +101,7 @@ const Login: PageFC = () => {
                   ]}
                   placeholder="xxx@s.tsukuba.ac.jp"
                   required
-                  register={register({
+                  inputRestAttributes={register("email", {
                     required: true,
                     pattern: /^[\w\-._]+@([\w\-._]+\.)?tsukuba\.ac\.jp$/,
                   })}
@@ -107,7 +111,6 @@ const Login: PageFC = () => {
                 <TextField
                   type="password"
                   label="パスワード"
-                  name="password"
                   autocomplete="current-password"
                   error={[
                     errors?.password?.types?.required && "必須項目です",
@@ -115,9 +118,7 @@ const Login: PageFC = () => {
                       "パスワードが一致しません",
                   ]}
                   required
-                  register={register({
-                    required: true,
-                  })}
+                  inputRestAttributes={register("password", { required: true })}
                 />
               </FormItemSpacer>
             </fieldset>

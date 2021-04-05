@@ -35,7 +35,11 @@ const Init: PageFC = () => {
 
   const router = useRouter()
 
-  const { register, errors, handleSubmit } = useForm<Inputs>({
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<Inputs>({
     criteriaMode: "all",
     mode: "onBlur",
   })
@@ -143,12 +147,11 @@ const Init: PageFC = () => {
                 <TextField
                   type="text"
                   label="姓"
-                  name="nameLast"
                   placeholder="雙峰"
                   autocomplete="family-name"
                   error={[errors?.nameLast?.types?.required && "必須項目です"]}
                   required
-                  register={register({
+                  inputRestAttributes={register("nameLast", {
                     required: true,
                   })}
                 />
@@ -157,12 +160,11 @@ const Init: PageFC = () => {
                 <TextField
                   type="text"
                   label="名前"
-                  name="nameFirst"
                   placeholder="太郎"
                   autocomplete="given-name"
                   error={[errors?.nameFirst?.types?.required && "必須項目です"]}
                   required
-                  register={register({
+                  inputRestAttributes={register("nameFirst", {
                     required: true,
                   })}
                 />
@@ -171,7 +173,6 @@ const Init: PageFC = () => {
                 <TextField
                   type="text"
                   label="姓(ふりがな)"
-                  name="kanaNameLast"
                   placeholder="そうほう"
                   error={[
                     errors?.kanaNameLast?.types?.required && "必須項目です",
@@ -179,7 +180,7 @@ const Init: PageFC = () => {
                       "ひらがなで入力してください",
                   ]}
                   required
-                  register={register({
+                  inputRestAttributes={register("kanaNameLast", {
                     required: true,
                     validate: {
                       isKana: (value) => isKana(value),
@@ -191,7 +192,6 @@ const Init: PageFC = () => {
                 <TextField
                   type="text"
                   label="名前(ふりがな)"
-                  name="kanaNameFirst"
                   placeholder="たろう"
                   error={[
                     errors?.kanaNameFirst?.types?.required && "必須項目です",
@@ -199,7 +199,7 @@ const Init: PageFC = () => {
                       "ひらがなで入力してください",
                   ]}
                   required
-                  register={register({
+                  inputRestAttributes={register("kanaNameFirst", {
                     required: true,
                     validate: {
                       isKana: (value) => isKana(value),
@@ -211,7 +211,6 @@ const Init: PageFC = () => {
                 <TextField
                   type="text"
                   label="電話番号"
-                  name="phoneNumber"
                   autocomplete="tel-national"
                   description="雙峰祭当日などに連絡の取れる番号を入力してください"
                   placeholder="08004794581"
@@ -220,7 +219,7 @@ const Init: PageFC = () => {
                     errors?.phoneNumber?.types?.pattern && "無効な電話番号です",
                   ]}
                   required
-                  register={register({
+                  inputRestAttributes={register("phoneNumber", {
                     required: true,
                     pattern: /^(0\d{2,3}-\d{1,4}-\d{4}|0\d{9,10})$/,
                   })}
@@ -231,13 +230,12 @@ const Init: PageFC = () => {
                 <TextField
                   type="text"
                   label="所属学群・学類 "
-                  name="affiliation"
                   placeholder="〇〇学群 〇〇学類"
                   error={[
                     errors?.affiliation?.types?.required && "必須項目です",
                   ]}
                   required
-                  register={register({
+                  inputRestAttributes={register("affiliation", {
                     required: true,
                   })}
                 />

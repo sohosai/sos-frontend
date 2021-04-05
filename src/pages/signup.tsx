@@ -19,7 +19,12 @@ const Signup: PageFC = () => {
   const [processing, setProcessing] = useState(false)
   const [unknownError, setUnknownError] = useState(false)
 
-  const { register, errors, setError, handleSubmit } = useForm<Inputs>({
+  const {
+    register,
+    formState: { errors },
+    setError,
+    handleSubmit,
+  } = useForm<Inputs>({
     criteriaMode: "all",
     mode: "onBlur",
   })
@@ -46,15 +51,21 @@ const Signup: PageFC = () => {
             type: "emailAlreadyInUse",
           })
         } else if (res.code === "auth/invalid-email") {
-          setError("email", {
-            type: "invalidEmail",
-            shouldFocus: true,
-          })
+          setError(
+            "email",
+            {
+              type: "invalidEmail",
+            },
+            { shouldFocus: true }
+          )
         } else if (res.code === "auth/weak-password") {
-          setError("password", {
-            type: "weakPassword",
-            shouldFocus: true,
-          })
+          setError(
+            "password",
+            {
+              type: "weakPassword",
+            },
+            { shouldFocus: true }
+          )
         } else {
           setUnknownError(true)
         }
@@ -72,7 +83,6 @@ const Signup: PageFC = () => {
                 <TextField
                   type="email"
                   label="メールアドレス"
-                  name="email"
                   autocomplete="email"
                   description={[
                     "tsukuba.ac.jpで終わるメールアドレスを使用してください",
@@ -88,7 +98,7 @@ const Signup: PageFC = () => {
                   ]}
                   placeholder="xxx@s.tsukuba.ac.jp"
                   required
-                  register={register({
+                  inputRestAttributes={register("email", {
                     required: true,
                     pattern: /^[\w\-._]+@([\w\-._]+\.)?tsukuba\.ac\.jp$/,
                   })}
@@ -98,7 +108,6 @@ const Signup: PageFC = () => {
                 <TextField
                   type="password"
                   label="パスワード"
-                  name="password"
                   autocomplete="new-password"
                   description="アルファベットと数字の両方を含む8文字以上で設定してください"
                   error={[
@@ -117,7 +126,7 @@ const Signup: PageFC = () => {
                       "パスワードが単純すぎます",
                   ]}
                   required
-                  register={register({
+                  inputRestAttributes={register("password", {
                     required: true,
                     minLength: 8,
                     maxLength: 128,
