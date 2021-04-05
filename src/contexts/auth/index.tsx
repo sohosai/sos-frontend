@@ -26,12 +26,12 @@ if (!firebase.apps.length) {
 
 // TODO: sos の login/signup もこの context に生やした方が良いかも
 export type Auth = Partial<{
-  sosUser: User
+  sosUser: User | undefined | null
   setSosUser: (user: User) => void
-  firebaseUser: firebase.User
-  idToken: string
-  signin: (email: string, password: string) => Promise<firebase.User>
-  signup: (email: string, password: string) => Promise<firebase.User>
+  firebaseUser: firebase.User | undefined | null
+  idToken: string | null
+  signin: (email: string, password: string) => Promise<firebase.User | null>
+  signup: (email: string, password: string) => Promise<firebase.User | null>
   sendEmailVerification: () => Promise<void>
   signout: () => void
   sendPasswordResetEmail: (email: string) => Promise<boolean>
@@ -46,10 +46,12 @@ const useAuth = (): Auth => {
 
 const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
   // null はチェック前
-  const [sosUser, setSosUser] = useState<User>(null)
-  const [firebaseUser, setFirebaseUser] = useState<firebase.User>(null)
+  const [sosUser, setSosUser] = useState<User | undefined | null>(null)
+  const [firebaseUser, setFirebaseUser] = useState<
+    firebase.User | undefined | null
+  >(null)
 
-  const [idToken, setIdToken] = useState<string>()
+  const [idToken, setIdToken] = useState<string | null>()
 
   useRbpacRedirect({
     rbpac,
@@ -79,8 +81,8 @@ const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
 
   const sendEmailVerification = async () => {
     if (!firebase.auth().currentUser) throw new Error("No logged in user found")
-    return await firebase.auth().currentUser.sendEmailVerification({
-      url: process.env.NEXT_PUBLIC_FRONTEND_URL,
+    return await firebase.auth().currentUser?.sendEmailVerification({
+      url: process.env.NEXT_PUBLIC_FRONTEND_URL ?? "",
     })
   }
 

@@ -27,8 +27,8 @@ export const useRbpacRedirect = ({
   sosUser,
 }: {
   rbpac: PageOptions["rbpac"]
-  firebaseUser: firebase.User
-  sosUser: User
+  firebaseUser: firebase.User | null | undefined
+  sosUser: User | null | undefined
 }): void => {
   const router = useRouter()
 
