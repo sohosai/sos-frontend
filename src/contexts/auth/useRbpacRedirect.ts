@@ -49,6 +49,13 @@ export const useRbpacRedirect = ({
       return
     }
 
+    if (
+      firebaseUser === undefined &&
+      router.pathname === pagesPath.init.$url().pathname
+    ) {
+      router.push(pagesPath.login.$url())
+    }
+
     const userRole = sosUser ? sosUser?.role : "guest"
 
     // TODO: toast
