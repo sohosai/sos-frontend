@@ -19,7 +19,8 @@ declare namespace Panel {
   >
 }
 
-const normalize = (value: string | number): string => {
+const normalize = (value: string | number | undefined): string | undefined => {
+  if (!value) return undefined
   return typeof value === "string" ? value : `${value}px`
 }
 
