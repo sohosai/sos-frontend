@@ -24,10 +24,7 @@ if (!firebase.apps.length) {
   })
 }
 
-// TODO: sos の login/signup もこの context に生やした方が良いかも
-export type Auth = Partial<{
-  sosUser: User | undefined | null
-  setSosUser: (user: User) => void
+type FirebaseAuth = {
   firebaseUser: firebase.User | undefined | null
   idToken: string | null
   signin: (email: string, password: string) => Promise<firebase.User | null>
@@ -36,12 +33,22 @@ export type Auth = Partial<{
   signout: () => void
   sendPasswordResetEmail: (email: string) => Promise<boolean>
   confirmPasswordReset: (code: string, password: string) => Promise<boolean>
-}>
+}
 
-const authContext = createContext<Auth>({})
+// TODO: sos の login/signup もこの context に生やした方が良いかも
+type SosAuth = {
+  sosUser: User | undefined | null
+  setSosUser: (user: User) => void
+}
+
+export type Auth = FirebaseAuth & SosAuth
+
+const authContext = createContext<Auth | undefined>(undefined)
 
 const useAuth = (): Auth => {
-  return useContext(authContext)
+  const ctx = useContext(authContext)
+  if (!ctx) throw new Error("auth context is undefined")
+  return ctx
 }
 
 const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
@@ -51,7 +58,7 @@ const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
     firebase.User | undefined | null
   >(null)
 
-  const [idToken, setIdToken] = useState<string | null>()
+  const [idToken, setIdToken] = useState<string | null>(null)
 
   useRbpacRedirect({
     rbpac,
