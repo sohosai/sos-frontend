@@ -14,11 +14,13 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
   const router = useRouter()
   const { firebaseUser, sosUser } = useAuth()
 
+  if (layout === "empty") return null
+
   const links: {
-    [layoutName in PageOptions["layout"]]?: Array<{
+    [layoutName in Exclude<PageOptions["layout"], "empty">]: Array<{
       href: {
         pathname: string
-        hash: string
+        hash?: string
       }
       title: string
       icon: string
@@ -53,7 +55,9 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         title: "アカウント情報登録",
         icon: "user-circle",
         visible: () =>
-          Boolean(firebaseUser) && firebaseUser.emailVerified && !sosUser,
+          Boolean(firebaseUser) &&
+          Boolean(firebaseUser?.emailVerified) &&
+          Boolean(!sosUser),
         active: () => router.pathname === pagesPath.init.$url().pathname,
       },
     ],
