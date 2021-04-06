@@ -15,7 +15,7 @@ declare namespace Dropdown {
       selected?: boolean
     }>
     description?: string[] | string
-    error?: string[] | string
+    error?: Array<string | false | undefined> | string | false
     selectRestAttributes?: SelectHTMLAttributes<HTMLSelectElement>
   }>
 }
@@ -33,7 +33,10 @@ const Dropdown: FC<Dropdown.Props> = ({
     ? description
     : [description]
   ).filter((text) => text)
-  const errors = (Array.isArray(error) ? error : [error]).filter((text) => text)
+  const errors = (Array.isArray(error)
+    ? error
+    : [error]
+  ).filter((text): text is string => Boolean(text))
 
   return (
     <div className={styles.wrapper}>

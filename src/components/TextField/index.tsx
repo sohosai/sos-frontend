@@ -12,7 +12,7 @@ declare namespace TextField {
     required?: boolean
     placeholder?: string
     description?: string[] | string
-    error?: string[] | string
+    error?: Array<string | false | undefined> | string | false
     autocomplete?: string
     inputRestAttributes?: InputHTMLAttributes<HTMLInputElement>
   }>
@@ -33,7 +33,10 @@ const TextField: FC<TextField.Props> = ({
     ? description
     : [description]
   ).filter((text) => text)
-  const errors = (Array.isArray(error) ? error : [error]).filter((text) => text)
+  const errors = (Array.isArray(error)
+    ? error
+    : [error]
+  ).filter((text): text is string => Boolean(text))
 
   return (
     <div className={styles.wrapper}>
