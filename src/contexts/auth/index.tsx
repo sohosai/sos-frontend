@@ -126,7 +126,7 @@ const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
       if (user) {
         setFirebaseUser(user)
 
-        const fetchedIdToken = await user.getIdToken().catch((err) => {
+        const fetchedIdToken = await user.getIdToken(true).catch((err) => {
           throw err
         })
         setIdToken(fetchedIdToken)
