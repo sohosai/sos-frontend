@@ -52,6 +52,8 @@ const Init: PageFC = () => {
     phoneNumber,
     affiliation,
   }: Inputs) => {
+    if (!idToken) throw new Error("IdToken must not be null")
+
     setProcessing(true)
 
     signup({
