@@ -34,7 +34,7 @@ const EmailVerification: PageFC = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.panelWrapper}>
-        <Panel padding="48px">
+        <Panel style={{ padding: "48px" }}>
           {!emailVerificationStatus && (
             <>
               <h1 className={styles.title}>

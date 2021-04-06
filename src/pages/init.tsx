@@ -141,7 +141,7 @@ const Init: PageFC = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.formWrapper}>
-        <Panel padding="48px">
+        <Panel style={{ padding: "48px" }}>
           <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
             <fieldset>
               <legend className={styles.legend}>アカウント情報登録</legend>
