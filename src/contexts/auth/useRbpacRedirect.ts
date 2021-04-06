@@ -1,3 +1,12 @@
+/**
+ * リダイレクト責務
+ *
+ * ページにアクセスして Firebase と SOS のユーザーの fetch が終わった時点で
+ * 判断できるリダイレクトはこの hook で処理
+ *
+ * SOS バックからのエラーなどを受けてリダイレクトする場合はその場で処理
+ */
+
 import { useEffect } from "react"
 
 import { useRouter } from "next/router"
