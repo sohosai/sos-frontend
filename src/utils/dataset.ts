@@ -9,6 +9,6 @@ export const dataset = (obj: {
         if (!value) return
         return [`data-${paramCase(key)}`, String(value)]
       })
-      .filter((nullable) => nullable != null)
+      .filter((nullable): nullable is string[] => nullable != null)
   )
 }
