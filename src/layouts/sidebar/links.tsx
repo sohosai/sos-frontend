@@ -16,26 +16,30 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
 
   if (layout === "empty") return null
 
+  type Link = {
+    href: {
+      pathname: string
+      hash?: string
+    }
+    title: string
+    icon: string
+    visible: () => boolean
+    active: () => boolean
+  }
+
+  const topPageLink: Link = {
+    href: pagesPath.$url(),
+    title: "トップページ",
+    icon: "home",
+    visible: () => true,
+    active: () => router.pathname === pagesPath.$url().pathname,
+  }
+
   const links: {
-    [layoutName in Exclude<PageOptions["layout"], "empty">]: Array<{
-      href: {
-        pathname: string
-        hash?: string
-      }
-      title: string
-      icon: string
-      visible: () => boolean
-      active: () => boolean
-    }>
+    [layoutName in Exclude<PageOptions["layout"], "empty">]: Link[]
   } = {
     default: [
-      {
-        href: pagesPath.$url(),
-        title: "トップページ",
-        icon: "home",
-        visible: () => true,
-        active: () => router.pathname === pagesPath.$url().pathname,
-      },
+      topPageLink,
       {
         href: pagesPath.login.$url(),
         title: "ログイン",
@@ -61,6 +65,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         active: () => router.pathname === pagesPath.init.$url().pathname,
       },
     ],
+    committee: [topPageLink],
   }
 
   return (
