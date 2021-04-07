@@ -6,7 +6,7 @@ export type PageUserRole = UserRole | "guest"
 
 declare module "next" {
   export type PageOptions = {
-    layout: "default" | "empty"
+    layout: "default" | "committee" | "empty"
 
     // Role-Based Page Access Control
     rbpac: Readonly<
