@@ -14,6 +14,8 @@ import styles from "./index.module.scss"
 const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
   const { sosUser, signout } = useAuth()
 
+  if (layout === "empty") return null
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.topWrapper}>
@@ -24,7 +26,7 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
           <br />
           システム
         </p>
-        {layout === "default" && <Links layout={layout} />}
+        <Links layout={layout} />
       </div>
       <div className={styles.bottomWrapper}>
         {sosUser && (
