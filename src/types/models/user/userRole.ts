@@ -31,3 +31,31 @@ export const roleToPermissionStrength = (role: PageUserRole): number => {
   }
   return permissionStrength[role]
 }
+
+export const isUserRoleHigherThanIncluding = ({
+  userRole,
+  criteria,
+}: {
+  userRole: PageUserRole
+  criteria: PageUserRole
+}): boolean => {
+  if (roleToPermissionStrength(criteria) > roleToPermissionStrength(userRole)) {
+    return false
+  } else {
+    return true
+  }
+}
+
+export const isUserRoleLowerThanIncluding = ({
+  userRole,
+  criteria,
+}: {
+  userRole: PageUserRole
+  criteria: PageUserRole
+}): boolean => {
+  if (roleToPermissionStrength(criteria) < roleToPermissionStrength(userRole)) {
+    return false
+  } else {
+    return true
+  }
+}

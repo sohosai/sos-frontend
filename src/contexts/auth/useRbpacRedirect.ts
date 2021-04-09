@@ -17,7 +17,10 @@ import { pagesPath } from "../../utils/$path"
 import firebase from "firebase/app"
 
 import type { User } from "../../types/models/user"
-import { roleToPermissionStrength } from "../../types/models/user/userRole"
+import {
+  isUserRoleHigherThanIncluding,
+  isUserRoleLowerThanIncluding,
+} from "../../types/models/user/userRole"
 
 export const useRbpacRedirect = ({
   rbpac,
@@ -78,18 +81,14 @@ export const useRbpacRedirect = ({
       }
       case "higherThanIncluding": {
         if (
-          roleToPermissionStrength(rbpac.role) >
-          roleToPermissionStrength(userRole)
+          !isUserRoleHigherThanIncluding({ userRole, criteria: rbpac.role })
         ) {
           redirect()
         }
         return
       }
       case "lowerThanIncluding": {
-        if (
-          roleToPermissionStrength(rbpac.role) <
-          roleToPermissionStrength(userRole)
-        ) {
+        if (!isUserRoleLowerThanIncluding({ userRole, criteria: rbpac.role })) {
           redirect()
         }
         return
