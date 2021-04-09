@@ -3,7 +3,7 @@ import { CSSProperties, FC } from "react"
 import styles from "./index.module.scss"
 
 declare namespace Panel {
-  type Props = Readonly<{ style: CSSProperties }>
+  type Props = Readonly<{ style?: CSSProperties }>
 }
 
 const Panel: FC<Panel.Props> = ({ style, children }) => {

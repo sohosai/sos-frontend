@@ -65,7 +65,18 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         active: () => router.pathname === pagesPath.init.$url().pathname,
       },
     ],
-    committee: [topPageLink],
+    committee: [
+      topPageLink,
+      {
+        href: pagesPath.committee.user.list.$url(),
+        title: "ユーザー一覧",
+        icon: "users",
+        // TODO: sosUser.role 確認するようにする
+        visible: () => true,
+        active: () =>
+          router.pathname === pagesPath.committee.user.list.$url().pathname,
+      },
+    ],
   }
 
   return (
