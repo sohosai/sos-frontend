@@ -4,7 +4,8 @@ import type { PageFC } from "next"
 
 import { useAuth } from "../../../contexts/auth"
 
-import { User, userRoleToUiText } from "../../../types/models/user"
+import { User } from "../../../types/models/user"
+import { userRoleToUiText } from "../../../types/models/user/userRole"
 
 import { listUsers } from "../../../lib/api/user/listUsers"
 

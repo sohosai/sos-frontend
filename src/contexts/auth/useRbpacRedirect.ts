@@ -16,19 +16,8 @@ import { pagesPath } from "../../utils/$path"
 
 import firebase from "firebase/app"
 
-import type { PageUserRole } from "../../types"
 import type { User } from "../../types/models/user"
-
-const roleToPermissionStrength = (role: PageUserRole) => {
-  const permissionStrength: { [role in PageUserRole]: number } = {
-    guest: 0,
-    general: 1,
-    committee: 2,
-    committee_operator: 3,
-    administrator: 4,
-  }
-  return permissionStrength[role]
-}
+import { roleToPermissionStrength } from "../../types/models/user/userRole"
 
 export const useRbpacRedirect = ({
   rbpac,
