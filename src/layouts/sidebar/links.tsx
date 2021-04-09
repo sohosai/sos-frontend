@@ -8,6 +8,8 @@ import { pagesPath } from "../../utils/$path"
 
 import { useAuth } from "../../contexts/auth"
 
+import { isUserRoleHigherThanIncluding } from "../../types/models/user/userRole"
+
 import styles from "./links.module.scss"
 
 export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
@@ -71,8 +73,14 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         href: pagesPath.committee.user.list.$url(),
         title: "ユーザー一覧",
         icon: "users",
-        // TODO: sosUser.role 確認するようにする
-        visible: () => true,
+        visible: () =>
+          Boolean(
+            sosUser &&
+              isUserRoleHigherThanIncluding({
+                userRole: sosUser.role,
+                criteria: "committee_operator",
+              })
+          ),
         active: () =>
           router.pathname === pagesPath.committee.user.list.$url().pathname,
       },

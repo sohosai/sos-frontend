@@ -1,8 +1,6 @@
 import "next"
 
-import type { UserRole } from "./models/user"
-
-export type PageUserRole = UserRole | "guest"
+import type { PageUserRole } from "./models/user/userRole"
 
 declare module "next" {
   export type PageOptions = {
