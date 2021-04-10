@@ -243,7 +243,7 @@ const Init: PageFC = () => {
                 />
               </FormItemSpacer>
             </fieldset>
-            <Button type="submit" processing={processing}>
+            <Button type="submit" processing={processing} icon="paper-plane">
               情報を登録する
             </Button>
             {otherError && (
