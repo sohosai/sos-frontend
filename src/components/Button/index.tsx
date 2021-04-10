@@ -13,6 +13,7 @@ declare namespace Button {
     type?: "button" | "submit" | "reset"
     disabled?: boolean
     processing?: boolean
+    icon?: string
     buttonRestAttributes?: ButtonHTMLAttributes<HTMLButtonElement>
   }>
 }
@@ -23,6 +24,7 @@ const Button: FC<Button.Props> = ({
   type = "button",
   disabled = false,
   processing = false,
+  icon,
   buttonRestAttributes,
   children,
 }) => {
@@ -37,7 +39,10 @@ const Button: FC<Button.Props> = ({
       <div className={styles.spinnerWrapper}>
         <Spinner size="sm" color={kind === "primary" ? "white" : "brand"} />
       </div>
-      <div className={styles.children}>{children}</div>
+      <div className={styles.children}>
+        {icon && <i className={`jam-icon jam-${icon} ${styles.icon}`} />}
+        {children}
+      </div>
     </button>
   )
 }

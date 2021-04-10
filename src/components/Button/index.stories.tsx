@@ -14,4 +14,7 @@ Index.argTypes = {
   buttonRestAttributes: {
     control: false,
   },
+  icon: {
+    defaultValue: "paper-plane",
+  },
 }

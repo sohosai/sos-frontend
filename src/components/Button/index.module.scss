@@ -57,6 +57,15 @@
   }
 }
 
+.children {
+  @include flexCenter;
+}
+
+.icon {
+  font-size: 1.4em;
+  margin-right: 8px;
+}
+
 .spinnerWrapper {
   display: none;
   @include absoluteCenter;
