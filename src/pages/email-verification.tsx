@@ -58,6 +58,7 @@ const EmailVerification: PageFC = () => {
                   kind="secondary"
                   size="small"
                   processing={processing}
+                  icon="paper-plane"
                   buttonRestAttributes={{
                     onClick: resendVerification,
                   }}

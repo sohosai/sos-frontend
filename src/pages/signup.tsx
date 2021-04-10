@@ -142,7 +142,7 @@ const Signup: PageFC = () => {
                 />
               </FormItemSpacer>
             </fieldset>
-            <Button type="submit" processing={processing}>
+            <Button type="submit" processing={processing} icon="user-plus">
               アカウント登録する
             </Button>
             {unknownError && (
