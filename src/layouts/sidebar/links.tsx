@@ -29,19 +29,17 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
     active: () => boolean
   }
 
-  const topPageLink: Link = {
-    href: pagesPath.$url(),
-    title: "トップページ",
-    icon: "home",
-    visible: () => true,
-    active: () => router.pathname === pagesPath.$url().pathname,
-  }
-
   const links: {
     [layoutName in Exclude<PageOptions["layout"], "empty">]: Link[]
   } = {
     default: [
-      topPageLink,
+      {
+        href: pagesPath.$url(),
+        title: "トップページ",
+        icon: "home",
+        visible: () => true,
+        active: () => router.pathname === pagesPath.$url().pathname,
+      },
       {
         href: pagesPath.login.$url(),
         title: "ログイン",
@@ -68,7 +66,20 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       },
     ],
     committee: [
-      topPageLink,
+      {
+        href: pagesPath.committee.$url(),
+        title: "実委人トップページ",
+        icon: "home",
+        visible: () =>
+          Boolean(
+            sosUser &&
+              isUserRoleHigherThanIncluding({
+                userRole: sosUser.role,
+                criteria: "committee",
+              })
+          ),
+        active: () => router.pathname === pagesPath.committee.$url().pathname,
+      },
       {
         href: pagesPath.committee.user.list.$url(),
         title: "ユーザー一覧",
