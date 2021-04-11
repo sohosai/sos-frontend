@@ -134,16 +134,22 @@ const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
         const res = await getMe({
           idToken: fetchedIdToken,
         }).catch(async (err) => {
-          setSosUser(undefined)
+          const resBody = await err.response?.json()
 
-          const resBody = await err.response.json()
+          if (resBody) {
+            setSosUser(undefined)
 
-          if (resBody.status === 403) {
-            if (resBody.error.id === "UNVERIFIED_EMAIL_ADDRESS") return
-            if (resBody.error.type === "NOT_SIGNED_UP") return
+            if (resBody.status === 403) {
+              if (resBody.error.id === "UNVERIFIED_EMAIL_ADDRESS") return
+              if (resBody.error.type === "NOT_SIGNED_UP") return
+            }
+
+            throw resBody
+          } else {
+            // SOS バックエンド以外のエラーの場合
+            setSosUser(null)
+            throw err
           }
-
-          throw resBody
         })
         setSosUser(res ? res.user : undefined)
       } else {
