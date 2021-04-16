@@ -1,0 +1,57 @@
+@import "../../styles/variables";
+
+$checkbox-size: 16px;
+
+.wrapper {
+  position: relative;
+}
+
+.checkbox {
+  width: $checkbox-size;
+  height: $checkbox-size;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.label {
+  display: block;
+  line-height: $checkbox-size;
+  padding-left: 24px;
+  color: $color-text-primary;
+  pointer-events: none;
+
+  &::before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    width: $checkbox-size;
+    height: $checkbox-size;
+    left: 0;
+    border: 1px solid $color-gray-400;
+    border-radius: 4px;
+  }
+}
+
+.icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: white;
+  font-size: $checkbox-size;
+  opacity: 0;
+  pointer-events: none;
+}
+
+[data-checked] {
+  .label::before {
+    background-color: $color-brand;
+    border-color: transparent;
+  }
+
+  .icon {
+    opacity: 1;
+  }
+}
