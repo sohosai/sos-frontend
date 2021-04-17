@@ -43,3 +43,35 @@
 .sectionTitle {
   margin-bottom: 16px;
 }
+
+.itemWrapper {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.itemPanel {
+  flex-grow: 1;
+}
+
+.twoColumnFields {
+  display: flex;
+  flex-direction: row;
+
+  & .twoColumnField {
+    flex-grow: 1;
+
+    &:not(:last-of-type) {
+      margin-right: 16px;
+    }
+  }
+}
+
+.itemActions {
+  margin-left: 8px;
+}
+
+.typeSelector {
+  max-width: 20em;
+}

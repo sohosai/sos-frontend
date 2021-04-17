@@ -1,15 +1,21 @@
 import { PageFC } from "next"
 
-import { useForm } from "react-hook-form"
+import { useForm, useFieldArray } from "react-hook-form"
+
+import { v4 as uuid } from "uuid"
 
 import type {
   ProjectCategory,
   ProjectAttribute,
 } from "../../../types/models/project"
+import type { FormItem } from "../../../types/models/form/item"
 
 import {
   Button,
+  Checkbox,
+  Dropdown,
   FormItemSpacer,
+  IconButton,
   Panel,
   ProjectQuerySelector,
   Textarea,
@@ -17,11 +23,6 @@ import {
 } from "../../../components/"
 
 import styles from "./new.module.scss"
-
-type ProjectQueryState = {
-  [key in ProjectCategory]: boolean
-} &
-  { [key in ProjectAttribute]: boolean }
 
 type Inputs = {
   title: string
@@ -44,21 +45,51 @@ type Inputs = {
   attributes: {
     [key in ProjectAttribute]: boolean
   }
+  items: FormItem[]
 }
 
 const NewForm: PageFC = () => {
   const {
     register,
+    control,
     formState: { errors },
     handleSubmit,
-    setValue,
+    watch,
   } = useForm<Inputs>({
     mode: "onBlur",
     criteriaMode: "all",
+    shouldFocusError: true,
+    defaultValues: {
+      items: [],
+    },
+  })
+
+  const { fields, append, remove, swap } = useFieldArray({
+    control,
+    name: "items",
   })
 
   const onSubmit = (data: Inputs) => {
-    console.log(data)
+    if (process.browser && window.confirm("申請を対象の企画に送信しますか?")) {
+      console.log(data)
+    }
+  }
+
+  const addItem = () => {
+    append({
+      id: uuid(),
+      type: "text",
+    })
+  }
+
+  const removeItem = (index: number) => {
+    if (process.browser && window.confirm("この質問を削除しますか?")) {
+      remove(index)
+    }
+  }
+
+  const swapItem = (indexA: number, indexB: number) => {
+    if (fields[indexA] && fields[indexB]) swap(indexA, indexB)
   }
 
   return (
@@ -234,10 +265,129 @@ const NewForm: PageFC = () => {
         </div>
         <div className={styles.sectionWrapper}>
           <h2 className={styles.sectionTitle}>質問項目</h2>
+          {fields.map(({ id, type }, index) => (
+            <div className={styles.itemWrapper} key={id}>
+              <div className={styles.itemPanel}>
+                <Panel>
+                  <FormItemSpacer>
+                    <div className={styles.typeSelector}>
+                      <Dropdown
+                        label="回答タイプ"
+                        required
+                        options={[{ value: "text", label: "テキスト" }]}
+                      />
+                    </div>
+                  </FormItemSpacer>
+                  <FormItemSpacer>
+                    <TextField
+                      type="text"
+                      label="質問の名前"
+                      required
+                      error={[
+                        errors?.items?.[index]?.name?.types?.required &&
+                          "必須項目です",
+                      ]}
+                      {...register(`items.${index}.name` as const, {
+                        required: true,
+                      })}
+                    />
+                  </FormItemSpacer>
+                  <FormItemSpacer>
+                    <Textarea
+                      label="説明"
+                      rows={2}
+                      error={[
+                        errors?.items?.[index]?.description?.types?.maxLength &&
+                          "500字以内で入力してください",
+                      ]}
+                      {...register(`items.${index}.description` as const, {
+                        maxLength: 500,
+                      })}
+                    />
+                  </FormItemSpacer>
+                  {type === "text" && (
+                    <>
+                      <FormItemSpacer>
+                        <Checkbox
+                          label="必須項目にする"
+                          checked={watch(`items.${index}.is_required` as any)}
+                          register={register(
+                            `items.${index}.is_required` as const
+                          )}
+                        />
+                      </FormItemSpacer>
+                      <FormItemSpacer>
+                        <Checkbox
+                          label="複数行テキストにする"
+                          checked={watch(
+                            `items.${index}.accept_multiple_lines` as any
+                          )}
+                          register={register(
+                            `items.${index}.accept_multiple_lines` as const
+                          )}
+                        />
+                      </FormItemSpacer>
+                      <FormItemSpacer>
+                        <div className={styles.twoColumnFields}>
+                          <div className={styles.twoColumnField}>
+                            <TextField
+                              type="number"
+                              label="最小字数"
+                              min={0}
+                              max={500}
+                              {...register(
+                                `items.${index}.min_length` as const
+                              )}
+                            />
+                          </div>
+                          <div className={styles.twoColumnField}>
+                            <TextField
+                              type="number"
+                              label="最大字数"
+                              min={1}
+                              max={500}
+                              {...register(
+                                `items.${index}.max_length` as const
+                              )}
+                            />
+                          </div>
+                        </div>
+                      </FormItemSpacer>
+                      <FormItemSpacer>
+                        <TextField
+                          type="text"
+                          label="サンプルテキスト"
+                          placeholder="サンプルテキストの例"
+                          description="入力欄内にサンプルとして表示されるテキストです"
+                          {...register(`items.${index}.placeholder` as const)}
+                        />
+                      </FormItemSpacer>
+                    </>
+                  )}
+                </Panel>
+              </div>
+              <div className={styles.itemActions}>
+                <IconButton
+                  icon="chevron-up"
+                  onClick={() => swapItem(index, index - 1)}
+                />
+                <IconButton
+                  icon="chevron-down"
+                  onClick={() => swapItem(index, index + 1)}
+                />
+                <IconButton
+                  icon="trash-alt"
+                  onClick={() => removeItem(index)}
+                />
+              </div>
+            </div>
+          ))}
           <Button
             icon="plus-circle"
             kind="secondary"
-            buttonRestAttributes={{ onClick: () => console.log("hoge") }}
+            buttonRestAttributes={{
+              onClick: addItem,
+            }}
           >
             質問項目を追加
           </Button>
