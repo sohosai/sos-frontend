@@ -12,7 +12,6 @@ declare namespace Dropdown {
     options: Array<{
       value: string
       label: string
-      selected?: boolean
     }>
     description?: string[] | string
     error?: Array<string | false | undefined> | string | false
@@ -50,8 +49,8 @@ const Dropdown: FC<Dropdown.Props> = ({
         {...dataset({ error: Boolean(errors.length) })}
         {...selectRestAttributes}
       >
-        {options.map(({ value, label, selected = false }, index) => (
-          <option {...{ value, selected }} key={index}>
+        {options.map(({ value, label }, index) => (
+          <option value={value} key={index}>
             {label}
           </option>
         ))}
