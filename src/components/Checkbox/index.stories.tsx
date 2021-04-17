@@ -32,4 +32,7 @@ Index.argTypes = {
     control: { type: "text" },
     defaultValue: "有効化する",
   },
+  register: {
+    control: null,
+  },
 }
