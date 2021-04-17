@@ -1,5 +1,3 @@
-import { useState } from "react"
-
 import { PageFC } from "next"
 
 import { useForm } from "react-hook-form"
@@ -62,19 +60,6 @@ const NewForm: PageFC = () => {
   const onSubmit = (data: Inputs) => {
     console.log(data)
   }
-
-  const [projectQueryState, setProjectQueryState] = useState<ProjectQueryState>(
-    {
-      general: false,
-      stage: false,
-      cooking: false,
-      food: false,
-      academic: false,
-      artistic: false,
-      outdoor: false,
-      committee: false,
-    }
-  )
 
   return (
     <div className={styles.wrapper}>
@@ -224,65 +209,25 @@ const NewForm: PageFC = () => {
           <h2 className={styles.sectionTitle}>送信先の絞り込み</h2>
           <Panel>
             <ProjectQuerySelector
-              categories={projectQueryState}
-              attributes={projectQueryState}
-              onChange={{
-                general: (e) => {
-                  setProjectQueryState({
-                    ...projectQueryState,
-                    general: e.target.checked,
-                  })
-                  setValue("categories.general", e.target.checked)
-                },
-                stage: (e) => {
-                  setProjectQueryState({
-                    ...projectQueryState,
-                    stage: e.target.checked,
-                  })
-                  setValue("categories.stage", e.target.checked)
-                },
-                cooking: (e) => {
-                  setProjectQueryState({
-                    ...projectQueryState,
-                    cooking: e.target.checked,
-                  })
-                  setValue("categories.cooking", e.target.checked)
-                },
-                food: (e) => {
-                  setProjectQueryState({
-                    ...projectQueryState,
-                    food: e.target.checked,
-                  })
-                  setValue("categories.food", e.target.checked)
-                },
-                academic: (e) => {
-                  setProjectQueryState({
-                    ...projectQueryState,
-                    academic: e.target.checked,
-                  })
-                  setValue("attributes.academic", e.target.checked)
-                },
-                artistic: (e) => {
-                  setProjectQueryState({
-                    ...projectQueryState,
-                    artistic: e.target.checked,
-                  })
-                  setValue("attributes.artistic", e.target.checked)
-                },
-                outdoor: (e) => {
-                  setProjectQueryState({
-                    ...projectQueryState,
-                    outdoor: e.target.checked,
-                  })
-                  setValue("attributes.outdoor", e.target.checked)
-                },
-                committee: (e) => {
-                  setProjectQueryState({
-                    ...projectQueryState,
-                    committee: e.target.checked,
-                  })
-                  setValue("attributes.committee", e.target.checked)
-                },
+              checked={{
+                general: watch("categories.general"),
+                stage: watch("categories.stage"),
+                cooking: watch("categories.cooking"),
+                food: watch("categories.food"),
+                academic: watch("attributes.academic"),
+                artistic: watch("attributes.artistic"),
+                outdoor: watch("attributes.outdoor"),
+                committee: watch("attributes.committee"),
+              }}
+              registers={{
+                general: register("categories.general"),
+                stage: register("categories.stage"),
+                cooking: register("categories.cooking"),
+                food: register("categories.food"),
+                academic: register("attributes.academic"),
+                artistic: register("attributes.artistic"),
+                outdoor: register("attributes.outdoor"),
+                committee: register("attributes.committee"),
               }}
             />
           </Panel>

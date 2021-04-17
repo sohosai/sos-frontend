@@ -1,4 +1,6 @@
-import { ChangeEventHandler, FC } from "react"
+import { FC } from "react"
+
+import type { UseFormRegisterReturn } from "react-hook-form"
 
 import type {
   ProjectCategory,
@@ -11,25 +13,18 @@ import styles from "./index.module.scss"
 
 declare namespace ProjectQuerySelector {
   type Props = Readonly<{
-    categories: {
-      [key in ProjectCategory]: boolean
+    checked: {
+      [key in ProjectCategory | ProjectAttribute]: boolean
     }
-    attributes: {
-      [key in ProjectAttribute]: boolean
+    registers?: {
+      [key in ProjectCategory | ProjectAttribute]: UseFormRegisterReturn
     }
-    onChange: {
-      [key in ProjectCategory]: ChangeEventHandler<HTMLInputElement>
-    } &
-      {
-        [key in ProjectAttribute]: ChangeEventHandler<HTMLInputElement>
-      }
   }>
 }
 
 const ProjectQuerySelector: FC<ProjectQuerySelector.Props> = ({
-  categories,
-  attributes,
-  onChange,
+  checked,
+  registers,
 }) => {
   return (
     <>
@@ -40,30 +35,30 @@ const ProjectQuerySelector: FC<ProjectQuerySelector.Props> = ({
         </p>
         <div className={styles.checkbox}>
           <Checkbox
-            checked={categories.general}
+            checked={checked.general}
             label="一般企画"
-            onChange={onChange.general}
+            register={registers?.general}
           />
         </div>
         <div className={styles.checkbox}>
           <Checkbox
-            checked={categories.stage}
+            checked={checked.stage}
             label="ステージ企画"
-            onChange={onChange.stage}
+            register={registers?.stage}
           />
         </div>
         <div className={styles.checkbox}>
           <Checkbox
-            checked={categories.cooking}
+            checked={checked.cooking}
             label="調理企画"
-            onChange={onChange.cooking}
+            register={registers?.cooking}
           />
         </div>
         <div className={styles.checkbox}>
           <Checkbox
-            checked={categories.food}
+            checked={checked.food}
             label="飲食物取扱企画"
-            onChange={onChange.food}
+            register={registers?.food}
           />
         </div>
       </div>
@@ -77,30 +72,30 @@ const ProjectQuerySelector: FC<ProjectQuerySelector.Props> = ({
         </p>
         <div className={styles.checkbox}>
           <Checkbox
-            checked={attributes.academic}
+            checked={checked.academic}
             label="学術参加枠"
-            onChange={onChange.academic}
+            register={registers?.academic}
           />
         </div>
         <div className={styles.checkbox}>
           <Checkbox
-            checked={attributes.artistic}
+            checked={checked.artistic}
             label="芸術祭参加枠"
-            onChange={onChange.artistic}
+            register={registers?.artistic}
           />
         </div>
         <div className={styles.checkbox}>
           <Checkbox
-            checked={attributes.outdoor}
+            checked={checked.outdoor}
             label="屋外企画"
-            onChange={onChange.outdoor}
+            register={registers?.outdoor}
           />
         </div>
         <div className={styles.checkbox}>
           <Checkbox
-            checked={attributes.committee}
+            checked={checked.committee}
             label="委員会企画"
-            onChange={onChange.committee}
+            register={registers?.committee}
           />
         </div>
       </div>
