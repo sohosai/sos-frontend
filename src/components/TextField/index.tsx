@@ -6,16 +6,18 @@ import styles from "./index.module.scss"
 
 declare namespace TextField {
   type Props = Readonly<{
-    type: "text" | "email" | "password"
-    label: string
+    type: "text" | "email" | "password" | "number"
+    label?: string
     name?: string
     required?: boolean
     placeholder?: string
     description?: string[] | string
     error?: Array<string | false | undefined> | string | false
     autocomplete?: string
+    //TODO: JSX.IntrinsicElements["input"] に変えて廃止
     inputRestAttributes?: InputHTMLAttributes<HTMLInputElement>
-  }>
+  }> &
+    JSX.IntrinsicElements["input"]
 }
 
 const TextField: FC<TextField.Props> = ({
@@ -28,6 +30,7 @@ const TextField: FC<TextField.Props> = ({
   error,
   autocomplete,
   inputRestAttributes,
+  ...restAttributes
 }) => {
   const descriptions = (Array.isArray(description)
     ? description
@@ -52,6 +55,7 @@ const TextField: FC<TextField.Props> = ({
         required={required}
         placeholder={placeholder}
         {...inputRestAttributes}
+        {...restAttributes}
         {...dataset({ error: Boolean(errors?.length) })}
       />
       {Boolean(descriptions?.length + errors?.length) && (

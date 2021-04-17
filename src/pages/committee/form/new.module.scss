@@ -9,6 +9,37 @@
   margin-bottom: 32px;
 }
 
-.querySelectorTitle {
-  margin-bottom: 24px;
+.sectionWrapper {
+  &:not(:last-of-type) {
+    margin-bottom: 48px;
+  }
+
+  &:last-of-type {
+    margin-bottom: 64px;
+  }
+}
+
+.dateTimeInputWrapper {
+  display: flex;
+  align-items: flex-end;
+}
+
+.dateTimeInputItem {
+  max-width: 10em;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+
+  &:not(:last-child) {
+    margin-right: 16px;
+  }
+}
+
+.dateTimeInputLabel {
+  margin-left: 8px;
+  color: $color-text-sub;
+}
+
+.sectionTitle {
+  margin-bottom: 16px;
 }
