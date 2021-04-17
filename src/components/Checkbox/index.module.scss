@@ -17,11 +17,10 @@ $checkbox-size: 16px;
 }
 
 .label {
-  display: block;
   line-height: $checkbox-size;
   padding-left: 24px;
   color: $color-text-primary;
-  pointer-events: none;
+  cursor: pointer;
 
   &::before {
     content: "";

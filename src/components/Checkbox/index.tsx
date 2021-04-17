@@ -19,14 +19,16 @@ const Checkbox: FC<Checkbox.Props> = ({
 }) => {
   return (
     <div className={styles.wrapper} {...dataset({ checked: checked })}>
-      <input
-        type="checkbox"
-        className={styles.checkbox}
-        checked={checked}
-        {...inputRestAttributes}
-      />
-      <label className={styles.label}>{label}</label>
-      <i className={`jam-icon jam-check ${styles.icon}`} aria-hidden="true" />
+      <label className={styles.label}>
+        <input
+          type="checkbox"
+          className={styles.checkbox}
+          checked={checked}
+          {...inputRestAttributes}
+        />
+        {label}
+        <i className={`jam-icon jam-check ${styles.icon}`} aria-hidden="true" />
+      </label>
     </div>
   )
 }
