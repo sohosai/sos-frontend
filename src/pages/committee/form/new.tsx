@@ -600,7 +600,7 @@ const NewForm: PageFC = () => {
           <div className={styles.addItemWrapper}>
             <div className={styles.addButton}>
               <Button
-                icon="plus-circle"
+                icon="plus"
                 kind="secondary"
                 buttonRestAttributes={{
                   onClick: () => addItem("text"),
@@ -611,7 +611,7 @@ const NewForm: PageFC = () => {
             </div>
             <div className={styles.addButton}>
               <Button
-                icon="plus-circle"
+                icon="plus"
                 kind="secondary"
                 buttonRestAttributes={{
                   onClick: () => addItem("checkbox"),
@@ -622,7 +622,7 @@ const NewForm: PageFC = () => {
             </div>
           </div>
         </div>
-        <Button type="submit" icon="paper-plane">
+        <Button type="submit" icon="paper-plane" fullWidth={true}>
           申請を送信する
         </Button>
       </form>
