@@ -112,7 +112,7 @@ const NewForm: PageFC = () => {
               />
             </FormItemSpacer>
             <FormItemSpacer>
-              <Textarea label="申請の説明" />
+              <Textarea label="申請の説明" {...register("description")} />
             </FormItemSpacer>
             <FormItemSpacer>
               <div className={styles.dateTimeInputWrapper}>
