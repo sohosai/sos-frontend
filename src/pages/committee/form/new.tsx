@@ -7,6 +7,7 @@ import { useForm, useFieldArray } from "react-hook-form"
 import { v4 as uuid } from "uuid"
 
 import dayjs from "dayjs"
+import customParseFormat from "dayjs/plugin/customParseFormat"
 import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
 
@@ -14,12 +15,18 @@ import type {
   ProjectCategory,
   ProjectAttribute,
 } from "../../../types/models/project"
-import type { FormItem } from "../../../types/models/form/item"
+import type {
+  FormItem,
+  FormItemInFormEditor,
+} from "../../../types/models/form/item"
+
+import { createForm } from "../../../lib/api/form/createForm"
+
+import { useAuth } from "../../../contexts/auth"
 
 import {
   Button,
   Checkbox,
-  Dropdown,
   FormItemSpacer,
   IconButton,
   Panel,
@@ -51,10 +58,13 @@ type Inputs = {
   attributes: {
     [key in ProjectAttribute]: boolean
   }
-  items: FormItem[]
+  items: FormItemInFormEditor[]
+  // items: FormItem[]
 }
 
 const NewForm: PageFC = () => {
+  const { idToken } = useAuth()
+
   const {
     register,
     control,
@@ -75,17 +85,133 @@ const NewForm: PageFC = () => {
     name: "items",
   })
 
-  const onSubmit = (data: Inputs) => {
+  const onSubmit = async ({
+    title,
+    description,
+    starts_at,
+    ends_at,
+    categories,
+    attributes,
+    items,
+  }: Inputs) => {
+    if (!idToken) throw new Error("idToken must not be null")
+
+    // FIXME: FormItem[]
+    const normalizedItems: any = items.map((item) => {
+      return {
+        ...item,
+        ...(item.type === "text"
+          ? {
+              min_length: parseInt(item.min_length),
+              max_length: parseInt(item.max_length),
+            }
+          : {}),
+        ...(item.type === "checkbox"
+          ? {
+              boxes: item.boxes
+                .split("\n")
+                .map((label) => {
+                  if (!label) return
+                  return {
+                    id: uuid(),
+                    label,
+                  }
+                })
+                .filter((box): box is { id: string; label: string } =>
+                  Boolean(box)
+                ),
+              min_checks: parseInt(item.min_checks),
+              max_checks: parseInt(item.max_checks),
+            }
+          : {}),
+      }
+    })
+
     if (process.browser && window.confirm("申請を対象の企画に送信しますか?")) {
-      console.log(data)
+      await createForm({
+        props: {
+          name: title,
+          description: description ?? "",
+          starts_at: dayjs
+            .tz(
+              `${starts_at.month}-${starts_at.day}--${starts_at.hour}-${starts_at.minute}`,
+              "M-D--h-m",
+              "Asia/Tokyo"
+            )
+            .valueOf(),
+          ends_at: dayjs
+            .tz(
+              `${ends_at.month}-${ends_at.day}--${ends_at.hour}-${ends_at.minute}`,
+              "M-D--h-m",
+              "Asia/Tokyo"
+            )
+            .valueOf(),
+          condition: {
+            query: Object.entries(categories)
+              .map(([category, value]) => {
+                if (!value) return
+                return {
+                  category: category as ProjectCategory,
+                  attributes: Object.entries(attributes)
+                    .map(([attribute, value]) => {
+                      if (!value) return
+                      return attribute
+                    })
+                    .filter((nullable): nullable is ProjectAttribute =>
+                      Boolean(nullable)
+                    ),
+                }
+              })
+              .filter((nullable): nullable is {
+                category: ProjectCategory
+                attributes: ProjectAttribute[]
+              } => Boolean(nullable)),
+            // TODO:
+            includes: [],
+            excludes: [],
+          },
+          items: normalizedItems,
+          // items,
+        },
+        idToken,
+      })
+        .catch(async (err) => {
+          const body = await err.response.json()
+          throw body ? body : err
+        })
+        .then(async (res) => {
+          console.log(res)
+        })
     }
   }
 
-  const addItem = () => {
-    append({
-      id: uuid(),
-      type: "text",
-    })
+  const addItem = (type: FormItem["type"]) => {
+    switch (type) {
+      case "text": {
+        append({
+          id: uuid(),
+          type: "text",
+          name: "",
+          description: "",
+          conditions: [],
+          accept_multiple_lines: false,
+          is_required: false,
+          placeholder: "",
+        })
+        break
+      }
+      case "checkbox": {
+        append({
+          id: uuid(),
+          type: "checkbox",
+          name: "",
+          description: "",
+          conditions: [],
+          boxes: "",
+        })
+        break
+      }
+    }
   }
 
   const removeItem = (index: number) => {
@@ -99,9 +225,9 @@ const NewForm: PageFC = () => {
   }
 
   useEffect(() => {
+    dayjs.extend(customParseFormat)
     dayjs.extend(utc)
     dayjs.extend(timezone)
-    dayjs.tz.setDefault("Asia/Tokyo")
   }, [])
 
   return (
@@ -124,7 +250,16 @@ const NewForm: PageFC = () => {
               />
             </FormItemSpacer>
             <FormItemSpacer>
-              <Textarea label="申請の説明" {...register("description")} />
+              <Textarea
+                label="申請の説明"
+                error={[
+                  errors.description?.types?.maxLength &&
+                    "1024字以内で入力してください",
+                ]}
+                {...register("description", {
+                  maxLength: 1024,
+                })}
+              />
             </FormItemSpacer>
             <FormItemSpacer>
               <div className={styles.dateTimeInputWrapper}>
@@ -138,11 +273,12 @@ const NewForm: PageFC = () => {
                     required
                     inputRestAttributes={register("starts_at.month", {
                       required: true,
+                      valueAsNumber: true,
                     })}
                   />
-                  <p className={styles.dateTimeInputLabel}>月</p>
                 </div>
-                <p className={styles.dateTimeInputItem}>
+                <p className={styles.dateTimeInputLabel}>月</p>
+                <div className={styles.dateTimeInputItem}>
                   <TextField
                     type="number"
                     min="1"
@@ -151,10 +287,11 @@ const NewForm: PageFC = () => {
                     required
                     inputRestAttributes={register("starts_at.day", {
                       required: true,
+                      valueAsNumber: true,
                     })}
                   />
-                  <p className={styles.dateTimeInputLabel}>日</p>
-                </p>
+                </div>
+                <p className={styles.dateTimeInputLabel}>日</p>
                 <div className={styles.dateTimeInputItem}>
                   <TextField
                     type="number"
@@ -167,9 +304,9 @@ const NewForm: PageFC = () => {
                       required: true,
                     })}
                   />
-                  <p className={styles.dateTimeInputLabel}>時</p>
                 </div>
-                <p className={styles.dateTimeInputItem}>
+                <p className={styles.dateTimeInputLabel}>時</p>
+                <div className={styles.dateTimeInputItem}>
                   <TextField
                     type="number"
                     min="0"
@@ -180,8 +317,8 @@ const NewForm: PageFC = () => {
                       required: true,
                     })}
                   />
-                  <p className={styles.dateTimeInputLabel}>分</p>
-                </p>
+                </div>
+                <p className={styles.dateTimeInputLabel}>分</p>
               </div>
             </FormItemSpacer>
             <FormItemSpacer marginBottom={0}>
@@ -198,9 +335,9 @@ const NewForm: PageFC = () => {
                       required: true,
                     })}
                   />
-                  <p className={styles.dateTimeInputLabel}>月</p>
                 </div>
-                <p className={styles.dateTimeInputItem}>
+                <p className={styles.dateTimeInputLabel}>月</p>
+                <div className={styles.dateTimeInputItem}>
                   <TextField
                     type="number"
                     min="1"
@@ -211,8 +348,8 @@ const NewForm: PageFC = () => {
                       required: true,
                     })}
                   />
-                  <p className={styles.dateTimeInputLabel}>日</p>
-                </p>
+                </div>
+                <p className={styles.dateTimeInputLabel}>日</p>
                 <div className={styles.dateTimeInputItem}>
                   <TextField
                     type="number"
@@ -225,9 +362,9 @@ const NewForm: PageFC = () => {
                       required: true,
                     })}
                   />
-                  <p className={styles.dateTimeInputLabel}>時</p>
                 </div>
-                <p className={styles.dateTimeInputItem}>
+                <p className={styles.dateTimeInputLabel}>時</p>
+                <div className={styles.dateTimeInputItem}>
                   <TextField
                     type="number"
                     min="0"
@@ -238,8 +375,8 @@ const NewForm: PageFC = () => {
                       required: true,
                     })}
                   />
-                  <p className={styles.dateTimeInputLabel}>分</p>
-                </p>
+                </div>
+                <p className={styles.dateTimeInputLabel}>分</p>
               </div>
             </FormItemSpacer>
           </Panel>
@@ -274,36 +411,30 @@ const NewForm: PageFC = () => {
         <div className={styles.sectionWrapper}>
           <h2 className={styles.sectionTitle}>質問項目</h2>
           {fields.map(({ id }, index) => {
-            const type = watch(`items.${index}.type` as any)
+            const type = watch(`items.${index}.type` as const)
             const itemNamePlaceholders: {
               [itemType in FormItem["type"]]?: string
             } = {
               checkbox: "必要な文房具",
+            }
+            const itemTypeToUiText = (type: FormItem["type"]) => {
+              const dict: { [type in FormItem["type"]]?: string } = {
+                text: "テキスト",
+                checkbox: "チェックボックス",
+              }
+              return dict[type]
             }
 
             return (
               <div className={styles.itemWrapper} key={id}>
                 <div className={styles.itemPanel}>
                   <Panel>
-                    <FormItemSpacer>
-                      <div className={styles.typeSelector}>
-                        <Dropdown
-                          label="回答タイプ"
-                          required
-                          options={[
-                            { value: "text", label: "テキスト" },
-                            { value: "checkbox", label: "チェックボックス" },
-                          ]}
-                          selectRestAttributes={register(
-                            `items.${index}.type` as const
-                          )}
-                        />
-                      </div>
-                    </FormItemSpacer>
+                    <p className={styles.itemType}>{itemTypeToUiText(type)}</p>
                     <FormItemSpacer>
                       <TextField
                         type="text"
                         label="質問の名前"
+                        defaultValue=""
                         placeholder={
                           itemNamePlaceholders[type as FormItem["type"]]
                         }
@@ -311,9 +442,12 @@ const NewForm: PageFC = () => {
                         error={[
                           errors?.items?.[index]?.name?.types?.required &&
                             "必須項目です",
+                          errors?.items?.[index]?.name?.types?.maxLength &&
+                            "64字以内で入力してください",
                         ]}
                         {...register(`items.${index}.name` as const, {
                           required: true,
+                          maxLength: 64,
                         })}
                       />
                     </FormItemSpacer>
@@ -321,12 +455,13 @@ const NewForm: PageFC = () => {
                       <Textarea
                         label="説明"
                         rows={2}
+                        defaultValue=""
                         error={[
                           errors?.items?.[index]?.description?.types
-                            ?.maxLength && "500字以内で入力してください",
+                            ?.maxLength && "1024字以内で入力してください",
                         ]}
                         {...register(`items.${index}.description` as const, {
-                          maxLength: 500,
+                          maxLength: 1024,
                         })}
                       />
                     </FormItemSpacer>
@@ -335,6 +470,7 @@ const NewForm: PageFC = () => {
                         <FormItemSpacer>
                           <Checkbox
                             label="必須項目にする"
+                            defaultChecked={false}
                             checked={watch(`items.${index}.is_required` as any)}
                             register={register(
                               `items.${index}.is_required` as const
@@ -344,8 +480,9 @@ const NewForm: PageFC = () => {
                         <FormItemSpacer>
                           <Checkbox
                             label="複数行テキストにする"
+                            defaultChecked={false}
                             checked={watch(
-                              `items.${index}.accept_multiple_lines` as any
+                              `items.${index}.accept_multiple_lines` as const
                             )}
                             register={register(
                               `items.${index}.accept_multiple_lines` as const
@@ -359,7 +496,7 @@ const NewForm: PageFC = () => {
                                 type="number"
                                 label="最小字数"
                                 min={0}
-                                max={500}
+                                max={1024}
                                 {...register(
                                   `items.${index}.min_length` as const
                                 )}
@@ -370,7 +507,7 @@ const NewForm: PageFC = () => {
                                 type="number"
                                 label="最大字数"
                                 min={1}
-                                max={500}
+                                max={1024}
                                 {...register(
                                   `items.${index}.max_length` as const
                                 )}
@@ -382,6 +519,7 @@ const NewForm: PageFC = () => {
                           <TextField
                             type="text"
                             label="サンプルテキスト"
+                            defaultValue=""
                             placeholder="サンプルテキストの例"
                             description="入力欄内にサンプルとして表示されるテキストです"
                             {...register(`items.${index}.placeholder` as const)}
@@ -399,6 +537,7 @@ const NewForm: PageFC = () => {
                                 label="最小選択数"
                                 min="0"
                                 max="100"
+                                defaultValue=""
                                 {...register(
                                   `items.${index}.min_checks` as const
                                 )}
@@ -410,6 +549,7 @@ const NewForm: PageFC = () => {
                                 label="最大選択数"
                                 min="0"
                                 max="100"
+                                defaultValue=""
                                 {...register(
                                   `items.${index}.max_checks` as const
                                 )}
@@ -422,13 +562,17 @@ const NewForm: PageFC = () => {
                             label="選択肢"
                             description="選択肢のテキストを改行区切りで入力してください"
                             placeholder={"マジックペン\nガムテープ\n養生テープ"}
+                            defaultValue=""
                             error={[
                               (errors?.items?.[index] as any)?.boxes?.types
                                 ?.required && "必須項目です",
+                              (errors?.items?.[index] as any)?.boxes?.types
+                                ?.minLength && "必須項目です",
                             ]}
                             required
-                            {...register(`items.${index}.boxes` as const, {
+                            {...register(`items.0.boxes` as const, {
                               required: true,
+                              minLength: 1,
                             })}
                           />
                         </FormItemSpacer>
@@ -453,15 +597,30 @@ const NewForm: PageFC = () => {
               </div>
             )
           })}
-          <Button
-            icon="plus-circle"
-            kind="secondary"
-            buttonRestAttributes={{
-              onClick: addItem,
-            }}
-          >
-            質問項目を追加
-          </Button>
+          <div className={styles.addItemWrapper}>
+            <div className={styles.addButton}>
+              <Button
+                icon="plus-circle"
+                kind="secondary"
+                buttonRestAttributes={{
+                  onClick: () => addItem("text"),
+                }}
+              >
+                テキスト項目
+              </Button>
+            </div>
+            <div className={styles.addButton}>
+              <Button
+                icon="plus-circle"
+                kind="secondary"
+                buttonRestAttributes={{
+                  onClick: () => addItem("checkbox"),
+                }}
+              >
+                チェックボックス項目
+              </Button>
+            </div>
+          </div>
         </div>
         <Button type="submit" icon="paper-plane">
           申請を送信する

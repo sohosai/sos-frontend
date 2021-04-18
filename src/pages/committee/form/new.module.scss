@@ -25,19 +25,19 @@
 }
 
 .dateTimeInputItem {
-  max-width: 10em;
+  max-width: 8em;
   display: flex;
   flex-direction: row;
   align-items: flex-end;
-
-  &:not(:last-child) {
-    margin-right: 16px;
-  }
 }
 
 .dateTimeInputLabel {
   margin-left: 8px;
   color: $color-text-sub;
+
+  &:not(:last-of-type) {
+    margin-right: 16px;
+  }
 }
 
 .sectionTitle {
@@ -53,6 +53,11 @@
 
 .itemPanel {
   flex-grow: 1;
+}
+
+.itemType {
+  font-size: 1.2em;
+  margin-bottom: 24px;
 }
 
 .twoColumnFields {
@@ -72,6 +77,15 @@
   margin-left: 8px;
 }
 
-.typeSelector {
+.addItemWrapper {
+  display: flex;
+}
+
+.addButton {
+  flex-grow: 1;
   max-width: 20em;
+
+  &:not(:last-of-type) {
+    margin-right: 16px;
+  }
 }
