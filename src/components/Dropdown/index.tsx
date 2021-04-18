@@ -16,7 +16,8 @@ declare namespace Dropdown {
     description?: string[] | string
     error?: Array<string | false | undefined> | string | false
     selectRestAttributes?: SelectHTMLAttributes<HTMLSelectElement>
-  }>
+  }> &
+    JSX.IntrinsicElements["select"]
 }
 
 const Dropdown: FC<Dropdown.Props> = ({
@@ -27,6 +28,7 @@ const Dropdown: FC<Dropdown.Props> = ({
   description,
   error,
   selectRestAttributes,
+  ...rest
 }) => {
   const descriptions = (Array.isArray(description)
     ? description
@@ -48,6 +50,7 @@ const Dropdown: FC<Dropdown.Props> = ({
         className={styles.select}
         {...dataset({ error: Boolean(errors.length) })}
         {...selectRestAttributes}
+        {...rest}
       >
         {options.map(({ value, label }, index) => (
           <option value={value} key={index}>
