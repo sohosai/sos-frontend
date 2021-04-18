@@ -24,6 +24,7 @@
   border: transparent 2px solid;
   transition: border-color 150ms;
   line-height: 1.5em;
+  resize: none;
 
   &::placeholder {
     color: $color-gray-400;

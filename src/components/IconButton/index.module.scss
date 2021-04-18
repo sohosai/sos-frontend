@@ -1,0 +1,33 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  background-color: transparent;
+  transition: background-color 200ms;
+  @include flexCenter;
+
+  &:hover {
+    background-color: $color-gray-100;
+  }
+
+  &[data-size="small"] {
+    width: 24px;
+    height: 24px;
+
+    & .icon {
+      font-size: 18px;
+    }
+  }
+}
+
+.icon {
+  font-size: 24px;
+  color: $color-text-sub;
+}

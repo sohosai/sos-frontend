@@ -14,8 +14,10 @@ declare namespace Textarea {
     cols?: number
     description?: string[] | string
     error?: Array<string | false | undefined> | string | false
+    // TODO: JSX.IntrinsicElements["textarea"]に変えて廃止
     textareaRestAttributes?: TextareaHTMLAttributes<HTMLTextAreaElement>
-  }>
+  }> &
+    JSX.IntrinsicElements["textarea"]
 }
 
 const Textarea: FC<Textarea.Props> = ({
@@ -28,6 +30,7 @@ const Textarea: FC<Textarea.Props> = ({
   description,
   error,
   textareaRestAttributes,
+  ...restAttributes
 }) => {
   const descriptions = (Array.isArray(description)
     ? description
@@ -51,6 +54,7 @@ const Textarea: FC<Textarea.Props> = ({
         placeholder={placeholder}
         {...{ rows, cols }}
         {...textareaRestAttributes}
+        {...restAttributes}
         {...dataset({ error: Boolean(errors?.length) })}
       />
       {Boolean(descriptions?.length + errors?.length) && (

@@ -1,6 +1,8 @@
 import type { ProjectCategory, ProjectAttribute } from "."
 
-export type ProjectQuery = Readonly<{
-  category: ProjectCategory | undefined
-  attributes: ProjectAttribute[]
-}>
+export type ProjectQuery = Readonly<
+  Array<{
+    category: ProjectCategory | undefined
+    attributes: ProjectAttribute[]
+  }>
+>

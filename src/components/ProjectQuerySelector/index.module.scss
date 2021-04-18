@@ -1,0 +1,18 @@
+@import "../../styles/variables";
+
+.selectorsWrapper {
+  &:not(:last-child) {
+    margin-bottom: 24px;
+  }
+}
+
+.selectorsDescription {
+  color: $color-text-sub;
+  margin-bottom: 8px;
+}
+
+.checkbox {
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+}
