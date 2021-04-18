@@ -142,14 +142,16 @@ const Signup: PageFC = () => {
                 />
               </FormItemSpacer>
             </fieldset>
-            <Button
-              type="submit"
-              processing={processing}
-              icon="user-plus"
-              fullWidth={true}
-            >
-              アカウント登録する
-            </Button>
+            <div className={styles.submitButton}>
+              <Button
+                type="submit"
+                processing={processing}
+                icon="user-plus"
+                fullWidth={true}
+              >
+                アカウント登録する
+              </Button>
+            </div>
             {unknownError && (
               <div className={styles.error}>
                 <p>不明なエラーが発生しました</p>
