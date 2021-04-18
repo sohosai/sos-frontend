@@ -1,8 +1,14 @@
+import { useEffect } from "react"
+
 import { PageFC } from "next"
 
 import { useForm, useFieldArray } from "react-hook-form"
 
 import { v4 as uuid } from "uuid"
+
+import dayjs from "dayjs"
+import utc from "dayjs/plugin/utc"
+import timezone from "dayjs/plugin/timezone"
 
 import type {
   ProjectCategory,
@@ -92,6 +98,12 @@ const NewForm: PageFC = () => {
     if (fields[indexA] && fields[indexB]) swap(indexA, indexB)
   }
 
+  useEffect(() => {
+    dayjs.extend(utc)
+    dayjs.extend(timezone)
+    dayjs.tz.setDefault("Asia/Tokyo")
+  }, [])
+
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.title}>新しい申請を作成</h1>
@@ -121,8 +133,7 @@ const NewForm: PageFC = () => {
                     type="number"
                     min="1"
                     max="12"
-                    // TODO: 現在日時から入れる
-                    defaultValue="5"
+                    defaultValue={dayjs().format("M")}
                     label="開始日"
                     required
                     inputRestAttributes={register("starts_at.month", {
@@ -136,8 +147,7 @@ const NewForm: PageFC = () => {
                     type="number"
                     min="1"
                     max="31"
-                    // TODO: 現在日時から入れる
-                    defaultValue="1"
+                    defaultValue={dayjs().format("D")}
                     required
                     inputRestAttributes={register("starts_at.day", {
                       required: true,
@@ -181,8 +191,7 @@ const NewForm: PageFC = () => {
                     type="number"
                     min="1"
                     max="12"
-                    // TODO: 現在日時から入れる
-                    defaultValue="5"
+                    defaultValue={dayjs().add(7, "day").format("M")}
                     label="終了日"
                     required
                     inputRestAttributes={register("ends_at.month", {
@@ -196,8 +205,7 @@ const NewForm: PageFC = () => {
                     type="number"
                     min="1"
                     max="31"
-                    // TODO: 現在日時から入れる
-                    defaultValue="1"
+                    defaultValue={dayjs().add(7, "day").format("D")}
                     required
                     inputRestAttributes={register("ends_at.day", {
                       required: true,
@@ -210,7 +218,7 @@ const NewForm: PageFC = () => {
                     type="number"
                     min="0"
                     max="23"
-                    defaultValue="12"
+                    defaultValue="23"
                     label="終了時間"
                     required
                     inputRestAttributes={register("ends_at.hour", {
@@ -224,7 +232,7 @@ const NewForm: PageFC = () => {
                     type="number"
                     min="0"
                     max="59"
-                    defaultValue="0"
+                    defaultValue="59"
                     required
                     inputRestAttributes={register("ends_at.minute", {
                       required: true,
