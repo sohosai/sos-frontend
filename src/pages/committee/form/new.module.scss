@@ -79,12 +79,10 @@
 
 .addItemWrapper {
   display: flex;
+  justify-content: flex-start;
 }
 
 .addButton {
-  flex-grow: 1;
-  max-width: 20em;
-
   &:not(:last-of-type) {
     margin-right: 16px;
   }

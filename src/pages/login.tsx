@@ -122,7 +122,12 @@ const Login: PageFC = () => {
                 />
               </FormItemSpacer>
             </fieldset>
-            <Button type="submit" processing={processing} icon="log-in">
+            <Button
+              type="submit"
+              processing={processing}
+              icon="log-in"
+              fullWidth={true}
+            >
               ログインする
             </Button>
             {unknownError && (

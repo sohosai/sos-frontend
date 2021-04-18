@@ -62,6 +62,7 @@ const EmailVerification: PageFC = () => {
                   buttonRestAttributes={{
                     onClick: resendVerification,
                   }}
+                  fullWidth={true}
                 >
                   確認メールを再送する
                 </Button>
