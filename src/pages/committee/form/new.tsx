@@ -265,123 +265,186 @@ const NewForm: PageFC = () => {
         </div>
         <div className={styles.sectionWrapper}>
           <h2 className={styles.sectionTitle}>質問項目</h2>
-          {fields.map(({ id, type }, index) => (
-            <div className={styles.itemWrapper} key={id}>
-              <div className={styles.itemPanel}>
-                <Panel>
-                  <FormItemSpacer>
-                    <div className={styles.typeSelector}>
-                      <Dropdown
-                        label="回答タイプ"
+          {fields.map(({ id }, index) => {
+            const type = watch(`items.${index}.type` as any)
+            const itemNamePlaceholders: {
+              [itemType in FormItem["type"]]?: string
+            } = {
+              checkbox: "必要な文房具",
+            }
+
+            return (
+              <div className={styles.itemWrapper} key={id}>
+                <div className={styles.itemPanel}>
+                  <Panel>
+                    <FormItemSpacer>
+                      <div className={styles.typeSelector}>
+                        <Dropdown
+                          label="回答タイプ"
+                          required
+                          options={[
+                            { value: "text", label: "テキスト" },
+                            { value: "checkbox", label: "チェックボックス" },
+                          ]}
+                          selectRestAttributes={register(
+                            `items.${index}.type` as const
+                          )}
+                        />
+                      </div>
+                    </FormItemSpacer>
+                    <FormItemSpacer>
+                      <TextField
+                        type="text"
+                        label="質問の名前"
+                        placeholder={
+                          itemNamePlaceholders[type as FormItem["type"]]
+                        }
                         required
-                        options={[{ value: "text", label: "テキスト" }]}
+                        error={[
+                          errors?.items?.[index]?.name?.types?.required &&
+                            "必須項目です",
+                        ]}
+                        {...register(`items.${index}.name` as const, {
+                          required: true,
+                        })}
                       />
-                    </div>
-                  </FormItemSpacer>
-                  <FormItemSpacer>
-                    <TextField
-                      type="text"
-                      label="質問の名前"
-                      required
-                      error={[
-                        errors?.items?.[index]?.name?.types?.required &&
-                          "必須項目です",
-                      ]}
-                      {...register(`items.${index}.name` as const, {
-                        required: true,
-                      })}
-                    />
-                  </FormItemSpacer>
-                  <FormItemSpacer>
-                    <Textarea
-                      label="説明"
-                      rows={2}
-                      error={[
-                        errors?.items?.[index]?.description?.types?.maxLength &&
-                          "500字以内で入力してください",
-                      ]}
-                      {...register(`items.${index}.description` as const, {
-                        maxLength: 500,
-                      })}
-                    />
-                  </FormItemSpacer>
-                  {type === "text" && (
-                    <>
-                      <FormItemSpacer>
-                        <Checkbox
-                          label="必須項目にする"
-                          checked={watch(`items.${index}.is_required` as any)}
-                          register={register(
-                            `items.${index}.is_required` as const
-                          )}
-                        />
-                      </FormItemSpacer>
-                      <FormItemSpacer>
-                        <Checkbox
-                          label="複数行テキストにする"
-                          checked={watch(
-                            `items.${index}.accept_multiple_lines` as any
-                          )}
-                          register={register(
-                            `items.${index}.accept_multiple_lines` as const
-                          )}
-                        />
-                      </FormItemSpacer>
-                      <FormItemSpacer>
-                        <div className={styles.twoColumnFields}>
-                          <div className={styles.twoColumnField}>
-                            <TextField
-                              type="number"
-                              label="最小字数"
-                              min={0}
-                              max={500}
-                              {...register(
-                                `items.${index}.min_length` as const
-                              )}
-                            />
+                    </FormItemSpacer>
+                    <FormItemSpacer>
+                      <Textarea
+                        label="説明"
+                        rows={2}
+                        error={[
+                          errors?.items?.[index]?.description?.types
+                            ?.maxLength && "500字以内で入力してください",
+                        ]}
+                        {...register(`items.${index}.description` as const, {
+                          maxLength: 500,
+                        })}
+                      />
+                    </FormItemSpacer>
+                    {type === "text" && (
+                      <>
+                        <FormItemSpacer>
+                          <Checkbox
+                            label="必須項目にする"
+                            checked={watch(`items.${index}.is_required` as any)}
+                            register={register(
+                              `items.${index}.is_required` as const
+                            )}
+                          />
+                        </FormItemSpacer>
+                        <FormItemSpacer>
+                          <Checkbox
+                            label="複数行テキストにする"
+                            checked={watch(
+                              `items.${index}.accept_multiple_lines` as any
+                            )}
+                            register={register(
+                              `items.${index}.accept_multiple_lines` as const
+                            )}
+                          />
+                        </FormItemSpacer>
+                        <FormItemSpacer>
+                          <div className={styles.twoColumnFields}>
+                            <div className={styles.twoColumnField}>
+                              <TextField
+                                type="number"
+                                label="最小字数"
+                                min={0}
+                                max={500}
+                                {...register(
+                                  `items.${index}.min_length` as const
+                                )}
+                              />
+                            </div>
+                            <div className={styles.twoColumnField}>
+                              <TextField
+                                type="number"
+                                label="最大字数"
+                                min={1}
+                                max={500}
+                                {...register(
+                                  `items.${index}.max_length` as const
+                                )}
+                              />
+                            </div>
                           </div>
-                          <div className={styles.twoColumnField}>
-                            <TextField
-                              type="number"
-                              label="最大字数"
-                              min={1}
-                              max={500}
-                              {...register(
-                                `items.${index}.max_length` as const
-                              )}
-                            />
+                        </FormItemSpacer>
+                        <FormItemSpacer>
+                          <TextField
+                            type="text"
+                            label="サンプルテキスト"
+                            placeholder="サンプルテキストの例"
+                            description="入力欄内にサンプルとして表示されるテキストです"
+                            {...register(`items.${index}.placeholder` as const)}
+                          />
+                        </FormItemSpacer>
+                      </>
+                    )}
+                    {type === "checkbox" && (
+                      <>
+                        <FormItemSpacer>
+                          <div className={styles.twoColumnFields}>
+                            <div className={styles.twoColumnField}>
+                              <TextField
+                                type="number"
+                                label="最小選択数"
+                                min="0"
+                                max="100"
+                                {...register(
+                                  `items.${index}.min_checks` as const
+                                )}
+                              />
+                            </div>
+                            <div className={styles.twoColumnField}>
+                              <TextField
+                                type="number"
+                                label="最大選択数"
+                                min="0"
+                                max="100"
+                                {...register(
+                                  `items.${index}.max_checks` as const
+                                )}
+                              />
+                            </div>
                           </div>
-                        </div>
-                      </FormItemSpacer>
-                      <FormItemSpacer>
-                        <TextField
-                          type="text"
-                          label="サンプルテキスト"
-                          placeholder="サンプルテキストの例"
-                          description="入力欄内にサンプルとして表示されるテキストです"
-                          {...register(`items.${index}.placeholder` as const)}
-                        />
-                      </FormItemSpacer>
-                    </>
-                  )}
-                </Panel>
+                        </FormItemSpacer>
+                        <FormItemSpacer>
+                          <Textarea
+                            label="選択肢"
+                            description="選択肢のテキストを改行区切りで入力してください"
+                            placeholder={"マジックペン\nガムテープ\n養生テープ"}
+                            error={[
+                              (errors?.items?.[index] as any)?.boxes?.types
+                                ?.required && "必須項目です",
+                            ]}
+                            required
+                            {...register(`items.${index}.boxes` as const, {
+                              required: true,
+                            })}
+                          />
+                        </FormItemSpacer>
+                      </>
+                    )}
+                  </Panel>
+                </div>
+                <div className={styles.itemActions}>
+                  <IconButton
+                    icon="chevron-up"
+                    onClick={() => swapItem(index, index - 1)}
+                  />
+                  <IconButton
+                    icon="chevron-down"
+                    onClick={() => swapItem(index, index + 1)}
+                  />
+                  <IconButton
+                    icon="trash-alt"
+                    onClick={() => removeItem(index)}
+                  />
+                </div>
               </div>
-              <div className={styles.itemActions}>
-                <IconButton
-                  icon="chevron-up"
-                  onClick={() => swapItem(index, index - 1)}
-                />
-                <IconButton
-                  icon="chevron-down"
-                  onClick={() => swapItem(index, index + 1)}
-                />
-                <IconButton
-                  icon="trash-alt"
-                  onClick={() => removeItem(index)}
-                />
-              </div>
-            </div>
-          ))}
+            )
+          })}
           <Button
             icon="plus-circle"
             kind="secondary"
