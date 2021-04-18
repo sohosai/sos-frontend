@@ -243,14 +243,16 @@ const Init: PageFC = () => {
                 />
               </FormItemSpacer>
             </fieldset>
-            <Button
-              type="submit"
-              processing={processing}
-              icon="paper-plane"
-              fullWidth={true}
-            >
-              情報を登録する
-            </Button>
+            <div className={styles.submitButton}>
+              <Button
+                type="submit"
+                processing={processing}
+                icon="paper-plane"
+                fullWidth={true}
+              >
+                情報を登録する
+              </Button>
+            </div>
             {otherError && (
               <div className={styles.error}>
                 <p>{otherError}</p>
