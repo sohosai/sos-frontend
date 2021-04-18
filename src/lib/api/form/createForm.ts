@@ -8,8 +8,8 @@ declare namespace createForm {
     props: {
       name: string
       description: string
-      starts_at: Date
-      ends_at: Date
+      starts_at: number
+      ends_at: number
       items: FormItem[]
       condition: FormCondition
     }
@@ -18,9 +18,10 @@ declare namespace createForm {
 }
 
 const createForm = async ({
+  props,
   idToken,
 }: createForm.Props): Promise<{ form: Form }> => {
-  return client({ idToken }).post("form/create").json()
+  return client({ idToken }).post("form/create", { json: props }).json()
 }
 
 export { createForm }
