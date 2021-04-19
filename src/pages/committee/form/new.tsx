@@ -615,14 +615,18 @@ const NewForm: PageFC = () => {
                 <div className={styles.itemActions}>
                   <IconButton
                     icon="chevron-up"
+                    title="この項目を上に移動"
                     onClick={() => swapItem(index, index - 1)}
                   />
                   <IconButton
                     icon="chevron-down"
+                    title="この項目を下に移動"
                     onClick={() => swapItem(index, index + 1)}
                   />
                   <IconButton
                     icon="trash-alt"
+                    title="この項目を削除"
+                    danger={true}
                     onClick={() => removeItem(index)}
                   />
                 </div>
