@@ -602,7 +602,7 @@ const NewForm: PageFC = () => {
                                 ?.minLength && "必須項目です",
                             ]}
                             required
-                            {...register(`items.0.boxes` as const, {
+                            {...register(`items.${index}.boxes` as const, {
                               required: true,
                               minLength: 1,
                             })}
