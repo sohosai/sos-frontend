@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 import { PageFC } from "next"
 
@@ -65,6 +65,9 @@ type Inputs = {
 const NewForm: PageFC = () => {
   const { idToken } = useAuth()
 
+  const [processing, setProcessing] = useState(false)
+  const [unknownError, setUnknownError] = useState(false)
+
   const {
     register,
     control,
@@ -95,6 +98,8 @@ const NewForm: PageFC = () => {
     items,
   }: Inputs) => {
     if (!idToken) throw new Error("idToken must not be null")
+
+    setProcessing(true)
 
     // FIXME: FormItem[]
     const normalizedItems: any = items.map((item) => {
@@ -135,14 +140,14 @@ const NewForm: PageFC = () => {
           starts_at: dayjs
             .tz(
               `${starts_at.month}-${starts_at.day}--${starts_at.hour}-${starts_at.minute}`,
-              "M-D--h-m",
+              "M-D--H-m",
               "Asia/Tokyo"
             )
             .valueOf(),
           ends_at: dayjs
             .tz(
               `${ends_at.month}-${ends_at.day}--${ends_at.hour}-${ends_at.minute}`,
-              "M-D--h-m",
+              "M-D--H-m",
               "Asia/Tokyo"
             )
             .valueOf(),
@@ -176,10 +181,16 @@ const NewForm: PageFC = () => {
         idToken,
       })
         .catch(async (err) => {
+          setProcessing(false)
+          // TODO: err handling
+          setUnknownError(true)
           const body = await err.response.json()
           throw body ? body : err
         })
         .then(async (res) => {
+          setProcessing(false)
+
+          // TODO: redirect
           console.log(res)
         })
     }
@@ -622,9 +633,17 @@ const NewForm: PageFC = () => {
             </div>
           </div>
         </div>
-        <Button type="submit" icon="paper-plane" fullWidth={true}>
+        <Button
+          type="submit"
+          icon="paper-plane"
+          processing={processing}
+          fullWidth={true}
+        >
           申請を送信する
         </Button>
+        {unknownError && (
+          <p className={styles.unknownError}>エラーが発生しました</p>
+        )}
       </form>
     </div>
   )
