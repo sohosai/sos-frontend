@@ -22,13 +22,19 @@ const createPendingProject = async ({
   props,
   idToken,
 }: createPendingProject.Props): Promise<{
-  pending_project: PendingProject
+  // FIXME: subowner 関連がバックでリリースされ次第戻す
+  // pending_project: PendingProject
+  project: PendingProject
 }> => {
-  return client({ idToken })
-    .post("project/prepare", {
-      json: props,
-    })
-    .json()
+  return (
+    client({ idToken })
+      // FIXME:
+      // .post("project/prepare", {
+      .post("project/create", {
+        json: props,
+      })
+      .json()
+  )
 }
 
 export { createPendingProject }

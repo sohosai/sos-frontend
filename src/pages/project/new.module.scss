@@ -1,0 +1,19 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  margin-bottom: 32px;
+}
+
+.emptyWrapper {
+  height: 256px;
+  @include flexCenter;
+}
+
+.sampleProjectDescription {
+  margin-bottom: 24px;
+}
