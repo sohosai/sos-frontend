@@ -552,7 +552,7 @@ const NewForm: PageFC = () => {
                             type="text"
                             label="サンプルテキスト"
                             defaultValue=""
-                            placeholder="サンプルテキストの例"
+                            placeholder="サンプルテキストはこのように表示されます"
                             description="入力欄内にサンプルとして表示されるテキストです"
                             {...register(`items.${index}.placeholder` as const)}
                           />
