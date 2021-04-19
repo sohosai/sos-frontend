@@ -66,6 +66,7 @@ const NewForm: PageFC = () => {
   const { idToken } = useAuth()
 
   const [processing, setProcessing] = useState(false)
+  const [error, setError] = useState<string | undefined>()
   const [unknownError, setUnknownError] = useState(false)
 
   const {
@@ -99,7 +100,12 @@ const NewForm: PageFC = () => {
   }: Inputs) => {
     if (!idToken) throw new Error("idToken must not be null")
 
-    setProcessing(true)
+    setError(undefined)
+
+    if (!items.length) {
+      setError("質問項目を追加してください")
+      return
+    }
 
     // FIXME: FormItem[]
     const normalizedItems: any = items.map((item) => {
@@ -133,6 +139,8 @@ const NewForm: PageFC = () => {
     })
 
     if (process.browser && window.confirm("申請を対象の企画に送信しますか?")) {
+      setProcessing(true)
+
       await createForm({
         props: {
           name: title,
@@ -642,8 +650,9 @@ const NewForm: PageFC = () => {
           申請を送信する
         </Button>
         {unknownError && (
-          <p className={styles.unknownError}>エラーが発生しました</p>
+          <p className={styles.errorText}>エラーが発生しました</p>
         )}
+        {error && <p className={styles.errorText}>{error}</p>}
       </form>
     </div>
   )
