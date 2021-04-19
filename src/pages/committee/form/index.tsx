@@ -22,7 +22,7 @@ import { CSVDownload } from "react-csv"
 
 import styles from "./index.module.scss"
 
-const ListUsers: PageFC = () => {
+const ListForms: PageFC = () => {
   const { idToken } = useAuth()
 
   const [forms, setForms] = useState<Form[] | undefined | null>(null)
@@ -149,7 +149,7 @@ const ListUsers: PageFC = () => {
     </div>
   )
 }
-ListUsers.layout = "committee"
-ListUsers.rbpac = { type: "higherThanIncluding", role: "committee" }
+ListForms.layout = "committee"
+ListForms.rbpac = { type: "higherThanIncluding", role: "committee" }
 
-export default ListUsers
+export default ListForms
