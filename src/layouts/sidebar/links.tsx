@@ -81,6 +81,21 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         active: () => router.pathname === pagesPath.committee.$url().pathname,
       },
       {
+        href: pagesPath.committee.form.$url(),
+        title: "申請",
+        icon: "task-list",
+        visible: () =>
+          Boolean(
+            sosUser &&
+              isUserRoleHigherThanIncluding({
+                userRole: sosUser.role,
+                criteria: "committee",
+              })
+          ),
+        active: () =>
+          router.pathname.startsWith(pagesPath.committee.form.$url().pathname),
+      },
+      {
         href: pagesPath.committee.user.list.$url(),
         title: "ユーザー一覧",
         icon: "users",

@@ -24,3 +24,9 @@
   margin-top: 64px;
   margin-bottom: 64px;
 }
+
+@mixin ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
