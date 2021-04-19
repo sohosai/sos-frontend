@@ -140,14 +140,14 @@ const NewForm: PageFC = () => {
           starts_at: dayjs
             .tz(
               `${starts_at.month}-${starts_at.day}--${starts_at.hour}-${starts_at.minute}`,
-              "M-D--h-m",
+              "M-D--H-m",
               "Asia/Tokyo"
             )
             .valueOf(),
           ends_at: dayjs
             .tz(
               `${ends_at.month}-${ends_at.day}--${ends_at.hour}-${ends_at.minute}`,
-              "M-D--h-m",
+              "M-D--H-m",
               "Asia/Tokyo"
             )
             .valueOf(),
