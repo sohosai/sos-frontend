@@ -1,4 +1,4 @@
-type Mime = string
+import type { Mime } from "../../files/"
 
 export type FileFormItem = Readonly<{
   type: "file"

@@ -2,6 +2,7 @@ import type { CheckboxId } from "./item/checkbox"
 import type { RadioId } from "./item/radio"
 import type { GridRadioRowId, GridRadioColumnId } from "./item/gridRadio"
 import type { FormItemId } from "./item"
+import { FileSharingId } from "../files"
 
 export type TextFormAnswerItem = Readonly<{
   type: "text"
@@ -33,8 +34,7 @@ export type GridRadioFormAnswerItem = Readonly<{
 
 export type FileFormAnswerItem = Readonly<{
   type: "file"
-  // FIXME: FileSharingId
-  answer: string[]
+  answer: FileSharingId[]
 }>
 
 export type FormAnswerItem = { item_id: FormItemId } & (
