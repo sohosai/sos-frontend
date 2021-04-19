@@ -64,6 +64,13 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
           Boolean(!sosUser),
         active: () => router.pathname === pagesPath.init.$url().pathname,
       },
+      {
+        href: pagesPath.project.new.$url(),
+        title: "企画応募",
+        icon: "universe",
+        visible: () => Boolean(sosUser),
+        active: () => router.pathname === pagesPath.project.new.$url().pathname,
+      },
     ],
     committee: [
       {
