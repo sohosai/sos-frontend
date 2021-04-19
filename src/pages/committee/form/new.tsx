@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 
 import { PageFC } from "next"
+import { useRouter } from "next/router"
 
 import { useForm, useFieldArray } from "react-hook-form"
 
@@ -23,6 +24,8 @@ import type {
 import { createForm } from "../../../lib/api/form/createForm"
 
 import { useAuth } from "../../../contexts/auth"
+
+import { pagesPath } from "../../../utils/$path"
 
 import {
   Button,
@@ -64,6 +67,8 @@ type Inputs = {
 
 const NewForm: PageFC = () => {
   const { idToken } = useAuth()
+
+  const router = useRouter()
 
   const [processing, setProcessing] = useState(false)
   const [error, setError] = useState<string | undefined>()
@@ -198,8 +203,9 @@ const NewForm: PageFC = () => {
         .then(async (res) => {
           setProcessing(false)
 
-          // TODO: redirect
           console.log(res)
+
+          router.push(pagesPath.committee.form.$url())
         })
     }
   }
