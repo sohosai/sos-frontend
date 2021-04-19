@@ -9,7 +9,7 @@ import { Button, IconButton, Panel, Spinner } from "../../../components/"
 
 import type { Form } from "../../../types/models/form"
 
-import { listForms } from "../../../lib/api/form/listForm"
+import { listForms } from "../../../lib/api/form/listForms"
 import { exportFormAnswers } from "../../../lib/api/formAnswer/exportFormAnswers"
 
 import { pagesPath } from "../../../utils/$path"
