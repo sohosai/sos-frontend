@@ -16,6 +16,7 @@ import type {
   ProjectCategory,
   ProjectAttribute,
 } from "../../../types/models/project"
+import type { ProjectQuery } from "../../../types/models/project/projectQuery"
 import type {
   FormItem,
   FormItemInFormEditor,
@@ -143,6 +144,30 @@ const NewForm: PageFC = () => {
       }
     })
 
+    const attributesArray = Object.entries(attributes)
+      .map(([attribute, value]) => {
+        if (!value) return
+        return attribute
+      })
+      .filter((nullable): nullable is ProjectAttribute => Boolean(nullable))
+
+    const query = Object.entries(categories)
+      .map(([category, value]) => {
+        if (!value || !category) return
+        return {
+          category: category as ProjectCategory,
+          attributes: attributesArray,
+        }
+      })
+      .filter((nullable): nullable is {
+        category: ProjectCategory
+        attributes: ProjectAttribute[]
+      } => Boolean(nullable))
+
+    const nonEmptyQuery: ProjectQuery = query.length
+      ? query
+      : [{ category: null, attributes: attributesArray }]
+
     if (process.browser && window.confirm("申請を対象の企画に送信しますか?")) {
       setProcessing(true)
 
@@ -165,25 +190,7 @@ const NewForm: PageFC = () => {
             )
             .valueOf(),
           condition: {
-            query: Object.entries(categories)
-              .map(([category, value]) => {
-                if (!value) return
-                return {
-                  category: category as ProjectCategory,
-                  attributes: Object.entries(attributes)
-                    .map(([attribute, value]) => {
-                      if (!value) return
-                      return attribute
-                    })
-                    .filter((nullable): nullable is ProjectAttribute =>
-                      Boolean(nullable)
-                    ),
-                }
-              })
-              .filter((nullable): nullable is {
-                category: ProjectCategory
-                attributes: ProjectAttribute[]
-              } => Boolean(nullable)),
+            query: nonEmptyQuery,
             // TODO:
             includes: [],
             excludes: [],
