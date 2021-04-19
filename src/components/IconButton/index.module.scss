@@ -25,6 +25,16 @@
       font-size: 18px;
     }
   }
+
+  &[data-danger="true"] {
+    &:hover {
+      background-color: $color-caution-tint-900;
+
+      .icon {
+        color: $color-caution;
+      }
+    }
+  }
 }
 
 .icon {
