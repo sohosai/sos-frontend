@@ -1,6 +1,6 @@
 import { client } from "../client"
 
-import type { Form } from "../../../types/models/form/"
+import type { Form } from "../../../types/models/form"
 
 declare namespace listForms {
   type Props = Readonly<{
