@@ -7,6 +7,7 @@ import { PageOptions } from "next"
 import { pagesPath } from "../../utils/$path"
 
 import { useAuthNeue } from "../../contexts/auth"
+import { useMyProject } from "../../contexts/myProject"
 
 import { isUserRoleHigherThanIncluding } from "../../types/models/user/userRole"
 
@@ -15,6 +16,7 @@ import styles from "./links.module.scss"
 export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
   const router = useRouter()
   const { authState } = useAuthNeue()
+  const { myProjectState } = useMyProject()
   if (authState === null || authState.status === "error") return null
 
   if (layout === "empty") return null
@@ -70,6 +72,17 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         icon: "write",
         visible: () => authState.status === "bothSignedIn",
         active: () => router.pathname === pagesPath.project.new.$url().pathname,
+      },
+      {
+        href: pagesPath.project.form.$url(),
+        title: "申請",
+        icon: "task-list",
+        visible: () =>
+          authState.status === "bothSignedIn" &&
+          !myProjectState?.error &&
+          Boolean(myProjectState?.myProject),
+        active: () =>
+          router.pathname.startsWith(pagesPath.project.form.$url().pathname),
       },
       {
         href: pagesPath.mypage.$url(),
