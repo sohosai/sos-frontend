@@ -1,15 +1,10 @@
-import { useState, useEffect } from "react"
-
 import { PageFC } from "next"
 import { useRouter } from "next/router"
-
-import { listMyProjects } from "../../lib/api/project/listMyProjects"
-// import { listMyPendingProjects } from "../../lib/api/project/listMyPendingProjects"
-import { createPendingProject } from "../../lib/api/project/createPendingProject"
 
 import { pagesPath } from "../../utils/$path"
 
 import { useAuth } from "../../contexts/auth"
+import { useMyProject } from "../../contexts/myProject"
 
 import { Button, Panel, Spinner } from "../../components"
 
@@ -17,42 +12,9 @@ import styles from "./new.module.scss"
 
 const NewProject: PageFC = () => {
   const { idToken, sosUser } = useAuth()
+  const { myProjectState, createPendingProject } = useMyProject()
 
   const router = useRouter()
-
-  const [hasMyProject, setHasMyProject] = useState<boolean | null>(null)
-
-  // TODO: バックで subowner 関連リリース次第やる
-  // const [hasMyPendingProject, setHasMyPendingProject] = useState<
-  //   boolean | null
-  // >(null)
-
-  useEffect(() => {
-    if (!idToken || !sosUser) return
-
-    listMyProjects({ idToken })
-      .then(({ projects: fetchedProjects }) => {
-        if (
-          fetchedProjects.length === 0 ||
-          !fetchedProjects.some((project) => {
-            return project.owner_id === sosUser.id
-            // TODO:
-            // return project.owner_id === sosUser.id || project.subowner_id === sosUser.id
-          })
-        ) {
-          setHasMyProject(false)
-        } else {
-          setHasMyProject(true)
-        }
-      })
-      .catch(async (err) => {
-        const body = await err.response?.json()
-        throw body ? body : err
-      })
-
-    // TODO: バックで subowner 関連リリース次第やる
-    // listMyPendingProjects({ idToken })
-  })
 
   const createSampleProject = async () => {
     if (!idToken || !sosUser) return
@@ -87,33 +49,32 @@ const NewProject: PageFC = () => {
       <h1 className={styles.title}>企画応募</h1>
       <div className={styles.panelWrapper}>
         <Panel>
-          {
-            // TODO:
-            // hasMyProject === false && hasMyPendingProject === false
-            hasMyProject === false ? (
-              <>
-                {/* TODO: */}
-                <p className={styles.sampleProjectDescription}>
-                  現在企画応募機能は実装中のため、以下のボタンからサンプルの企画を作成することのみ可能です
-                </p>
-                <Button
-                  buttonRestAttributes={{
-                    onClick: createSampleProject,
-                  }}
-                >
-                  サンプルの企画を作成する
-                </Button>
-              </>
-            ) : (
-              <div className={styles.emptyWrapper}>
-                {(() => {
-                  if (hasMyProject)
-                    return "既に企画の責任者または副責任者であるため、企画応募はできません"
-                  return <Spinner />
-                })()}
-              </div>
-            )
-          }
+          {!myProjectState?.error && myProjectState?.myProject === null ? (
+            <>
+              {/* TODO: */}
+              <p className={styles.sampleProjectDescription}>
+                現在企画応募機能は実装中のため、以下のボタンからサンプルの企画を作成することのみ可能です
+              </p>
+              <Button
+                buttonRestAttributes={{
+                  onClick: createSampleProject,
+                }}
+              >
+                サンプルの企画を作成する
+              </Button>
+            </>
+          ) : (
+            <div className={styles.emptyWrapper}>
+              {(() => {
+                if (myProjectState === null) return <Spinner />
+
+                if (myProjectState.error) return "エラーが発生しました"
+
+                if (myProjectState.myProject)
+                  return "既に企画の責任者または副責任者であるため、企画応募はできません"
+              })()}
+            </div>
+          )}
         </Panel>
       </div>
     </div>
