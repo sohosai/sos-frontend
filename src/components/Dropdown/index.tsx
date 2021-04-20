@@ -1,4 +1,4 @@
-import { FC, SelectHTMLAttributes } from "react"
+import { FC } from "react"
 
 import { dataset } from "../../utils/dataset"
 
@@ -15,7 +15,6 @@ declare namespace Dropdown {
     }>
     description?: string[] | string
     error?: Array<string | false | undefined> | string | false
-    selectRestAttributes?: SelectHTMLAttributes<HTMLSelectElement>
   }> &
     JSX.IntrinsicElements["select"]
 }
@@ -27,7 +26,6 @@ const Dropdown: FC<Dropdown.Props> = ({
   options,
   description,
   error,
-  selectRestAttributes,
   ...rest
 }) => {
   const descriptions = (Array.isArray(description)
@@ -49,7 +47,6 @@ const Dropdown: FC<Dropdown.Props> = ({
         {...{ name, required }}
         className={styles.select}
         {...dataset({ error: Boolean(errors.length) })}
-        {...selectRestAttributes}
         {...rest}
       >
         {options.map(({ value, label }, index) => (
