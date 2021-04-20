@@ -9,6 +9,7 @@ export type User = Readonly<{
   phone_number: string
   affiliation: string
   role: UserRole
+  category: UserCategory
 }>
 
 export type UserId = string
@@ -22,3 +23,8 @@ export type UserKanaName = Readonly<{
   first: string
   last: string
 }>
+
+export type UserCategory =
+  | "undergraduate_student"
+  | "graduate_student"
+  | "academic_staff"
