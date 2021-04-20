@@ -2798,13 +2798,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-csv@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@types/react-csv/-/react-csv-1.1.1.tgz#003f6de5a46e4f64712f97e5509a4b3f2df9a8b1"
-  integrity sha512-sP8AxGrFJ/kb7ygFpGkssdD/vKSTqdZDJbw3pJKTCa1C0UoT+0+rdUWy2fZqvhvvdpHG+OCJ4G8O7OZqVIa+BA==
-  dependencies:
-    "@types/react" "*"
-
 "@types/react-syntax-highlighter@11.0.5":
   version "11.0.5"
   resolved "https://registry.yarnpkg.com/@types/react-syntax-highlighter/-/react-syntax-highlighter-11.0.5.tgz#0d546261b4021e1f9d85b50401c0a42acb106087"
@@ -9421,11 +9414,6 @@ react-colorful@^5.0.1:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/react-colorful/-/react-colorful-5.1.0.tgz#45c8044d80bc0e7ee08dc78c760e6694f3745ca2"
   integrity sha512-ZXKcQbSuuHaN5tOHORI+G9/tXsGxk/6qlAbfETfZILwwWwngyJiyYRhUJjI+Esk71BhhQRdj0v7cFHDnD95jtQ==
-
-react-csv@2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/react-csv/-/react-csv-2.0.3.tgz#f5d17a3c71107d9bcbe580049350200debdc042a"
-  integrity sha512-exyAdFLAxtuM4wNwLYrlKyPYLiJ7e0mv9tqPAd3kq+k1CiJFtznevR3yP0icv5q/y200w+lzNgi7TQn1Wrhu0w==
 
 react-dev-utils@^11.0.3:
   version "11.0.4"
