@@ -18,7 +18,7 @@ import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
 
-import { CSVDownload } from "react-csv"
+import { saveAs } from "file-saver"
 
 import styles from "./index.module.scss"
 
@@ -27,8 +27,6 @@ const ListForms: PageFC = () => {
 
   const [forms, setForms] = useState<Form[] | undefined | null>(null)
   const [error, setError] = useState(false)
-
-  const [csvData, setCsvData] = useState<string | undefined>()
 
   useEffect(() => {
     if (!idToken) return
@@ -109,15 +107,16 @@ const ListForms: PageFC = () => {
                         idToken,
                       })
                         .then((res) => {
-                          setCsvData(res)
-                          setCsvData(undefined)
+                          saveAs(
+                            new Blob([res], { type: "text/csv" }),
+                            `${form.name}-answers.csv`
+                          )
                         })
                         .catch((err) => {
                           throw err
                         })
                     }}
                   />
-                  {csvData && <CSVDownload data={csvData} />}
                 </div>
               </Panel>
             </div>
