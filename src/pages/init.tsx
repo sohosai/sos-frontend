@@ -9,9 +9,17 @@ import { useForm } from "react-hook-form"
 
 import { signup } from "../lib/api/signup"
 
+import type { UserCategory } from "../types/models/user"
+
 import { useAuth } from "../contexts/auth"
 
-import { Panel, FormItemSpacer, TextField, Button } from "../components"
+import {
+  Panel,
+  FormItemSpacer,
+  TextField,
+  Button,
+  Dropdown,
+} from "../components"
 
 import { isKana, katakanaToHiragana } from "../utils/jpKana"
 
@@ -24,6 +32,7 @@ type Inputs = Readonly<{
   kanaNameLast: string
   phoneNumber: string
   affiliation: string
+  category: UserCategory
 }>
 
 const Init: PageFC = () => {
@@ -51,6 +60,7 @@ const Init: PageFC = () => {
     kanaNameLast,
     phoneNumber,
     affiliation,
+    category,
   }: Inputs) => {
     if (!idToken) throw new Error("IdToken must not be null")
 
@@ -68,6 +78,7 @@ const Init: PageFC = () => {
         },
         phone_number: "+81" + phoneNumber.replaceAll("-", "").slice(1),
         affiliation,
+        category,
       },
       idToken,
     })
@@ -238,6 +249,23 @@ const Init: PageFC = () => {
                   ]}
                   required
                   inputRestAttributes={register("affiliation", {
+                    required: true,
+                  })}
+                />
+              </FormItemSpacer>
+              <FormItemSpacer>
+                <Dropdown
+                  label="区分"
+                  defaultValue=""
+                  options={[
+                    { value: "", label: "選択してください" },
+                    { value: "undergraduate_student", label: "学群生" },
+                    { value: "graduate_student", label: "院生" },
+                    { value: "academic_staff", label: "教職員" },
+                  ]}
+                  error={[errors?.category?.types?.required && "必須項目です"]}
+                  required
+                  {...register("category", {
                     required: true,
                   })}
                 />
