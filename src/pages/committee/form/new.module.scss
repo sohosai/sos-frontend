@@ -19,9 +19,13 @@
   }
 }
 
+.dateTimeInputLabel {
+  margin-bottom: 8px;
+}
+
 .dateTimeInputWrapper {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
 }
 
 .dateTimeInputItem {
@@ -29,11 +33,6 @@
   display: flex;
   flex-direction: row;
   align-items: flex-end;
-}
-
-.dateTimeInputLabel {
-  margin-left: 8px;
-  color: $color-text-sub;
 
   &:not(:last-of-type) {
     margin-right: 16px;
