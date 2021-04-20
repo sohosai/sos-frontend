@@ -1,4 +1,5 @@
 @import "../styles/variables";
+@import "../styles/mixins";
 
 .wrapper {
   position: absolute;
@@ -7,20 +8,30 @@
   top: 0;
   left: 0;
   padding: 0 40px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  display: flex;
+  background-color: $color-gray-50;
+  @include flexCenter;
+}
+
+.icon {
+  display: block;
+  color: $color-brand;
+  font-size: 4em;
+  margin-left: -0.07em;
+  margin-bottom: 24px;
 }
 
 .title {
-  margin-top: 0;
-  margin-bottom: 1em;
+  margin-bottom: 24px;
   color: $color-text-primary;
 }
 
 .paragraph {
   margin: 0;
+  color: $color-text-sub;
+}
+
+.sos {
+  margin-top: 24px;
   color: $color-text-sub;
 }
 
