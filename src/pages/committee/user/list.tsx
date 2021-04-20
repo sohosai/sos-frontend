@@ -8,8 +8,11 @@ import { User } from "../../../types/models/user"
 import { userRoleToUiText } from "../../../types/models/user/userRole"
 
 import { listUsers } from "../../../lib/api/user/listUsers"
+import { exportUsers } from "../../../lib/api/user/exportUsers"
 
-import { Panel, Spinner } from "../../../components/"
+import { saveAs } from "file-saver"
+
+import { Button, Panel, Spinner } from "../../../components/"
 
 import styles from "./list.module.scss"
 
@@ -32,11 +35,31 @@ const ListUsers: PageFC = () => {
           throw body
         })
     }
-  }, [])
+  }, [idToken])
 
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.title}>ユーザー一覧</h1>
+      <div className={styles.downloadButton}>
+        <Button
+          icon="download"
+          onClick={() => {
+            if (!idToken) return
+
+            exportUsers({ idToken })
+              .then((res) => {
+                // TODO: datetime in filename
+                saveAs(new Blob([res], { type: "text/csv" }), "sos-users.csv")
+              })
+              .catch(async (err) => {
+                const body = await err.response?.json()
+                console.error(body ?? err)
+              })
+          }}
+        >
+          CSVでダウンロード
+        </Button>
+      </div>
       <Panel>
         {users === null ? (
           <div className={styles.emptyWrapper}>
