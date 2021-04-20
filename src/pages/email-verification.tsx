@@ -59,9 +59,7 @@ const EmailVerification: PageFC = () => {
                   size="small"
                   processing={processing}
                   icon="paper-plane"
-                  buttonRestAttributes={{
-                    onClick: resendVerification,
-                  }}
+                  onClick={resendVerification}
                   fullWidth={true}
                 >
                   確認メールを再送する

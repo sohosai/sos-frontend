@@ -55,11 +55,7 @@ const NewProject: PageFC = () => {
               <p className={styles.sampleProjectDescription}>
                 現在企画応募機能は実装中のため、以下のボタンからサンプルの企画を作成することのみ可能です
               </p>
-              <Button
-                buttonRestAttributes={{
-                  onClick: createSampleProject,
-                }}
-              >
+              <Button onClick={createSampleProject}>
                 サンプルの企画を作成する
               </Button>
             </>
