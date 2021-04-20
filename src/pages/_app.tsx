@@ -5,6 +5,7 @@ import Head from "next/head"
 import type { PageOptions } from "next"
 
 import { AuthProvider } from "../contexts/auth"
+import { MyProjectProvider } from "../contexts/myProject"
 
 import { useIfSupported } from "../hooks/useIfSupported"
 
@@ -33,9 +34,11 @@ function MyApp({
         <meta name="googlebot" content="noindex" key="googlebot" />
       </Head>
       <AuthProvider rbpac={Component.rbpac}>
-        <Layout layout={Component.layout}>
-          <Component {...pageProps} />
-        </Layout>
+        <MyProjectProvider>
+          <Layout layout={Component.layout}>
+            <Component {...pageProps} />
+          </Layout>
+        </MyProjectProvider>
       </AuthProvider>
     </>
   )
