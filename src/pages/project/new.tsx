@@ -11,13 +11,13 @@ import { Button, Panel, Spinner } from "../../components"
 import styles from "./new.module.scss"
 
 const NewProject: PageFC = () => {
-  const { idToken, sosUser } = useAuth()
+  const { idToken } = useAuth()
   const { myProjectState, createPendingProject } = useMyProject()
 
   const router = useRouter()
 
   const createSampleProject = async () => {
-    if (!idToken || !sosUser) return
+    if (!idToken) return
 
     await createPendingProject({
       props: {
