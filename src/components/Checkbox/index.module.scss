@@ -21,6 +21,7 @@ $checkbox-size: 16px;
   padding-left: 24px;
   color: $color-text-primary;
   cursor: pointer;
+  user-select: none;
 
   &::before {
     content: "";
@@ -29,8 +30,10 @@ $checkbox-size: 16px;
     width: $checkbox-size;
     height: $checkbox-size;
     left: 0;
-    border: 1px solid $color-gray-400;
     border-radius: 4px;
+    background-color: white;
+    border: 1px solid $color-gray-400;
+    transition: background-color 150ms, border 150ms;
   }
 }
 
@@ -38,10 +41,10 @@ $checkbox-size: 16px;
   position: absolute;
   top: 0;
   left: 0;
-  color: white;
   font-size: $checkbox-size;
-  opacity: 0;
   pointer-events: none;
+  color: $color-gray-300;
+  transition: color 150ms;
 }
 
 [data-checked] {
@@ -51,6 +54,6 @@ $checkbox-size: 16px;
   }
 
   .icon {
-    opacity: 1;
+    color: white;
   }
 }
