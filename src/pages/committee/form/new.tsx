@@ -692,8 +692,8 @@ const NewForm: PageFC = () => {
               <Button
                 icon="plus"
                 kind="secondary"
-                buttonRestAttributes={{
-                  onClick: () => addItem("text"),
+                onClick={() => {
+                  addItem("text")
                 }}
               >
                 テキスト項目
@@ -703,8 +703,8 @@ const NewForm: PageFC = () => {
               <Button
                 icon="plus"
                 kind="secondary"
-                buttonRestAttributes={{
-                  onClick: () => addItem("checkbox"),
+                onClick={() => {
+                  addItem("checkbox")
                 }}
               >
                 チェックボックス項目

@@ -28,9 +28,6 @@ Index.argTypes = {
   type: {
     defaultValue: "button",
   },
-  buttonRestAttributes: {
-    control: false,
-  },
   icon: {
     defaultValue: "paper-plane",
   },

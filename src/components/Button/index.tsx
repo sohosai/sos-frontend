@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, FC } from "react"
+import type { FC } from "react"
 
 import { dataset } from "../../utils/dataset"
 
@@ -15,8 +15,8 @@ declare namespace Button {
     disabled?: boolean
     processing?: boolean
     icon?: string
-    buttonRestAttributes?: ButtonHTMLAttributes<HTMLButtonElement>
-  }>
+  }> &
+    JSX.IntrinsicElements["button"]
 }
 
 const Button: FC<Button.Props> = ({
@@ -27,8 +27,8 @@ const Button: FC<Button.Props> = ({
   disabled = false,
   processing = false,
   icon,
-  buttonRestAttributes,
   children,
+  ...rest
 }) => {
   return (
     <button
@@ -36,7 +36,7 @@ const Button: FC<Button.Props> = ({
       className={styles.button}
       {...dataset({ kind, size, fullWidth, disabled, processing })}
       disabled={disabled}
-      {...buttonRestAttributes}
+      {...rest}
     >
       <div className={styles.spinnerWrapper}>
         <Spinner size="sm" color={kind === "primary" ? "white" : "brand"} />
