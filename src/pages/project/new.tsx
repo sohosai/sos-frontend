@@ -26,7 +26,7 @@ const NewProject: PageFC = () => {
         group_name: `サンプルグループ${Math.floor(Math.random() * 500)}`,
         kana_group_name: "さんぷるぐるーぷ",
         description:
-          "吾輩は猫である。名前はまだ無い。\nどこで生れたかとんと見当がつかぬ。何でも薄暗いじめじめした所でニャーニャー泣いていた事だけは記憶している。",
+          "吾輩は猫である。名前はまだ無い。\nどこで生れたかとんと見当がつかぬ。",
         category: "general",
         attributes: ["academic", "artistic"],
       },
