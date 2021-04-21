@@ -166,6 +166,7 @@ const Init: PageFC = () => {
                   required
                   register={register("nameLast", {
                     required: true,
+                    setValueAs: (value) => value?.trim(),
                   })}
                 />
               </FormItemSpacer>
@@ -179,6 +180,7 @@ const Init: PageFC = () => {
                   required
                   register={register("nameFirst", {
                     required: true,
+                    setValueAs: (value) => value?.trim(),
                   })}
                 />
               </FormItemSpacer>
@@ -198,6 +200,7 @@ const Init: PageFC = () => {
                     validate: {
                       isKana: (value) => isKana(value),
                     },
+                    setValueAs: (value) => value?.trim(),
                   })}
                 />
               </FormItemSpacer>
@@ -217,6 +220,7 @@ const Init: PageFC = () => {
                     validate: {
                       isKana: (value) => isKana(value),
                     },
+                    setValueAs: (value) => value?.trim(),
                   })}
                 />
               </FormItemSpacer>
@@ -250,6 +254,7 @@ const Init: PageFC = () => {
                   required
                   register={register("affiliation", {
                     required: true,
+                    setValueAs: (value) => value?.trim(),
                   })}
                 />
               </FormItemSpacer>

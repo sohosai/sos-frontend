@@ -278,6 +278,7 @@ const NewForm: PageFC = () => {
                 error={[errors.title?.types?.required && "必須項目です"]}
                 register={register("title", {
                   required: true,
+                  setValueAs: (value) => value?.trim(),
                 })}
               />
             </FormItemSpacer>
@@ -290,6 +291,7 @@ const NewForm: PageFC = () => {
                 ]}
                 register={register("description", {
                   maxLength: 1024,
+                  setValueAs: (value) => value?.trim(),
                 })}
               />
             </FormItemSpacer>
@@ -534,6 +536,7 @@ const NewForm: PageFC = () => {
                         register={register(`items.${index}.name` as const, {
                           required: true,
                           maxLength: 64,
+                          setValueAs: (value) => value?.trim(),
                         })}
                       />
                     </FormItemSpacer>
@@ -550,6 +553,7 @@ const NewForm: PageFC = () => {
                           `items.${index}.description` as const,
                           {
                             maxLength: 1024,
+                            setValueAs: (value) => value?.trim(),
                           }
                         )}
                       />
@@ -612,7 +616,10 @@ const NewForm: PageFC = () => {
                             placeholder="サンプルテキストはこのように表示されます"
                             description="入力欄内にサンプルとして表示されるテキストです"
                             register={register(
-                              `items.${index}.placeholder` as const
+                              `items.${index}.placeholder` as const,
+                              {
+                                setValueAs: (value) => value?.trim(),
+                              }
                             )}
                           />
                         </FormItemSpacer>
@@ -666,6 +673,7 @@ const NewForm: PageFC = () => {
                               {
                                 required: true,
                                 minLength: 1,
+                                setValueAs: (value) => value?.trim(),
                               }
                             )}
                           />
