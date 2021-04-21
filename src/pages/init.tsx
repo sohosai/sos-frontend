@@ -265,7 +265,7 @@ const Init: PageFC = () => {
                   ]}
                   error={[errors?.category?.types?.required && "必須項目です"]}
                   required
-                  {...register("category", {
+                  register={register("category", {
                     required: true,
                   })}
                 />

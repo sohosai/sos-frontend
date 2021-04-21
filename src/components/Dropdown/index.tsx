@@ -1,5 +1,7 @@
 import { FC } from "react"
 
+import { UseFormRegisterReturn } from "react-hook-form"
+
 import { dataset } from "../../utils/dataset"
 
 import styles from "./index.module.scss"
@@ -15,6 +17,7 @@ declare namespace Dropdown {
     }>
     description?: string[] | string
     error?: Array<string | false | undefined> | string | false
+    register: UseFormRegisterReturn
   }> &
     JSX.IntrinsicElements["select"]
 }
@@ -26,6 +29,7 @@ const Dropdown: FC<Dropdown.Props> = ({
   options,
   description,
   error,
+  register,
   ...rest
 }) => {
   const descriptions = (Array.isArray(description)
@@ -47,6 +51,7 @@ const Dropdown: FC<Dropdown.Props> = ({
         {...{ name, required }}
         className={styles.select}
         {...dataset({ error: Boolean(errors.length) })}
+        {...register}
         {...rest}
       >
         {options.map(({ value, label }, index) => (
