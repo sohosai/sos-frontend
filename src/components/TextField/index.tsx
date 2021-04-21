@@ -1,4 +1,6 @@
-import { FC, InputHTMLAttributes } from "react"
+import { FC } from "react"
+
+import { UseFormRegisterReturn } from "react-hook-form"
 
 import { dataset } from "../../utils/dataset"
 
@@ -8,14 +10,9 @@ declare namespace TextField {
   type Props = Readonly<{
     type: "text" | "email" | "password" | "number"
     label?: string
-    name?: string
-    required?: boolean
-    placeholder?: string
     description?: string[] | string
     error?: Array<string | false | undefined> | string | false
-    autocomplete?: string
-    //TODO: JSX.IntrinsicElements["input"] に変えて廃止
-    inputRestAttributes?: InputHTMLAttributes<HTMLInputElement>
+    register?: UseFormRegisterReturn
   }> &
     JSX.IntrinsicElements["input"]
 }
@@ -28,8 +25,8 @@ const TextField: FC<TextField.Props> = ({
   placeholder,
   description,
   error,
-  autocomplete,
-  inputRestAttributes,
+  autoComplete,
+  register,
   ...restAttributes
 }) => {
   const descriptions = (Array.isArray(description)
@@ -51,10 +48,10 @@ const TextField: FC<TextField.Props> = ({
         type={type}
         name={name}
         className={styles.input}
-        autoComplete={autocomplete}
+        autoComplete={autoComplete}
         required={required}
         placeholder={placeholder}
-        {...inputRestAttributes}
+        {...register}
         {...restAttributes}
         {...dataset({ error: Boolean(errors?.length) })}
       />

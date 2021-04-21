@@ -21,9 +21,6 @@ Index.argTypes = {
   label: {
     defaultValue: "メールアドレス",
   },
-  name: {
-    defaultValue: "email",
-  },
   description: {
     control: { type: "text" },
     defaultValue: "筑波大学のメールアドレスを使用してください",
@@ -32,10 +29,11 @@ Index.argTypes = {
     control: { type: "text" },
     defaultValue: "",
   },
-  autocomplete: {
+  autoComplete: {
+    control: { type: "text" },
     defaultValue: "email",
   },
-  inputRestAttributes: {
+  register: {
     control: false,
   },
 }

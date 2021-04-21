@@ -83,7 +83,7 @@ const Signup: PageFC = () => {
                 <TextField
                   type="email"
                   label="メールアドレス"
-                  autocomplete="email"
+                  autoComplete="email"
                   description={[
                     "tsukuba.ac.jpで終わるメールアドレスを使用してください",
                   ]}
@@ -98,7 +98,7 @@ const Signup: PageFC = () => {
                   ]}
                   placeholder="xxx@s.tsukuba.ac.jp"
                   required
-                  inputRestAttributes={register("email", {
+                  register={register("email", {
                     required: true,
                     pattern: /^[\w\-._]+@([\w\-._]+\.)?tsukuba\.ac\.jp$/,
                   })}
@@ -108,7 +108,7 @@ const Signup: PageFC = () => {
                 <TextField
                   type="password"
                   label="パスワード"
-                  autocomplete="new-password"
+                  autoComplete="new-password"
                   description="アルファベットと数字の両方を含む8文字以上で設定してください"
                   error={[
                     errors?.password?.types?.required && "必須項目です",
@@ -126,7 +126,7 @@ const Signup: PageFC = () => {
                       "パスワードが単純すぎます",
                   ]}
                   required
-                  inputRestAttributes={register("password", {
+                  register={register("password", {
                     required: true,
                     minLength: 8,
                     maxLength: 128,

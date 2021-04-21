@@ -161,10 +161,10 @@ const Init: PageFC = () => {
                   type="text"
                   label="姓"
                   placeholder="雙峰"
-                  autocomplete="family-name"
+                  autoComplete="family-name"
                   error={[errors?.nameLast?.types?.required && "必須項目です"]}
                   required
-                  inputRestAttributes={register("nameLast", {
+                  register={register("nameLast", {
                     required: true,
                   })}
                 />
@@ -174,10 +174,10 @@ const Init: PageFC = () => {
                   type="text"
                   label="名前"
                   placeholder="太郎"
-                  autocomplete="given-name"
+                  autoComplete="given-name"
                   error={[errors?.nameFirst?.types?.required && "必須項目です"]}
                   required
-                  inputRestAttributes={register("nameFirst", {
+                  register={register("nameFirst", {
                     required: true,
                   })}
                 />
@@ -193,7 +193,7 @@ const Init: PageFC = () => {
                       "ひらがなで入力してください",
                   ]}
                   required
-                  inputRestAttributes={register("kanaNameLast", {
+                  register={register("kanaNameLast", {
                     required: true,
                     validate: {
                       isKana: (value) => isKana(value),
@@ -212,7 +212,7 @@ const Init: PageFC = () => {
                       "ひらがなで入力してください",
                   ]}
                   required
-                  inputRestAttributes={register("kanaNameFirst", {
+                  register={register("kanaNameFirst", {
                     required: true,
                     validate: {
                       isKana: (value) => isKana(value),
@@ -224,7 +224,7 @@ const Init: PageFC = () => {
                 <TextField
                   type="text"
                   label="電話番号"
-                  autocomplete="tel-national"
+                  autoComplete="tel-national"
                   description="雙峰祭当日などに連絡の取れる番号を入力してください"
                   placeholder="08004794581"
                   error={[
@@ -232,7 +232,7 @@ const Init: PageFC = () => {
                     errors?.phoneNumber?.types?.pattern && "無効な電話番号です",
                   ]}
                   required
-                  inputRestAttributes={register("phoneNumber", {
+                  register={register("phoneNumber", {
                     required: true,
                     pattern: /^(0\d{2,3}-\d{1,4}-\d{4}|0\d{9,10})$/,
                   })}
@@ -248,7 +248,7 @@ const Init: PageFC = () => {
                     errors?.affiliation?.types?.required && "必須項目です",
                   ]}
                   required
-                  inputRestAttributes={register("affiliation", {
+                  register={register("affiliation", {
                     required: true,
                   })}
                 />

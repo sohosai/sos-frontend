@@ -276,7 +276,7 @@ const NewForm: PageFC = () => {
                 placeholder="〇〇申請"
                 required
                 error={[errors.title?.types?.required && "必須項目です"]}
-                inputRestAttributes={register("title", {
+                register={register("title", {
                   required: true,
                 })}
               />
@@ -310,7 +310,7 @@ const NewForm: PageFC = () => {
                       errors.starts_at?.month?.types?.max && "不正な値です",
                     ]}
                     required
-                    inputRestAttributes={register("starts_at.month", {
+                    register={register("starts_at.month", {
                       required: true,
                       min: 1,
                       max: 12,
@@ -330,7 +330,7 @@ const NewForm: PageFC = () => {
                       errors.starts_at?.day?.types?.max && "不正な値です",
                     ]}
                     required
-                    inputRestAttributes={register("starts_at.day", {
+                    register={register("starts_at.day", {
                       required: true,
                       min: 1,
                       max: 31,
@@ -350,7 +350,7 @@ const NewForm: PageFC = () => {
                       errors.starts_at?.hour?.types?.max && "不正な値です",
                     ]}
                     required
-                    inputRestAttributes={register("starts_at.hour", {
+                    register={register("starts_at.hour", {
                       required: true,
                       min: 0,
                       max: 23,
@@ -371,7 +371,7 @@ const NewForm: PageFC = () => {
                       errors.starts_at?.minute?.types?.max && "不正な値です",
                     ]}
                     required
-                    inputRestAttributes={register("starts_at.minute", {
+                    register={register("starts_at.minute", {
                       required: true,
                       min: 0,
                       max: 59,
@@ -396,7 +396,7 @@ const NewForm: PageFC = () => {
                       errors.ends_at?.month?.types?.max && "不正な値です",
                     ]}
                     required
-                    inputRestAttributes={register("ends_at.month", {
+                    register={register("ends_at.month", {
                       required: true,
                       min: 1,
                       max: 12,
@@ -416,7 +416,7 @@ const NewForm: PageFC = () => {
                       errors.ends_at?.day?.types?.max && "不正な値です",
                     ]}
                     required
-                    inputRestAttributes={register("ends_at.day", {
+                    register={register("ends_at.day", {
                       required: true,
                       min: 1,
                       max: 31,
@@ -436,7 +436,7 @@ const NewForm: PageFC = () => {
                       errors.ends_at?.hour?.types?.max && "不正な値です",
                     ]}
                     required
-                    inputRestAttributes={register("ends_at.hour", {
+                    register={register("ends_at.hour", {
                       required: true,
                       min: 0,
                       max: 23,
@@ -456,7 +456,7 @@ const NewForm: PageFC = () => {
                       errors.ends_at?.minute?.types?.max && "不正な値です",
                     ]}
                     required
-                    inputRestAttributes={register("ends_at.minute", {
+                    register={register("ends_at.minute", {
                       required: true,
                       min: 0,
                       max: 59,
@@ -531,7 +531,7 @@ const NewForm: PageFC = () => {
                           errors?.items?.[index]?.name?.types?.maxLength &&
                             "64字以内で入力してください",
                         ]}
-                        {...register(`items.${index}.name` as const, {
+                        register={register(`items.${index}.name` as const, {
                           required: true,
                           maxLength: 64,
                         })}
@@ -586,7 +586,7 @@ const NewForm: PageFC = () => {
                                 label="最小字数"
                                 min={0}
                                 max={1024}
-                                {...register(
+                                register={register(
                                   `items.${index}.min_length` as const
                                 )}
                               />
@@ -597,7 +597,7 @@ const NewForm: PageFC = () => {
                                 label="最大字数"
                                 min={1}
                                 max={1024}
-                                {...register(
+                                register={register(
                                   `items.${index}.max_length` as const
                                 )}
                               />
@@ -611,7 +611,9 @@ const NewForm: PageFC = () => {
                             defaultValue=""
                             placeholder="サンプルテキストはこのように表示されます"
                             description="入力欄内にサンプルとして表示されるテキストです"
-                            {...register(`items.${index}.placeholder` as const)}
+                            register={register(
+                              `items.${index}.placeholder` as const
+                            )}
                           />
                         </FormItemSpacer>
                       </>
@@ -627,7 +629,7 @@ const NewForm: PageFC = () => {
                                 min="0"
                                 max="100"
                                 defaultValue=""
-                                {...register(
+                                register={register(
                                   `items.${index}.min_checks` as const
                                 )}
                               />
@@ -639,7 +641,7 @@ const NewForm: PageFC = () => {
                                 min="0"
                                 max="100"
                                 defaultValue=""
-                                {...register(
+                                register={register(
                                   `items.${index}.max_checks` as const
                                 )}
                               />
