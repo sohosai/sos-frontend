@@ -117,12 +117,6 @@ const NewForm: PageFC = () => {
     const normalizedItems: any = items.map((item) => {
       return {
         ...item,
-        ...(item.type === "text"
-          ? {
-              min_length: parseInt(item.min_length),
-              max_length: parseInt(item.max_length),
-            }
-          : {}),
         ...(item.type === "checkbox"
           ? {
               boxes: item.boxes
@@ -137,8 +131,6 @@ const NewForm: PageFC = () => {
                 .filter((box): box is { id: string; label: string } =>
                   Boolean(box)
                 ),
-              min_checks: parseInt(item.min_checks),
-              max_checks: parseInt(item.max_checks),
             }
           : {}),
       }
@@ -591,7 +583,10 @@ const NewForm: PageFC = () => {
                                 min={0}
                                 max={1024}
                                 register={register(
-                                  `items.${index}.min_length` as const
+                                  `items.${index}.min_length` as const,
+                                  {
+                                    valueAsNumber: true,
+                                  }
                                 )}
                               />
                             </div>
@@ -602,7 +597,10 @@ const NewForm: PageFC = () => {
                                 min={1}
                                 max={1024}
                                 register={register(
-                                  `items.${index}.max_length` as const
+                                  `items.${index}.max_length` as const,
+                                  {
+                                    valueAsNumber: true,
+                                  }
                                 )}
                               />
                             </div>
@@ -637,7 +635,10 @@ const NewForm: PageFC = () => {
                                 max="100"
                                 defaultValue=""
                                 register={register(
-                                  `items.${index}.min_checks` as const
+                                  `items.${index}.min_checks` as const,
+                                  {
+                                    valueAsNumber: true,
+                                  }
                                 )}
                               />
                             </div>
@@ -649,7 +650,10 @@ const NewForm: PageFC = () => {
                                 max="100"
                                 defaultValue=""
                                 register={register(
-                                  `items.${index}.max_checks` as const
+                                  `items.${index}.max_checks` as const,
+                                  {
+                                    valueAsNumber: true,
+                                  }
                                 )}
                               />
                             </div>
