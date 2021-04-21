@@ -10,6 +10,7 @@ const exportUsers = async ({ idToken }: exportUsers.Props): Promise<string> => {
   return client({ idToken })
     .get("user/export", {
       searchParams: {
+        field_id: "ユーザーID",
         field_created_at: "登録日時",
         field_last_name: "姓",
         field_first_name: "名",
