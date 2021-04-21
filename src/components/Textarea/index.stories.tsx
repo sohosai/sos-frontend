@@ -18,10 +18,8 @@ Index.argTypes = {
     defaultValue: "感想など",
   },
   rows: {
-    control: { type: "range", min: 1, max: 5, default: 3 },
-  },
-  cols: {
-    control: { type: "range", min: 10, max: 30, default: 20, step: 5 },
+    control: { type: "range", min: 1, max: 5 },
+    defaultValue: 3,
   },
   description: {
     control: { type: "text" },
@@ -31,7 +29,7 @@ Index.argTypes = {
     control: { type: "text" },
     defaultValue: "",
   },
-  textareaRestAttributes: {
+  register: {
     control: false,
   },
 }

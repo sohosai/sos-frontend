@@ -84,7 +84,7 @@ const Login: PageFC = () => {
                 <TextField
                   type="email"
                   label="メールアドレス"
-                  autocomplete="email"
+                  autoComplete="email"
                   description={[
                     "tsukuba.ac.jpで終わるメールアドレスを使用してください",
                   ]}
@@ -101,7 +101,7 @@ const Login: PageFC = () => {
                   ]}
                   placeholder="xxx@s.tsukuba.ac.jp"
                   required
-                  inputRestAttributes={register("email", {
+                  register={register("email", {
                     required: true,
                     pattern: /^[\w\-._]+@([\w\-._]+\.)?tsukuba\.ac\.jp$/,
                   })}
@@ -111,14 +111,14 @@ const Login: PageFC = () => {
                 <TextField
                   type="password"
                   label="パスワード"
-                  autocomplete="current-password"
+                  autoComplete="current-password"
                   error={[
                     errors?.password?.types?.required && "必須項目です",
                     errors?.password?.type === "wrongPassword" &&
                       "パスワードが一致しません",
                   ]}
                   required
-                  inputRestAttributes={register("password", { required: true })}
+                  register={register("password", { required: true })}
                 />
               </FormItemSpacer>
             </fieldset>

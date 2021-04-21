@@ -1,35 +1,29 @@
-import { FC, TextareaHTMLAttributes } from "react"
+import { FC } from "react"
 
 import { dataset } from "../../utils/dataset"
+
+import type { UseFormRegisterReturn } from "react-hook-form"
 
 import styles from "./index.module.scss"
 
 declare namespace Textarea {
   type Props = Readonly<{
     label: string
-    name?: string
-    required?: boolean
-    placeholder?: string
-    rows?: number
-    cols?: number
     description?: string[] | string
     error?: Array<string | false | undefined> | string | false
-    // TODO: JSX.IntrinsicElements["textarea"]に変えて廃止
-    textareaRestAttributes?: TextareaHTMLAttributes<HTMLTextAreaElement>
+    register?: UseFormRegisterReturn
   }> &
     JSX.IntrinsicElements["textarea"]
 }
 
 const Textarea: FC<Textarea.Props> = ({
   label,
-  name,
   required = false,
   placeholder,
   rows = 3,
-  cols,
   description,
   error,
-  textareaRestAttributes,
+  register,
   ...restAttributes
 }) => {
   const descriptions = (Array.isArray(description)
@@ -48,12 +42,11 @@ const Textarea: FC<Textarea.Props> = ({
         {!required && <span className={styles.arbitrary}>(任意)</span>}
       </label>
       <textarea
-        name={name}
         className={styles.textarea}
         required={required}
         placeholder={placeholder}
-        {...{ rows, cols }}
-        {...textareaRestAttributes}
+        rows={rows}
+        {...register}
         {...restAttributes}
         {...dataset({ error: Boolean(errors?.length) })}
       />
