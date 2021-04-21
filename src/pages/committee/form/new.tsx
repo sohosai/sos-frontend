@@ -288,7 +288,7 @@ const NewForm: PageFC = () => {
                   errors.description?.types?.maxLength &&
                     "1024字以内で入力してください",
                 ]}
-                {...register("description", {
+                register={register("description", {
                   maxLength: 1024,
                 })}
               />
@@ -546,9 +546,12 @@ const NewForm: PageFC = () => {
                           errors?.items?.[index]?.description?.types
                             ?.maxLength && "1024字以内で入力してください",
                         ]}
-                        {...register(`items.${index}.description` as const, {
-                          maxLength: 1024,
-                        })}
+                        register={register(
+                          `items.${index}.description` as const,
+                          {
+                            maxLength: 1024,
+                          }
+                        )}
                       />
                     </FormItemSpacer>
                     {type === "text" && (
@@ -656,10 +659,13 @@ const NewForm: PageFC = () => {
                                 ?.minLength && "必須項目です",
                             ]}
                             required
-                            {...register(`items.${index}.boxes` as const, {
-                              required: true,
-                              minLength: 1,
-                            })}
+                            register={register(
+                              `items.${index}.boxes` as const,
+                              {
+                                required: true,
+                                minLength: 1,
+                              }
+                            )}
                           />
                         </FormItemSpacer>
                       </>
