@@ -96,7 +96,7 @@ const Init: PageFC = () => {
           return
         }
 
-        const responseBody = await err.response.json()
+        const responseBody = await err.response?.json()
         console.error(responseBody)
 
         switch (String(responseBody.status)) {

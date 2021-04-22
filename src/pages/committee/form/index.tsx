@@ -36,7 +36,7 @@ const ListForms: PageFC = () => {
         setForms(fetchedForms)
       })
       .catch(async (err) => {
-        const body = await err.response.json()
+        const body = await err.response?.json()
         // TODO: err handling
         setError(true)
         throw body ? body : err
