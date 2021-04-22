@@ -29,7 +29,7 @@ const ListUsers: PageFC = () => {
           setUsers(fetchedUsers)
         })
         .catch(async (e) => {
-          const body = await e.response.json()
+          const body = await e.response?.json()
           // TODO: err handling
           setError(true)
           throw body

@@ -196,7 +196,7 @@ const NewForm: PageFC = () => {
           setProcessing(false)
           // TODO: err handling
           setUnknownError(true)
-          const body = await err.response.json()
+          const body = await err.response?.json()
           throw body ? body : err
         })
         .then(async (res) => {
