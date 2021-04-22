@@ -8945,10 +8945,10 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-pathpida@0.15.0:
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/pathpida/-/pathpida-0.15.0.tgz#8dd5bc24da23be555ba0d1dbdc19fa5ffb55194c"
-  integrity sha512-w2iaudfrSflny9rE7+CYf+TTszaI38wxEjx9o979NJJ9dJIGsK3HnEIuGVZU++7GARAc5rbuD8Y5lNmRL5hdZg==
+pathpida@0.15.1:
+  version "0.15.1"
+  resolved "https://registry.yarnpkg.com/pathpida/-/pathpida-0.15.1.tgz#3b8d9db6916b6ccfc3c293753b5a7495fa8e1276"
+  integrity sha512-LwVjYdDy/9U3cosVe8TD5BNQqYEN+q4+CD1j7GiA8Ca6fVGa3ehZurBUJ0wcuhzn156H+FR3dy99eyw76xu8/g==
   dependencies:
     "@nuxt/config" "^2.15.4"
     chokidar "^3.5.1"
