@@ -14,7 +14,7 @@
   "devDependencies": {
     "@babel/core": "7.13.16",
     "@storybook/addon-actions": "6.2.8",
-    "@storybook/addon-essentials": "6.2.8",
+    "@storybook/addon-essentials": "6.2.9",
     "@storybook/addon-links": "6.2.8",
     "@storybook/preset-scss": "1.0.3",
     "@storybook/react": "6.2.8",
