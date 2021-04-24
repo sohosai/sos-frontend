@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 
 import { pagesPath } from "../../utils/$path"
 
-import { useAuth } from "../../contexts/auth"
+import { useAuthNeue } from "../../contexts/auth"
 import { useMyProject } from "../../contexts/myProject"
 
 import { Button, Panel, Spinner } from "../../components"
@@ -11,13 +11,15 @@ import { Button, Panel, Spinner } from "../../components"
 import styles from "./new.module.scss"
 
 const NewProject: PageFC = () => {
-  const { idToken } = useAuth()
+  const { authState } = useAuthNeue()
   const { myProjectState, createPendingProject } = useMyProject()
 
   const router = useRouter()
 
   const createSampleProject = async () => {
-    if (!idToken) return
+    if (authState === null || authState.firebaseUser == null) return
+
+    const idToken = await authState.firebaseUser.getIdToken()
 
     await createPendingProject({
       props: {

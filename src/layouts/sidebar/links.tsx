@@ -6,7 +6,7 @@ import { PageOptions } from "next"
 
 import { pagesPath } from "../../utils/$path"
 
-import { useAuth } from "../../contexts/auth"
+import { useAuthNeue } from "../../contexts/auth"
 
 import { isUserRoleHigherThanIncluding } from "../../types/models/user/userRole"
 
@@ -14,7 +14,8 @@ import styles from "./links.module.scss"
 
 export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
   const router = useRouter()
-  const { firebaseUser, sosUser } = useAuth()
+  const { authState } = useAuthNeue()
+  if (authState === null || authState.status === "error") return null
 
   if (layout === "empty") return null
 
@@ -44,14 +45,14 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         href: pagesPath.login.$url(),
         title: "ログイン",
         icon: "log-in",
-        visible: () => !firebaseUser,
+        visible: () => authState.status === "signedOut",
         active: () => router.pathname === pagesPath.login.$url().pathname,
       },
       {
         href: pagesPath.signup.$url(),
         title: "アカウント登録",
         icon: "user-plus",
-        visible: () => !firebaseUser,
+        visible: () => authState.status === "signedOut",
         active: () => router.pathname === pagesPath.signup.$url().pathname,
       },
       {
@@ -59,23 +60,22 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         title: "アカウント情報登録",
         icon: "user-circle",
         visible: () =>
-          Boolean(firebaseUser) &&
-          Boolean(firebaseUser?.emailVerified) &&
-          Boolean(!sosUser),
+          authState.status === "firebaseSignedIn" &&
+          Boolean(authState.firebaseUser.emailVerified),
         active: () => router.pathname === pagesPath.init.$url().pathname,
       },
       {
         href: pagesPath.project.new.$url(),
         title: "企画応募",
         icon: "write",
-        visible: () => Boolean(sosUser),
+        visible: () => authState.status === "bothSignedIn",
         active: () => router.pathname === pagesPath.project.new.$url().pathname,
       },
       {
         href: pagesPath.mypage.$url(),
         title: "マイページ",
         icon: "user-circle",
-        visible: () => Boolean(sosUser),
+        visible: () => authState.status === "bothSignedIn",
         active: () => router.pathname === pagesPath.mypage.$url().pathname,
       },
     ],
@@ -86,9 +86,9 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         icon: "home",
         visible: () =>
           Boolean(
-            sosUser &&
+            authState.status === "bothSignedIn" &&
               isUserRoleHigherThanIncluding({
-                userRole: sosUser.role,
+                userRole: authState.sosUser.role,
                 criteria: "committee",
               })
           ),
@@ -100,9 +100,9 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         icon: "task-list",
         visible: () =>
           Boolean(
-            sosUser &&
+            authState.status === "bothSignedIn" &&
               isUserRoleHigherThanIncluding({
-                userRole: sosUser.role,
+                userRole: authState.sosUser.role,
                 criteria: "committee",
               })
           ),
@@ -115,9 +115,9 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         icon: "users",
         visible: () =>
           Boolean(
-            sosUser &&
+            authState.status === "bothSignedIn" &&
               isUserRoleHigherThanIncluding({
-                userRole: sosUser.role,
+                userRole: authState.sosUser.role,
                 criteria: "committee_operator",
               })
           ),

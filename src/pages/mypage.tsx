@@ -1,11 +1,13 @@
 import type { PageFC } from "next"
 
-import { useAuth } from "../contexts/auth"
+import { useAuthNeue } from "../contexts/auth"
 
 const Mypage: PageFC = () => {
-  const { sosUser } = useAuth()
+  const { authState } = useAuthNeue()
 
-  console.log(sosUser)
+  if (authState?.sosUser) {
+    console.log(authState.sosUser)
+  }
 
   return <></>
 }

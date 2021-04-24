@@ -7,7 +7,7 @@ import { pagesPath } from "../utils/$path"
 
 import { useForm } from "react-hook-form"
 
-import { useAuth } from "../contexts/auth"
+import { useAuthNeue } from "../contexts/auth"
 
 import { Button, FormItemSpacer, TextField, Panel } from "../components"
 
@@ -34,7 +34,7 @@ const Login: PageFC = () => {
     mode: "onBlur",
   })
 
-  const { signin } = useAuth()
+  const { signin } = useAuthNeue()
 
   const onSubmit = async ({ email, password }: Inputs) => {
     setProcessing(true)

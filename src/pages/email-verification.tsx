@@ -2,7 +2,7 @@ import { useState } from "react"
 
 import { PageFC } from "next"
 
-import { useAuth } from "../contexts/auth"
+import { useAuthNeue } from "../contexts/auth"
 
 import { Button, Panel } from "../components"
 
@@ -14,7 +14,7 @@ const EmailVerification: PageFC = () => {
     undefined | "mailSent" | "error"
   >(undefined)
 
-  const { sendEmailVerification } = useAuth()
+  const { sendEmailVerification } = useAuthNeue()
 
   const resendVerification = () => {
     setProcessing(true)

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 
 import type { PageFC } from "next"
 
-import { useAuth } from "../../../contexts/auth"
+import { useAuthNeue } from "../../../contexts/auth"
 
 import { User } from "../../../types/models/user"
 import { userRoleToUiText } from "../../../types/models/user/userRole"
@@ -17,25 +17,31 @@ import { Button, Panel, Spinner } from "../../../components/"
 import styles from "./list.module.scss"
 
 const ListUsers: PageFC = () => {
-  const { idToken } = useAuth()
+  const { authState } = useAuthNeue()
 
   const [users, setUsers] = useState<User[] | null | undefined>(null)
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    if (idToken) {
-      listUsers({ idToken })
-        .then(({ users: fetchedUsers }) => {
-          setUsers(fetchedUsers)
-        })
-        .catch(async (e) => {
-          const body = await e.response?.json()
-          // TODO: err handling
-          setError(true)
-          throw body
-        })
-    }
-  }, [idToken])
+    ;(async () => {
+      if (authState === null || authState.firebaseUser == null) return
+
+      const idToken = await authState.firebaseUser.getIdToken()
+
+      if (idToken) {
+        listUsers({ idToken })
+          .then(({ users: fetchedUsers }) => {
+            setUsers(fetchedUsers)
+          })
+          .catch(async (e) => {
+            const body = await e.response?.json()
+            // TODO: err handling
+            setError(true)
+            throw body
+          })
+      }
+    })()
+  }, [authState])
 
   return (
     <div className={styles.wrapper}>
@@ -43,8 +49,10 @@ const ListUsers: PageFC = () => {
       <div className={styles.downloadButton}>
         <Button
           icon="download"
-          onClick={() => {
-            if (!idToken) return
+          onClick={async () => {
+            if (authState === null || authState.firebaseUser == null) return
+
+            const idToken = await authState.firebaseUser.getIdToken()
 
             exportUsers({ idToken })
               .then((res) => {
