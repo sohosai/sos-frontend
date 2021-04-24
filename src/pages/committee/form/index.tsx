@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import type { PageFC } from "next"
 import Link from "next/link"
 
-import { useAuth } from "../../../contexts/auth"
+import { useAuthNeue } from "../../../contexts/auth"
 
 import { Button, IconButton, Panel, Spinner } from "../../../components/"
 
@@ -23,25 +23,29 @@ import { saveAs } from "file-saver"
 import styles from "./index.module.scss"
 
 const ListForms: PageFC = () => {
-  const { idToken } = useAuth()
+  const { authState } = useAuthNeue()
 
   const [forms, setForms] = useState<Form[] | undefined | null>(null)
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    if (!idToken) return
+    ;(async () => {
+      if (authState === null || authState.firebaseUser == null) return
 
-    listForms({ idToken })
-      .then(({ forms: fetchedForms }) => {
-        setForms(fetchedForms)
-      })
-      .catch(async (err) => {
-        const body = await err.response?.json()
-        // TODO: err handling
-        setError(true)
-        throw body ? body : err
-      })
-  }, [idToken])
+      const idToken = await authState.firebaseUser.getIdToken()
+
+      listForms({ idToken })
+        .then(({ forms: fetchedForms }) => {
+          setForms(fetchedForms)
+        })
+        .catch(async (err) => {
+          const body = await err.response?.json()
+          // TODO: err handling
+          setError(true)
+          throw body ?? err
+        })
+    })()
+  }, [authState])
 
   useEffect(() => {
     dayjs.extend(utc)
@@ -97,8 +101,11 @@ const ListForms: PageFC = () => {
                   <IconButton
                     icon="download"
                     title="回答をCSVでダウンロード"
-                    onClick={() => {
-                      if (!idToken) return
+                    onClick={async () => {
+                      if (authState === null || authState.firebaseUser === null)
+                        return
+
+                      const idToken = await authState.firebaseUser.getIdToken()
 
                       exportFormAnswers({
                         props: {
