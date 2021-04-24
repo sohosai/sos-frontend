@@ -4,7 +4,7 @@ import { PageFC } from "next"
 
 import { useForm } from "react-hook-form"
 
-import { useAuth } from "../contexts/auth"
+import { useAuthNeue } from "../contexts/auth"
 
 import { Button, FormItemSpacer, TextField, Panel } from "../components"
 
@@ -29,7 +29,7 @@ const Signup: PageFC = () => {
     mode: "onBlur",
   })
 
-  const { signup, sendEmailVerification } = useAuth()
+  const { signup, sendEmailVerification } = useAuthNeue()
 
   const onSubmit = async ({ email, password }: Inputs) => {
     setProcessing(true)

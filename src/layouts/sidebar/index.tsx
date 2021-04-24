@@ -6,7 +6,7 @@ import Link from "next/link"
 
 import { pagesPath } from "../../utils/$path"
 
-import { useAuth } from "../../contexts/auth"
+import { useAuthNeue } from "../../contexts/auth"
 
 import { isUserRoleHigherThanIncluding } from "../../types/models/user/userRole"
 
@@ -15,7 +15,7 @@ import { Links } from "./links"
 import styles from "./index.module.scss"
 
 const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
-  const { sosUser, signout } = useAuth()
+  const { authState, signout } = useAuthNeue()
 
   const router = useRouter()
 
@@ -34,10 +34,10 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         <Links layout={layout} />
       </div>
       <div className={styles.bottomWrapper}>
-        {sosUser && (
+        {authState?.status === "bothSignedIn" && (
           <>
             {isUserRoleHigherThanIncluding({
-              userRole: sosUser.role,
+              userRole: authState.sosUser.role,
               criteria: "committee",
             }) && (
               <Link
@@ -66,8 +66,8 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
                 <i className={`jam-icon jam-user-circle ${styles.userIcon}`} />
                 <p
                   className={styles.userName}
-                  title={`${sosUser.name.last} ${sosUser.name.first}`}
-                >{`${sosUser.name.last} ${sosUser.name.first}`}</p>
+                  title={`${authState.sosUser.name.last} ${authState.sosUser.name.first}`}
+                >{`${authState.sosUser.name.last} ${authState.sosUser.name.first}`}</p>
               </a>
             </Link>
             <button

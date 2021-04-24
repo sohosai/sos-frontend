@@ -21,7 +21,7 @@ import type { FormItem } from "../../../types/models/form/item"
 
 import { createForm } from "../../../lib/api/form/createForm"
 
-import { useAuth } from "../../../contexts/auth"
+import { useAuthNeue } from "../../../contexts/auth"
 
 import { pagesPath } from "../../../utils/$path"
 
@@ -63,7 +63,7 @@ type Inputs = {
 }
 
 const NewForm: PageFC = () => {
-  const { idToken } = useAuth()
+  const { authState } = useAuthNeue()
 
   const router = useRouter()
 
@@ -100,7 +100,12 @@ const NewForm: PageFC = () => {
     attributes,
     items,
   }: Inputs) => {
-    if (!idToken) throw new Error("idToken must not be null")
+    if (authState === null || authState.firebaseUser == null) {
+      setUnknownError(true)
+      return
+    }
+
+    const idToken = await authState.firebaseUser.getIdToken()
 
     setError(undefined)
 
