@@ -45,13 +45,60 @@ export type Auth = FirebaseAuth & SosAuth
 
 const authContext = createContext<Auth | undefined>(undefined)
 
+type AuthNeueState =
+  | {
+      status: "bothSignedIn"
+      sosUser: User
+      firebaseUser: firebase.User
+    }
+  | {
+      status: "firebaseSignedIn"
+      firebaseUser: firebase.User
+      sosUser: null
+    }
+
+  // チェック済みでログイン状態でない
+  | {
+      status: "signedOut"
+      sosUser: null
+      firebaseUser: null
+    }
+
+  // チェック時にエラー
+  | {
+      status: "error"
+      sosUser: null
+      firebaseUser: null
+    }
+
+  // チェック前
+  | null
+
+type AuthNeue = {
+  authState: AuthNeueState
+} & Omit<FirebaseAuth, "firebaseUser" | "idToken"> & {
+    setSosUser: (user: User) => void
+  }
+
+const authNeueContext = createContext<AuthNeue | undefined>(undefined)
+
 const useAuth = (): Auth => {
   const ctx = useContext(authContext)
   if (!ctx) throw new Error("auth context is undefined")
   return ctx
 }
 
-const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
+const useAuthNeue = (): AuthNeue => {
+  const ctx = useContext(authNeueContext)
+  if (!ctx) throw new Error("authNeue context is undefined")
+  return ctx
+}
+
+const AuthContextCore = ({
+  rbpac,
+}: {
+  rbpac: PageOptions["rbpac"]
+}): { auth: Auth; authNeue: AuthNeue } => {
   // null はチェック前
   const [sosUser, setSosUser] = useState<User | undefined | null>(null)
   const [firebaseUser, setFirebaseUser] = useState<
@@ -59,6 +106,8 @@ const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
   >(null)
 
   const [idToken, setIdToken] = useState<string | null>(null)
+
+  const [authNeueState, setAuthNeueState] = useState<AuthNeueState>(null)
 
   useRbpacRedirect({
     rbpac,
@@ -121,6 +170,22 @@ const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
       })
   }
 
+  const setSosUserNeue = async (user: User) => {
+    if (
+      authNeueState === null ||
+      authNeueState.status === "error" ||
+      authNeueState.status === "signedOut"
+    ) {
+      throw new Error()
+    } else {
+      setAuthNeueState({
+        ...authNeueState,
+        status: "bothSignedIn",
+        sosUser: user,
+      })
+    }
+  }
+
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
@@ -141,50 +206,106 @@ const AuthContextCore = ({ rbpac }: { rbpac: PageOptions["rbpac"] }): Auth => {
 
             if (resBody.status === 403) {
               if (resBody.error.id === "UNVERIFIED_EMAIL_ADDRESS") return
-              if (resBody.error.type === "NOT_SIGNED_UP") return
+
+              if (resBody.error.type === "NOT_SIGNED_UP") {
+                setAuthNeueState({
+                  status: "firebaseSignedIn",
+                  firebaseUser: user,
+                  sosUser: null,
+                })
+                return
+              }
             }
+
+            setAuthNeueState({
+              status: "error",
+              sosUser: null,
+              firebaseUser: null,
+            })
 
             throw resBody
           } else {
             // SOS バックエンド以外のエラーの場合
             setSosUser(null)
+            setAuthNeueState({
+              status: "error",
+              sosUser: null,
+              firebaseUser: null,
+            })
             throw err
           }
         })
+
         setSosUser(res ? res.user : undefined)
+
+        if (res && res.user) {
+          setAuthNeueState({
+            status: "bothSignedIn",
+            sosUser: res.user,
+            firebaseUser: user,
+          })
+        } else {
+          setAuthNeueState({
+            status: "error",
+            sosUser: null,
+            firebaseUser: null,
+          })
+        }
       } else {
         setFirebaseUser(undefined)
         setSosUser(undefined)
+
+        setAuthNeueState({
+          status: "signedOut",
+          sosUser: null,
+          firebaseUser: null,
+        })
       }
     })
   }, [])
 
   return {
-    sosUser,
-    setSosUser,
-    firebaseUser,
-    idToken,
-    signin,
-    signup,
-    sendEmailVerification,
-    signout,
-    sendPasswordResetEmail,
-    confirmPasswordReset,
+    auth: {
+      sosUser,
+      setSosUser,
+      firebaseUser,
+      idToken,
+      signin,
+      signup,
+      sendEmailVerification,
+      signout,
+      sendPasswordResetEmail,
+      confirmPasswordReset,
+    },
+    authNeue: {
+      authState: authNeueState,
+      signin,
+      signup,
+      sendEmailVerification,
+      signout,
+      sendPasswordResetEmail,
+      confirmPasswordReset,
+      setSosUser: setSosUserNeue,
+    },
   }
 }
 
 const AuthProvider: FC<Pick<PageOptions, "rbpac">> = ({ rbpac, children }) => {
-  const auth = AuthContextCore({ rbpac })
+  const { auth, authNeue } = AuthContextCore({ rbpac })
 
   return (
     <>
       {auth.firebaseUser === null || auth.sosUser === null ? (
         <FullScreenLoading />
       ) : (
-        <authContext.Provider value={auth}>{children}</authContext.Provider>
+        <authContext.Provider value={auth}>
+          <authNeueContext.Provider value={authNeue}>
+            {children}
+          </authNeueContext.Provider>
+        </authContext.Provider>
       )}
     </>
   )
 }
 
-export { AuthProvider, useAuth }
+export { AuthProvider, useAuth, useAuthNeue }
