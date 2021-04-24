@@ -17,10 +17,7 @@ import type {
   ProjectAttribute,
 } from "../../../types/models/project"
 import type { ProjectQuery } from "../../../types/models/project/projectQuery"
-import type {
-  FormItem,
-  FormItemInFormEditor,
-} from "../../../types/models/form/item"
+import type { FormItem } from "../../../types/models/form/item"
 
 import { createForm } from "../../../lib/api/form/createForm"
 
@@ -62,8 +59,7 @@ type Inputs = {
   attributes: {
     [key in ProjectAttribute]: boolean
   }
-  items: FormItemInFormEditor[]
-  // items: FormItem[]
+  items: FormItem[]
 }
 
 const NewForm: PageFC = () => {
@@ -112,29 +108,6 @@ const NewForm: PageFC = () => {
       setError("質問項目を追加してください")
       return
     }
-
-    // FIXME: FormItem[]
-    const normalizedItems: any = items.map((item) => {
-      return {
-        ...item,
-        ...(item.type === "checkbox"
-          ? {
-              boxes: item.boxes
-                .split("\n")
-                .map((label) => {
-                  if (!label) return
-                  return {
-                    id: uuid(),
-                    label,
-                  }
-                })
-                .filter((box): box is { id: string; label: string } =>
-                  Boolean(box)
-                ),
-            }
-          : {}),
-      }
-    })
 
     const attributesArray = Object.entries(attributes)
       .map(([attribute, value]) => {
@@ -187,8 +160,7 @@ const NewForm: PageFC = () => {
             includes: [],
             excludes: [],
           },
-          items: normalizedItems,
-          // items,
+          items,
         },
         idToken,
       })
@@ -231,7 +203,7 @@ const NewForm: PageFC = () => {
           name: "",
           description: "",
           conditions: [],
-          boxes: "",
+          boxes: [],
         })
         break
       }
@@ -677,7 +649,24 @@ const NewForm: PageFC = () => {
                               {
                                 required: true,
                                 minLength: 1,
-                                setValueAs: (value) => value?.trim(),
+                                setValueAs: (value) =>
+                                  value
+                                    ?.trim()
+                                    .split("\n")
+                                    .map((label: string) => {
+                                      if (!label) return
+                                      return {
+                                        id: uuid(),
+                                        label: label.trim(),
+                                      }
+                                    })
+                                    .filter(
+                                      (
+                                        nullable:
+                                          | { id: string; label: string }
+                                          | undefined
+                                      ) => Boolean(nullable)
+                                    ),
                               }
                             )}
                           />
