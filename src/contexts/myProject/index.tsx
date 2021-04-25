@@ -1,9 +1,8 @@
 import { useState, useEffect, createContext, useContext, FC } from "react"
 
 import type { Project, PendingProject } from "../../types/models/project"
-import { User } from "../../types/models/user"
 
-import { useAuth } from "../auth"
+import { AuthNeueState, useAuthNeue } from "../auth"
 
 import { listMyPendingProjects } from "../../lib/api/project/listMyPendingProjects"
 import { listMyProjects } from "../../lib/api/project/listMyProjects"
@@ -48,13 +47,7 @@ const useMyProject = (): MyProjectContext => {
   return ctx
 }
 
-const MyProjectContextCore = ({
-  idToken,
-  sosUser,
-}: {
-  idToken: string | null
-  sosUser: User | null | undefined
-}): MyProjectContext => {
+const MyProjectContextCore = (authState: AuthNeueState): MyProjectContext => {
   const [myProjectState, setMyProjectState] = useState<MyProjectState>(null)
 
   const createPendingProject = async (props: createPendingProjectApi.Props) => {
@@ -79,7 +72,9 @@ const MyProjectContextCore = ({
 
   useEffect(() => {
     ;(async () => {
-      if (!idToken || !sosUser) return
+      if (authState?.status !== "bothSignedIn") return
+
+      const idToken = await authState.firebaseUser.getIdToken()
 
       try {
         //TODO: project/get になったら変える
@@ -89,11 +84,12 @@ const MyProjectContextCore = ({
         const { projects: fetchedProjects } = await listMyProjects({ idToken })
 
         const myPendingProject = fetchedPendingProjects.find(
-          ({ author_id }) => author_id === sosUser.id
+          ({ author_id }) => author_id === authState.sosUser.id
         )
         const myProject = fetchedProjects.find(
           ({ owner_id, subowner_id }) =>
-            owner_id === sosUser.id || subowner_id === sosUser.id
+            owner_id === authState.sosUser.id ||
+            subowner_id === authState.sosUser.id
         )
 
         if (myPendingProject) {
@@ -123,7 +119,7 @@ const MyProjectContextCore = ({
         console.error(body ? body : err)
       }
     })()
-  }, [idToken, sosUser])
+  }, [authState])
 
   return {
     myProjectState,
@@ -132,9 +128,9 @@ const MyProjectContextCore = ({
 }
 
 const MyProjectProvider: FC = ({ children }) => {
-  const { idToken, sosUser } = useAuth()
+  const { authState } = useAuthNeue()
 
-  const ctx = MyProjectContextCore({ idToken, sosUser })
+  const ctx = MyProjectContextCore(authState)
 
   return (
     <>
