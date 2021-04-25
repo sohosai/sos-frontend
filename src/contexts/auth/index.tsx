@@ -25,26 +25,13 @@ if (!firebase.apps.length) {
   })
 }
 
-type FirebaseAuth = {
-  firebaseUser: firebase.User | undefined | null
-  idToken: string | null
+type FirebaseAuthMethods = {
   signin: (email: string, password: string) => Promise<firebase.User | null>
   signup: (email: string, password: string) => Promise<firebase.User | null>
   sendEmailVerification: () => Promise<void>
   signout: () => void
   sendPasswordResetEmail: (email: string) => Promise<boolean>
-  confirmPasswordReset: (code: string, password: string) => Promise<boolean>
 }
-
-// TODO: sos の login/signup もこの context に生やした方が良いかも
-type SosAuth = {
-  sosUser: User | undefined | null
-  setSosUser: (user: User) => void
-}
-
-export type Auth = FirebaseAuth & SosAuth
-
-const authContext = createContext<Auth | undefined>(undefined)
 
 export type AuthNeueState =
   | {
@@ -77,17 +64,11 @@ export type AuthNeueState =
 
 type AuthNeue = {
   authState: AuthNeueState
-} & Omit<FirebaseAuth, "firebaseUser" | "idToken"> & {
+} & FirebaseAuthMethods & {
     initSosUser: (props: signupSos.Props["props"]) => Promise<User>
   }
 
 const authNeueContext = createContext<AuthNeue | undefined>(undefined)
-
-const useAuth = (): Auth => {
-  const ctx = useContext(authContext)
-  if (!ctx) throw new Error("auth context is undefined")
-  return ctx
-}
 
 const useAuthNeue = (): AuthNeue => {
   const ctx = useContext(authNeueContext)
@@ -99,15 +80,7 @@ const AuthContextCore = ({
   rbpac,
 }: {
   rbpac: PageOptions["rbpac"]
-}): { auth: Auth; authNeue: AuthNeue } => {
-  // null はチェック前
-  const [sosUser, setSosUser] = useState<User | undefined | null>(null)
-  const [firebaseUser, setFirebaseUser] = useState<
-    firebase.User | undefined | null
-  >(null)
-
-  const [idToken, setIdToken] = useState<string | null>(null)
-
+}): AuthNeue => {
   const [authNeueState, setAuthNeueState] = useState<AuthNeueState>(null)
 
   useRbpacRedirect({
@@ -120,7 +93,6 @@ const AuthContextCore = ({
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((response) => {
-        setFirebaseUser(response.user)
         return response.user
       })
   }
@@ -130,7 +102,6 @@ const AuthContextCore = ({
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((response) => {
-        setFirebaseUser(response.user)
         return response.user
       })
   }
@@ -143,28 +114,13 @@ const AuthContextCore = ({
   }
 
   const signout = async () => {
-    return await firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        setFirebaseUser(null)
-        setIdToken(null)
-      })
+    return await firebase.auth().signOut()
   }
 
   const sendPasswordResetEmail = async (email: string) => {
     return await firebase
       .auth()
       .sendPasswordResetEmail(email)
-      .then(() => {
-        return true
-      })
-  }
-
-  const confirmPasswordReset = async (code: string, password: string) => {
-    return await firebase
-      .auth()
-      .confirmPasswordReset(code, password)
       .then(() => {
         return true
       })
@@ -203,22 +159,17 @@ const AuthContextCore = ({
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
-        setFirebaseUser(user)
-
-        const fetchedIdToken = await user.getIdToken(true).catch((err) => {
+        const idToken = await user.getIdToken(true).catch((err) => {
           throw err
         })
-        setIdToken(fetchedIdToken)
 
         getMe({
-          idToken: fetchedIdToken,
+          idToken,
         })
           .catch(async (err) => {
             const body = await err.response?.json()
 
             if (body) {
-              setSosUser(undefined)
-
               if (body.status === 403) {
                 if (
                   body.error.type === "NOT_SIGNED_UP" ||
@@ -237,7 +188,6 @@ const AuthContextCore = ({
               throw body
             } else {
               // SOS バックエンド以外のエラーの場合
-              setSosUser(null)
               setAuthNeueState({
                 status: "error",
                 sosUser: null,
@@ -256,8 +206,6 @@ const AuthContextCore = ({
               return
             }
 
-            setSosUser(res.user ?? undefined)
-
             if (res?.user) {
               setAuthNeueState({
                 status: "bothSignedIn",
@@ -273,9 +221,6 @@ const AuthContextCore = ({
             }
           })
       } else {
-        setFirebaseUser(undefined)
-        setSosUser(undefined)
-
         setAuthNeueState({
           status: "signedOut",
           sosUser: null,
@@ -286,47 +231,30 @@ const AuthContextCore = ({
   }, [])
 
   return {
-    auth: {
-      sosUser,
-      setSosUser,
-      firebaseUser,
-      idToken,
-      signin,
-      signup,
-      sendEmailVerification,
-      signout,
-      sendPasswordResetEmail,
-      confirmPasswordReset,
-    },
-    authNeue: {
-      authState: authNeueState,
-      signin,
-      signup,
-      sendEmailVerification,
-      signout,
-      sendPasswordResetEmail,
-      confirmPasswordReset,
-      initSosUser,
-    },
+    authState: authNeueState,
+    signin,
+    signup,
+    sendEmailVerification,
+    signout,
+    sendPasswordResetEmail,
+    initSosUser,
   }
 }
 
 const AuthProvider: FC<Pick<PageOptions, "rbpac">> = ({ rbpac, children }) => {
-  const { auth, authNeue } = AuthContextCore({ rbpac })
+  const authNeue = AuthContextCore({ rbpac })
 
   return (
     <>
       {authNeue.authState === null || authNeue.authState.status === "error" ? (
         <FullScreenLoading />
       ) : (
-        <authContext.Provider value={auth}>
-          <authNeueContext.Provider value={authNeue}>
-            {children}
-          </authNeueContext.Provider>
-        </authContext.Provider>
+        <authNeueContext.Provider value={authNeue}>
+          {children}
+        </authNeueContext.Provider>
       )}
     </>
   )
 }
 
-export { AuthProvider, useAuth, useAuthNeue }
+export { AuthProvider, useAuthNeue }
