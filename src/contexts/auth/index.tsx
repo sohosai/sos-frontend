@@ -45,7 +45,7 @@ export type Auth = FirebaseAuth & SosAuth
 
 const authContext = createContext<Auth | undefined>(undefined)
 
-type AuthNeueState =
+export type AuthNeueState =
   | {
       status: "bothSignedIn"
       sosUser: User
@@ -111,8 +111,7 @@ const AuthContextCore = ({
 
   useRbpacRedirect({
     rbpac,
-    firebaseUser,
-    sosUser,
+    authState: authNeueState,
   })
 
   const signin = async (email: string, password: string) => {
@@ -302,7 +301,7 @@ const AuthProvider: FC<Pick<PageOptions, "rbpac">> = ({ rbpac, children }) => {
 
   return (
     <>
-      {auth.firebaseUser === null || auth.sosUser === null ? (
+      {authNeue.authState === null || authNeue.authState.status === "error" ? (
         <FullScreenLoading />
       ) : (
         <authContext.Provider value={auth}>
