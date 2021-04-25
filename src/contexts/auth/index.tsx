@@ -10,6 +10,7 @@ import "firebase/auth"
 import type { User } from "../../types/models/user"
 
 import { getMe } from "../../lib/api/me/getMe"
+import { signup as signupSos } from "../../lib/api/signup"
 
 import { FullScreenLoading } from "../../foundations/fullScreenLoading"
 
@@ -77,7 +78,7 @@ export type AuthNeueState =
 type AuthNeue = {
   authState: AuthNeueState
 } & Omit<FirebaseAuth, "firebaseUser" | "idToken"> & {
-    setSosUser: (user: User) => void
+    initSosUser: (props: signupSos.Props["props"]) => Promise<User>
   }
 
 const authNeueContext = createContext<AuthNeue | undefined>(undefined)
@@ -169,20 +170,34 @@ const AuthContextCore = ({
       })
   }
 
-  const setSosUserNeue = async (user: User) => {
-    if (
-      authNeueState === null ||
-      authNeueState.status === "error" ||
-      authNeueState.status === "signedOut"
-    ) {
-      throw new Error()
-    } else {
-      setAuthNeueState({
-        ...authNeueState,
-        status: "bothSignedIn",
-        sosUser: user,
-      })
+  const initSosUser = async (props: signupSos.Props["props"]) => {
+    if (authNeueState === null) {
+      throw new Error("authNeueState is null")
     }
+    if (
+      authNeueState.status === "error" ||
+      authNeueState.status === "signedOut" ||
+      authNeueState.status === "bothSignedIn"
+    ) {
+      console.log(authNeueState)
+      throw new Error("Can't init sosUser in this auth status")
+    }
+
+    const { user } = await signupSos({
+      props,
+      idToken: await authNeueState.firebaseUser.getIdToken(),
+    }).catch(async (err) => {
+      const body = await err.response?.json()
+      throw body ?? err
+    })
+
+    setAuthNeueState({
+      status: "bothSignedIn",
+      firebaseUser: authNeueState.firebaseUser,
+      sosUser: user,
+    })
+
+    return user
   }
 
   useEffect(() => {
@@ -291,7 +306,7 @@ const AuthContextCore = ({
       signout,
       sendPasswordResetEmail,
       confirmPasswordReset,
-      setSosUser: setSosUserNeue,
+      initSosUser,
     },
   }
 }

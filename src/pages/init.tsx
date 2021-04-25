@@ -7,11 +7,9 @@ import { pagesPath } from "../utils/$path"
 
 import { useForm } from "react-hook-form"
 
-import { signup } from "../lib/api/signup"
-
 import type { UserCategory } from "../types/models/user"
 
-import { useAuth } from "../contexts/auth"
+import { useAuthNeue } from "../contexts/auth"
 
 import {
   Panel,
@@ -40,7 +38,7 @@ const Init: PageFC = () => {
   const [otherError, setOtherError] = useState<string>()
   const [unknownError, setUnknownError] = useState(false)
 
-  const { idToken, setSosUser } = useAuth()
+  const { initSosUser } = useAuthNeue()
 
   const router = useRouter()
 
@@ -53,7 +51,7 @@ const Init: PageFC = () => {
     mode: "onBlur",
   })
 
-  const onSubmit = ({
+  const onSubmit = async ({
     nameFirst,
     nameLast,
     kanaNameFirst,
@@ -62,48 +60,37 @@ const Init: PageFC = () => {
     affiliation,
     category,
   }: Inputs) => {
-    if (!idToken) throw new Error("IdToken must not be null")
-
     setProcessing(true)
 
-    signup({
-      props: {
-        name: {
-          first: nameFirst,
-          last: nameLast,
-        },
-        kana_name: {
-          first: katakanaToHiragana(kanaNameFirst),
-          last: katakanaToHiragana(kanaNameLast),
-        },
-        phone_number: "+81" + phoneNumber.replaceAll("-", "").slice(1),
-        affiliation,
-        category,
+    initSosUser({
+      name: {
+        first: nameFirst,
+        last: nameLast,
       },
-      idToken,
+      kana_name: {
+        first: katakanaToHiragana(kanaNameFirst),
+        last: katakanaToHiragana(kanaNameLast),
+      },
+      phone_number: "+81" + phoneNumber.replaceAll("-", "").slice(1),
+      affiliation,
+      category,
     })
-      .then(({ user }) => {
-        setProcessing(false)
-        setSosUser(user)
-
-        router.push(pagesPath.mypage.$url())
-      })
       .catch(async (err) => {
         setProcessing(false)
 
-        if (err.message === "IDTOKEN_UNDEFINED") {
-          router.push(pagesPath.login.$url())
-          return
+        const body = await err.response?.json()
+
+        if (!body) {
+          // FIXME:
+          setUnknownError(true)
+          throw err
         }
 
-        const responseBody = await err.response?.json()
-        console.error(responseBody)
-
-        switch (String(responseBody.status)) {
+        switch (String(body.status)) {
           case "400": {
-            switch (responseBody.error.type) {
+            switch (body.error.type) {
               case "API": {
-                if (responseBody.error.info.type === "INVALID_FIELD") {
+                if (body.error.info.type === "INVALID_FIELD") {
                   setOtherError("入力内容が正しくありません")
                 } else {
                   setUnknownError(true)
@@ -111,7 +98,7 @@ const Init: PageFC = () => {
                 break
               }
               case "AUTHENTICATION": {
-                if (responseBody.error.info.type === "UNAUTHORIZED") {
+                if (body.error.info.type === "UNAUTHORIZED") {
                   router.push(pagesPath.login.$url())
                 } else {
                   // FIXME:
@@ -146,6 +133,12 @@ const Init: PageFC = () => {
             break
           }
         }
+
+        throw body
+      })
+      .then(() => {
+        setProcessing(false)
+        router.push(pagesPath.mypage.$url())
       })
   }
 
@@ -246,7 +239,7 @@ const Init: PageFC = () => {
               <FormItemSpacer>
                 <TextField
                   type="text"
-                  label="所属学群・学類 "
+                  label="所属学群・学類"
                   placeholder="〇〇学群 〇〇学類"
                   error={[
                     errors?.affiliation?.types?.required && "必須項目です",
