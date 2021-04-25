@@ -196,61 +196,68 @@ const AuthContextCore = ({
         })
         setIdToken(fetchedIdToken)
 
-        const res = await getMe({
+        getMe({
           idToken: fetchedIdToken,
-        }).catch(async (err) => {
-          const resBody = await err.response?.json()
+        })
+          .catch(async (err) => {
+            const body = await err.response?.json()
 
-          if (resBody) {
-            setSosUser(undefined)
+            if (body) {
+              setSosUser(undefined)
 
-            if (resBody.status === 403) {
-              if (resBody.error.id === "UNVERIFIED_EMAIL_ADDRESS") return
-
-              if (resBody.error.type === "NOT_SIGNED_UP") {
-                setAuthNeueState({
-                  status: "firebaseSignedIn",
-                  firebaseUser: user,
-                  sosUser: null,
-                })
-                return
+              if (body.status === 403) {
+                if (
+                  body.error.type === "NOT_SIGNED_UP" ||
+                  body.error.id === "UNVERIFIED_EMAIL_ADDRESS"
+                ) {
+                  return "firebaseSignedIn" as const
+                }
               }
+
+              setAuthNeueState({
+                status: "error",
+                sosUser: null,
+                firebaseUser: null,
+              })
+
+              throw body
+            } else {
+              // SOS バックエンド以外のエラーの場合
+              setSosUser(null)
+              setAuthNeueState({
+                status: "error",
+                sosUser: null,
+                firebaseUser: null,
+              })
+              throw err
+            }
+          })
+          .then((res) => {
+            if (res === "firebaseSignedIn") {
+              setAuthNeueState({
+                status: "firebaseSignedIn",
+                firebaseUser: user,
+                sosUser: null,
+              })
+              return
             }
 
-            setAuthNeueState({
-              status: "error",
-              sosUser: null,
-              firebaseUser: null,
-            })
+            setSosUser(res.user ?? undefined)
 
-            throw resBody
-          } else {
-            // SOS バックエンド以外のエラーの場合
-            setSosUser(null)
-            setAuthNeueState({
-              status: "error",
-              sosUser: null,
-              firebaseUser: null,
-            })
-            throw err
-          }
-        })
-
-        setSosUser(res ? res.user : undefined)
-
-        if (res && res.user) {
-          setAuthNeueState({
-            status: "bothSignedIn",
-            sosUser: res.user,
-            firebaseUser: user,
+            if (res?.user) {
+              setAuthNeueState({
+                status: "bothSignedIn",
+                sosUser: res.user,
+                firebaseUser: user,
+              })
+            } else {
+              setAuthNeueState({
+                status: "error",
+                sosUser: null,
+                firebaseUser: null,
+              })
+            }
           })
-        } else {
-          setAuthNeueState({
-            status: "error",
-            sosUser: null,
-            firebaseUser: null,
-          })
-        }
       } else {
         setFirebaseUser(undefined)
         setSosUser(undefined)
