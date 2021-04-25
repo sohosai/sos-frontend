@@ -14,91 +14,92 @@ import type { PageOptions } from "next"
 
 import { pagesPath } from "../../utils/$path"
 
-import firebase from "firebase/app"
-
-import type { User } from "../../types/models/user"
 import {
   isUserRoleHigherThanIncluding,
   isUserRoleLowerThanIncluding,
 } from "../../types/models/user/userRole"
 
+import { AuthNeueState } from "."
+
 export const useRbpacRedirect = ({
   rbpac,
-  firebaseUser,
-  sosUser,
+  authState,
 }: {
   rbpac: PageOptions["rbpac"]
-  firebaseUser: firebase.User | null | undefined
-  sosUser: User | null | undefined
+  authState: AuthNeueState
 }): void => {
   const router = useRouter()
 
   useEffect(() => {
-    if (firebaseUser === null || sosUser === null) return
+    ;(async () => {
+      if (authState === null || authState.status === "error") return
 
-    if (firebaseUser && !firebaseUser.emailVerified) {
-      if (router.pathname !== pagesPath.email_verification.$url().pathname) {
-        router.push(pagesPath.email_verification.$url())
-      }
-      return
-    }
-
-    if (firebaseUser && sosUser === undefined) {
-      if (router.pathname !== pagesPath.init.$url().pathname) {
-        router.push(pagesPath.init.$url())
-      }
-      return
-    }
-
-    if (
-      firebaseUser === undefined &&
-      router.pathname === pagesPath.init.$url().pathname
-    ) {
-      router.push(pagesPath.login.$url())
-    }
-
-    const userRole = sosUser ? sosUser?.role : "guest"
-
-    // TODO: toast
-    const redirect = (): void => {
-      if (firebaseUser === undefined) {
-        if (router.pathname !== pagesPath.login.$url().pathname) {
-          router.push(pagesPath.login.$url())
+      if (authState.firebaseUser?.emailVerified === false) {
+        if (router.pathname !== pagesPath.email_verification.$url().pathname) {
+          router.push(pagesPath.email_verification.$url())
         }
         return
       }
 
-      if (userRole === "guest") {
+      if (authState.status === "firebaseSignedIn") {
+        if (router.pathname !== pagesPath.init.$url().pathname) {
+          router.push(pagesPath.init.$url())
+        }
+        return
+      }
+
+      if (
+        authState.status === "signedOut" &&
+        router.pathname === pagesPath.init.$url().pathname
+      ) {
         router.push(pagesPath.login.$url())
-      } else {
-        router.push(pagesPath.mypage.$url())
       }
-    }
 
-    switch (rbpac.type) {
-      case "public": {
-        return
-      }
-      case "higherThanIncluding": {
-        if (
-          !isUserRoleHigherThanIncluding({ userRole, criteria: rbpac.role })
-        ) {
-          redirect()
+      const userRole = authState.sosUser?.role ?? "guest"
+
+      // TODO: toast
+      const redirect = (): void => {
+        if (authState.status === "signedOut") {
+          if (router.pathname !== pagesPath.login.$url().pathname) {
+            router.push(pagesPath.login.$url())
+          }
+          return
         }
-        return
-      }
-      case "lowerThanIncluding": {
-        if (!isUserRoleLowerThanIncluding({ userRole, criteria: rbpac.role })) {
-          redirect()
+
+        if (userRole === "guest") {
+          router.push(pagesPath.login.$url())
+        } else {
+          router.push(pagesPath.mypage.$url())
         }
-        return
       }
-      case "enum": {
-        if (!rbpac.role.includes(userRole)) {
-          redirect()
+
+      switch (rbpac.type) {
+        case "public": {
+          return
         }
-        return
+        case "higherThanIncluding": {
+          if (
+            !isUserRoleHigherThanIncluding({ userRole, criteria: rbpac.role })
+          ) {
+            redirect()
+          }
+          return
+        }
+        case "lowerThanIncluding": {
+          if (
+            !isUserRoleLowerThanIncluding({ userRole, criteria: rbpac.role })
+          ) {
+            redirect()
+          }
+          return
+        }
+        case "enum": {
+          if (!rbpac.role.includes(userRole)) {
+            redirect()
+          }
+          return
+        }
       }
-    }
+    })()
   })
 }
