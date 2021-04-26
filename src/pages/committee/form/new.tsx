@@ -176,10 +176,8 @@ const NewForm: PageFC = () => {
           const body = await err.response?.json()
           throw body ? body : err
         })
-        .then(async (res) => {
+        .then(async () => {
           setProcessing(false)
-
-          console.log(res)
 
           router.push(pagesPath.committee.form.$url())
         })

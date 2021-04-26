@@ -52,7 +52,6 @@ const ListProjectForms: PageFC = () => {
           },
           idToken,
         })
-        console.log(fetchedForms)
         setForms(fetchedForms)
       } catch (err) {
         setForms(undefined)
