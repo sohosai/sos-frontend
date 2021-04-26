@@ -35,8 +35,6 @@ const NewProject: PageFC = () => {
       idToken,
     })
       .then((res) => {
-        console.log(res)
-
         // TODO: リダイレクトなど
         router.push(pagesPath.mypage.$url())
       })
