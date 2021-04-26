@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 
 import type { PageFC } from "next"
+import Link from "next/link"
 
 import { listProjectForms } from "../../../lib/api/form/listProjectForms"
 
@@ -8,6 +9,10 @@ import { Form } from "../../../types/models/form"
 
 import { useAuthNeue } from "../../../contexts/auth"
 import { useMyProject } from "../../../contexts/myProject"
+
+import dayjs from "dayjs"
+import utc from "dayjs/plugin/utc"
+import timezone from "dayjs/plugin/timezone"
 
 import { Panel, Spinner } from "../../../components"
 
@@ -58,13 +63,66 @@ const ListProjectForms: PageFC = () => {
     })()
   }, [authState, myProjectState])
 
+  useEffect(() => {
+    dayjs.extend(utc)
+    dayjs.extend(timezone)
+  }, [])
+
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.title}>申請一覧</h1>
       <div className={styles.panelWrapper}>
         {forms?.length ? (
           <>
-            <p>申請一覧</p>
+            {forms.map((form) => (
+              <div className={styles.formRowWrapper} key={form.id}>
+                {/* TODO: */}
+                <Link href={"#"}>
+                  <a>
+                    <Panel
+                      style={{
+                        paddingTop: "24px",
+                        paddingBottom: "24px",
+                      }}
+                    >
+                      <div className={styles.formRowInner}>
+                        <p className={styles.formName}>{form.name}</p>
+                        <p className={styles.formDate}>
+                          {dayjs
+                            .tz(form.starts_at, "Asia/Tokyo")
+                            .format("M/D HH:mm")}
+                          <i
+                            className={`jam-icon jam-arrow-right ${styles.formDateIcon}`}
+                          />
+                          {dayjs
+                            .tz(form.ends_at, "Asia/Tokyo")
+                            .format("M/D HH:mm")}
+                          <span className={styles.formDateState}>
+                            {(() => {
+                              if (
+                                dayjs().isBefore(
+                                  dayjs.tz(form.starts_at, "Asia/Tokyo")
+                                )
+                              )
+                                return "開始前"
+
+                              if (
+                                dayjs().isAfter(
+                                  dayjs.tz(form.ends_at, "Asia/Tokyo")
+                                )
+                              )
+                                return "締切済"
+
+                              return "受付中"
+                            })()}
+                          </span>
+                        </p>
+                      </div>
+                    </Panel>
+                  </a>
+                </Link>
+              </div>
+            ))}
           </>
         ) : (
           <Panel>
