@@ -10,3 +10,12 @@ export default {
 export const Index: Story<Spinner.Props> = (options) => {
   return <Spinner {...options} />
 }
+
+Index.argTypes = {
+  color: {
+    defaultValue: "gray",
+  },
+  size: {
+    defaultValue: "md",
+  },
+}
