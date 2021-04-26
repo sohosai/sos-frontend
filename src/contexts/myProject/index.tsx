@@ -7,6 +7,7 @@ import { AuthNeueState, useAuthNeue } from "../auth"
 import { listMyPendingProjects } from "../../lib/api/project/listMyPendingProjects"
 import { listMyProjects } from "../../lib/api/project/listMyProjects"
 import { createPendingProject as createPendingProjectApi } from "../../lib/api/project/createPendingProject"
+import { acceptSubowner as acceptSubownerApi } from "../../lib/api/project/acceptSubowner"
 
 type MyProjectState =
   | {
@@ -23,11 +24,16 @@ type MyProjectState =
   // チェック済みで企画なし
   | {
       myProject: null
+      isPending: null
       error: false
     }
 
   // チェック時にエラー
-  | { error: true }
+  | {
+      myProject: null
+      isPending: null
+      error: true
+    }
 
   // チェック前
   | null
@@ -37,6 +43,9 @@ type MyProjectContext = {
   createPendingProject: (
     props: createPendingProjectApi.Props
   ) => Promise<{ pendingProject: PendingProject }>
+  acceptSubowner: (
+    props: acceptSubownerApi.Props
+  ) => Promise<{ project: Project }>
 }
 
 const myProjectContext = createContext<MyProjectContext | undefined>(undefined)
@@ -68,6 +77,23 @@ const MyProjectContextCore = (authState: AuthNeueState): MyProjectContext => {
     })
 
     return { pendingProject: createdPendingProject }
+  }
+
+  const acceptSubowner = async (props: acceptSubownerApi.Props) => {
+    const { project: createdProject } = await acceptSubownerApi(props).catch(
+      async (err) => {
+        const body = await err.response?.json()
+        throw body ?? err
+      }
+    )
+
+    setMyProjectState({
+      isPending: false,
+      myProject: createdProject,
+      error: false,
+    })
+
+    return { project: createdProject }
   }
 
   useEffect(() => {
@@ -107,11 +133,14 @@ const MyProjectContextCore = (authState: AuthNeueState): MyProjectContext => {
         } else {
           setMyProjectState({
             myProject: null,
+            isPending: null,
             error: false,
           })
         }
       } catch (err) {
         setMyProjectState({
+          myProject: null,
+          isPending: null,
           error: true,
         })
 
@@ -124,6 +153,7 @@ const MyProjectContextCore = (authState: AuthNeueState): MyProjectContext => {
   return {
     myProjectState,
     createPendingProject,
+    acceptSubowner,
   }
 }
 
