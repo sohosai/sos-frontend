@@ -3,22 +3,22 @@ import { FC } from "react"
 import styles from "./index.module.scss"
 
 declare namespace FormItemSpacer {
-  type Props = {
-    marginBottom?: string | number
-  }
+  type Props = Readonly<{ marginBottom?: string }> &
+    JSX.IntrinsicElements["div"]
 }
 
 const FormItemSpacer: FC<FormItemSpacer.Props> = ({
-  marginBottom = 32,
+  marginBottom = "32px",
   children,
+  ...rest
 }) => {
   return (
     <div
       className={styles.wrapper}
       style={{
-        ["--margin-bottom" as any]:
-          typeof marginBottom === "number" ? `${marginBottom}px` : marginBottom,
+        ["--margin-bottom" as any]: marginBottom,
       }}
+      {...rest}
     >
       {children}
     </div>
