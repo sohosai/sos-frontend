@@ -63,6 +63,11 @@ const AcceptSubowner: PageFC = () => {
 
   useEffect(() => {
     ;(async () => {
+      if (myProjectState?.isPending === false) {
+        setError("subownerAlreadyExists")
+        return
+      }
+
       const { pendingProjectId } = router.query as Query
       if (!pendingProjectId) {
         setError("pendingProjectNotFound")
@@ -71,11 +76,6 @@ const AcceptSubowner: PageFC = () => {
 
       // rbpacRedirect されるのでまともに処理する必要なし
       if (authState?.status !== "bothSignedIn") return
-
-      if (myProjectState?.isPending === false) {
-        setError("subownerAlreadyExists")
-        return
-      }
 
       const {
         pending_project: fetchedPendingProject,
