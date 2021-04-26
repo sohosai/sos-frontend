@@ -8,3 +8,39 @@
 .title {
   margin-bottom: 32px;
 }
+
+.subTitle {
+  font-size: 1.5em;
+  margin-bottom: 24px;
+}
+
+.projectDetails {
+  margin-bottom: 24px;
+  background-color: $color-gray-50;
+  padding: 16px;
+  border-radius: 10px;
+}
+
+.projectName {
+  font-size: 1.2em;
+  margin-bottom: 16px;
+}
+
+.projectDescription {
+  color: $color-text-sub;
+}
+
+.emptyWrapper {
+  height: 256px;
+  color: $color-text-sub;
+  @include flexCenter;
+  flex-direction: column;
+}
+
+.sameAsAuthor {
+  margin-bottom: 8px;
+}
+
+.linkForSubowner {
+  color: $color-brand;
+}
