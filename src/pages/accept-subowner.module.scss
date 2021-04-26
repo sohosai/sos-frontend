@@ -1,0 +1,10 @@
+@import "../styles/variables";
+@import "../styles/mixins";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  margin-bottom: 32px;
+}
