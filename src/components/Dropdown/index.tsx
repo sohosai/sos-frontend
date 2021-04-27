@@ -8,7 +8,7 @@ import styles from "./index.module.scss"
 
 declare namespace Dropdown {
   type Props = Readonly<{
-    label: string
+    label?: string
     name?: string
     required?: boolean
     options: Array<{
@@ -43,10 +43,12 @@ const Dropdown: FC<Dropdown.Props> = ({
 
   return (
     <div className={styles.wrapper}>
-      <label className={styles.label}>
-        {label}
-        {!required && <span className={styles.arbitrary}>(任意)</span>}
-      </label>
+      {Boolean(label) && (
+        <label className={styles.label}>
+          {label}
+          {!required && <span className={styles.arbitrary}>(任意)</span>}
+        </label>
+      )}
       <select
         {...{ name, required }}
         className={styles.select}
