@@ -34,9 +34,13 @@ const NewProject: PageFC = () => {
       },
       idToken,
     })
-      .then((res) => {
+      .then(({ pendingProject }) => {
         // TODO: リダイレクトなど
-        router.push(pagesPath.mypage.$url())
+        router.push(
+          pagesPath.accept_subowner.$url({
+            query: { pendingProjectId: pendingProject.id },
+          })
+        )
       })
       .catch(async (err) => {
         const body = await err.response?.json()

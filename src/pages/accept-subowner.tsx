@@ -85,7 +85,7 @@ const AcceptSubowner: PageFC = () => {
       }).catch(async (err) => {
         const body = await err.response?.json()
         // FIXME:
-        setError("unknown")
+        setError("pendingProjectNotFound")
         throw body ?? err
       })
 
@@ -126,7 +126,7 @@ const AcceptSubowner: PageFC = () => {
                   return <p>お探しの企画が見つかりませんでした</p>
 
                 if (error === "subownerAlreadyExists")
-                  return <p>既に責任者登録が完了しています</p>
+                  return <p>あなたの企画では既に副責任者登録が完了しています</p>
 
                 if (pendingProject && error === "sameAsAuthor") {
                   const link = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/accept-subowner?pendingProjectId=${pendingProject.id}`
