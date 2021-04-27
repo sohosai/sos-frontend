@@ -40,10 +40,12 @@ const TextField: FC<TextField.Props> = ({
 
   return (
     <div className={styles.wrapper}>
-      <label className={styles.label}>
-        {label}
-        {!required && <span className={styles.arbitrary}>(任意)</span>}
-      </label>
+      {Boolean(label) && (
+        <label className={styles.label}>
+          {label}
+          {!required && <span className={styles.arbitrary}>(任意)</span>}
+        </label>
+      )}
       <input
         type={type}
         name={name}
