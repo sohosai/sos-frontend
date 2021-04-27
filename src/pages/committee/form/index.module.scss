@@ -14,9 +14,7 @@
 }
 
 .emptyWrapper {
-  height: 256px;
-  color: $color-text-sub;
-  @include flexCenter;
+  @include emptyWrapper;
 }
 
 .formRowWrapper {

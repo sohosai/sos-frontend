@@ -30,3 +30,9 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+@mixin emptyWrapper {
+  height: 256px;
+  color: $color-text-sub;
+  @include flexCenter;
+}
