@@ -16,6 +16,8 @@ import timezone from "dayjs/plugin/timezone"
 
 import { Panel, Spinner } from "../../../components"
 
+import { pagesPath } from "../../../utils/$path"
+
 import styles from "./index.module.scss"
 
 const ListProjectForms: PageFC = () => {
@@ -76,7 +78,11 @@ const ListProjectForms: PageFC = () => {
             {forms.map((form) => (
               <div className={styles.formRowWrapper} key={form.id}>
                 {/* TODO: */}
-                <Link href={"#"}>
+                <Link
+                  href={pagesPath.project.form.answer.$url({
+                    query: { formId: form.id },
+                  })}
+                >
                   <a>
                     <Panel
                       style={{

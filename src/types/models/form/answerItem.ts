@@ -19,6 +19,13 @@ export type CheckboxFormAnswerItem = Readonly<{
   answer: CheckboxId[]
 }>
 
+export type CheckboxFormAnswerItemInForm = Readonly<{
+  type: "checkbox"
+  answer: {
+    [id in CheckboxId]: boolean
+  }
+}>
+
 export type RadioFormAnswerItem = Readonly<{
   type: "radio"
   answer?: RadioId
@@ -41,6 +48,16 @@ export type FormAnswerItem = { item_id: FormItemId } & (
   | TextFormAnswerItem
   | IntegerFormAnswerItem
   | CheckboxFormAnswerItem
+  | RadioFormAnswerItem
+  | GridRadioFormAnswerItem
+  | FileFormAnswerItem
+  | null
+)
+
+export type FormAnswerItemInForm = { item_id: FormItemId } & (
+  | TextFormAnswerItem
+  | IntegerFormAnswerItem
+  | CheckboxFormAnswerItemInForm
   | RadioFormAnswerItem
   | GridRadioFormAnswerItem
   | FileFormAnswerItem
