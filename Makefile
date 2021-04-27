@@ -1,14 +1,17 @@
 install:
 	yarn install
 
-dev: install
+dev: install pathpida
 	yarn next dev -p 3131
 
-build: install
+build: install pathpida
 	yarn next build
 
 start: install
-	yarn next start
+	yarn next start -p 3131
+
+export: build
+	yarn next export
 
 lint: install
 	yarn eslint .
@@ -22,8 +25,20 @@ format: install
 format.check: install
 	yarn prettier --check .
 
-typecheck: install
+typecheck: install pathpida
 	yarn tsc --noEmit
 
-typecheck.watch: install
+typecheck.watch: install pathpida
 	yarn tsc --noEmit --watch
+
+storybook: install
+	yarn start-storybook -s public -p 6161
+
+build.storybook: install
+	yarn build-storybook -s public
+
+pathpida: install
+	yarn pathpida
+
+pathpida.watch: install
+	yarn pathpida --watch

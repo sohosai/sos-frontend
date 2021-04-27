@@ -1,0 +1,163 @@
+import { FC } from "react"
+
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { PageOptions } from "next"
+
+import { pagesPath } from "../../utils/$path"
+
+import { useAuthNeue } from "../../contexts/auth"
+import { useMyProject } from "../../contexts/myProject"
+
+import { isUserRoleHigherThanIncluding } from "../../types/models/user/userRole"
+
+import styles from "./links.module.scss"
+
+export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
+  const router = useRouter()
+  const { authState } = useAuthNeue()
+  const { myProjectState } = useMyProject()
+  if (authState === null || authState.status === "error") return null
+
+  if (layout === "empty") return null
+
+  type Link = {
+    href: {
+      pathname: string
+      hash?: string
+    }
+    title: string
+    icon: string
+    visible: () => boolean
+    active: () => boolean
+  }
+
+  const links: {
+    [layoutName in Exclude<PageOptions["layout"], "empty">]: Link[]
+  } = {
+    default: [
+      {
+        href: pagesPath.$url(),
+        title: "トップページ",
+        icon: "home",
+        visible: () => true,
+        active: () => router.pathname === pagesPath.$url().pathname,
+      },
+      {
+        href: pagesPath.login.$url(),
+        title: "ログイン",
+        icon: "log-in",
+        visible: () => authState.status === "signedOut",
+        active: () => router.pathname === pagesPath.login.$url().pathname,
+      },
+      {
+        href: pagesPath.signup.$url(),
+        title: "アカウント登録",
+        icon: "user-plus",
+        visible: () => authState.status === "signedOut",
+        active: () => router.pathname === pagesPath.signup.$url().pathname,
+      },
+      {
+        href: pagesPath.init.$url(),
+        title: "アカウント情報登録",
+        icon: "user-circle",
+        visible: () =>
+          authState.status === "firebaseSignedIn" &&
+          Boolean(authState.firebaseUser.emailVerified),
+        active: () => router.pathname === pagesPath.init.$url().pathname,
+      },
+      {
+        href: pagesPath.project.new.$url(),
+        title: "企画応募",
+        icon: "write",
+        visible: () => authState.status === "bothSignedIn",
+        active: () => router.pathname === pagesPath.project.new.$url().pathname,
+      },
+      {
+        href: pagesPath.project.form.$url(),
+        title: "申請",
+        icon: "task-list",
+        visible: () =>
+          authState.status === "bothSignedIn" &&
+          !myProjectState?.error &&
+          Boolean(myProjectState?.myProject),
+        active: () =>
+          router.pathname.startsWith(pagesPath.project.form.$url().pathname),
+      },
+      {
+        href: pagesPath.mypage.$url(),
+        title: "マイページ",
+        icon: "user-circle",
+        visible: () => authState.status === "bothSignedIn",
+        active: () => router.pathname === pagesPath.mypage.$url().pathname,
+      },
+    ],
+    committee: [
+      {
+        href: pagesPath.committee.$url(),
+        title: "実委人トップページ",
+        icon: "home",
+        visible: () =>
+          Boolean(
+            authState.status === "bothSignedIn" &&
+              isUserRoleHigherThanIncluding({
+                userRole: authState.sosUser.role,
+                criteria: "committee",
+              })
+          ),
+        active: () => router.pathname === pagesPath.committee.$url().pathname,
+      },
+      {
+        href: pagesPath.committee.form.$url(),
+        title: "申請",
+        icon: "task-list",
+        visible: () =>
+          Boolean(
+            authState.status === "bothSignedIn" &&
+              isUserRoleHigherThanIncluding({
+                userRole: authState.sosUser.role,
+                criteria: "committee",
+              })
+          ),
+        active: () =>
+          router.pathname.startsWith(pagesPath.committee.form.$url().pathname),
+      },
+      {
+        href: pagesPath.committee.user.list.$url(),
+        title: "ユーザー一覧",
+        icon: "users",
+        visible: () =>
+          Boolean(
+            authState.status === "bothSignedIn" &&
+              isUserRoleHigherThanIncluding({
+                userRole: authState.sosUser.role,
+                criteria: "committee_operator",
+              })
+          ),
+        active: () =>
+          router.pathname === pagesPath.committee.user.list.$url().pathname,
+      },
+    ],
+  }
+
+  return (
+    <menu className={styles.wrapper}>
+      <ul className={styles.links}>
+        {links[layout].map(({ href, title, icon, visible, active }, index) => {
+          if (!visible()) return
+
+          return (
+            <li key={index}>
+              <Link href={href}>
+                <a className={styles.link} data-active={active()}>
+                  <i className={`jam-icon jam-${icon} ${styles.linkIcon}`} />
+                  <p className={styles.label}>{title}</p>
+                </a>
+              </Link>
+            </li>
+          )
+        })}
+      </ul>
+    </menu>
+  )
+}

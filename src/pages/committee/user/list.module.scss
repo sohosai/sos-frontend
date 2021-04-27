@@ -1,0 +1,59 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  font-size: 2em;
+  margin-bottom: 32px;
+}
+
+.downloadButton {
+  margin-bottom: 24px;
+}
+
+.usersTableWrapper {
+  color: $color-text-sub;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.head {
+  color: $color-text-primary;
+}
+
+.headCell {
+  text-align: start;
+  font-weight: normal;
+  font-size: 1.2em;
+  padding-bottom: 16px;
+}
+
+.row {
+  line-height: 24px;
+  position: relative;
+
+  &:first-child {
+    .cell {
+      border-top: 1px solid $color-gray-100;
+    }
+  }
+}
+
+.cell {
+  padding: 12px 0;
+  border-bottom: 1px solid $color-gray-100;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+}
+
+.error {
+  color: $color-caution;
+}

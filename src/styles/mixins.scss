@@ -1,0 +1,38 @@
+@mixin flexCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin absoluteCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin mainAreaWidth {
+  $padding: 36px;
+  padding-right: $padding;
+  padding-left: $padding;
+  max-width: 1200px + $padding * 2;
+  margin: auto;
+}
+
+@mixin mainArea {
+  @include mainAreaWidth();
+  margin-top: 64px;
+  margin-bottom: 64px;
+}
+
+@mixin ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@mixin emptyWrapper {
+  height: 256px;
+  color: $color-text-sub;
+  @include flexCenter;
+}

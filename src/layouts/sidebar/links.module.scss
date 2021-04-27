@@ -1,0 +1,52 @@
+@import "../../styles/variables";
+
+.wrapper {
+  padding: 0;
+}
+
+.links {
+  list-style: none;
+  padding: 0;
+}
+
+.link {
+  height: 48px;
+  padding-left: 32px;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  transition: background-color 200ms;
+  color: $color-text-sub;
+  transition: color 150ms;
+
+  &:after {
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 100%;
+    top: 0;
+    right: 0;
+    background-color: $color-brand;
+    transition: transform 150ms;
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+
+  &:hover {
+    background-color: $color-gray-50;
+  }
+
+  &[data-active="true"] {
+    color: $color-brand;
+
+    &:after {
+      transform: scaleX(1);
+    }
+  }
+}
+
+.linkIcon {
+  font-size: 1.5em;
+  margin-right: 8px;
+}

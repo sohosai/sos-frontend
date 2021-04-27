@@ -1,0 +1,80 @@
+@import "../../styles/variables";
+
+$radius-sm: 8px;
+$radius-md: 12px;
+
+$lineWidth: 2px;
+
+.wrapper {
+  display: block;
+  position: relative;
+  width: $radius-md * 2 + $lineWidth * 2;
+  height: $radius-md * 2 + $lineWidth * 2;
+
+  &[data-size="sm"] {
+    width: $radius-sm * 2 + $lineWidth * 2;
+    height: $radius-sm * 2 + $lineWidth * 2;
+
+    .circular {
+      width: $radius-sm * 2 + $lineWidth * 2;
+      height: $radius-sm * 2 + $lineWidth * 2;
+    }
+
+    .path {
+      r: $radius-sm;
+    }
+  }
+
+  &[data-color="white"] {
+    .path {
+      stroke: white;
+    }
+  }
+
+  &[data-color="brand"] {
+    .path {
+      stroke: $color-brand;
+    }
+  }
+}
+
+.circular {
+  animation: rotate 2s linear infinite;
+  width: $radius-md * 2 + $lineWidth * 2;
+  height: $radius-md * 2 + $lineWidth * 2;
+}
+
+.path {
+  animation: dash 1.5s ease-in-out infinite;
+  cx: 50%;
+  cy: 50%;
+  r: $radius-md;
+  fill: none;
+  stroke: $color-gray-300;
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  stroke-width: $lineWidth;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 80, 200;
+    stroke-dashoffset: -20;
+  }
+
+  100% {
+    stroke-dasharray: 80, 200;
+    stroke-dashoffset: -100;
+  }
+}

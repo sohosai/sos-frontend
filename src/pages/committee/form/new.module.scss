@@ -1,0 +1,93 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  margin-bottom: 32px;
+}
+
+.sectionWrapper {
+  &:not(:last-of-type) {
+    margin-bottom: 48px;
+  }
+
+  &:last-of-type {
+    margin-bottom: 64px;
+  }
+}
+
+.dateTimeInputLabel {
+  margin-bottom: 8px;
+}
+
+.dateTimeInputWrapper {
+  display: flex;
+  align-items: flex-start;
+}
+
+.dateTimeInputItem {
+  max-width: 8em;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+
+  &:not(:last-of-type) {
+    margin-right: 16px;
+  }
+}
+
+.sectionTitle {
+  margin-bottom: 16px;
+}
+
+.itemWrapper {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.itemPanel {
+  flex-grow: 1;
+}
+
+.itemType {
+  font-size: 1.2em;
+  margin-bottom: 24px;
+}
+
+.twoColumnFields {
+  display: flex;
+  flex-direction: row;
+
+  & .twoColumnField {
+    flex-grow: 1;
+
+    &:not(:last-of-type) {
+      margin-right: 16px;
+    }
+  }
+}
+
+.itemActions {
+  margin-left: 8px;
+}
+
+.addItemWrapper {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.addButton {
+  &:not(:last-of-type) {
+    margin-right: 16px;
+  }
+}
+
+.errorText {
+  margin-top: 16px;
+  color: $color-caution;
+}

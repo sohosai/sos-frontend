@@ -1,0 +1,76 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.button {
+  position: relative;
+  width: auto;
+  height: 48px;
+  padding: 0 40px;
+  outline: none;
+  border: 2px solid transparent;
+  border-radius: 10px;
+
+  background-color: $color-brand;
+  color: white;
+  box-shadow: 0px 4px 12px 0px $color-brand-tint-800;
+  transition: background-color 150ms, color 150ms;
+
+  &:hover,
+  &:focus {
+    background-color: $color-brand-tint-200;
+  }
+
+  &[data-full-width] {
+    width: 100%;
+  }
+
+  &[data-disabled] {
+    background-color: $color-brand-tint-600;
+    cursor: not-allowed;
+  }
+
+  &[data-kind="secondary"] {
+    background-color: white;
+    border-color: $color-brand;
+    color: $color-brand-shade-200;
+
+    &:hover,
+    &:focus {
+      background-color: $color-brand-tint-900;
+    }
+
+    &[data-disabled] {
+      background-color: $color-gray-200;
+      color: $color-brand-shade-200;
+    }
+  }
+
+  &[data-size="small"] {
+    height: 32px;
+    padding: 0 32px;
+  }
+
+  &[data-processing] {
+    .spinnerWrapper {
+      display: block;
+    }
+
+    .children {
+      visibility: hidden;
+    }
+  }
+}
+
+.children {
+  @include flexCenter;
+}
+
+.icon {
+  font-size: 1.4em;
+  margin-right: 8px;
+}
+
+.spinnerWrapper {
+  display: none;
+  @include absoluteCenter;
+}

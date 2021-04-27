@@ -1,0 +1,43 @@
+@import "../styles/variables";
+@import "../styles/mixins";
+
+.wrapper {
+  min-height: 100%;
+  padding: 64px 0;
+  @include flexCenter;
+}
+
+.formWrapper {
+  width: 100%;
+  max-width: 35em;
+  margin: 0 2em;
+}
+
+.legend {
+  color: $color-text-primary;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 32px;
+}
+
+.submitButton {
+  margin-top: 32px;
+}
+
+.error {
+  margin-top: 16px;
+  color: $color-caution;
+}
+
+.mailSentTitle,
+.mailErrorTitle {
+  color: $color-text-primary;
+  font-size: 1.5em;
+  font-size: bold;
+  margin-bottom: 32px;
+}
+
+.mailSentParagraph,
+.mailErrorParagraph {
+  color: $color-text-sub;
+}

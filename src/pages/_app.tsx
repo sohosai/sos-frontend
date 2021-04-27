@@ -2,10 +2,27 @@ import { ReactElement } from "react"
 
 import type { AppProps } from "next/app"
 import Head from "next/head"
+import type { PageOptions } from "next"
 
-import "../styles/globals.css"
+import { AuthProvider } from "../contexts/auth"
+import { MyProjectProvider } from "../contexts/myProject"
 
-function MyApp({ Component, pageProps }: AppProps): ReactElement {
+import { useIfSupported } from "../hooks/useIfSupported"
+
+import { Layout } from "../layouts/layout"
+
+import "normalize.css"
+import "../styles/globals.scss"
+
+function MyApp({
+  Component,
+  pageProps,
+}: {
+  Component: AppProps["Component"] & PageOptions
+  pageProps: AppProps["pageProps"]
+}): ReactElement {
+  useIfSupported()
+
   return (
     <>
       <Head>
@@ -16,7 +33,13 @@ function MyApp({ Component, pageProps }: AppProps): ReactElement {
         <meta name="robots" content="noindex" key="robots" />
         <meta name="googlebot" content="noindex" key="googlebot" />
       </Head>
-      <Component {...pageProps} />
+      <AuthProvider rbpac={Component.rbpac}>
+        <MyProjectProvider>
+          <Layout layout={Component.layout}>
+            <Component {...pageProps} />
+          </Layout>
+        </MyProjectProvider>
+      </AuthProvider>
     </>
   )
 }

@@ -1,0 +1,57 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  margin-bottom: 32px;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+}
+
+.formRowWrapper {
+  &:not(:last-of-type) {
+    margin-bottom: 16px;
+  }
+}
+
+.formRowInner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.formName {
+  flex-grow: 1;
+  flex-shrink: 1;
+  margin-right: 16px;
+  @include ellipsis;
+}
+
+.formDate {
+  width: 18em;
+  flex-shrink: 0;
+  margin-right: 8px;
+  color: $color-text-sub;
+  display: flex;
+  align-items: center;
+}
+
+.formDateIcon {
+  margin: 0 2px;
+}
+
+.formDateState {
+  display: block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background-color: $color-brand-tint-900;
+  color: $color-brand-shade-200;
+  font-size: 0.9em;
+}

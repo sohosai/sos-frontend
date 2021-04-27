@@ -2,37 +2,74 @@
 
 雙峰祭オンラインシステム2021 フロントエンド
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## 環境構築
 
-## Getting Started
+### エディタ
 
-First, run the development server:
+基本的に VSCode を想定しているが、少なくとも `.editorconfig` を読めるもの
 
-```bash
-npm run dev
-# or
-yarn dev
+VSCode の場合は recommended extensions を導入
+
+上記拡張で ESLint/Prettier 通すか、コミット前に `make lint` / `make format` してください
+
+### Firebase
+
+[Firebase](https://console.firebase.google.com/) の新規プロジェクトを作成
+
+コンソールから Authentication を有効化、Signin-method のうち Email/Password を有効化
+
+Project settings > General > Your Apps から web app を新規追加(nickname 任意/Hosting 不要)
+
+生成された `firebaseConfig` を次項で使用
+
+### 環境変数
+
+```
+$ cp .env.local.sample .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`.env.local` の Firebase 関連の `API_KEY` / `AUTH_DOMAIN` / `PROJECT_ID` / `APP_ID` を前項の `firebaseConfig` からそれぞれ埋める
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### バックエンド
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+README に従って起動
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+`SOS21_FIREBASE_PROJECT_ID` はフロントと同じもの(先ほど生成されたもの)を使用
 
-## Learn More
+フロントを触る際は常にバックエンドを起動しておく
 
-To learn more about Next.js, take a look at the following resources:
+## Development
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### dev/build
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```
+make dev // localhost:3131 で dev server 起動
 
-## Deploy on Vercel
+make build // ビルド
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### [pathpida](https://github.com/aspida/pathpida)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+型安全ルーティングに [pathpida](https://github.com/aspida/pathpida) を使用している
+
+これは `src/pages/` 配下のファイルから `src/utils/$path.ts` を生成するもの
+
+```
+make pathpida // ビルド
+
+make pathpida.watch // 監視モードで起動
+```
+
+`make dev` や `make build` などは実行前に必ず1回 `make pathpida` するようになっているので普段気にする必要はないが、新たなページを作ったりファイルをリネームした際にはその差分を反映させる必要がある
+
+### [Storybook](https://github.com/storybookjs/storybook/)
+
+`src/components/` のファイルは [Storybook](https://github.com/storybookjs/storybook/) で管理している
+
+コンポーネントの新規実装時や変更時はまずこちらで動作確認する
+
+```
+make storybook // localhost:6161 で起動
+
+make build.storybook // ビルド
+```

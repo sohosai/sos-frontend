@@ -1,0 +1,59 @@
+import type { UserId } from "../user"
+import type { ProjectId } from "../project"
+import { FormId } from "../form"
+
+export type FileId = string
+
+export type Mime = string
+
+export type FileDistributionId = string
+
+export type FileSharingId = string
+
+export type File = Readonly<{
+  id: FileId
+  created_at: Date
+  author_id: UserId
+  blake3_digest: string
+  name?: string
+  type: Mime
+  size: number
+}>
+
+export type FileDistribution = Readonly<{
+  id: FileDistributionId
+  created_at: Date
+  author_id: UserId
+  name: string
+  description: string
+  files: Array<{
+    project_id: ProjectId
+    sharing_id: FileSharingId
+  }>
+}>
+
+export type FileSharingScope =
+  | Readonly<{
+      type: "project"
+      id: ProjectId
+    }>
+  | Readonly<{
+      type: "form_answer"
+      project_id: ProjectId
+      form_id: FormId
+    }>
+  | Readonly<{
+      type: "committee" | "committee_operator" | "public"
+    }>
+
+export type FileSharing = Readonly<{
+  id: FileSharingId
+  created_at: Date
+  is_revoked: boolean
+  expires_at?: Date
+  scope: FileSharingScope
+  file_id: FileId
+  file_name?: string
+  file_type: Mime
+  file_size: number
+}>

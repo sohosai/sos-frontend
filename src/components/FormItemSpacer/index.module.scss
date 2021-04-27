@@ -1,0 +1,7 @@
+.wrapper {
+  margin-bottom: var(--margin-bottom);
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}

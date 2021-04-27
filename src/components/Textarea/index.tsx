@@ -1,0 +1,71 @@
+import { FC } from "react"
+
+import { dataset } from "../../utils/dataset"
+
+import type { UseFormRegisterReturn } from "react-hook-form"
+
+import styles from "./index.module.scss"
+
+declare namespace Textarea {
+  type Props = Readonly<{
+    label: string
+    description?: string[] | string
+    error?: Array<string | false | undefined> | string | false
+    register?: UseFormRegisterReturn
+  }> &
+    JSX.IntrinsicElements["textarea"]
+}
+
+const Textarea: FC<Textarea.Props> = ({
+  label,
+  required = false,
+  placeholder,
+  rows = 3,
+  description,
+  error,
+  register,
+  ...restAttributes
+}) => {
+  const descriptions = (Array.isArray(description)
+    ? description
+    : [description]
+  ).filter((text) => text)
+  const errors = (Array.isArray(error)
+    ? error
+    : [error]
+  ).filter((text): text is string => Boolean(text))
+
+  return (
+    <div className={styles.wrapper}>
+      <label className={styles.label}>
+        {label}
+        {!required && <span className={styles.arbitrary}>(任意)</span>}
+      </label>
+      <textarea
+        className={styles.textarea}
+        required={required}
+        placeholder={placeholder}
+        rows={rows}
+        {...register}
+        {...restAttributes}
+        {...dataset({ error: Boolean(errors?.length) })}
+      />
+      {Boolean(descriptions?.length + errors?.length) && (
+        <div className={styles.bottomText}>
+          {descriptions.map((text, index) => (
+            <p className={styles.description} key={index}>
+              {text}
+            </p>
+          ))}
+          {errors.map((text, index) => (
+            <p className={styles.error} key={index}>
+              {text}
+            </p>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export { Textarea }

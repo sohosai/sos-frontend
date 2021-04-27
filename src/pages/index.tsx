@@ -1,7 +1,9 @@
-import { FC } from "react"
+import type { PageFC } from "next"
 
-const Index: FC = () => {
+const Index: PageFC = () => {
   return <></>
 }
+Index.layout = "default"
+Index.rbpac = { type: "public" }
 
 export default Index
