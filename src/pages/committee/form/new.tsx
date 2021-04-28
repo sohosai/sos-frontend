@@ -28,6 +28,7 @@ import { pagesPath } from "../../../utils/$path"
 import {
   Button,
   Checkbox,
+  DateTimeSelector,
   FormItemSpacer,
   IconButton,
   Panel,
@@ -147,15 +148,15 @@ const NewForm: PageFC = () => {
           description: description ?? "",
           starts_at: dayjs
             .tz(
-              `${starts_at.month}-${starts_at.day}--${starts_at.hour}-${starts_at.minute}`,
-              "M-D--H-m",
+              `${starts_at.month}-${starts_at.day}-${starts_at.hour}-${starts_at.minute}`,
+              "M-D-H-m",
               "Asia/Tokyo"
             )
             .valueOf(),
           ends_at: dayjs
             .tz(
-              `${ends_at.month}-${ends_at.day}--${ends_at.hour}-${ends_at.minute}`,
-              "M-D--H-m",
+              `${ends_at.month}-${ends_at.day}-${ends_at.hour}-${ends_at.minute}`,
+              "M-D-H-m",
               "Asia/Tokyo"
             )
             .valueOf(),
@@ -263,176 +264,64 @@ const NewForm: PageFC = () => {
               />
             </FormItemSpacer>
             <FormItemSpacer>
-              <p className={styles.dateTimeInputLabel}>回答開始日時</p>
-              <div className={styles.dateTimeInputWrapper}>
-                <div className={styles.dateTimeInputItem}>
-                  <TextField
-                    type="number"
-                    min="1"
-                    max="12"
-                    defaultValue={dayjs().format("M")}
-                    label="月"
-                    error={[
-                      errors.starts_at?.month?.types?.required &&
-                        "必須項目です",
-                      errors.starts_at?.month?.types?.min && "不正な値です",
-                      errors.starts_at?.month?.types?.max && "不正な値です",
-                    ]}
-                    required
-                    register={register("starts_at.month", {
-                      required: true,
-                      min: 1,
-                      max: 12,
-                    })}
-                  />
-                </div>
-                <div className={styles.dateTimeInputItem}>
-                  <TextField
-                    type="number"
-                    min="1"
-                    max="31"
-                    defaultValue={dayjs().format("D")}
-                    label="日"
-                    error={[
-                      errors.starts_at?.day?.types?.required && "必須項目です",
-                      errors.starts_at?.day?.types?.min && "不正な値です",
-                      errors.starts_at?.day?.types?.max && "不正な値です",
-                    ]}
-                    required
-                    register={register("starts_at.day", {
-                      required: true,
-                      min: 1,
-                      max: 31,
-                    })}
-                  />
-                </div>
-                <div className={styles.dateTimeInputItem}>
-                  <TextField
-                    type="number"
-                    min="0"
-                    max="23"
-                    defaultValue="12"
-                    label="時"
-                    error={[
-                      errors.starts_at?.hour?.types?.required && "必須項目です",
-                      errors.starts_at?.hour?.types?.min && "不正な値です",
-                      errors.starts_at?.hour?.types?.max && "不正な値です",
-                    ]}
-                    required
-                    register={register("starts_at.hour", {
-                      required: true,
-                      min: 0,
-                      max: 23,
-                    })}
-                  />
-                </div>
-                <div className={styles.dateTimeInputItem}>
-                  <TextField
-                    type="number"
-                    min="0"
-                    max="59"
-                    defaultValue="0"
-                    label="分"
-                    error={[
-                      errors.starts_at?.minute?.types?.required &&
-                        "必須項目です",
-                      errors.starts_at?.minute?.types?.min && "不正な値です",
-                      errors.starts_at?.minute?.types?.max && "不正な値です",
-                    ]}
-                    required
-                    register={register("starts_at.minute", {
-                      required: true,
-                      min: 0,
-                      max: 59,
-                    })}
-                  />
-                </div>
-              </div>
+              <DateTimeSelector
+                label="受付開始日時"
+                register={register}
+                registerOptions={{
+                  month: {
+                    name: "starts_at.month",
+                    required: true,
+                  },
+                  day: {
+                    name: "starts_at.day",
+                    required: true,
+                  },
+                  hour: {
+                    name: "starts_at.hour",
+                    required: true,
+                  },
+                  minute: {
+                    name: "starts_at.minute",
+                    required: true,
+                  },
+                }}
+                errorTypes={{
+                  month: errors.starts_at?.month?.types,
+                  day: errors.starts_at?.day?.types,
+                  hour: errors.starts_at?.hour?.types,
+                  minute: errors.starts_at?.minute?.types,
+                }}
+              />
             </FormItemSpacer>
             <FormItemSpacer>
-              <p className={styles.dateTimeInputLabel}>回答終了日時</p>
-              <div className={styles.dateTimeInputWrapper}>
-                <div className={styles.dateTimeInputItem}>
-                  <TextField
-                    type="number"
-                    min="1"
-                    max="12"
-                    defaultValue={dayjs().add(7, "day").format("M")}
-                    label="月"
-                    error={[
-                      errors.ends_at?.month?.types?.required && "必須項目です",
-                      errors.ends_at?.month?.types?.min && "不正な値です",
-                      errors.ends_at?.month?.types?.max && "不正な値です",
-                    ]}
-                    required
-                    register={register("ends_at.month", {
-                      required: true,
-                      min: 1,
-                      max: 12,
-                    })}
-                  />
-                </div>
-                <div className={styles.dateTimeInputItem}>
-                  <TextField
-                    type="number"
-                    min="1"
-                    max="31"
-                    defaultValue={dayjs().add(7, "day").format("D")}
-                    label="日"
-                    error={[
-                      errors.ends_at?.day?.types?.required && "必須項目です",
-                      errors.ends_at?.day?.types?.min && "不正な値です",
-                      errors.ends_at?.day?.types?.max && "不正な値です",
-                    ]}
-                    required
-                    register={register("ends_at.day", {
-                      required: true,
-                      min: 1,
-                      max: 31,
-                    })}
-                  />
-                </div>
-                <div className={styles.dateTimeInputItem}>
-                  <TextField
-                    type="number"
-                    min="0"
-                    max="23"
-                    defaultValue="23"
-                    label="時"
-                    error={[
-                      errors.ends_at?.hour?.types?.required && "必須項目です",
-                      errors.ends_at?.hour?.types?.min && "不正な値です",
-                      errors.ends_at?.hour?.types?.max && "不正な値です",
-                    ]}
-                    required
-                    register={register("ends_at.hour", {
-                      required: true,
-                      min: 0,
-                      max: 23,
-                    })}
-                  />
-                </div>
-                <div className={styles.dateTimeInputItem}>
-                  <TextField
-                    type="number"
-                    min="0"
-                    max="59"
-                    defaultValue="59"
-                    label="分"
-                    error={[
-                      errors.ends_at?.minute?.types?.required && "必須項目です",
-                      errors.ends_at?.minute?.types?.min && "不正な値です",
-                      errors.ends_at?.minute?.types?.max && "不正な値です",
-                    ]}
-                    required
-                    register={register("ends_at.minute", {
-                      required: true,
-                      min: 0,
-                      max: 59,
-                    })}
-                  />
-                </div>
-              </div>
+              <DateTimeSelector
+                label="受付終了日時"
+                register={register}
+                registerOptions={{
+                  month: {
+                    name: "ends_at.month",
+                    required: true,
+                  },
+                  day: {
+                    name: "ends_at.day",
+                    required: true,
+                  },
+                  hour: {
+                    name: "ends_at.hour",
+                    required: true,
+                  },
+                  minute: {
+                    name: "ends_at.minute",
+                    required: true,
+                  },
+                }}
+                errorTypes={{
+                  month: errors.ends_at?.month?.types,
+                  day: errors.ends_at?.day?.types,
+                  hour: errors.ends_at?.hour?.types,
+                  minute: errors.ends_at?.minute?.types,
+                }}
+              />
             </FormItemSpacer>
           </Panel>
         </div>
