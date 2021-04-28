@@ -50,7 +50,7 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
                 }
               >
                 <a className={styles.switchLayoutButton}>
-                  <i className={`jam-icon jam-refresh ${styles.switchIcon}`} />
+                  <i className={`jam-icons jam-refresh ${styles.switchIcon}`} />
                   <p className={styles.switchText}>
                     {router.pathname.startsWith(
                       pagesPath.committee.$url().pathname
@@ -63,7 +63,7 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
             )}
             <Link href={pagesPath.mypage.$url()}>
               <a className={styles.mypageButtonWrapper}>
-                <i className={`jam-icon jam-user-circle ${styles.userIcon}`} />
+                <i className={`jam-icons jam-user-circle ${styles.userIcon}`} />
                 <p
                   className={styles.userName}
                   title={`${authState.sosUser.name.last} ${authState.sosUser.name.first}`}
@@ -77,7 +77,7 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
                 signout()
               }}
             >
-              <i className={`jam-icon jam-log-out ${styles.logoutIcon}`} />
+              <i className={`jam-icons jam-log-out ${styles.logoutIcon}`} />
               <p className={styles.logoutText}>ログアウト</p>
             </button>
           </>

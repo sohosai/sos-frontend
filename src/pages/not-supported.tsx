@@ -17,7 +17,7 @@ const NotSupported: PageFC = () => {
         <title>非対応ブラウザ</title>
       </Head>
       <Panel>
-        <i className={`jam-icon jam-alert ${styles.icon}`} aria-hidden />
+        <i className={`jam-icons jam-alert ${styles.icon}`} aria-hidden />
         <h1 className={styles.title}>
           {isIe ? "非対応ブラウザ" : "非対応デバイス"}
         </h1>

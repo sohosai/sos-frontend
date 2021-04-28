@@ -150,7 +150,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
             <li key={index}>
               <Link href={href}>
                 <a className={styles.link} data-active={active()}>
-                  <i className={`jam-icon jam-${icon} ${styles.linkIcon}`} />
+                  <i className={`jam-icons jam-${icon} ${styles.linkIcon}`} />
                   <p className={styles.label}>{title}</p>
                 </a>
               </Link>
