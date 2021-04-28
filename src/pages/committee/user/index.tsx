@@ -12,9 +12,9 @@ import { exportUsers } from "../../../lib/api/user/exportUsers"
 
 import { saveAs } from "file-saver"
 
-import { Button, Panel, Spinner } from "../../../components/"
+import { Button, Panel, Spinner } from "../../../components"
 
-import styles from "./list.module.scss"
+import styles from "./index.module.scss"
 
 const ListUsers: PageFC = () => {
   const { authState } = useAuthNeue()

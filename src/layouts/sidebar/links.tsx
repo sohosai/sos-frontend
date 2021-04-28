@@ -123,8 +123,8 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
           router.pathname.startsWith(pagesPath.committee.form.$url().pathname),
       },
       {
-        href: pagesPath.committee.user.list.$url(),
-        title: "ユーザー一覧",
+        href: pagesPath.committee.user.$url(),
+        title: "ユーザー",
         icon: "users",
         visible: () =>
           Boolean(
@@ -135,7 +135,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
               })
           ),
         active: () =>
-          router.pathname === pagesPath.committee.user.list.$url().pathname,
+          router.pathname === pagesPath.committee.user.$url().pathname,
       },
     ],
   }
