@@ -25,7 +25,7 @@ const IconButton: FC<IconButton.Props> = ({
       data-danger={danger}
       {...rest}
     >
-      <i className={`jam-icon jam-${icon} ${styles.icon}`} />
+      <i className={`jam-icons jam-${icon} ${styles.icon}`} />
     </button>
   )
 }

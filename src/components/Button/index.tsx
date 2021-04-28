@@ -42,7 +42,7 @@ const Button: FC<Button.Props> = ({
         <Spinner size="sm" color={kind === "primary" ? "white" : "brand"} />
       </div>
       <div className={styles.children}>
-        {icon && <i className={`jam-icon jam-${icon} ${styles.icon}`} />}
+        {icon && <i className={`jam-icons jam-${icon} ${styles.icon}`} />}
         {children}
       </div>
     </button>

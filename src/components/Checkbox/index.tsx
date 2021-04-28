@@ -34,7 +34,10 @@ const Checkbox: FC<Checkbox.Props> = ({
           {...inputRestAttributes}
         />
         {label}
-        <i className={`jam-icon jam-check ${styles.icon}`} aria-hidden="true" />
+        <i
+          className={`jam-icons jam-check ${styles.icon}`}
+          aria-hidden="true"
+        />
       </label>
     </div>
   )

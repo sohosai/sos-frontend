@@ -46,7 +46,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       {
         href: pagesPath.login.$url(),
         title: "ログイン",
-        icon: "log-in",
+        icon: "log-in-alt",
         visible: () => authState.status === "signedOut",
         active: () => router.pathname === pagesPath.login.$url().pathname,
       },
@@ -150,7 +150,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
             <li key={index}>
               <Link href={href}>
                 <a className={styles.link} data-active={active()}>
-                  <i className={`jam-icon jam-${icon} ${styles.linkIcon}`} />
+                  <i className={`jam-icons jam-${icon} ${styles.linkIcon}`} />
                   <p className={styles.label}>{title}</p>
                 </a>
               </Link>

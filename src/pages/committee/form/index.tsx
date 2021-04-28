@@ -77,7 +77,7 @@ const ListForms: PageFC = () => {
                   <p className={styles.formDate}>
                     {dayjs.tz(form.starts_at, "Asia/Tokyo").format("M/D HH:mm")}
                     <i
-                      className={`jam-icon jam-arrow-right ${styles.formDateIcon}`}
+                      className={`jam-icons jam-arrow-right ${styles.formDateIcon}`}
                     />
                     {dayjs.tz(form.ends_at, "Asia/Tokyo").format("M/D HH:mm")}
                     <span className={styles.formDateState}>
