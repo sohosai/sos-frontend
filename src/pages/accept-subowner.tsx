@@ -24,7 +24,7 @@ const AcceptSubowner: PageFC = () => {
   const [pendingProject, setPendingProject] = useState<PendingProject>()
   const [error, setError] = useState<
     | "pendingProjectNotFound"
-    | "sameAsAuthor"
+    | "hasOwnPendingProject"
     | "subownerAlreadyExists"
     | "unknown"
   >()
@@ -63,6 +63,11 @@ const AcceptSubowner: PageFC = () => {
 
   useEffect(() => {
     ;(async () => {
+      if (myProjectState?.isPending === true) {
+        setError("hasOwnPendingProject")
+        return
+      }
+
       if (myProjectState?.isPending === false) {
         setError("subownerAlreadyExists")
         return
@@ -90,7 +95,7 @@ const AcceptSubowner: PageFC = () => {
       })
 
       if (fetchedPendingProject.author_id === authState.sosUser.id) {
-        setError("sameAsAuthor")
+        setError("hasOwnPendingProject")
       }
 
       setPendingProject(fetchedPendingProject)
@@ -128,16 +133,16 @@ const AcceptSubowner: PageFC = () => {
                 if (error === "subownerAlreadyExists")
                   return <p>あなたの企画では既に副責任者登録が完了しています</p>
 
-                if (pendingProject && error === "sameAsAuthor") {
-                  const link = `${process.env.NEXT_PUBLIC_FRONTEND_URL}accept-subowner?pendingProjectId=${pendingProject.id}`
+                if (error === "hasOwnPendingProject") {
+                  const link = `${process.env.NEXT_PUBLIC_FRONTEND_URL}accept-subowner?pendingProjectId=${myProjectState?.myProject?.id}`
 
                   return (
                     <>
                       <p className={styles.sameAsAuthor}>
-                        責任者は副責任者を兼任できません
+                        企画応募を完了するためには副責任者を登録する必要があります
                       </p>
                       <p className={styles.sameAsAuthor}>
-                        副責任者に以下のURLを送信してアクセスしていただき、副責任者の登録を完了してください
+                        副責任者に以下のURLを送信してアクセスしていただき、副責任者を登録してください
                       </p>
                       <a
                         href={link}
