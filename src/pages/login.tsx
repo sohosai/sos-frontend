@@ -126,7 +126,7 @@ const Login: PageFC = () => {
               <Button
                 type="submit"
                 processing={processing}
-                icon="log-in"
+                icon="log-in-alt"
                 fullWidth={true}
               >
                 ログインする

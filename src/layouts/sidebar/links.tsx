@@ -46,7 +46,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       {
         href: pagesPath.login.$url(),
         title: "ログイン",
-        icon: "log-in",
+        icon: "log-in-alt",
         visible: () => authState.status === "signedOut",
         active: () => router.pathname === pagesPath.login.$url().pathname,
       },

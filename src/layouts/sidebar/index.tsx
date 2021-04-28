@@ -77,7 +77,7 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
                 signout()
               }}
             >
-              <i className={`jam-icons jam-log-out ${styles.logoutIcon}`} />
+              <i className={`jam-icons jam-log-out-alt ${styles.logoutIcon}`} />
               <p className={styles.logoutText}>ログアウト</p>
             </button>
           </>
