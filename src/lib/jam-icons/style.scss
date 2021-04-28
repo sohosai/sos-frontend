@@ -2,18 +2,18 @@
 
 @font-face {
   font-family: "#{$icomoon-font-family}";
-  src: url("#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?q8ocz5")
+  src: url("#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?nlgzcu")
       format("truetype"),
-    url("#{$icomoon-font-path}/#{$icomoon-font-family}.woff?q8ocz5")
+    url("#{$icomoon-font-path}/#{$icomoon-font-family}.woff?nlgzcu")
       format("woff"),
-    url("#{$icomoon-font-path}/#{$icomoon-font-family}.svg?q8ocz5##{$icomoon-font-family}")
+    url("#{$icomoon-font-path}/#{$icomoon-font-family}.svg?nlgzcu##{$icomoon-font-family}")
       format("svg");
   font-weight: normal;
   font-style: normal;
   font-display: block;
 }
 
-.jam-icon {
+.jam-icons {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: "#{$icomoon-font-family}" !important;
   speak: never;
@@ -28,11 +28,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.jam-px {
-  &:before {
-    content: $jam-px;
-  }
-}
 .jam-accessibility {
   &:before {
     content: $jam-accessibility;
@@ -258,21 +253,6 @@
     content: $jam-arrow-right;
   }
 }
-.jam-arrows-corners {
-  &:before {
-    content: $jam-arrows-corners;
-  }
-}
-.jam-arrows-fullscreen {
-  &:before {
-    content: $jam-arrows-fullscreen;
-  }
-}
-.jam-arrows-h {
-  &:before {
-    content: $jam-arrows-h;
-  }
-}
 .jam-arrow-square-down {
   &:before {
     content: $jam-arrow-square-down;
@@ -353,11 +333,6 @@
     content: $jam-arrow-square-up-right-f;
   }
 }
-.jam-arrows-v {
-  &:before {
-    content: $jam-arrows-v;
-  }
-}
 .jam-arrow-up {
   &:before {
     content: $jam-arrow-up;
@@ -371,6 +346,26 @@
 .jam-arrow-up-right {
   &:before {
     content: $jam-arrow-up-right;
+  }
+}
+.jam-arrows-corners {
+  &:before {
+    content: $jam-arrows-corners;
+  }
+}
+.jam-arrows-fullscreen {
+  &:before {
+    content: $jam-arrows-fullscreen;
+  }
+}
+.jam-arrows-h {
+  &:before {
+    content: $jam-arrows-h;
+  }
+}
+.jam-arrows-v {
+  &:before {
+    content: $jam-arrows-v;
   }
 }
 .jam-attachment {
@@ -883,6 +878,11 @@
     content: $jam-check;
   }
 }
+.jam-checkbox {
+  &:before {
+    content: $jam-checkbox;
+  }
+}
 .jam-chevron-circle-down {
   &:before {
     content: $jam-chevron-circle-down;
@@ -988,6 +988,101 @@
     content: $jam-chevron-right;
   }
 }
+.jam-chevron-square-down {
+  &:before {
+    content: $jam-chevron-square-down;
+  }
+}
+.jam-chevron-square-down-f {
+  &:before {
+    content: $jam-chevron-square-down-f;
+  }
+}
+.jam-chevron-square-down-left {
+  &:before {
+    content: $jam-chevron-square-down-left;
+  }
+}
+.jam-chevron-square-down-left-f {
+  &:before {
+    content: $jam-chevron-square-down-left-f;
+  }
+}
+.jam-chevron-square-down-right {
+  &:before {
+    content: $jam-chevron-square-down-right;
+  }
+}
+.jam-chevron-square-down-right-f {
+  &:before {
+    content: $jam-chevron-square-down-right-f;
+  }
+}
+.jam-chevron-square-left {
+  &:before {
+    content: $jam-chevron-square-left;
+  }
+}
+.jam-chevron-square-left-f {
+  &:before {
+    content: $jam-chevron-square-left-f;
+  }
+}
+.jam-chevron-square-right {
+  &:before {
+    content: $jam-chevron-square-right;
+  }
+}
+.jam-chevron-square-right-f {
+  &:before {
+    content: $jam-chevron-square-right-f;
+  }
+}
+.jam-chevron-square-up {
+  &:before {
+    content: $jam-chevron-square-up;
+  }
+}
+.jam-chevron-square-up-f {
+  &:before {
+    content: $jam-chevron-square-up-f;
+  }
+}
+.jam-chevron-square-up-left {
+  &:before {
+    content: $jam-chevron-square-up-left;
+  }
+}
+.jam-chevron-square-up-left-f {
+  &:before {
+    content: $jam-chevron-square-up-left-f;
+  }
+}
+.jam-chevron-square-up-right {
+  &:before {
+    content: $jam-chevron-square-up-right;
+  }
+}
+.jam-chevron-square-up-right-f {
+  &:before {
+    content: $jam-chevron-square-up-right-f;
+  }
+}
+.jam-chevron-up {
+  &:before {
+    content: $jam-chevron-up;
+  }
+}
+.jam-chevron-up-left {
+  &:before {
+    content: $jam-chevron-up-left;
+  }
+}
+.jam-chevron-up-right {
+  &:before {
+    content: $jam-chevron-up-right;
+  }
+}
 .jam-chevrons-circle-down {
   &:before {
     content: $jam-chevrons-circle-down;
@@ -1088,86 +1183,6 @@
     content: $jam-chevrons-left;
   }
 }
-.jam-chevron-square-down {
-  &:before {
-    content: $jam-chevron-square-down;
-  }
-}
-.jam-chevron-square-down-f {
-  &:before {
-    content: $jam-chevron-square-down-f;
-  }
-}
-.jam-chevron-square-down-left {
-  &:before {
-    content: $jam-chevron-square-down-left;
-  }
-}
-.jam-chevron-square-down-left-f {
-  &:before {
-    content: $jam-chevron-square-down-left-f;
-  }
-}
-.jam-chevron-square-down-right {
-  &:before {
-    content: $jam-chevron-square-down-right;
-  }
-}
-.jam-chevron-square-down-right-f {
-  &:before {
-    content: $jam-chevron-square-down-right-f;
-  }
-}
-.jam-chevron-square-left {
-  &:before {
-    content: $jam-chevron-square-left;
-  }
-}
-.jam-chevron-square-left-f {
-  &:before {
-    content: $jam-chevron-square-left-f;
-  }
-}
-.jam-chevron-square-right {
-  &:before {
-    content: $jam-chevron-square-right;
-  }
-}
-.jam-chevron-square-right-f {
-  &:before {
-    content: $jam-chevron-square-right-f;
-  }
-}
-.jam-chevron-square-up {
-  &:before {
-    content: $jam-chevron-square-up;
-  }
-}
-.jam-chevron-square-up-f {
-  &:before {
-    content: $jam-chevron-square-up-f;
-  }
-}
-.jam-chevron-square-up-left {
-  &:before {
-    content: $jam-chevron-square-up-left;
-  }
-}
-.jam-chevron-square-up-left-f {
-  &:before {
-    content: $jam-chevron-square-up-left-f;
-  }
-}
-.jam-chevron-square-up-right {
-  &:before {
-    content: $jam-chevron-square-up-right;
-  }
-}
-.jam-chevron-square-up-right-f {
-  &:before {
-    content: $jam-chevron-square-up-right-f;
-  }
-}
 .jam-chevrons-right {
   &:before {
     content: $jam-chevrons-right;
@@ -1266,21 +1281,6 @@
 .jam-chevrons-up-right {
   &:before {
     content: $jam-chevrons-up-right;
-  }
-}
-.jam-chevron-up {
-  &:before {
-    content: $jam-chevron-up;
-  }
-}
-.jam-chevron-up-left {
-  &:before {
-    content: $jam-chevron-up-left;
-  }
-}
-.jam-chevron-up-right {
-  &:before {
-    content: $jam-chevron-up-right;
   }
 }
 .jam-chronometer {
@@ -1398,6 +1398,11 @@
     content: $jam-code;
   }
 }
+.jam-code-sample {
+  &:before {
+    content: $jam-code-sample;
+  }
+}
 .jam-codepen {
   &:before {
     content: $jam-codepen;
@@ -1411,11 +1416,6 @@
 .jam-codepen-square {
   &:before {
     content: $jam-codepen-square;
-  }
-}
-.jam-code-sample {
-  &:before {
-    content: $jam-code-sample;
   }
 }
 .jam-coffee {
@@ -1833,6 +1833,11 @@
     content: $jam-eye-close-f;
   }
 }
+.jam-eye-f {
+  &:before {
+    content: $jam-eye-f;
+  }
+}
 .jam-eyedropper {
   &:before {
     content: $jam-eyedropper;
@@ -1841,11 +1846,6 @@
 .jam-eyedropper-f {
   &:before {
     content: $jam-eyedropper-f;
-  }
-}
-.jam-eye-f {
-  &:before {
-    content: $jam-eye-f;
   }
 }
 .jam-facebook {
@@ -2473,6 +2473,11 @@
     content: $jam-inbox;
   }
 }
+.jam-inbox-f {
+  &:before {
+    content: $jam-inbox-f;
+  }
+}
 .jam-inboxes {
   &:before {
     content: $jam-inboxes;
@@ -2481,11 +2486,6 @@
 .jam-inboxes-f {
   &:before {
     content: $jam-inboxes-f;
-  }
-}
-.jam-inbox-f {
-  &:before {
-    content: $jam-inbox-f;
   }
 }
 .jam-indent {
@@ -2548,6 +2548,11 @@
     content: $jam-key;
   }
 }
+.jam-key-f {
+  &:before {
+    content: $jam-key-f;
+  }
+}
 .jam-keyboard {
   &:before {
     content: $jam-keyboard;
@@ -2556,11 +2561,6 @@
 .jam-keyboard-f {
   &:before {
     content: $jam-keyboard-f;
-  }
-}
-.jam-key-f {
-  &:before {
-    content: $jam-key-f;
   }
 }
 .jam-language {
@@ -2648,9 +2648,19 @@
     content: $jam-log-in;
   }
 }
+.jam-log-in-alt {
+  &:before {
+    content: $jam-log-in-alt;
+  }
+}
 .jam-log-out {
   &:before {
     content: $jam-log-out;
+  }
+}
+.jam-log-out-alt {
+  &:before {
+    content: $jam-log-out-alt;
   }
 }
 .jam-ltr {
@@ -2798,6 +2808,16 @@
     content: $jam-message-f;
   }
 }
+.jam-message-writing {
+  &:before {
+    content: $jam-message-writing;
+  }
+}
+.jam-message-writing-f {
+  &:before {
+    content: $jam-message-writing-f;
+  }
+}
 .jam-messages {
   &:before {
     content: $jam-messages;
@@ -2816,16 +2836,6 @@
 .jam-messages-f {
   &:before {
     content: $jam-messages-f;
-  }
-}
-.jam-message-writing {
-  &:before {
-    content: $jam-message-writing;
-  }
-}
-.jam-message-writing-f {
-  &:before {
-    content: $jam-message-writing-f;
   }
 }
 .jam-messenger {
@@ -2858,16 +2868,6 @@
     content: $jam-mic-f;
   }
 }
-.jam-microchip {
-  &:before {
-    content: $jam-microchip;
-  }
-}
-.jam-microchip-f {
-  &:before {
-    content: $jam-microchip-f;
-  }
-}
 .jam-mic-square {
   &:before {
     content: $jam-mic-square;
@@ -2876,6 +2876,16 @@
 .jam-mic-square-f {
   &:before {
     content: $jam-mic-square-f;
+  }
+}
+.jam-microchip {
+  &:before {
+    content: $jam-microchip;
+  }
+}
+.jam-microchip-f {
+  &:before {
+    content: $jam-microchip-f;
   }
 }
 .jam-minus {
@@ -3173,6 +3183,11 @@
     content: $jam-pen;
   }
 }
+.jam-pen-f {
+  &:before {
+    content: $jam-pen-f;
+  }
+}
 .jam-pencil {
   &:before {
     content: $jam-pencil;
@@ -3181,11 +3196,6 @@
 .jam-pencil-f {
   &:before {
     content: $jam-pencil-f;
-  }
-}
-.jam-pen-f {
-  &:before {
-    content: $jam-pen-f;
   }
 }
 .jam-periscope {
@@ -3391,6 +3401,11 @@
 .jam-printer-f {
   &:before {
     content: $jam-printer-f;
+  }
+}
+.jam-px {
+  &:before {
+    content: $jam-px;
   }
 }
 .jam-qr-code {
@@ -4083,6 +4098,11 @@
     content: $jam-table-row-after;
   }
 }
+.jam-table-top-header {
+  &:before {
+    content: $jam-table-top-header;
+  }
+}
 .jam-tablet {
   &:before {
     content: $jam-tablet;
@@ -4091,11 +4111,6 @@
 .jam-tablet-f {
   &:before {
     content: $jam-tablet-f;
-  }
-}
-.jam-table-top-header {
-  &:before {
-    content: $jam-table-top-header;
   }
 }
 .jam-tag {
@@ -4418,6 +4433,11 @@
     content: $jam-user-circle;
   }
 }
+.jam-user-f {
+  &:before {
+    content: $jam-user-f;
+  }
+}
 .jam-user-minus {
   &:before {
     content: $jam-user-minus;
@@ -4433,14 +4453,14 @@
     content: $jam-user-remove;
   }
 }
-.jam-users {
-  &:before {
-    content: $jam-users;
-  }
-}
 .jam-user-square {
   &:before {
     content: $jam-user-square;
+  }
+}
+.jam-users {
+  &:before {
+    content: $jam-users;
   }
 }
 .jam-viadeo {
