@@ -7,6 +7,8 @@ import { pagesPath } from "../utils/$path"
 
 import { useForm } from "react-hook-form"
 
+import Link from "next/link"
+
 import { useAuthNeue } from "../contexts/auth"
 
 import { Button, FormItemSpacer, TextField, Panel } from "../components"
@@ -131,6 +133,11 @@ const Login: PageFC = () => {
               >
                 ログインする
               </Button>
+            </div>
+            <div className={styles.resetPasswordLink}>
+              <Link href="/reset-password">
+                <a>パスワードを忘れた方はこちら</a>
+              </Link>
             </div>
             {unknownError && (
               <div className={styles.error}>
