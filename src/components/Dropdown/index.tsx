@@ -17,6 +17,7 @@ declare namespace Dropdown {
     }>
     description?: string[] | string
     error?: Array<string | false | undefined> | string | false
+    fullWidth?: boolean
     register?: UseFormRegisterReturn
   }> &
     JSX.IntrinsicElements["select"]
@@ -29,6 +30,7 @@ const Dropdown: FC<Dropdown.Props> = ({
   options,
   description,
   error,
+  fullWidth = true,
   register,
   ...rest
 }) => {
@@ -42,7 +44,7 @@ const Dropdown: FC<Dropdown.Props> = ({
   ).filter((text): text is string => Boolean(text))
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} data-full-width={fullWidth}>
       {Boolean(label) && (
         <label className={styles.label}>
           {label}

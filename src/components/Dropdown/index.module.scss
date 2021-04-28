@@ -3,6 +3,10 @@
 .wrapper {
   display: flex;
   flex-direction: column;
+
+  &[data-full-width="false"] {
+    display: inline-flex;
+  }
 }
 
 .label {
