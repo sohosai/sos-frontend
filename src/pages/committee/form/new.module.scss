@@ -6,7 +6,7 @@
 }
 
 .title {
-  margin-bottom: 32px;
+  @include pageTitle;
 }
 
 .sectionWrapper {

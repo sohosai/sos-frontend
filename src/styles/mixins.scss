@@ -25,6 +25,11 @@
   margin-bottom: 64px;
 }
 
+@mixin pageTitle {
+  font-size: 2em;
+  margin-bottom: 32px;
+}
+
 @mixin ellipsis {
   overflow: hidden;
   white-space: nowrap;
