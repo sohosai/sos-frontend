@@ -129,7 +129,7 @@ const AcceptSubowner: PageFC = () => {
                   return <p>あなたの企画では既に副責任者登録が完了しています</p>
 
                 if (pendingProject && error === "sameAsAuthor") {
-                  const link = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/accept-subowner?pendingProjectId=${pendingProject.id}`
+                  const link = `${process.env.NEXT_PUBLIC_FRONTEND_URL}accept-subowner?pendingProjectId=${pendingProject.id}`
 
                   return (
                     <>
