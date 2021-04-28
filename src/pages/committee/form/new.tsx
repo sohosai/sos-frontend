@@ -60,6 +60,7 @@ type Inputs = {
   attributes: {
     [key in ProjectAttribute]: boolean
   }
+  attributesAndOr: "or" | "and"
   items: FormItem[]
 }
 
@@ -83,6 +84,19 @@ const NewForm: PageFC = () => {
     criteriaMode: "all",
     shouldFocusError: true,
     defaultValues: {
+      categories: {
+        general: false,
+        stage: false,
+        cooking: false,
+        food: false,
+      },
+      attributes: {
+        academic: false,
+        artistic: false,
+        outdoor: false,
+        committee: false,
+      },
+      attributesAndOr: "and",
       items: [],
     },
   })
@@ -99,6 +113,7 @@ const NewForm: PageFC = () => {
     ends_at,
     categories,
     attributes,
+    attributesAndOr,
     items,
   }: Inputs) => {
     if (authState === null || authState.firebaseUser == null) {
@@ -115,29 +130,44 @@ const NewForm: PageFC = () => {
       return
     }
 
+    const categoriesArray = Object.entries(categories)
+      .map(([category, value]) => {
+        if (!value) return
+        return category as ProjectCategory
+      })
+      .filter((nullable): nullable is ProjectCategory => Boolean(nullable))
+
+    const nonEmptyCategoriesArray = categoriesArray.length
+      ? categoriesArray
+      : ([null] as const)
+
     const attributesArray = Object.entries(attributes)
       .map(([attribute, value]) => {
         if (!value) return
-        return attribute
+        return attribute as ProjectAttribute
       })
       .filter((nullable): nullable is ProjectAttribute => Boolean(nullable))
 
-    const query = Object.entries(categories)
-      .map(([category, value]) => {
-        if (!value || !category) return
-        return {
-          category: category as ProjectCategory,
-          attributes: attributesArray,
-        }
-      })
-      .filter((nullable): nullable is {
-        category: ProjectCategory
-        attributes: ProjectAttribute[]
-      } => Boolean(nullable))
+    const query =
+      attributesAndOr === "or"
+        ? nonEmptyCategoriesArray
+            .map((category: ProjectCategory | null) => {
+              if (!attributesArray.length)
+                return {
+                  category,
+                  attributes: [],
+                }
 
-    const nonEmptyQuery: ProjectQuery = query.length
-      ? query
-      : [{ category: null, attributes: attributesArray }]
+              return attributesArray.map((attribute) => ({
+                category,
+                attributes: [attribute],
+              }))
+            })
+            .flat()
+        : nonEmptyCategoriesArray.map((category: ProjectCategory | null) => ({
+            category,
+            attributes: attributesArray,
+          }))
 
     if (process.browser && window.confirm("申請を対象の企画に送信しますか?")) {
       setProcessing(true)
@@ -161,7 +191,7 @@ const NewForm: PageFC = () => {
             )
             .valueOf(),
           condition: {
-            query: nonEmptyQuery,
+            query,
             // TODO:
             includes: [],
             excludes: [],
@@ -348,6 +378,7 @@ const NewForm: PageFC = () => {
                 artistic: register("attributes.artistic"),
                 outdoor: register("attributes.outdoor"),
                 committee: register("attributes.committee"),
+                attributesAndOr: register("attributesAndOr"),
               }}
             />
           </Panel>
