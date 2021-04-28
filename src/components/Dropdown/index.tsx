@@ -17,7 +17,7 @@ declare namespace Dropdown {
     }>
     description?: string[] | string
     error?: Array<string | false | undefined> | string | false
-    register: UseFormRegisterReturn
+    register?: UseFormRegisterReturn
   }> &
     JSX.IntrinsicElements["select"]
 }
