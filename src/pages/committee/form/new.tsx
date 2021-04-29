@@ -96,7 +96,7 @@ const NewForm: PageFC = () => {
         outdoor: false,
         committee: false,
       },
-      attributesAndOr: "and",
+      attributesAndOr: "or",
       items: [],
     },
   })
