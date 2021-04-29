@@ -79,9 +79,13 @@
 .addItemWrapper {
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: -16px;
 }
 
 .addButton {
+  margin-bottom: 16px;
+
   &:not(:last-of-type) {
     margin-right: 16px;
   }
