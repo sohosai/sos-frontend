@@ -83,7 +83,7 @@
   transition: background-color 200ms, color 200ms;
 
   &:hover {
-    background-color: $color-gray-50;
+    background-color: $color-caution-tint-900;
     color: $color-caution;
   }
 }
