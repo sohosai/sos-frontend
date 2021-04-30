@@ -135,7 +135,7 @@ const MyProjectContextCore = (authState: AuthNeueState): MyProjectContext => {
       } catch (err) {
         const body = await err.response?.json()
         setMyProjectState({
-          error: false,
+          error: true,
           myProject: null,
           isPending: null,
         })
