@@ -3,7 +3,7 @@ import type { UserId, UserName, UserKanaName } from "../user"
 export type PendingProject = Readonly<{
   id: PendingProjectId
   created_at: Date
-  author_id: UserId
+  owner_id: UserId
   name: string
   kana_name: string
   group_name: string
