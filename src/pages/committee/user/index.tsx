@@ -12,6 +12,8 @@ import { exportUsers } from "../../../lib/api/user/exportUsers"
 
 import { saveAs } from "file-saver"
 
+import { createCsvBlob } from "../../../utils/createCsvBlob"
+
 import { Button, Panel, Spinner } from "../../../components"
 
 import styles from "./index.module.scss"
@@ -57,7 +59,7 @@ const ListUsers: PageFC = () => {
             exportUsers({ idToken })
               .then((res) => {
                 // TODO: datetime in filename
-                saveAs(new Blob([res], { type: "text/csv" }), "sos-users.csv")
+                saveAs(createCsvBlob(res), "sos-users.csv")
               })
               .catch(async (err) => {
                 const body = await err.response?.json()

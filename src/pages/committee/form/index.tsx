@@ -13,6 +13,7 @@ import { listForms } from "../../../lib/api/form/listForms"
 import { exportFormAnswers } from "../../../lib/api/formAnswer/exportFormAnswers"
 
 import { pagesPath } from "../../../utils/$path"
+import { createCsvBlob } from "../../../utils/createCsvBlob"
 
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
@@ -114,10 +115,7 @@ const ListForms: PageFC = () => {
                         idToken,
                       })
                         .then((res) => {
-                          saveAs(
-                            new Blob([res], { type: "text/csv" }),
-                            `${form.name}-answers.csv`
-                          )
+                          saveAs(createCsvBlob(res), `${form.name}-answers.csv`)
                         })
                         .catch((err) => {
                           throw err
