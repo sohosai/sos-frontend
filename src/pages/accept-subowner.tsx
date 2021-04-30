@@ -94,7 +94,7 @@ const AcceptSubowner: PageFC = () => {
         throw body ?? err
       })
 
-      if (fetchedPendingProject.author_id === authState.sosUser.id) {
+      if (fetchedPendingProject.owner_id === authState.sosUser.id) {
         setError("hasOwnPendingProject")
       }
 
