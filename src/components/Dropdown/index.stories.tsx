@@ -16,7 +16,7 @@ export const Index: Story<
         ...props,
         options: props.options
           .split(",")
-          .map((str) => ({ value: str, label: str, selected: false })),
+          .map((str) => ({ value: str, label: str })),
       }}
     />
   </div>
