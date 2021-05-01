@@ -53,3 +53,17 @@ export const projectCategoryToUiText = (
   }
   return dict[projectCategory]
 }
+
+export const projectAttributeToUiText = (
+  projectAttribute: ProjectAttribute
+): string => {
+  const dict: {
+    [attribute in ProjectAttribute]: string
+  } = {
+    academic: "学術企画",
+    artistic: "芸術企画",
+    outdoor: "屋外企画",
+    committee: "委員会企画",
+  }
+  return dict[projectAttribute]
+}
