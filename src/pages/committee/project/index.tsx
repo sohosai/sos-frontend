@@ -2,6 +2,8 @@ import { useState, useEffect } from "react"
 
 import type { PageFC } from "next"
 
+import { saveAs } from "file-saver"
+
 import { useAuthNeue } from "../../../contexts/auth"
 
 import { Button, Panel, Spinner } from "../../../components/"
@@ -13,6 +15,9 @@ import {
 } from "../../../types/models/project"
 
 import { listProjects } from "../../../lib/api/project/listProjects"
+import { exportProjects } from "../../../lib/api/project/exportProjects"
+
+import { createCsvBlob } from "../../../utils/createCsvBlob"
 
 import styles from "./index.module.scss"
 
@@ -54,7 +59,25 @@ const ListProjects: PageFC = () => {
       {projects?.length ? (
         <>
           <div className={styles.downloadButtonWrapper}>
-            <Button icon="download">CSVでダウンロード</Button>
+            <Button
+              icon="download"
+              onClick={async () => {
+                if (authState?.status !== "bothSignedIn") return
+
+                exportProjects({
+                  idToken: await authState.firebaseUser.getIdToken(),
+                })
+                  .then((res) => {
+                    saveAs(createCsvBlob(res), "sos-projects.csv")
+                  })
+                  .catch(async (err) => {
+                    const body = await err.response?.json()
+                    throw body ?? err
+                  })
+              }}
+            >
+              CSVでダウンロード
+            </Button>
           </div>
           {projects.map((project) => (
             // TODO: link to the project details page
