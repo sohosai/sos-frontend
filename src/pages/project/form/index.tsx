@@ -91,7 +91,9 @@ const ListProjectForms: PageFC = () => {
                       }}
                     >
                       <div className={styles.formRowInner}>
-                        <p className={styles.formName}>{form.name}</p>
+                        <p className={styles.formName} title={form.name}>
+                          {form.name}
+                        </p>
                         <p className={styles.formDate}>
                           {dayjs
                             .tz(form.starts_at, "Asia/Tokyo")
@@ -102,25 +104,25 @@ const ListProjectForms: PageFC = () => {
                           {dayjs
                             .tz(form.ends_at, "Asia/Tokyo")
                             .format("M/D HH:mm")}
-                          <span className={styles.formDateState}>
-                            {(() => {
-                              if (
-                                dayjs().isBefore(
-                                  dayjs.tz(form.starts_at, "Asia/Tokyo")
-                                )
+                        </p>
+                        <p className={styles.formDateState}>
+                          {(() => {
+                            if (
+                              dayjs().isBefore(
+                                dayjs.tz(form.starts_at, "Asia/Tokyo")
                               )
-                                return "開始前"
+                            )
+                              return "開始前"
 
-                              if (
-                                dayjs().isAfter(
-                                  dayjs.tz(form.ends_at, "Asia/Tokyo")
-                                )
+                            if (
+                              dayjs().isAfter(
+                                dayjs.tz(form.ends_at, "Asia/Tokyo")
                               )
-                                return "締切済"
+                            )
+                              return "締切済"
 
-                              return "受付中"
-                            })()}
-                          </span>
+                            return "受付中"
+                          })()}
                         </p>
                       </div>
                     </Panel>
