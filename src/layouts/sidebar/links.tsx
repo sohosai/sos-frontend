@@ -123,6 +123,21 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
           router.pathname.startsWith(pagesPath.committee.form.$url().pathname),
       },
       {
+        href: pagesPath.committee.project.$url(),
+        title: "企画",
+        icon: "universe",
+        visible: () =>
+          authState.status === "bothSignedIn" &&
+          isUserRoleHigherThanIncluding({
+            userRole: authState.sosUser.role,
+            criteria: "committee",
+          }),
+        active: () =>
+          router.pathname.startsWith(
+            pagesPath.committee.project.$url().pathname
+          ),
+      },
+      {
         href: pagesPath.committee.user.$url(),
         title: "ユーザー",
         icon: "users",
