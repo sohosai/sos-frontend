@@ -12,6 +12,7 @@ import {
   Project,
   ProjectAttribute,
   projectCategoryToUiText,
+  projectAttributeToUiText,
 } from "../../../types/models/project"
 
 import { listProjects } from "../../../lib/api/project/listProjects"
@@ -89,7 +90,9 @@ const ListProjects: PageFC = () => {
                 }}
               >
                 <div className={styles.rowInner}>
-                  <p className={styles.projectName}>{project.name}</p>
+                  <p className={styles.projectName} title={project.name}>
+                    {project.name}
+                  </p>
                   <p className={styles.projectCode}>{project.code}</p>
                   <div className={styles.projectCategoryAndAttributes}>
                     <p className={styles.projectCategory}>
@@ -110,6 +113,7 @@ const ListProjects: PageFC = () => {
                           <p
                             key={attribute}
                             className={styles.projectAttributeCode}
+                            title={projectAttributeToUiText(attribute)}
                             data-active={project.attributes.includes(attribute)}
                           >
                             {projectAttributeCode[attribute]}
