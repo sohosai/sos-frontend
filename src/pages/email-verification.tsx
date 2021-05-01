@@ -46,9 +46,10 @@ const EmailVerification: PageFC = () => {
               <p className={styles.description}>
                 メールに記載されたリンクをクリックして登録を完了してください
               </p>
-              {/* TODO: アドレスを本番環境のものに差し替え */}
               <p className={styles.description}>
-                受信できない場合、noreply@hoge.firebaseapp.comからのメールが迷惑メールフォルダに配信されていないかご確認ください
+                受信できない場合、noreply@
+                {process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN}
+                からのメールが迷惑メールフォルダに配信されていないかご確認ください
               </p>
               <p className={styles.description}>
                 下のボタンから確認メールを再送することができます
