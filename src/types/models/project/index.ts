@@ -39,3 +39,17 @@ export type ProjectId = string
 export type ProjectCategory = "general" | "stage" | "cooking" | "food"
 
 export type ProjectAttribute = "academic" | "artistic" | "committee" | "outdoor"
+
+export const projectCategoryToUiText = (
+  projectCategory: ProjectCategory
+): string => {
+  const dict: {
+    [category in ProjectCategory]: string
+  } = {
+    general: "一般企画",
+    stage: "ステージ企画",
+    cooking: "調理企画",
+    food: "飲食物取扱企画",
+  }
+  return dict[projectCategory]
+}
