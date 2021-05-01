@@ -85,11 +85,11 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
           router.pathname.startsWith(pagesPath.project.form.$url().pathname),
       },
       {
-        href: pagesPath.mypage.$url(),
+        href: pagesPath.me.$url(),
         title: "マイページ",
         icon: "user-circle",
         visible: () => authState.status === "bothSignedIn",
-        active: () => router.pathname === pagesPath.mypage.$url().pathname,
+        active: () => router.pathname === pagesPath.me.$url().pathname,
       },
     ],
     committee: [

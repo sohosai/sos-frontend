@@ -69,7 +69,7 @@ export const useRbpacRedirect = ({
         if (userRole === "guest") {
           router.push(pagesPath.login.$url())
         } else {
-          router.push(pagesPath.mypage.$url())
+          router.push(pagesPath.me.$url())
         }
       }
 

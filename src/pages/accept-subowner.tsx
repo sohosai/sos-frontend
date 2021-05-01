@@ -57,7 +57,7 @@ const AcceptSubowner: PageFC = () => {
         window.alert("副責任者登録が完了しました")
 
         // TODO: 企画トップページに変更
-        router.push(pagesPath.mypage.$url())
+        router.push(pagesPath.me.$url())
       })
   }
 
