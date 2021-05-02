@@ -60,8 +60,8 @@ export const projectAttributeToUiText = (
   const dict: {
     [attribute in ProjectAttribute]: string
   } = {
-    academic: "学術企画",
-    artistic: "芸術企画",
+    academic: "学術参加枠",
+    artistic: "芸術祭参加枠",
     outdoor: "屋外企画",
     committee: "委員会企画",
   }
