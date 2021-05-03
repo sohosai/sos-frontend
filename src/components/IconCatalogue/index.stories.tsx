@@ -9,7 +9,15 @@ export default {
   component: null,
 }
 
-const icons = ["log-in-alt", "log-out-alt", "checkbox", "user-f"]
+const icons = [
+  "log-in-alt",
+  "log-out-alt",
+  "checkbox",
+  "user-f",
+  "phone-alt",
+  "more-horizontal-f",
+  "more-vertical-f",
+]
 
 export const Index: Story = () => {
   return (
