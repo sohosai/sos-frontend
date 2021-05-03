@@ -1,0 +1,52 @@
+@import "../styles/mixins";
+@import "../styles/variables";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.panelsWrapper {
+  flex-grow: 1;
+}
+
+.panelWrapper {
+  margin-bottom: 24px;
+}
+
+.panelTitle {
+  font-weight: normal;
+  font-size: 1.2em;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid $color-gray-100;
+}
+
+.panelText {
+  color: $color-text-sub;
+  display: flex;
+  align-items: center;
+  @include ellipsis;
+
+  &:not(:last-of-type) {
+    margin-bottom: 8px;
+  }
+}
+
+.panelTextIcon {
+  margin-right: 12px;
+  font-size: 1.5em;
+  color: $color-brand;
+}
+
+.name {
+  font-size: 1.5em;
+  margin-bottom: 16px;
+}
+
+.kanaName {
+  color: $color-text-sub;
+}

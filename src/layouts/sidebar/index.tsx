@@ -61,7 +61,7 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
                 </a>
               </Link>
             )}
-            <Link href={pagesPath.mypage.$url()}>
+            <Link href={pagesPath.me.$url()}>
               <a className={styles.mypageButtonWrapper}>
                 <i className={`jam-icons jam-user-circle ${styles.userIcon}`} />
                 <p
@@ -70,16 +70,6 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
                 >{`${authState.sosUser.name.last} ${authState.sosUser.name.first}`}</p>
               </a>
             </Link>
-            <button
-              type="button"
-              className={styles.logoutButton}
-              onClick={() => {
-                signout()
-              }}
-            >
-              <i className={`jam-icons jam-log-out-alt ${styles.logoutIcon}`} />
-              <p className={styles.logoutText}>ログアウト</p>
-            </button>
           </>
         )}
       </div>

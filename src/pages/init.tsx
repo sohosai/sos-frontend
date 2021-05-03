@@ -126,7 +126,7 @@ const Init: PageFC = () => {
           }
           case "409": {
             setOtherError("このアカウントの情報は登録済みです")
-            router.push(pagesPath.mypage.$url())
+            router.push(pagesPath.me.$url())
             break
           }
           default: {
@@ -139,7 +139,7 @@ const Init: PageFC = () => {
       })
       .then(() => {
         setProcessing(false)
-        router.push(pagesPath.mypage.$url())
+        router.push(pagesPath.me.$url())
       })
   }
 
