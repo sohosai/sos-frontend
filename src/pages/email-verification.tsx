@@ -4,7 +4,7 @@ import { PageFC } from "next"
 
 import { useAuthNeue } from "../contexts/auth"
 
-import { Button, Panel } from "../components"
+import { Button, Head, Panel } from "../components"
 
 import styles from "./email-verification.module.scss"
 
@@ -33,6 +33,7 @@ const EmailVerification: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head title="メールアドレスの確認" />
       <div className={styles.panelWrapper}>
         <Panel style={{ padding: "48px" }}>
           {!emailVerificationStatus && (

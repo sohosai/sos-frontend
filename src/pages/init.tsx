@@ -14,6 +14,7 @@ import { useAuthNeue } from "../contexts/auth"
 import {
   Panel,
   FormItemSpacer,
+  Head,
   TextField,
   Button,
   Dropdown,
@@ -144,6 +145,7 @@ const Init: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head title="アカウント情報登録" />
       <div className={styles.formWrapper}>
         <Panel style={{ padding: "48px" }}>
           <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>

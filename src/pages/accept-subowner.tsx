@@ -12,7 +12,7 @@ import { getPendingProject } from "../lib/api/project/getPendingProject"
 
 import { pagesPath } from "../utils/$path"
 
-import { Button, Panel, Spinner } from "../components"
+import { Button, Head, Panel, Spinner } from "../components"
 
 import styles from "./accept-subowner.module.scss"
 
@@ -104,6 +104,7 @@ const AcceptSubowner: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head title="副責任者登録" />
       <h1 className={styles.title}>副責任者登録</h1>
       <Panel>
         {pendingProject && !error ? (

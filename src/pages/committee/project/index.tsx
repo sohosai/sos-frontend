@@ -6,7 +6,7 @@ import { saveAs } from "file-saver"
 
 import { useAuthNeue } from "../../../contexts/auth"
 
-import { Button, Panel, Spinner } from "../../../components/"
+import { Button, Head, Panel, Spinner } from "../../../components/"
 
 import {
   Project,
@@ -56,6 +56,7 @@ const ListProjects: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head title="企画一覧" />
       <h1 className={styles.title}>企画一覧</h1>
       {projects?.length ? (
         <>

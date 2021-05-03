@@ -5,7 +5,7 @@ import Link from "next/link"
 
 import { useAuthNeue } from "../../../contexts/auth"
 
-import { Button, IconButton, Panel, Spinner } from "../../../components/"
+import { Button, Head, IconButton, Panel, Spinner } from "../../../components/"
 
 import type { Form } from "../../../types/models/form"
 
@@ -55,6 +55,7 @@ const ListForms: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head title="申請一覧" />
       <h1 className={styles.title}>申請一覧</h1>
       <div className={styles.newFormButton}>
         <Link href={pagesPath.committee.form.new.$url()}>

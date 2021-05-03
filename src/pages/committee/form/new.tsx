@@ -30,6 +30,7 @@ import {
   Checkbox,
   DateTimeSelector,
   FormItemSpacer,
+  Head,
   IconButton,
   Panel,
   ProjectQuerySelector,
@@ -262,6 +263,7 @@ const NewForm: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head title="新しい申請を作成" />
       <h1 className={styles.title}>新しい申請を作成</h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>

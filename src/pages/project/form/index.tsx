@@ -14,7 +14,7 @@ import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
 
-import { Panel, Spinner } from "../../../components"
+import { Head, Panel, Spinner } from "../../../components"
 
 import { pagesPath } from "../../../utils/$path"
 
@@ -71,6 +71,7 @@ const ListProjectForms: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head title="申請一覧" />
       <h1 className={styles.title}>申請一覧</h1>
       <div className={styles.panelWrapper}>
         {forms?.length ? (

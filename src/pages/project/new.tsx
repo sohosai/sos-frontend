@@ -6,7 +6,7 @@ import { pagesPath } from "../../utils/$path"
 import { useAuthNeue } from "../../contexts/auth"
 import { useMyProject } from "../../contexts/myProject"
 
-import { Button, Panel, Spinner } from "../../components"
+import { Button, Head, Panel, Spinner } from "../../components"
 
 import styles from "./new.module.scss"
 
@@ -50,6 +50,7 @@ const NewProject: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head title="企画応募" />
       <h1 className={styles.title}>企画応募</h1>
       <div className={styles.panelWrapper}>
         <Panel>
