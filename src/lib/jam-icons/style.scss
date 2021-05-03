@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: "#{$icomoon-font-family}";
-  src: url("#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?nlgzcu")
+  src: url("#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?ex25wk")
       format("truetype"),
-    url("#{$icomoon-font-path}/#{$icomoon-font-family}.woff?nlgzcu")
+    url("#{$icomoon-font-path}/#{$icomoon-font-family}.woff?ex25wk")
       format("woff"),
-    url("#{$icomoon-font-path}/#{$icomoon-font-family}.svg?nlgzcu##{$icomoon-font-family}")
+    url("#{$icomoon-font-path}/#{$icomoon-font-family}.svg?ex25wk##{$icomoon-font-family}")
       format("svg");
   font-weight: normal;
   font-style: normal;
@@ -3211,6 +3211,11 @@
 .jam-periscope-square {
   &:before {
     content: $jam-periscope-square;
+  }
+}
+.jam-phone-alt {
+  &:before {
+    content: $jam-phone-alt;
   }
 }
 .jam-phone {
