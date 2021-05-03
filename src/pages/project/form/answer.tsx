@@ -19,6 +19,7 @@ import {
   Button,
   Checkbox,
   FormItemSpacer,
+  Head,
   Panel,
   Spinner,
   Textarea,
@@ -215,6 +216,7 @@ const AnswerForm: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head title={form?.name ?? "申請に回答"} />
       <h1 className={styles.title}>申請に回答</h1>
       {form && !generalError ? (
         <>

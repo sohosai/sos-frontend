@@ -14,7 +14,7 @@ import { saveAs } from "file-saver"
 
 import { createCsvBlob } from "../../../utils/createCsvBlob"
 
-import { Button, Panel, Spinner } from "../../../components"
+import { Button, Head, Panel, Spinner } from "../../../components"
 
 import styles from "./index.module.scss"
 
@@ -47,6 +47,7 @@ const ListUsers: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head title="ユーザー一覧" />
       <h1 className={styles.title}>ユーザー一覧</h1>
       <div className={styles.downloadButton}>
         <Button
