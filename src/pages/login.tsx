@@ -135,7 +135,7 @@ const Login: PageFC = () => {
               </Button>
             </div>
             <div className={styles.resetPasswordLink}>
-              <Link href="/reset-password">
+              <Link href={pagesPath.reset_password.$url()}>
                 <a>パスワードを忘れた方はこちら</a>
               </Link>
             </div>

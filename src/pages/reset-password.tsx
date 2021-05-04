@@ -17,9 +17,7 @@ type Inputs = Readonly<{
 const ResetPassword: PageFC = () => {
   const [processing, setProcessing] = useState(false)
   const [unknownError, setUnknownError] = useState(false)
-  const [resetPasswordEmailStatus, setPasswordResetEmailStatus] = useState<
-    undefined | "mailSent" | "error"
-  >(undefined)
+  const [mailSent, setMailSent] = useState(false)
 
   const {
     register,
@@ -38,7 +36,7 @@ const ResetPassword: PageFC = () => {
     await sendPasswordResetEmail(email)
       .then(() => {
         setProcessing(false)
-        setPasswordResetEmailStatus("mailSent")
+        setMailSent(true)
       })
       .catch((res) => {
         setProcessing(false)
@@ -68,24 +66,23 @@ const ResetPassword: PageFC = () => {
     <div className={styles.wrapper}>
       <div className={styles.formWrapper}>
         <Panel style={{ padding: "48px" }}>
-          {resetPasswordEmailStatus === "mailSent" && (
+          {mailSent === true && (
             <>
-              <h1 className={styles.title}>
-                メールアドレスの確認をお願いします
-              </h1>
+              <h1 className={styles.title}>メールをお送りしました</h1>
               <p className={styles.description}>
-                登録されたメールアドレスにパスワードをリセットするためのメールをお送りしています
+                入力されたメールアドレスにパスワードを再設定するためのメールをお送りしています
               </p>
               <p className={styles.description}>
-                メールに記載されたリンクをクリックしてパスワードをリセットしてください
+                メールに記載されたリンクをクリックしてパスワードを再設定してください
               </p>
-              {/* TODO: アドレスを本番環境のものに差し替え */}
               <p className={styles.description}>
-                受信できない場合、noreply@hoge.firebaseapp.comからのメールが迷惑メールフォルダに配信されていないかご確認ください
+                受信できない場合、noreply@
+                {process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN}
+                からのメールが迷惑メールフォルダに配信されていないかご確認ください
               </p>
             </>
           )}
-          {!resetPasswordEmailStatus && (
+          {!mailSent && (
             <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
               <fieldset>
                 <legend className={styles.legend}>パスワードをリセット</legend>
@@ -119,7 +116,7 @@ const ResetPassword: PageFC = () => {
                 <Button
                   type="submit"
                   processing={processing}
-                  icon="inbox-f"
+                  icon="paper-plane"
                   fullWidth={true}
                 >
                   メールを送信する
