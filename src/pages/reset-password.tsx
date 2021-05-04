@@ -66,7 +66,7 @@ const ResetPassword: PageFC = () => {
     <div className={styles.wrapper}>
       <div className={styles.formWrapper}>
         <Panel style={{ padding: "48px" }}>
-          {mailSent === true && (
+          {mailSent ? (
             <>
               <h1 className={styles.title}>メールをお送りしました</h1>
               <p className={styles.description}>
@@ -81,8 +81,7 @@ const ResetPassword: PageFC = () => {
                 からのメールが迷惑メールフォルダに配信されていないかご確認ください
               </p>
             </>
-          )}
-          {!mailSent && (
+          ) : (
             <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
               <fieldset>
                 <legend className={styles.legend}>パスワードをリセット</legend>
