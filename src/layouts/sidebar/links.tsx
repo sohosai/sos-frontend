@@ -40,7 +40,9 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         href: pagesPath.$url(),
         title: "トップページ",
         icon: "home",
-        visible: () => true,
+        visible: () =>
+          authState.status !== "firebaseSignedIn" &&
+          authState.firebaseUser?.emailVerified !== false,
         active: () => router.pathname === pagesPath.$url().pathname,
       },
       {
@@ -56,6 +58,14 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         icon: "user-plus",
         visible: () => authState.status === "signedOut",
         active: () => router.pathname === pagesPath.signup.$url().pathname,
+      },
+      {
+        href: pagesPath.email_verification.$url(),
+        title: "メールアドレス確認",
+        icon: "envelope",
+        visible: () => Boolean(authState.firebaseUser?.emailVerified === false),
+        active: () =>
+          router.pathname === pagesPath.email_verification.$url().pathname,
       },
       {
         href: pagesPath.init.$url(),
