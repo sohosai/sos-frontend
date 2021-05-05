@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 
 import { useAuthNeue } from "../contexts/auth"
 
-import { Button, FormItemSpacer, TextField, Panel } from "../components"
+import { Button, FormItemSpacer, Head, TextField, Panel } from "../components"
 
 import styles from "./reset-password.module.scss"
 
@@ -64,6 +64,7 @@ const ResetPassword: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head title="パスワードの再設定" />
       <div className={styles.formWrapper}>
         <Panel style={{ padding: "48px" }}>
           {mailSent ? (
@@ -84,7 +85,7 @@ const ResetPassword: PageFC = () => {
           ) : (
             <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
               <fieldset>
-                <legend className={styles.legend}>パスワードをリセット</legend>
+                <legend className={styles.legend}>パスワードの再設定</legend>
                 <FormItemSpacer>
                   <TextField
                     type="email"
@@ -118,7 +119,7 @@ const ResetPassword: PageFC = () => {
                   icon="paper-plane"
                   fullWidth={true}
                 >
-                  メールを送信する
+                  再設定用メールを送信する
                 </Button>
               </div>
               {unknownError && (
