@@ -159,9 +159,7 @@ const AuthContextCore = ({
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
-        const idToken = await user.getIdToken(true).catch((err) => {
-          throw err
-        })
+        const idToken = await user.getIdToken(true)
 
         getMe({
           idToken,
@@ -206,19 +204,11 @@ const AuthContextCore = ({
               return
             }
 
-            if (res?.user) {
-              setAuthNeueState({
-                status: "bothSignedIn",
-                sosUser: res.user,
-                firebaseUser: user,
-              })
-            } else {
-              setAuthNeueState({
-                status: "error",
-                sosUser: null,
-                firebaseUser: null,
-              })
-            }
+            setAuthNeueState({
+              status: "bothSignedIn",
+              sosUser: res.user,
+              firebaseUser: user,
+            })
           })
       } else {
         setAuthNeueState({
