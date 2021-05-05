@@ -9,7 +9,7 @@ import {
   BuildInfo,
 } from "src/lib/api/meta"
 
-import { Panel, Spinner } from "src/components"
+import { Head, Panel, Spinner } from "src/components"
 
 import styles from "./meta.module.scss"
 
@@ -52,6 +52,7 @@ const Meta: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head title="開発者ツール" />
       <h1 className={styles.title}>開発者ツール</h1>
       {!healthCheckRes || !livenessRes || !buildInfo ? (
         <Panel>
