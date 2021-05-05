@@ -1,7 +1,6 @@
 import { useState } from "react"
 
 import { PageFC } from "next"
-import { useRouter } from "next/router"
 
 import { pagesPath } from "../utils/$path"
 
@@ -23,8 +22,6 @@ type Inputs = Readonly<{
 const Login: PageFC = () => {
   const [processing, setProcessing] = useState(false)
   const [unknownError, setUnknownError] = useState(false)
-
-  const router = useRouter()
 
   const {
     register,
