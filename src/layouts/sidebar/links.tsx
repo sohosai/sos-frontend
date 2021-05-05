@@ -58,6 +58,14 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         active: () => router.pathname === pagesPath.signup.$url().pathname,
       },
       {
+        href: pagesPath.email_verification.$url(),
+        title: "メールアドレス確認",
+        icon: "envelope",
+        visible: () => Boolean(authState.firebaseUser?.emailVerified === false),
+        active: () =>
+          router.pathname === pagesPath.email_verification.$url().pathname,
+      },
+      {
         href: pagesPath.init.$url(),
         title: "アカウント情報登録",
         icon: "user-circle",
