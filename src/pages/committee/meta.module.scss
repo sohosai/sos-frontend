@@ -1,0 +1,54 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+}
+
+.panelWrapper {
+  margin-bottom: 24px;
+}
+
+.panelTitle {
+  font-weight: normal;
+  font-size: 1.5em;
+  margin-bottom: 24px;
+}
+
+.statusText {
+  color: $color-text-sub;
+  display: flex;
+  align-items: center;
+
+  &[data-error="true"] {
+    color: $color-caution;
+
+    .statusIcon {
+      color: $color-caution;
+    }
+  }
+}
+
+.statusIcon {
+  font-size: 1.5em;
+  margin-right: 8px;
+  color: $color-brand;
+}
+
+.gitWrapper {
+  margin-top: 16px;
+}
+
+.gitTitle {
+  font-weight: normal;
+  font-size: 1em;
+  margin-bottom: 8px;
+}

@@ -152,6 +152,21 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         active: () =>
           router.pathname === pagesPath.committee.user.$url().pathname,
       },
+      {
+        href: pagesPath.committee.meta.$url(),
+        title: "開発者ツール",
+        icon: "wrench",
+        visible: () =>
+          Boolean(
+            authState.status === "bothSignedIn" &&
+              isUserRoleHigherThanIncluding({
+                userRole: authState.sosUser.role,
+                criteria: "administrator",
+              })
+          ),
+        active: () =>
+          router.pathname === pagesPath.committee.meta.$url().pathname,
+      },
     ],
   }
 
