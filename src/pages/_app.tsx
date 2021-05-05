@@ -6,6 +6,7 @@ import type { PageOptions } from "next"
 
 import { AuthProvider } from "../contexts/auth"
 import { MyProjectProvider } from "../contexts/myProject"
+import { ToastProvider } from "src/contexts/toast"
 
 import { useIfSupported } from "../hooks/useIfSupported"
 
@@ -33,13 +34,15 @@ function MyApp({
         <meta name="robots" content="noindex" key="robots" />
         <meta name="googlebot" content="noindex" key="googlebot" />
       </Head>
-      <AuthProvider rbpac={Component.rbpac}>
-        <MyProjectProvider>
-          <Layout layout={Component.layout}>
-            <Component {...pageProps} />
-          </Layout>
-        </MyProjectProvider>
-      </AuthProvider>
+      <ToastProvider>
+        <AuthProvider rbpac={Component.rbpac}>
+          <MyProjectProvider>
+            <Layout layout={Component.layout}>
+              <Component {...pageProps} />
+            </Layout>
+          </MyProjectProvider>
+        </AuthProvider>
+      </ToastProvider>
     </>
   )
 }
