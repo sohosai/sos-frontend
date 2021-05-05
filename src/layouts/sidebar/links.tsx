@@ -40,7 +40,9 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         href: pagesPath.$url(),
         title: "トップページ",
         icon: "home",
-        visible: () => true,
+        visible: () =>
+          authState.status !== "firebaseSignedIn" &&
+          authState.firebaseUser?.emailVerified !== false,
         active: () => router.pathname === pagesPath.$url().pathname,
       },
       {
