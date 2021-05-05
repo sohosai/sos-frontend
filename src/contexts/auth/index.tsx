@@ -1,4 +1,11 @@
-import { useState, useEffect, createContext, useContext, FC } from "react"
+import {
+  useState,
+  useEffect,
+  createContext,
+  useContext,
+  useRef,
+  FC,
+} from "react"
 
 import type { PageOptions } from "next"
 
@@ -83,9 +90,12 @@ const AuthContextCore = ({
 }): AuthNeue => {
   const [authNeueState, setAuthNeueState] = useState<AuthNeueState>(null)
 
+  const hasBeenSignedIn = useRef(false)
+
   useRbpacRedirect({
     rbpac,
     authState: authNeueState,
+    hasBeenSignedIn,
   })
 
   const signin = async (email: string, password: string) => {
@@ -159,6 +169,8 @@ const AuthContextCore = ({
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
+        hasBeenSignedIn.current = true
+
         const idToken = await user.getIdToken(true)
 
         getMe({

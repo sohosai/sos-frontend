@@ -139,7 +139,6 @@ const Init: PageFC = () => {
       })
       .then(() => {
         setProcessing(false)
-        router.push(pagesPath.me.$url())
       })
   }
 
