@@ -16,7 +16,6 @@ import type {
   ProjectCategory,
   ProjectAttribute,
 } from "../../../types/models/project"
-import type { ProjectQuery } from "../../../types/models/project/projectQuery"
 import type { FormItem } from "../../../types/models/form/item"
 
 import { createForm } from "../../../lib/api/form/createForm"
