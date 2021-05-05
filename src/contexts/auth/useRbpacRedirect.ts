@@ -35,16 +35,12 @@ export const useRbpacRedirect = ({
       if (authState === null || authState.status === "error") return
 
       if (authState.firebaseUser?.emailVerified === false) {
-        if (router.pathname !== pagesPath.email_verification.$url().pathname) {
-          router.push(pagesPath.email_verification.$url())
-        }
+        router.push(pagesPath.email_verification.$url())
         return
       }
 
       if (authState.status === "firebaseSignedIn") {
-        if (router.pathname !== pagesPath.init.$url().pathname) {
-          router.push(pagesPath.init.$url())
-        }
+        router.push(pagesPath.init.$url())
         return
       }
 
@@ -53,6 +49,15 @@ export const useRbpacRedirect = ({
         router.pathname === pagesPath.init.$url().pathname
       ) {
         router.push(pagesPath.login.$url())
+        return
+      }
+
+      if (
+        authState.status === "signedOut" &&
+        router.pathname === pagesPath.email_verification.$url().pathname
+      ) {
+        router.push(pagesPath.login.$url())
+        return
       }
 
       const userRole = authState.sosUser?.role ?? "guest"
@@ -101,5 +106,5 @@ export const useRbpacRedirect = ({
         }
       }
     })()
-  })
+  }, [authState, rbpac])
 }
