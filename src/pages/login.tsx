@@ -43,9 +43,6 @@ const Login: PageFC = () => {
     await signin(email, password)
       .then(() => {
         setProcessing(false)
-
-        // アカウント情報未登録だった場合は auth context 側で /init にリダイレクトしている
-        router.push(pagesPath.me.$url())
       })
       .catch((res) => {
         setProcessing(false)

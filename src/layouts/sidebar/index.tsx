@@ -15,7 +15,7 @@ import { Links } from "./links"
 import styles from "./index.module.scss"
 
 const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
-  const { authState, signout } = useAuthNeue()
+  const { authState } = useAuthNeue()
 
   const router = useRouter()
 
