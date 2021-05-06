@@ -24,7 +24,7 @@ const useToastCore = (): {
       ...prevItems,
       {
         key: prevItems.length ? prevItems.slice(-1)[0].key + 1 : 0,
-        toastProps: { ...toastOptions, progress: "0%" },
+        toastProps: { ...toastOptions, progress: 0 },
       },
     ])
   }
@@ -34,7 +34,7 @@ const useToastCore = (): {
       return {
         opacity: 0,
         height: refMap.get(item)?.offsetHeight,
-        progress: "0%",
+        progress: 0,
       }
     },
     keys: (item) => item.key,
@@ -43,7 +43,7 @@ const useToastCore = (): {
         opacity: 1,
         height: refMap.get(item)?.offsetHeight,
       })
-      await next({ progress: "100%" })
+      await next({ progress: 1 })
     },
     leave: [{ opacity: 0 }, { height: 0 }],
     onRest: (result, ctrl, item) => {

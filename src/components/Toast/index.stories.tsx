@@ -15,7 +15,7 @@ export const Index: Story<
     descriptions={
       options.descriptions.length ? options.descriptions.split(",") : []
     }
-    progress={`${options.progress}%`}
+    progress={options.progress}
   />
 )
 
@@ -30,7 +30,7 @@ Index.argTypes = {
     control: { type: "text" },
   },
   progress: {
-    control: { type: "range", min: 0, max: 100, step: 10 },
-    defaultValue: 30,
+    control: { type: "range", min: 0, max: 1, step: 0.1 },
+    defaultValue: 0.3,
   },
 }
