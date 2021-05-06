@@ -66,29 +66,33 @@ const Committee: PageFC = () => {
       <Head title="実委人トップページ" />
       <h1 className={styles.title}>実委人トップページ</h1>
       <ul className={styles.panelsWrapper}>
-        {links.map((link) => (
-          <li className={styles.panelWrapper} key={link.href.pathname}>
-            <Link href={link.href}>
-              <a>
-                <Panel style={{ padding: "24px" }}>
-                  <div className={styles.panelInner}>
-                    <div className={styles.panelContentRight}>
-                      <div className={styles.panelIconBg} aria-hidden>
-                        <span
-                          className={`jam-icons jam-${link.icon} ${styles.panelIcon}`}
-                        />
+        {links.map((link) => {
+          if (!link.visible()) return
+
+          return (
+            <li className={styles.panelWrapper} key={link.href.pathname}>
+              <Link href={link.href}>
+                <a>
+                  <Panel style={{ padding: "24px" }}>
+                    <div className={styles.panelInner}>
+                      <div className={styles.panelContentRight}>
+                        <div className={styles.panelIconBg} aria-hidden>
+                          <span
+                            className={`jam-icons jam-${link.icon} ${styles.panelIcon}`}
+                          />
+                        </div>
+                        <p className={styles.panelTitle}>{link.title}</p>
                       </div>
-                      <p className={styles.panelTitle}>{link.title}</p>
+                      <span
+                        className={`jam-icons jam-arrow-right ${styles.linkArrowIcon}`}
+                      />
                     </div>
-                    <span
-                      className={`jam-icons jam-arrow-right ${styles.linkArrowIcon}`}
-                    />
-                  </div>
-                </Panel>
-              </a>
-            </Link>
-          </li>
-        ))}
+                  </Panel>
+                </a>
+              </Link>
+            </li>
+          )
+        })}
       </ul>
     </div>
   )
