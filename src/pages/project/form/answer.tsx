@@ -5,8 +5,9 @@ import { useRouter } from "next/router"
 
 import { useForm, useFieldArray } from "react-hook-form"
 
-import { useAuthNeue } from "../../../contexts/auth"
-import { useMyProject } from "../../../contexts/myProject"
+import { useAuthNeue } from "src/contexts/auth"
+import { useMyProject } from "src/contexts/myProject"
+import { useToastDispatcher } from "src/contexts/toast"
 
 import { Form } from "../../../types/models/form"
 import { FormAnswerItemInForm } from "../../../types/models/form/answerItem"
@@ -42,7 +43,6 @@ const AnswerForm: PageFC = () => {
   const [generalError, setGeneralError] = useState<
     "formIdNotFound" | "formNotFound" | "projectPending" | "unknown"
   >()
-  const [formError, setFormError] = useState<"unknown">()
   const [formItemErrors, setFormItemErrors] = useState<
     Array<"minChecks" | "maxChecks" | null>
   >([])
@@ -52,6 +52,7 @@ const AnswerForm: PageFC = () => {
 
   const { authState } = useAuthNeue()
   const { myProjectState } = useMyProject()
+  const { addToast } = useToastDispatcher()
 
   const {
     register,
@@ -86,7 +87,7 @@ const AnswerForm: PageFC = () => {
       if (item.type === "checkbox") {
         const formItem = form?.items[index]
         if (formItem?.type !== "checkbox") {
-          setFormError("unknown")
+          addToast({ title: "エラーが発生しました", kind: "error" })
           return
         }
 
@@ -130,16 +131,14 @@ const AnswerForm: PageFC = () => {
         })
           .catch(async (err) => {
             setProcessing(false)
-            setFormError("unknown")
+            // TODO: err handling
+            addToast({ title: "エラーが発生しました", kind: "error" })
             const body = await err.response?.json()
             throw body ?? err
           })
           .then(() => {
             setProcessing(false)
-
-            // TODO: toast
-            window.alert("回答を送信しました")
-
+            addToast({ title: "回答を送信しました", kind: "success" })
             router.push(pagesPath.project.form.$url())
           })
       }
@@ -353,9 +352,6 @@ const AnswerForm: PageFC = () => {
               >
                 回答する
               </Button>
-              {formError === "unknown" && (
-                <p className={styles.formError}>不明なエラーが発生しました</p>
-              )}
             </form>
           </Panel>
         </>

@@ -3,7 +3,8 @@ import { useState, useEffect } from "react"
 import type { PageFC } from "next"
 import Link from "next/link"
 
-import { useAuthNeue } from "../../../contexts/auth"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
 
 import { Button, Head, IconButton, Panel, Spinner } from "../../../components/"
 
@@ -25,9 +26,9 @@ import styles from "./index.module.scss"
 
 const ListForms: PageFC = () => {
   const { authState } = useAuthNeue()
+  const { addToast } = useToastDispatcher()
 
   const [forms, setForms] = useState<Form[] | undefined | null>(null)
-  const [error, setError] = useState(false)
 
   useEffect(() => {
     ;(async () => {
@@ -41,8 +42,7 @@ const ListForms: PageFC = () => {
         })
         .catch(async (err) => {
           const body = await err.response?.json()
-          // TODO: err handling
-          setError(true)
+          addToast({ title: "エラーが発生しました", kind: "error" })
           throw body ?? err
         })
     })()
@@ -132,21 +132,13 @@ const ListForms: PageFC = () => {
         <div className={styles.panelWrapper}>
           <Panel>
             <div className={styles.emptyWrapper}>
-              {(() => {
-                if (error) {
-                  return <>エラーが発生しました</>
-                }
-
-                if (forms === null) {
-                  return (
-                    <>
-                      <Spinner />
-                    </>
-                  )
-                }
-
-                return <>申請が作成されていません</>
-              })()}
+              {forms === null ? (
+                <>
+                  <Spinner />
+                </>
+              ) : (
+                <p>申請が作成されていません</p>
+              )}
             </div>
           </Panel>
         </div>

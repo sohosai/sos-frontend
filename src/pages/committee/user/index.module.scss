@@ -52,7 +52,3 @@
 .emptyWrapper {
   @include emptyWrapper;
 }
-
-.error {
-  color: $color-caution;
-}
