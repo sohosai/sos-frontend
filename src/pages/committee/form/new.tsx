@@ -451,7 +451,6 @@ const NewForm: PageFC = () => {
                         <FormItemSpacer>
                           <Checkbox
                             label="必須項目にする"
-                            defaultChecked={false}
                             checked={watch(`items.${index}.is_required` as any)}
                             register={register(
                               `items.${index}.is_required` as const
@@ -461,7 +460,6 @@ const NewForm: PageFC = () => {
                         <FormItemSpacer>
                           <Checkbox
                             label="複数行テキストにする"
-                            defaultChecked={false}
                             checked={watch(
                               `items.${index}.accept_multiple_lines` as const
                             )}
