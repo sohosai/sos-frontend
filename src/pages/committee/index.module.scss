@@ -1,5 +1,46 @@
+@import "../../styles/variables";
 @import "../../styles/mixins";
 
 .wrapper {
   @include mainArea;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.panelWrapper {
+  margin-bottom: 16px;
+}
+
+.panelInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panelContentRight {
+  display: flex;
+  align-items: center;
+}
+
+.panelIconBg {
+  background-color: $color-brand;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.panelIcon {
+  font-size: 2em;
+  color: white;
+}
+
+.panelTitle {
+  margin-left: 16px;
+  font-size: 1.2em;
+}
+
+.linkArrowIcon {
+  font-size: 2em;
+  color: $color-gray-400;
 }
