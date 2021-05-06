@@ -478,7 +478,8 @@ const NewForm: PageFC = () => {
                                 register={register(
                                   `items.${index}.min_length` as const,
                                   {
-                                    valueAsNumber: true,
+                                    setValueAs: (value) =>
+                                      value === "" ? null : Number(value),
                                   }
                                 )}
                               />
@@ -492,7 +493,8 @@ const NewForm: PageFC = () => {
                                 register={register(
                                   `items.${index}.max_length` as const,
                                   {
-                                    valueAsNumber: true,
+                                    setValueAs: (value) =>
+                                      value === "" ? null : Number(value),
                                   }
                                 )}
                               />
@@ -530,7 +532,8 @@ const NewForm: PageFC = () => {
                                 register={register(
                                   `items.${index}.min_checks` as const,
                                   {
-                                    valueAsNumber: true,
+                                    setValueAs: (value) =>
+                                      value === "" ? null : Number(value),
                                   }
                                 )}
                               />
@@ -545,7 +548,8 @@ const NewForm: PageFC = () => {
                                 register={register(
                                   `items.${index}.max_checks` as const,
                                   {
-                                    valueAsNumber: true,
+                                    setValueAs: (value) =>
+                                      value === "" ? null : Number(value),
                                   }
                                 )}
                               />
