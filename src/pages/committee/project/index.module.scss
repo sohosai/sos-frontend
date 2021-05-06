@@ -30,13 +30,15 @@
 }
 
 .projectName {
+  width: 900em;
   flex-shrink: 1;
   margin-right: 16px;
   @include ellipsis;
 }
 
 .projectCode {
-  flex-shrink: 0;
+  width: 300em;
+  flex-shrink: 1;
   margin-right: 16px;
   color: $color-text-sub;
 }
