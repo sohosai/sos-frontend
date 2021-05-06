@@ -25,7 +25,7 @@ const ToastHub: FC = () => {
               title={item.toastProps.title}
               descriptions={item.toastProps.descriptions}
               kind={item.toastProps.kind}
-              progress={progress as SpringValue<string>}
+              progress={progress as SpringValue<number>}
             />
           </div>
         </animated.div>
