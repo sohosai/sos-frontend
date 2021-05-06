@@ -4,7 +4,8 @@ import { PageFC } from "next"
 
 import { useForm } from "react-hook-form"
 
-import { useAuthNeue } from "../contexts/auth"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
 
 import { Button, FormItemSpacer, Head, TextField, Panel } from "../components"
 
@@ -16,7 +17,6 @@ type Inputs = Readonly<{
 
 const ResetPassword: PageFC = () => {
   const [processing, setProcessing] = useState(false)
-  const [unknownError, setUnknownError] = useState(false)
   const [mailSent, setMailSent] = useState(false)
 
   const {
@@ -30,6 +30,7 @@ const ResetPassword: PageFC = () => {
   })
 
   const { sendPasswordResetEmail } = useAuthNeue()
+  const { addToast } = useToastDispatcher()
 
   const onSubmit = async ({ email }: Inputs) => {
     setProcessing(true)
@@ -57,7 +58,11 @@ const ResetPassword: PageFC = () => {
             { shouldFocus: true }
           )
         } else {
-          setUnknownError(true)
+          addToast({
+            title: "エラーが発生しました",
+            descriptions: ["時間をおいて再度お試しください"],
+            kind: "error",
+          })
         }
       })
   }
@@ -122,12 +127,6 @@ const ResetPassword: PageFC = () => {
                   再設定用メールを送信する
                 </Button>
               </div>
-              {unknownError && (
-                <div className={styles.error}>
-                  <p>不明なエラーが発生しました</p>
-                  <p>時間をおいて再度お試しください</p>
-                </div>
-              )}
             </form>
           )}
         </Panel>

@@ -1,0 +1,64 @@
+@import "../../styles/mixins";
+@import "../../styles/variables";
+
+.wrapper {
+  width: 20em;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid $color-gray-100;
+  box-shadow: 0px 8px 16px 0px $color-gray-100;
+  overflow: hidden;
+  user-select: none;
+  pointer-events: auto;
+
+  &[data-kind="error"] {
+    .iconWrapper {
+      background-color: $color-caution-shade-100;
+    }
+
+    .iconProgress {
+      background-color: $color-caution-tint-200;
+    }
+  }
+}
+
+.iconWrapper {
+  flex-shrink: 0;
+  position: relative;
+  width: 3em;
+  background-color: $color-brand-shade-100;
+  @include flexCenter;
+}
+
+.iconProgress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background-color: $color-brand-tint-200;
+  transform-origin: center top;
+}
+
+.icon {
+  font-size: 1.5em;
+  color: white;
+  z-index: 2;
+}
+
+.textWrapper {
+  flex-shrink: 1;
+  padding: 12px;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
+.descriptionsWrapper {
+  margin-top: 4px;
+}
+
+.description {
+  color: $color-text-sub;
+}

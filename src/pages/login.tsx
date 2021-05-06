@@ -1,7 +1,6 @@
 import { useState } from "react"
 
 import { PageFC } from "next"
-import { useRouter } from "next/router"
 
 import { pagesPath } from "../utils/$path"
 
@@ -9,7 +8,8 @@ import { useForm } from "react-hook-form"
 
 import Link from "next/link"
 
-import { useAuthNeue } from "../contexts/auth"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
 
 import { Button, FormItemSpacer, Head, TextField, Panel } from "../components"
 
@@ -22,9 +22,6 @@ type Inputs = Readonly<{
 
 const Login: PageFC = () => {
   const [processing, setProcessing] = useState(false)
-  const [unknownError, setUnknownError] = useState(false)
-
-  const router = useRouter()
 
   const {
     register,
@@ -37,15 +34,13 @@ const Login: PageFC = () => {
   })
 
   const { signin } = useAuthNeue()
+  const { addToast } = useToastDispatcher()
 
   const onSubmit = async ({ email, password }: Inputs) => {
     setProcessing(true)
     await signin(email, password)
       .then(() => {
         setProcessing(false)
-
-        // アカウント情報未登録だった場合は auth context 側で /init にリダイレクトしている
-        router.push(pagesPath.me.$url())
       })
       .catch((res) => {
         setProcessing(false)
@@ -70,7 +65,11 @@ const Login: PageFC = () => {
             }
           )
         } else {
-          setUnknownError(true)
+          addToast({
+            title: "エラーが発生しました",
+            descriptions: ["時間をおいて再度お試しください"],
+            kind: "error",
+          })
         }
       })
   }
@@ -140,12 +139,6 @@ const Login: PageFC = () => {
                 <a>パスワードを忘れた方はこちら</a>
               </Link>
             </div>
-            {unknownError && (
-              <div className={styles.error}>
-                <p>不明なエラーが発生しました</p>
-                <p>時間をおいて再度お試しください</p>
-              </div>
-            )}
           </form>
         </Panel>
       </div>

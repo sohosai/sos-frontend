@@ -4,7 +4,8 @@ import type { PageFC } from "next"
 
 import { saveAs } from "file-saver"
 
-import { useAuthNeue } from "../../../contexts/auth"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
 
 import { Button, Head, Panel, Spinner } from "../../../components/"
 
@@ -24,9 +25,9 @@ import styles from "./index.module.scss"
 
 const ListProjects: PageFC = () => {
   const { authState } = useAuthNeue()
+  const { addToast } = useToastDispatcher()
 
   const [projects, setProjects] = useState<Project[] | null>(null)
-  const [error, setError] = useState<"unknown">()
 
   const projectAttributes: ProjectAttribute[] = [
     "academic",
@@ -48,7 +49,7 @@ const ListProjects: PageFC = () => {
         .catch(async (err) => {
           const body = await err.response?.json()
           // TODO: err handling
-          setError("unknown")
+          addToast({ title: "エラーが発生しました", kind: "error" })
           throw body ?? err
         })
     })()
@@ -132,21 +133,13 @@ const ListProjects: PageFC = () => {
         <div className={styles.panelWrapper}>
           <Panel>
             <div className={styles.emptyWrapper}>
-              {(() => {
-                if (error) {
-                  return <p>エラーが発生しました</p>
-                }
-
-                if (projects === null) {
-                  return (
-                    <>
-                      <Spinner />
-                    </>
-                  )
-                }
-
-                return <p>企画が存在しません</p>
-              })()}
+              {projects === null ? (
+                <>
+                  <Spinner />
+                </>
+              ) : (
+                <p>企画が存在しません</p>
+              )}
             </div>
           </Panel>
         </div>

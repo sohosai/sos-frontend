@@ -2,7 +2,8 @@ import { useState, useEffect } from "react"
 
 import type { PageFC } from "next"
 
-import { useAuthNeue } from "../../../contexts/auth"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
 
 import { User } from "../../../types/models/user"
 import { userRoleToUiText } from "../../../types/models/user/userRole"
@@ -20,9 +21,9 @@ import styles from "./index.module.scss"
 
 const ListUsers: PageFC = () => {
   const { authState } = useAuthNeue()
+  const { addToast } = useToastDispatcher()
 
-  const [users, setUsers] = useState<User[] | null | undefined>(null)
-  const [error, setError] = useState(false)
+  const [users, setUsers] = useState<User[] | null>(null)
 
   useEffect(() => {
     ;(async () => {
@@ -37,9 +38,8 @@ const ListUsers: PageFC = () => {
           })
           .catch(async (e) => {
             const body = await e.response?.json()
-            // TODO: err handling
-            setError(true)
-            throw body
+            addToast({ title: "エラーが発生しました", kind: "error" })
+            throw body ?? e
           })
       }
     })()
@@ -72,53 +72,41 @@ const ListUsers: PageFC = () => {
         </Button>
       </div>
       <Panel>
-        {users === null ? (
-          <div className={styles.emptyWrapper}>
-            <Spinner />
+        {users?.length ? (
+          <div className={styles.usersTableWrapper}>
+            <table className={styles.table}>
+              <thead className={styles.head}>
+                <tr>
+                  <th className={styles.headCell}>氏名</th>
+                  <th className={styles.headCell}>権限</th>
+                  <th className={styles.headCell}>所属</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map(({ name, role, affiliation, id }) => {
+                  return (
+                    <tr key={id} className={styles.row}>
+                      <td
+                        className={styles.cell}
+                      >{`${name.last} ${name.first}`}</td>
+                      <td className={styles.cell}>{userRoleToUiText(role)}</td>
+                      <td className={styles.cell}>{affiliation}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
           </div>
         ) : (
-          <>
-            {!error ? (
+          <div className={styles.emptyWrapper}>
+            {users === null ? (
               <>
-                {users?.length ? (
-                  <div className={styles.usersTableWrapper}>
-                    <table className={styles.table}>
-                      <thead className={styles.head}>
-                        <tr>
-                          <th className={styles.headCell}>氏名</th>
-                          <th className={styles.headCell}>権限</th>
-                          <th className={styles.headCell}>所属</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {users.map(({ name, role, affiliation, id }) => {
-                          return (
-                            <tr key={id} className={styles.row}>
-                              <td
-                                className={styles.cell}
-                              >{`${name.last} ${name.first}`}</td>
-                              <td className={styles.cell}>
-                                {userRoleToUiText(role)}
-                              </td>
-                              <td className={styles.cell}>{affiliation}</td>
-                            </tr>
-                          )
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  <div className={styles.emptyWrapper}>
-                    <p>ユーザーが見つかりませんでした</p>
-                  </div>
-                )}
+                <Spinner />
               </>
             ) : (
-              <div className={styles.emptyWrapper}>
-                <p className={styles.error}>エラーが発生しました</p>
-              </div>
+              <p>ユーザーが存在しません</p>
             )}
-          </>
+          </div>
         )}
       </Panel>
     </div>

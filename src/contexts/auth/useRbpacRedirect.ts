@@ -7,7 +7,7 @@
  * SOS バックからのエラーなどを受けてリダイレクトする場合はその場で処理
  */
 
-import { useEffect } from "react"
+import { useEffect, useRef, MutableRefObject } from "react"
 
 import { useRouter } from "next/router"
 import type { PageOptions } from "next"
@@ -20,30 +20,41 @@ import {
 } from "../../types/models/user/userRole"
 
 import { AuthNeueState } from "."
+import { useToastDispatcher } from "src/contexts/toast"
 
 export const useRbpacRedirect = ({
   rbpac,
   authState,
+  hasBeenSignedIn,
 }: {
   rbpac: PageOptions["rbpac"]
   authState: AuthNeueState
+  hasBeenSignedIn: MutableRefObject<boolean>
 }): void => {
   const router = useRouter()
+  const { addToast } = useToastDispatcher()
+
+  const emailVerificationToastDispatched = useRef(false)
+  const initToastDispatched = useRef(false)
 
   useEffect(() => {
     ;(async () => {
       if (authState === null || authState.status === "error") return
 
       if (authState.firebaseUser?.emailVerified === false) {
-        if (router.pathname !== pagesPath.email_verification.$url().pathname) {
-          router.push(pagesPath.email_verification.$url())
+        router.push(pagesPath.email_verification.$url())
+        if (emailVerificationToastDispatched.current === false) {
+          emailVerificationToastDispatched.current = true
+          addToast({ title: "メールアドレスの確認をお願いします" })
         }
         return
       }
 
       if (authState.status === "firebaseSignedIn") {
-        if (router.pathname !== pagesPath.init.$url().pathname) {
-          router.push(pagesPath.init.$url())
+        router.push(pagesPath.init.$url())
+        if (initToastDispatched.current === false) {
+          initToastDispatched.current = true
+          addToast({ title: "アカウント情報を登録してください" })
         }
         return
       }
@@ -53,22 +64,41 @@ export const useRbpacRedirect = ({
         router.pathname === pagesPath.init.$url().pathname
       ) {
         router.push(pagesPath.login.$url())
+        return
+      }
+
+      if (
+        authState.status === "signedOut" &&
+        router.pathname === pagesPath.email_verification.$url().pathname
+      ) {
+        router.push(pagesPath.login.$url())
+        return
       }
 
       const userRole = authState.sosUser?.role ?? "guest"
 
-      // TODO: toast
       const redirect = (): void => {
         if (authState.status === "signedOut") {
-          if (router.pathname !== pagesPath.login.$url().pathname) {
+          if (hasBeenSignedIn.current === true) {
+            router.push(pagesPath.$url())
+            addToast({ title: "ログアウトしました" })
+          } else {
             router.push(pagesPath.login.$url())
+            addToast({ title: "ログインしてください" })
           }
           return
         }
 
         if (userRole === "guest") {
+          addToast({ title: "ログインしてください" })
           router.push(pagesPath.login.$url())
         } else {
+          if (
+            router.pathname !== pagesPath.login.$url().pathname &&
+            router.pathname !== pagesPath.init.$url().pathname
+          ) {
+            addToast({ title: "アクセスできないページです" })
+          }
           router.push(pagesPath.me.$url())
         }
       }
@@ -101,5 +131,5 @@ export const useRbpacRedirect = ({
         }
       }
     })()
-  })
+  }, [authState, rbpac])
 }
