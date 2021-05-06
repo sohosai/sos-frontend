@@ -23,21 +23,3 @@
 .submitButton {
   margin-top: 32px;
 }
-
-.error {
-  margin-top: 16px;
-  color: $color-caution;
-}
-
-.mailSentTitle,
-.mailErrorTitle {
-  color: $color-text-primary;
-  font-size: 1.5em;
-  font-size: bold;
-  margin-bottom: 32px;
-}
-
-.mailSentParagraph,
-.mailErrorParagraph {
-  color: $color-text-sub;
-}

@@ -3,8 +3,9 @@ import { useState, useEffect } from "react"
 import { PageFC } from "next"
 import { useRouter } from "next/router"
 
-import { useAuthNeue } from "../contexts/auth"
-import { useMyProject } from "../contexts/myProject"
+import { useAuthNeue } from "src/contexts/auth"
+import { useMyProject } from "src/contexts/myProject"
+import { useToastDispatcher } from "src/contexts/toast"
 
 import { PendingProject } from "../types/models/project"
 
@@ -23,14 +24,12 @@ export type Query = {
 const AcceptSubowner: PageFC = () => {
   const [pendingProject, setPendingProject] = useState<PendingProject>()
   const [error, setError] = useState<
-    | "pendingProjectNotFound"
-    | "hasOwnPendingProject"
-    | "subownerAlreadyExists"
-    | "unknown"
+    "pendingProjectNotFound" | "hasOwnPendingProject" | "subownerAlreadyExists"
   >()
 
   const { authState } = useAuthNeue()
   const { acceptSubowner, myProjectState } = useMyProject()
+  const { addToast } = useToastDispatcher()
 
   const router = useRouter()
 
@@ -49,12 +48,11 @@ const AcceptSubowner: PageFC = () => {
       .catch(async (err) => {
         const body = err.response?.json()
         // FIXME:
-        setError("unknown")
+        addToast({ title: "エラーが発生しました", kind: "error" })
         throw body ?? err
       })
       .then(() => {
-        // TODO: toast に変更
-        window.alert("副責任者登録が完了しました")
+        addToast({ title: "副責任者登録が完了しました", kind: "success" })
 
         // TODO: 企画トップページに変更
         router.push(pagesPath.me.$url())
@@ -79,20 +77,22 @@ const AcceptSubowner: PageFC = () => {
         return
       }
 
-      // rbpacRedirect されるのでまともに処理する必要なし
       if (authState?.status !== "bothSignedIn") return
 
-      const {
-        pending_project: fetchedPendingProject,
-      } = await getPendingProject({
-        pendingProjectId,
-        idToken: await authState.firebaseUser.getIdToken(),
-      }).catch(async (err) => {
-        const body = await err.response?.json()
-        // FIXME:
-        setError("pendingProjectNotFound")
-        throw body ?? err
+      const { pendingProject: fetchedPendingProject } = await getPendingProject(
+        {
+          pendingProjectId,
+          idToken: await authState.firebaseUser.getIdToken(),
+        }
+      ).catch(async (err) => {
+        addToast({ title: "エラーが発生しました", kind: "error" })
+        throw err
       })
+
+      if (fetchedPendingProject === null) {
+        setError("pendingProjectNotFound")
+        return
+      }
 
       if (fetchedPendingProject.owner_id === authState.sosUser.id) {
         setError("hasOwnPendingProject")
@@ -156,9 +156,6 @@ const AcceptSubowner: PageFC = () => {
                     </>
                   )
                 }
-
-                if (error === "unknown")
-                  return <p>不明なエラーが発生しました</p>
 
                 return <Spinner />
               })()}

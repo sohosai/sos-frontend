@@ -20,7 +20,8 @@ import type { FormItem } from "../../../types/models/form/item"
 
 import { createForm } from "../../../lib/api/form/createForm"
 
-import { useAuthNeue } from "../../../contexts/auth"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
 
 import { pagesPath } from "../../../utils/$path"
 
@@ -66,12 +67,11 @@ type Inputs = {
 
 const NewForm: PageFC = () => {
   const { authState } = useAuthNeue()
+  const { addToast } = useToastDispatcher()
 
   const router = useRouter()
 
   const [processing, setProcessing] = useState(false)
-  const [error, setError] = useState<string | undefined>()
-  const [unknownError, setUnknownError] = useState(false)
 
   const {
     register,
@@ -117,16 +117,14 @@ const NewForm: PageFC = () => {
     items,
   }: Inputs) => {
     if (authState === null || authState.firebaseUser == null) {
-      setUnknownError(true)
+      addToast({ title: "不明なエラーが発生しました", kind: "error" })
       return
     }
 
     const idToken = await authState.firebaseUser.getIdToken()
 
-    setError(undefined)
-
     if (!items.length) {
-      setError("質問項目を追加してください")
+      addToast({ title: "質問項目を追加してください", kind: "error" })
       return
     }
 
@@ -203,12 +201,13 @@ const NewForm: PageFC = () => {
         .catch(async (err) => {
           setProcessing(false)
           // TODO: err handling
-          setUnknownError(true)
+          addToast({ title: "不明なエラーが発生しました", kind: "error" })
           const body = await err.response?.json()
-          throw body ? body : err
+          throw body ?? err
         })
         .then(async () => {
           setProcessing(false)
+          addToast({ title: "申請を送信しました", kind: "success" })
 
           router.push(pagesPath.committee.form.$url())
         })
@@ -653,10 +652,6 @@ const NewForm: PageFC = () => {
         >
           申請を送信する
         </Button>
-        {unknownError && (
-          <p className={styles.errorText}>エラーが発生しました</p>
-        )}
-        {error && <p className={styles.errorText}>{error}</p>}
       </form>
     </div>
   )

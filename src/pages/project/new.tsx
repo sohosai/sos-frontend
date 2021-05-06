@@ -3,8 +3,9 @@ import { useRouter } from "next/router"
 
 import { pagesPath } from "../../utils/$path"
 
-import { useAuthNeue } from "../../contexts/auth"
-import { useMyProject } from "../../contexts/myProject"
+import { useAuthNeue } from "src/contexts/auth"
+import { useMyProject } from "src/contexts/myProject"
+import { useToastDispatcher } from "src/contexts/toast"
 
 import { Button, Head, Panel, Spinner } from "../../components"
 
@@ -13,39 +14,42 @@ import styles from "./new.module.scss"
 const NewProject: PageFC = () => {
   const { authState } = useAuthNeue()
   const { myProjectState, createPendingProject } = useMyProject()
+  const { addToast } = useToastDispatcher()
 
   const router = useRouter()
 
   const createSampleProject = async () => {
     if (authState === null || authState.firebaseUser == null) return
 
-    const idToken = await authState.firebaseUser.getIdToken()
+    if (window.confirm("サンプル企画を作成しますか?")) {
+      await createPendingProject({
+        props: {
+          name: `サンプル企画${Math.floor(Math.random() * 500)}`,
+          kana_name: "さんぷるきかく",
+          group_name: `サンプルグループ${Math.floor(Math.random() * 500)}`,
+          kana_group_name: "さんぷるぐるーぷ",
+          description:
+            "吾輩は猫である。名前はまだ無い。\nどこで生れたかとんと見当がつかぬ。",
+          category: "general",
+          attributes: ["academic", "artistic"],
+        },
+        idToken: await authState.firebaseUser.getIdToken(),
+      })
+        .then(({ pendingProject }) => {
+          addToast({ title: "送信しました", kind: "success" })
 
-    await createPendingProject({
-      props: {
-        name: `サンプル企画${Math.floor(Math.random() * 500)}`,
-        kana_name: "さんぷるきかく",
-        group_name: `サンプルグループ${Math.floor(Math.random() * 500)}`,
-        kana_group_name: "さんぷるぐるーぷ",
-        description:
-          "吾輩は猫である。名前はまだ無い。\nどこで生れたかとんと見当がつかぬ。",
-        category: "general",
-        attributes: ["academic", "artistic"],
-      },
-      idToken,
-    })
-      .then(({ pendingProject }) => {
-        // TODO: リダイレクトなど
-        router.push(
-          pagesPath.accept_subowner.$url({
-            query: { pendingProjectId: pendingProject.id },
-          })
-        )
-      })
-      .catch(async (err) => {
-        const body = await err.response?.json()
-        throw body ? body : err
-      })
+          // TODO: リダイレクトなど
+          router.push(
+            pagesPath.accept_subowner.$url({
+              query: { pendingProjectId: pendingProject.id },
+            })
+          )
+        })
+        .catch(async (err) => {
+          const body = await err.response?.json()
+          throw body ? body : err
+        })
+    }
   }
 
   return (
@@ -67,12 +71,13 @@ const NewProject: PageFC = () => {
           ) : (
             <div className={styles.emptyWrapper}>
               {(() => {
-                if (myProjectState === null) return <Spinner />
+                if (myProjectState?.error === true)
+                  return "エラーが発生しました"
 
-                if (myProjectState.error) return "エラーが発生しました"
-
-                if (myProjectState.myProject)
+                if (myProjectState?.myProject)
                   return "既に企画の責任者または副責任者であるため、企画応募はできません"
+
+                return <Spinner />
               })()}
             </div>
           )}

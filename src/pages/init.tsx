@@ -9,7 +9,8 @@ import { useForm } from "react-hook-form"
 
 import type { UserCategory } from "../types/models/user"
 
-import { useAuthNeue } from "../contexts/auth"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
 
 import {
   Panel,
@@ -36,10 +37,9 @@ type Inputs = Readonly<{
 
 const Init: PageFC = () => {
   const [processing, setProcessing] = useState(false)
-  const [otherError, setOtherError] = useState<string>()
-  const [unknownError, setUnknownError] = useState(false)
 
   const { initSosUser } = useAuthNeue()
+  const { addToast } = useToastDispatcher()
 
   const router = useRouter()
 
@@ -82,8 +82,7 @@ const Init: PageFC = () => {
         const body = await err.response?.json()
 
         if (!body) {
-          // FIXME:
-          setUnknownError(true)
+          addToast({ title: "エラーが発生しました", kind: "error" })
           throw err
         }
 
@@ -92,49 +91,27 @@ const Init: PageFC = () => {
             switch (body.error.type) {
               case "API": {
                 if (body.error.info.type === "INVALID_FIELD") {
-                  setOtherError("入力内容が正しくありません")
-                } else {
-                  setUnknownError(true)
+                  addToast({
+                    title: "入力内容が正しくありません",
+                    kind: "error",
+                  })
+                  return
                 }
-                break
-              }
-              case "AUTHENTICATION": {
-                if (body.error.info.type === "UNAUTHORIZED") {
-                  router.push(pagesPath.login.$url())
-                } else {
-                  // FIXME:
-                  setUnknownError(true)
-                }
-                break
-              }
-
-              // FIXME:
-              case "REQUEST": {
-                setUnknownError(true)
-                break
-              }
-              default: {
-                setUnknownError(true)
-                break
               }
             }
             break
           }
-          case "401": {
-            router.push(pagesPath.login.$url())
-            break
-          }
           case "409": {
-            setOtherError("このアカウントの情報は登録済みです")
+            addToast({
+              title: "このアカウントの情報は登録済みです",
+              kind: "error",
+            })
             router.push(pagesPath.me.$url())
-            break
-          }
-          default: {
-            setUnknownError(true)
-            break
+            return
           }
         }
 
+        addToast({ title: "エラーが発生しました", kind: "error" })
         throw body
       })
       .then(() => {
@@ -280,17 +257,6 @@ const Init: PageFC = () => {
                 情報を登録する
               </Button>
             </div>
-            {otherError && (
-              <div className={styles.error}>
-                <p>{otherError}</p>
-              </div>
-            )}
-            {unknownError && (
-              <div className={styles.error}>
-                <p>不明なエラーが発生しました</p>
-                <p>時間をおいて再度お試しください</p>
-              </div>
-            )}
           </form>
         </Panel>
       </div>

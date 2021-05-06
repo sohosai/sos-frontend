@@ -4,7 +4,8 @@ import { PageFC } from "next"
 
 import { useForm } from "react-hook-form"
 
-import { useAuthNeue } from "../contexts/auth"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
 
 import { Button, FormItemSpacer, Head, TextField, Panel } from "../components"
 
@@ -17,7 +18,6 @@ type Inputs = Readonly<{
 
 const Signup: PageFC = () => {
   const [processing, setProcessing] = useState(false)
-  const [unknownError, setUnknownError] = useState(false)
 
   const {
     register,
@@ -30,6 +30,7 @@ const Signup: PageFC = () => {
   })
 
   const { signup, sendEmailVerification } = useAuthNeue()
+  const { addToast } = useToastDispatcher()
 
   const onSubmit = async ({ email, password }: Inputs) => {
     setProcessing(true)
@@ -67,7 +68,11 @@ const Signup: PageFC = () => {
             { shouldFocus: true }
           )
         } else {
-          setUnknownError(true)
+          addToast({
+            title: "エラーが発生しました",
+            descriptions: ["時間をおいて再度お試しください"],
+            kind: "error",
+          })
         }
       })
   }
@@ -153,12 +158,6 @@ const Signup: PageFC = () => {
                 アカウント登録する
               </Button>
             </div>
-            {unknownError && (
-              <div className={styles.error}>
-                <p>不明なエラーが発生しました</p>
-                <p>時間をおいて再度お試しください</p>
-              </div>
-            )}
           </form>
         </Panel>
       </div>

@@ -2,7 +2,8 @@ import { useState } from "react"
 
 import { PageFC } from "next"
 
-import { useAuthNeue } from "../contexts/auth"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
 
 import { Button, Head, Panel } from "../components"
 
@@ -15,6 +16,7 @@ const EmailVerification: PageFC = () => {
   >(undefined)
 
   const { sendEmailVerification } = useAuthNeue()
+  const { addToast } = useToastDispatcher()
 
   const resendVerification = () => {
     setProcessing(true)
@@ -26,6 +28,7 @@ const EmailVerification: PageFC = () => {
       })
       .catch((err) => {
         setProcessing(false)
+        addToast({ title: "エラーが発生しました", kind: "error" })
         setEmailVerificationStatus("error")
         console.error(err)
       })
