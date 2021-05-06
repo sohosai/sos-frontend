@@ -19,7 +19,7 @@ import type { User } from "../../types/models/user"
 import { getMe } from "../../lib/api/me/getMe"
 import { signup as signupSos } from "../../lib/api/signup"
 
-import { FullScreenLoading } from "../../foundations/fullScreenLoading"
+import { FullScreenLoading } from "src/components/"
 
 // ref: https://usehooks.com/useAuth/
 

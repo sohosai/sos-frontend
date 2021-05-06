@@ -1,8 +1,8 @@
 import { FC } from "react"
 
-import { Spinner } from "../components"
+import { Spinner } from "../"
 
-import styles from "./fullScreenLoading.module.scss"
+import styles from "./index.module.scss"
 
 export const FullScreenLoading: FC = () => {
   return (
