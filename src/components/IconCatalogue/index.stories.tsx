@@ -13,6 +13,7 @@ const icons = [
   "log-in-alt",
   "log-out-alt",
   "checkbox",
+  "check-circle",
   "user-f",
   "phone-alt",
   "more-horizontal-f",
