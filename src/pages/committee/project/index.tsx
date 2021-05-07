@@ -28,6 +28,7 @@ const ListProjects: PageFC = () => {
   const { addToast } = useToastDispatcher()
 
   const [projects, setProjects] = useState<Project[] | null>(null)
+  const [downloading, setDownloading] = useState(false)
 
   const projectAttributes: ProjectAttribute[] = [
     "academic",
@@ -64,16 +65,21 @@ const ListProjects: PageFC = () => {
           <div className={styles.downloadButtonWrapper}>
             <Button
               icon="download"
+              processing={downloading}
               onClick={async () => {
                 if (authState?.status !== "bothSignedIn") return
+
+                setDownloading(true)
 
                 exportProjects({
                   idToken: await authState.firebaseUser.getIdToken(),
                 })
                   .then((res) => {
+                    setDownloading(false)
                     saveAs(createCsvBlob(res), "sos-projects.csv")
                   })
                   .catch(async (err) => {
+                    setDownloading(false)
                     const body = await err.response?.json()
                     throw body ?? err
                   })

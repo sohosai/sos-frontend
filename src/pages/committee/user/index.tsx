@@ -24,6 +24,7 @@ const ListUsers: PageFC = () => {
   const { addToast } = useToastDispatcher()
 
   const [users, setUsers] = useState<User[] | null>(null)
+  const [downloading, setDownloading] = useState(false)
 
   useEffect(() => {
     ;(async () => {
@@ -52,17 +53,21 @@ const ListUsers: PageFC = () => {
       <div className={styles.downloadButton}>
         <Button
           icon="download"
+          processing={downloading}
           onClick={async () => {
             if (authState === null || authState.firebaseUser == null) return
 
-            const idToken = await authState.firebaseUser.getIdToken()
+            setDownloading(true)
 
-            exportUsers({ idToken })
+            exportUsers({ idToken: await authState.firebaseUser.getIdToken() })
               .then((res) => {
+                setDownloading(false)
+
                 // TODO: datetime in filename
                 saveAs(createCsvBlob(res), "sos-users.csv")
               })
               .catch(async (err) => {
+                setDownloading(false)
                 const body = await err.response?.json()
                 console.error(body ?? err)
               })
