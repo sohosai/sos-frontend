@@ -26,10 +26,12 @@ export const useRbpacRedirect = ({
   rbpac,
   authState,
   hasBeenSignedIn,
+  setRedirectSettled,
 }: {
   rbpac: PageOptions["rbpac"]
   authState: AuthNeueState
   hasBeenSignedIn: MutableRefObject<boolean>
+  setRedirectSettled: () => void
 }): void => {
   const router = useRouter()
   const { addToast } = useToastDispatcher()
@@ -105,6 +107,7 @@ export const useRbpacRedirect = ({
 
       switch (rbpac.type) {
         case "public": {
+          setRedirectSettled()
           return
         }
         case "higherThanIncluding": {
@@ -112,6 +115,8 @@ export const useRbpacRedirect = ({
             !isUserRoleHigherThanIncluding({ userRole, criteria: rbpac.role })
           ) {
             redirect()
+          } else {
+            setRedirectSettled()
           }
           return
         }
@@ -120,12 +125,16 @@ export const useRbpacRedirect = ({
             !isUserRoleLowerThanIncluding({ userRole, criteria: rbpac.role })
           ) {
             redirect()
+          } else {
+            setRedirectSettled()
           }
           return
         }
         case "enum": {
           if (!rbpac.role.includes(userRole)) {
             redirect()
+          } else {
+            setRedirectSettled()
           }
           return
         }
