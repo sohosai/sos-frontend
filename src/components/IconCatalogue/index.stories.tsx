@@ -1,3 +1,5 @@
+import { useState, FC } from "react"
+
 import { Story } from "@storybook/react"
 
 import { Panel } from "../"
@@ -20,6 +22,29 @@ const icons = [
   "more-vertical-f",
 ]
 
+const timeout = (milliseconds: number) =>
+  new Promise((resolve) => window.setTimeout(resolve, milliseconds))
+
+const IconPanel: FC<{ icon: string }> = ({ icon }) => {
+  const [tooltipString, setTooltipString] = useState(icon)
+  return (
+    <div
+      className={styles.panelWrapper}
+      data-icon={tooltipString}
+      onClick={async () => {
+        await navigator.clipboard.writeText(icon)
+        setTooltipString("Copied!!")
+        await timeout(1000)
+        setTooltipString(icon)
+      }}
+    >
+      <Panel>
+        <i className={`jam-icons jam-${icon} ${styles.icon}`} />
+      </Panel>
+    </div>
+  )
+}
+
 export const Index: Story = () => {
   return (
     <>
@@ -31,11 +56,7 @@ export const Index: Story = () => {
       </div>
       <div className={styles.wrapper}>
         {icons.map((icon) => (
-          <div className={styles.panelWrapper} key={icon} data-icon={icon}>
-            <Panel>
-              <i className={`jam-icons jam-${icon} ${styles.icon}`} />
-            </Panel>
-          </div>
+          <IconPanel icon={icon} key={icon} />
         ))}
       </div>
     </>
