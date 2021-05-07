@@ -72,6 +72,7 @@ export type AuthNeueState =
 type AuthNeue = {
   authState: AuthNeueState
 } & FirebaseAuthMethods & {
+    redirectSettled: boolean
     initSosUser: (props: signupSos.Props["props"]) => Promise<User>
   }
 
@@ -90,12 +91,15 @@ const AuthContextCore = ({
 }): AuthNeue => {
   const [authNeueState, setAuthNeueState] = useState<AuthNeueState>(null)
 
+  const [redirectSettled, setRedirectSettledState] = useState(false)
+
   const hasBeenSignedIn = useRef(false)
 
   useRbpacRedirect({
     rbpac,
     authState: authNeueState,
     hasBeenSignedIn,
+    setRedirectSettled: () => setRedirectSettledState(true),
   })
 
   const signin = async (email: string, password: string) => {
@@ -239,6 +243,7 @@ const AuthContextCore = ({
     sendEmailVerification,
     signout,
     sendPasswordResetEmail,
+    redirectSettled,
     initSosUser,
   }
 }
@@ -248,7 +253,9 @@ const AuthProvider: FC<Pick<PageOptions, "rbpac">> = ({ rbpac, children }) => {
 
   return (
     <>
-      {authNeue.authState === null || authNeue.authState.status === "error" ? (
+      {authNeue.authState === null ||
+      authNeue.authState.status === "error" ||
+      !authNeue.redirectSettled ? (
         <FullScreenLoading />
       ) : (
         <authNeueContext.Provider value={authNeue}>
