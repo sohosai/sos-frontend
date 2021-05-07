@@ -45,6 +45,7 @@ export const useRbpacRedirect = ({
 
       if (authState.firebaseUser?.emailVerified === false) {
         router.push(pagesPath.email_verification.$url())
+        setRedirectSettled()
         if (emailVerificationToastDispatched.current === false) {
           emailVerificationToastDispatched.current = true
           addToast({ title: "メールアドレスの確認をお願いします" })
@@ -54,6 +55,7 @@ export const useRbpacRedirect = ({
 
       if (authState.status === "firebaseSignedIn") {
         router.push(pagesPath.init.$url())
+        setRedirectSettled()
         if (initToastDispatched.current === false) {
           initToastDispatched.current = true
           addToast({ title: "アカウント情報を登録してください" })
@@ -63,17 +65,11 @@ export const useRbpacRedirect = ({
 
       if (
         authState.status === "signedOut" &&
-        router.pathname === pagesPath.init.$url().pathname
+        (router.pathname === pagesPath.init.$url().pathname ||
+          router.pathname === pagesPath.email_verification.$url().pathname)
       ) {
         router.push(pagesPath.login.$url())
-        return
-      }
-
-      if (
-        authState.status === "signedOut" &&
-        router.pathname === pagesPath.email_verification.$url().pathname
-      ) {
-        router.push(pagesPath.login.$url())
+        setRedirectSettled()
         return
       }
 
