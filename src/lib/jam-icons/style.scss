@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: "#{$icomoon-font-family}";
-  src: url("#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?fkz87d")
+  src: url("#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?22eiq0")
       format("truetype"),
-    url("#{$icomoon-font-path}/#{$icomoon-font-family}.woff?fkz87d")
+    url("#{$icomoon-font-path}/#{$icomoon-font-family}.woff?22eiq0")
       format("woff"),
-    url("#{$icomoon-font-path}/#{$icomoon-font-family}.svg?fkz87d##{$icomoon-font-family}")
+    url("#{$icomoon-font-path}/#{$icomoon-font-family}.svg?22eiq0##{$icomoon-font-family}")
       format("svg");
   font-weight: normal;
   font-style: normal;
@@ -36,11 +36,6 @@
 .jam-activity {
   &:before {
     content: $jam-activity;
-  }
-}
-.jam-airbnb {
-  &:before {
-    content: $jam-airbnb;
   }
 }
 .jam-alarm-clock {
@@ -93,49 +88,14 @@
     content: $jam-align-right;
   }
 }
-.jam-amazon {
-  &:before {
-    content: $jam-amazon;
-  }
-}
 .jam-anchor {
   &:before {
     content: $jam-anchor;
   }
 }
-.jam-android {
-  &:before {
-    content: $jam-android;
-  }
-}
-.jam-android-circle {
-  &:before {
-    content: $jam-android-circle;
-  }
-}
-.jam-android-square {
-  &:before {
-    content: $jam-android-square;
-  }
-}
 .jam-aperture {
   &:before {
     content: $jam-aperture;
-  }
-}
-.jam-apple {
-  &:before {
-    content: $jam-apple;
-  }
-}
-.jam-apple-circle {
-  &:before {
-    content: $jam-apple-circle;
-  }
-}
-.jam-apple-square {
-  &:before {
-    content: $jam-apple-square;
   }
 }
 .jam-archive {
@@ -413,21 +373,6 @@
     content: $jam-backward-square-f;
   }
 }
-.jam-baidu {
-  &:before {
-    content: $jam-baidu;
-  }
-}
-.jam-baidu-circle {
-  &:before {
-    content: $jam-baidu-circle;
-  }
-}
-.jam-baidu-square {
-  &:before {
-    content: $jam-baidu-square;
-  }
-}
 .jam-bandage {
   &:before {
     content: $jam-bandage;
@@ -513,21 +458,6 @@
     content: $jam-battery-three-quarters-f;
   }
 }
-.jam-beatport {
-  &:before {
-    content: $jam-beatport;
-  }
-}
-.jam-beatport-circle {
-  &:before {
-    content: $jam-beatport-circle;
-  }
-}
-.jam-beatport-square {
-  &:before {
-    content: $jam-beatport-square;
-  }
-}
 .jam-beer {
   &:before {
     content: $jam-beer;
@@ -536,21 +466,6 @@
 .jam-beer-f {
   &:before {
     content: $jam-beer-f;
-  }
-}
-.jam-behance {
-  &:before {
-    content: $jam-behance;
-  }
-}
-.jam-behance-circle {
-  &:before {
-    content: $jam-behance-circle;
-  }
-}
-.jam-behance-square {
-  &:before {
-    content: $jam-behance-square;
   }
 }
 .jam-bell {
@@ -573,21 +488,6 @@
     content: $jam-bell-off-f;
   }
 }
-.jam-bing {
-  &:before {
-    content: $jam-bing;
-  }
-}
-.jam-bing-circle {
-  &:before {
-    content: $jam-bing-circle;
-  }
-}
-.jam-bing-square {
-  &:before {
-    content: $jam-bing-square;
-  }
-}
 .jam-birthday-cake {
   &:before {
     content: $jam-birthday-cake;
@@ -596,21 +496,6 @@
 .jam-birthday-cake-f {
   &:before {
     content: $jam-birthday-cake-f;
-  }
-}
-.jam-blogger {
-  &:before {
-    content: $jam-blogger;
-  }
-}
-.jam-blogger-circle {
-  &:before {
-    content: $jam-blogger-circle;
-  }
-}
-.jam-blogger-square {
-  &:before {
-    content: $jam-blogger-square;
   }
 }
 .jam-bluetooth {
@@ -1408,21 +1293,6 @@
     content: $jam-code-sample;
   }
 }
-.jam-codepen {
-  &:before {
-    content: $jam-codepen;
-  }
-}
-.jam-codepen-circle {
-  &:before {
-    content: $jam-codepen-circle;
-  }
-}
-.jam-codepen-square {
-  &:before {
-    content: $jam-codepen-square;
-  }
-}
 .jam-coffee {
   &:before {
     content: $jam-coffee;
@@ -1568,21 +1438,6 @@
     content: $jam-database-f;
   }
 }
-.jam-deezer {
-  &:before {
-    content: $jam-deezer;
-  }
-}
-.jam-deezer-circle {
-  &:before {
-    content: $jam-deezer-circle;
-  }
-}
-.jam-deezer-square {
-  &:before {
-    content: $jam-deezer-square;
-  }
-}
 .jam-delete {
   &:before {
     content: $jam-delete;
@@ -1591,21 +1446,6 @@
 .jam-delete-f {
   &:before {
     content: $jam-delete-f;
-  }
-}
-.jam-deviantart {
-  &:before {
-    content: $jam-deviantart;
-  }
-}
-.jam-deviantart-circle {
-  &:before {
-    content: $jam-deviantart-circle;
-  }
-}
-.jam-deviantart-square {
-  &:before {
-    content: $jam-deviantart-square;
   }
 }
 .jam-dice {
@@ -1631,11 +1471,6 @@
 .jam-differenciation {
   &:before {
     content: $jam-differenciation;
-  }
-}
-.jam-digg {
-  &:before {
-    content: $jam-digg;
   }
 }
 .jam-direction {
@@ -1666,26 +1501,6 @@
 .jam-disc-f {
   &:before {
     content: $jam-disc-f;
-  }
-}
-.jam-discord {
-  &:before {
-    content: $jam-discord;
-  }
-}
-.jam-disqus {
-  &:before {
-    content: $jam-disqus;
-  }
-}
-.jam-disqus-circle {
-  &:before {
-    content: $jam-disqus-circle;
-  }
-}
-.jam-disqus-square {
-  &:before {
-    content: $jam-disqus-square;
   }
 }
 .jam-dj {
@@ -1721,31 +1536,6 @@
 .jam-download {
   &:before {
     content: $jam-download;
-  }
-}
-.jam-dribbble {
-  &:before {
-    content: $jam-dribbble;
-  }
-}
-.jam-drupal {
-  &:before {
-    content: $jam-drupal;
-  }
-}
-.jam-drupal-circle {
-  &:before {
-    content: $jam-drupal-circle;
-  }
-}
-.jam-drupal-square {
-  &:before {
-    content: $jam-drupal-square;
-  }
-}
-.jam-ebay {
-  &:before {
-    content: $jam-ebay;
   }
 }
 .jam-egg {
@@ -1851,21 +1641,6 @@
 .jam-eyedropper-f {
   &:before {
     content: $jam-eyedropper-f;
-  }
-}
-.jam-facebook {
-  &:before {
-    content: $jam-facebook;
-  }
-}
-.jam-facebook-circle {
-  &:before {
-    content: $jam-facebook-circle;
-  }
-}
-.jam-facebook-square {
-  &:before {
-    content: $jam-facebook-square;
   }
 }
 .jam-fast-backward {
@@ -1981,21 +1756,6 @@
 .jam-fish {
   &:before {
     content: $jam-fish;
-  }
-}
-.jam-fiverr {
-  &:before {
-    content: $jam-fiverr;
-  }
-}
-.jam-fiverr-circle {
-  &:before {
-    content: $jam-fiverr-circle;
-  }
-}
-.jam-fiverr-square {
-  &:before {
-    content: $jam-fiverr-square;
   }
 }
 .jam-flag {
@@ -2133,11 +1893,6 @@
     content: $jam-forward-square-f;
   }
 }
-.jam-foursquare {
-  &:before {
-    content: $jam-foursquare;
-  }
-}
 .jam-gamepad {
   &:before {
     content: $jam-gamepad;
@@ -2173,21 +1928,6 @@
     content: $jam-ghost-f;
   }
 }
-.jam-ghost-org {
-  &:before {
-    content: $jam-ghost-org;
-  }
-}
-.jam-ghost-org-circle {
-  &:before {
-    content: $jam-ghost-org-circle;
-  }
-}
-.jam-ghost-org-square {
-  &:before {
-    content: $jam-ghost-org-square;
-  }
-}
 .jam-gift {
   &:before {
     content: $jam-gift;
@@ -2213,21 +1953,6 @@
     content: $jam-github-square;
   }
 }
-.jam-gitlab {
-  &:before {
-    content: $jam-gitlab;
-  }
-}
-.jam-gitlab-circle {
-  &:before {
-    content: $jam-gitlab-circle;
-  }
-}
-.jam-gitlab-square {
-  &:before {
-    content: $jam-gitlab-square;
-  }
-}
 .jam-glass-empty {
   &:before {
     content: $jam-glass-empty;
@@ -2251,51 +1976,6 @@
 .jam-glue-f {
   &:before {
     content: $jam-glue-f;
-  }
-}
-.jam-google {
-  &:before {
-    content: $jam-google;
-  }
-}
-.jam-google-circle {
-  &:before {
-    content: $jam-google-circle;
-  }
-}
-.jam-google-play {
-  &:before {
-    content: $jam-google-play;
-  }
-}
-.jam-google-play-circle {
-  &:before {
-    content: $jam-google-play-circle;
-  }
-}
-.jam-google-play-square {
-  &:before {
-    content: $jam-google-play-square;
-  }
-}
-.jam-google-plus {
-  &:before {
-    content: $jam-google-plus;
-  }
-}
-.jam-google-plus-circle {
-  &:before {
-    content: $jam-google-plus-circle;
-  }
-}
-.jam-google-plus-square {
-  &:before {
-    content: $jam-google-plus-square;
-  }
-}
-.jam-google-square {
-  &:before {
-    content: $jam-google-square;
   }
 }
 .jam-gps {
@@ -2623,29 +2303,9 @@
     content: $jam-lightbulb-f;
   }
 }
-.jam-line {
-  &:before {
-    content: $jam-line;
-  }
-}
 .jam-link {
   &:before {
     content: $jam-link;
-  }
-}
-.jam-linkedin {
-  &:before {
-    content: $jam-linkedin;
-  }
-}
-.jam-linkedin-circle {
-  &:before {
-    content: $jam-linkedin-circle;
-  }
-}
-.jam-linkedin-square {
-  &:before {
-    content: $jam-linkedin-square;
   }
 }
 .jam-log-in {
@@ -2751,21 +2411,6 @@
 .jam-medical {
   &:before {
     content: $jam-medical;
-  }
-}
-.jam-medium {
-  &:before {
-    content: $jam-medium;
-  }
-}
-.jam-medium-circle {
-  &:before {
-    content: $jam-medium-circle;
-  }
-}
-.jam-medium-square {
-  &:before {
-    content: $jam-medium-square;
   }
 }
 .jam-menu {
@@ -2993,36 +2638,6 @@
     content: $jam-music-f;
   }
 }
-.jam-myspace {
-  &:before {
-    content: $jam-myspace;
-  }
-}
-.jam-myspace-circle {
-  &:before {
-    content: $jam-myspace-circle;
-  }
-}
-.jam-myspace-square {
-  &:before {
-    content: $jam-myspace-square;
-  }
-}
-.jam-napster {
-  &:before {
-    content: $jam-napster;
-  }
-}
-.jam-napster-circle {
-  &:before {
-    content: $jam-napster-circle;
-  }
-}
-.jam-napster-square {
-  &:before {
-    content: $jam-napster-square;
-  }
-}
 .jam-newsletter {
   &:before {
     content: $jam-newsletter;
@@ -3041,41 +2656,6 @@
 .jam-newspaper-f {
   &:before {
     content: $jam-newspaper-f;
-  }
-}
-.jam-npm {
-  &:before {
-    content: $jam-npm;
-  }
-}
-.jam-odnoklassniki {
-  &:before {
-    content: $jam-odnoklassniki;
-  }
-}
-.jam-odnoklassniki-circle {
-  &:before {
-    content: $jam-odnoklassniki-circle;
-  }
-}
-.jam-odnoklassniki-square {
-  &:before {
-    content: $jam-odnoklassniki-square;
-  }
-}
-.jam-opera {
-  &:before {
-    content: $jam-opera;
-  }
-}
-.jam-opera-circle {
-  &:before {
-    content: $jam-opera-circle;
-  }
-}
-.jam-opera-square {
-  &:before {
-    content: $jam-opera-square;
   }
 }
 .jam-ordered-list {
@@ -3148,39 +2728,9 @@
     content: $jam-paragraph;
   }
 }
-.jam-patreon {
-  &:before {
-    content: $jam-patreon;
-  }
-}
-.jam-patreon-circle {
-  &:before {
-    content: $jam-patreon-circle;
-  }
-}
-.jam-patreon-square {
-  &:before {
-    content: $jam-patreon-square;
-  }
-}
 .jam-pause {
   &:before {
     content: $jam-pause;
-  }
-}
-.jam-paypal {
-  &:before {
-    content: $jam-paypal;
-  }
-}
-.jam-paypal-circle {
-  &:before {
-    content: $jam-paypal-circle;
-  }
-}
-.jam-paypal-square {
-  &:before {
-    content: $jam-paypal-square;
   }
 }
 .jam-pen {
@@ -3201,21 +2751,6 @@
 .jam-pencil-f {
   &:before {
     content: $jam-pencil-f;
-  }
-}
-.jam-periscope {
-  &:before {
-    content: $jam-periscope;
-  }
-}
-.jam-periscope-circle {
-  &:before {
-    content: $jam-periscope-circle;
-  }
-}
-.jam-periscope-square {
-  &:before {
-    content: $jam-periscope-square;
   }
 }
 .jam-phone {
@@ -3291,21 +2826,6 @@
 .jam-pin-f {
   &:before {
     content: $jam-pin-f;
-  }
-}
-.jam-pinterest {
-  &:before {
-    content: $jam-pinterest;
-  }
-}
-.jam-pinterest-circle {
-  &:before {
-    content: $jam-pinterest-circle;
-  }
-}
-.jam-pinterest-square {
-  &:before {
-    content: $jam-pinterest-square;
   }
 }
 .jam-pizza-slice {
@@ -3413,29 +2933,9 @@
     content: $jam-printer-f;
   }
 }
-.jam-px {
-  &:before {
-    content: $jam-px;
-  }
-}
 .jam-qr-code {
   &:before {
     content: $jam-qr-code;
-  }
-}
-.jam-quora {
-  &:before {
-    content: $jam-quora;
-  }
-}
-.jam-quora-circle {
-  &:before {
-    content: $jam-quora-circle;
-  }
-}
-.jam-quora-square {
-  &:before {
-    content: $jam-quora-square;
   }
 }
 .jam-quote {
@@ -3461,11 +2961,6 @@
 .jam-rectangle-f {
   &:before {
     content: $jam-rectangle-f;
-  }
-}
-.jam-reddit {
-  &:before {
-    content: $jam-reddit;
   }
 }
 .jam-redo {
@@ -3718,21 +3213,6 @@
     content: $jam-shield-plus-f;
   }
 }
-.jam-shopify {
-  &:before {
-    content: $jam-shopify;
-  }
-}
-.jam-shopify-circle {
-  &:before {
-    content: $jam-shopify-circle;
-  }
-}
-.jam-shopify-square {
-  &:before {
-    content: $jam-shopify-square;
-  }
-}
 .jam-shopping-bag {
   &:before {
     content: $jam-shopping-bag;
@@ -3788,36 +3268,6 @@
     content: $jam-skull-f;
   }
 }
-.jam-skype {
-  &:before {
-    content: $jam-skype;
-  }
-}
-.jam-skype-circle {
-  &:before {
-    content: $jam-skype-circle;
-  }
-}
-.jam-skype-square {
-  &:before {
-    content: $jam-skype-square;
-  }
-}
-.jam-slack {
-  &:before {
-    content: $jam-slack;
-  }
-}
-.jam-slack-circle {
-  &:before {
-    content: $jam-slack-circle;
-  }
-}
-.jam-slack-square {
-  &:before {
-    content: $jam-slack-square;
-  }
-}
 .jam-smiley {
   &:before {
     content: $jam-smiley;
@@ -3826,21 +3276,6 @@
 .jam-smiley-f {
   &:before {
     content: $jam-smiley-f;
-  }
-}
-.jam-snapchat {
-  &:before {
-    content: $jam-snapchat;
-  }
-}
-.jam-snapchat-circle {
-  &:before {
-    content: $jam-snapchat-circle;
-  }
-}
-.jam-snapchat-square {
-  &:before {
-    content: $jam-snapchat-square;
   }
 }
 .jam-snowboard {
@@ -3858,11 +3293,6 @@
     content: $jam-snowflake;
   }
 }
-.jam-soundcloud {
-  &:before {
-    content: $jam-soundcloud;
-  }
-}
 .jam-speaker {
   &:before {
     content: $jam-speaker;
@@ -3878,11 +3308,6 @@
     content: $jam-spell-check;
   }
 }
-.jam-spotify {
-  &:before {
-    content: $jam-spotify;
-  }
-}
 .jam-square {
   &:before {
     content: $jam-square;
@@ -3891,36 +3316,6 @@
 .jam-square-f {
   &:before {
     content: $jam-square-f;
-  }
-}
-.jam-squarespace {
-  &:before {
-    content: $jam-squarespace;
-  }
-}
-.jam-squarespace-circle {
-  &:before {
-    content: $jam-squarespace-circle;
-  }
-}
-.jam-squarespace-square {
-  &:before {
-    content: $jam-squarespace-square;
-  }
-}
-.jam-stackoverflow {
-  &:before {
-    content: $jam-stackoverflow;
-  }
-}
-.jam-stackoverflow-circle {
-  &:before {
-    content: $jam-stackoverflow-circle;
-  }
-}
-.jam-stackoverflow-square {
-  &:before {
-    content: $jam-stackoverflow-square;
   }
 }
 .jam-stamp {
@@ -3981,21 +3376,6 @@
 .jam-strikethrough {
   &:before {
     content: $jam-strikethrough;
-  }
-}
-.jam-stumbleupon {
-  &:before {
-    content: $jam-stumbleupon;
-  }
-}
-.jam-stumbleupon-circle {
-  &:before {
-    content: $jam-stumbleupon-circle;
-  }
-}
-.jam-stumbleupon-square {
-  &:before {
-    content: $jam-stumbleupon-square;
   }
 }
 .jam-subscript {
@@ -4158,11 +3538,6 @@
     content: $jam-task-list-f;
   }
 }
-.jam-telegram {
-  &:before {
-    content: $jam-telegram;
-  }
-}
 .jam-temperature {
   &:before {
     content: $jam-temperature;
@@ -4323,26 +3698,6 @@
     content: $jam-tube;
   }
 }
-.jam-tumblr {
-  &:before {
-    content: $jam-tumblr;
-  }
-}
-.jam-tumblr-circle {
-  &:before {
-    content: $jam-tumblr-circle;
-  }
-}
-.jam-tumblr-square {
-  &:before {
-    content: $jam-tumblr-square;
-  }
-}
-.jam-twitch {
-  &:before {
-    content: $jam-twitch;
-  }
-}
 .jam-twitter {
   &:before {
     content: $jam-twitter;
@@ -4413,21 +3768,6 @@
     content: $jam-unordered-list;
   }
 }
-.jam-unsplash {
-  &:before {
-    content: $jam-unsplash;
-  }
-}
-.jam-unsplash-circle {
-  &:before {
-    content: $jam-unsplash-circle;
-  }
-}
-.jam-unsplash-square {
-  &:before {
-    content: $jam-unsplash-square;
-  }
-}
 .jam-upload {
   &:before {
     content: $jam-upload;
@@ -4473,26 +3813,6 @@
     content: $jam-users;
   }
 }
-.jam-viadeo {
-  &:before {
-    content: $jam-viadeo;
-  }
-}
-.jam-viber {
-  &:before {
-    content: $jam-viber;
-  }
-}
-.jam-viber-circle {
-  &:before {
-    content: $jam-viber-circle;
-  }
-}
-.jam-viber-square {
-  &:before {
-    content: $jam-viber-square;
-  }
-}
 .jam-video-camera {
   &:before {
     content: $jam-video-camera;
@@ -4511,36 +3831,6 @@
 .jam-video-camera-vintage-f {
   &:before {
     content: $jam-video-camera-vintage-f;
-  }
-}
-.jam-vimeo {
-  &:before {
-    content: $jam-vimeo;
-  }
-}
-.jam-vimeo-circle {
-  &:before {
-    content: $jam-vimeo-circle;
-  }
-}
-.jam-vimeo-square {
-  &:before {
-    content: $jam-vimeo-square;
-  }
-}
-.jam-vine {
-  &:before {
-    content: $jam-vine;
-  }
-}
-.jam-vine-circle {
-  &:before {
-    content: $jam-vine-circle;
-  }
-}
-.jam-vine-square {
-  &:before {
-    content: $jam-vine-square;
   }
 }
 .jam-voicemail {
@@ -4668,24 +3958,9 @@
     content: $jam-water-drop-f;
   }
 }
-.jam-whatsapp {
-  &:before {
-    content: $jam-whatsapp;
-  }
-}
 .jam-wifi {
   &:before {
     content: $jam-wifi;
-  }
-}
-.jam-wikipedia {
-  &:before {
-    content: $jam-wikipedia;
-  }
-}
-.jam-wordpress {
-  &:before {
-    content: $jam-wordpress;
   }
 }
 .jam-world {
@@ -4711,36 +3986,6 @@
 .jam-write-f {
   &:before {
     content: $jam-write-f;
-  }
-}
-.jam-yahoo {
-  &:before {
-    content: $jam-yahoo;
-  }
-}
-.jam-yahoo-circle {
-  &:before {
-    content: $jam-yahoo-circle;
-  }
-}
-.jam-yahoo-square {
-  &:before {
-    content: $jam-yahoo-square;
-  }
-}
-.jam-yelp {
-  &:before {
-    content: $jam-yelp;
-  }
-}
-.jam-yelp-circle {
-  &:before {
-    content: $jam-yelp-circle;
-  }
-}
-.jam-yelp-square {
-  &:before {
-    content: $jam-yelp-square;
   }
 }
 .jam-youtube {
