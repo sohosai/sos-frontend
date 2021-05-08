@@ -7,7 +7,7 @@ import { saveAs } from "file-saver"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
-import { Button, Head, Panel, Spinner } from "../../../components/"
+import { Button, Head, IconButton, Panel, Spinner } from "src/components/"
 
 import {
   Project,
@@ -101,7 +101,23 @@ const ListProjects: PageFC = () => {
                   <p className={styles.projectName} title={project.name}>
                     {project.name}
                   </p>
-                  <p className={styles.projectCode}>{project.code}</p>
+                  <div className={styles.projectCodeWrapper}>
+                    <p className={styles.projectCode}>{project.code}</p>
+                    <div className={styles.projectCodeCopyButton}>
+                      <IconButton
+                        icon="clipboard"
+                        size="small"
+                        title="企画番号をクリップボードにコピー"
+                        onClick={async () => {
+                          await navigator.clipboard.writeText(project.code)
+                          addToast({
+                            title: "クリップボードにコピーしました",
+                            kind: "success",
+                          })
+                        }}
+                      />
+                    </div>
+                  </div>
                   <div className={styles.projectCategoryAndAttributes}>
                     <p className={styles.projectCategory}>
                       {projectCategoryToUiText(project.category)}
