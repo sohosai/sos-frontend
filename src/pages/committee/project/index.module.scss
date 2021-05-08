@@ -21,6 +21,12 @@
   &:not(:last-of-type) {
     margin-bottom: 12px;
   }
+
+  &:hover {
+    .projectCodeCopyButton {
+      opacity: 1;
+    }
+  }
 }
 
 .rowInner {
@@ -30,15 +36,25 @@
 }
 
 .projectName {
+  width: 900em;
   flex-shrink: 1;
   margin-right: 16px;
   @include ellipsis;
 }
 
-.projectCode {
-  flex-shrink: 0;
+.projectCodeWrapper {
+  width: 300em;
+  flex-shrink: 1;
   margin-right: 16px;
+  display: flex;
+  align-items: center;
   color: $color-text-sub;
+}
+
+.projectCodeCopyButton {
+  margin-left: 4px;
+  opacity: 0;
+  transition: opacity 200ms;
 }
 
 .projectCategoryAndAttributes {

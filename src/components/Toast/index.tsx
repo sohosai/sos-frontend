@@ -9,7 +9,7 @@ declare namespace Toast {
     kind?: "info" | "success" | "error"
     title: string
     descriptions?: string[]
-    progress: string
+    progress: number
   }> &
     JSX.IntrinsicElements["div"]
 }
@@ -37,7 +37,7 @@ const Toast: FC<Toast.Props> = ({
           className={styles.iconProgress}
           aria-hidden
           style={{
-            height: progress,
+            transform: `scaleY(${progress})`,
           }}
         />
       </div>

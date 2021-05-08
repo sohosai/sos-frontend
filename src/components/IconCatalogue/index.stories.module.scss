@@ -27,6 +27,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
 
   &::before {
     content: attr(data-icon);
@@ -39,6 +40,7 @@
     transform: translateY(0);
     opacity: 0;
     transition: all 200ms ease-in-out;
+    text-align: center;
     pointer-events: none;
   }
 

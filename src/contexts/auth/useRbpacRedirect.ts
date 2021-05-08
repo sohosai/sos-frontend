@@ -26,10 +26,12 @@ export const useRbpacRedirect = ({
   rbpac,
   authState,
   hasBeenSignedIn,
+  setRedirectSettled,
 }: {
   rbpac: PageOptions["rbpac"]
   authState: AuthNeueState
   hasBeenSignedIn: MutableRefObject<boolean>
+  setRedirectSettled: () => void
 }): void => {
   const router = useRouter()
   const { addToast } = useToastDispatcher()
@@ -43,6 +45,7 @@ export const useRbpacRedirect = ({
 
       if (authState.firebaseUser?.emailVerified === false) {
         router.push(pagesPath.email_verification.$url())
+        setRedirectSettled()
         if (emailVerificationToastDispatched.current === false) {
           emailVerificationToastDispatched.current = true
           addToast({ title: "メールアドレスの確認をお願いします" })
@@ -52,6 +55,7 @@ export const useRbpacRedirect = ({
 
       if (authState.status === "firebaseSignedIn") {
         router.push(pagesPath.init.$url())
+        setRedirectSettled()
         if (initToastDispatched.current === false) {
           initToastDispatched.current = true
           addToast({ title: "アカウント情報を登録してください" })
@@ -61,17 +65,11 @@ export const useRbpacRedirect = ({
 
       if (
         authState.status === "signedOut" &&
-        router.pathname === pagesPath.init.$url().pathname
+        (router.pathname === pagesPath.init.$url().pathname ||
+          router.pathname === pagesPath.email_verification.$url().pathname)
       ) {
         router.push(pagesPath.login.$url())
-        return
-      }
-
-      if (
-        authState.status === "signedOut" &&
-        router.pathname === pagesPath.email_verification.$url().pathname
-      ) {
-        router.push(pagesPath.login.$url())
+        setRedirectSettled()
         return
       }
 
@@ -105,6 +103,7 @@ export const useRbpacRedirect = ({
 
       switch (rbpac.type) {
         case "public": {
+          setRedirectSettled()
           return
         }
         case "higherThanIncluding": {
@@ -112,6 +111,8 @@ export const useRbpacRedirect = ({
             !isUserRoleHigherThanIncluding({ userRole, criteria: rbpac.role })
           ) {
             redirect()
+          } else {
+            setRedirectSettled()
           }
           return
         }
@@ -120,12 +121,16 @@ export const useRbpacRedirect = ({
             !isUserRoleLowerThanIncluding({ userRole, criteria: rbpac.role })
           ) {
             redirect()
+          } else {
+            setRedirectSettled()
           }
           return
         }
         case "enum": {
           if (!rbpac.role.includes(userRole)) {
             redirect()
+          } else {
+            setRedirectSettled()
           }
           return
         }
