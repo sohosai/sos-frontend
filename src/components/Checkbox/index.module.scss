@@ -2,7 +2,21 @@
 
 $checkbox-size: 16px;
 
-.wrapper {
+.titleWrapper {
+  margin-bottom: 4px;
+}
+
+.descriptionsWrapper {
+  margin-bottom: 8px;
+  color: $color-text-sub;
+}
+
+.errorsWrapper {
+  margin-top: 8px;
+  color: $color-caution;
+}
+
+.checkboxWrapper {
   position: relative;
 }
 
@@ -45,6 +59,16 @@ $checkbox-size: 16px;
   pointer-events: none;
   color: $color-gray-300;
   transition: color 150ms;
+}
+
+[data-error] {
+  .label::before {
+    border-color: $color-caution;
+  }
+
+  .icon {
+    color: $color-caution-tint-600;
+  }
 }
 
 [data-checked] {
