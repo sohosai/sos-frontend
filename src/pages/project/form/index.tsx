@@ -136,7 +136,11 @@ const ListProjectForms: PageFC = () => {
           <Panel>
             <div className={styles.emptyWrapper}>
               {(() => {
-                if (error === "projectNotFound" || error === "unknown")
+                if (
+                  error === "projectNotFound" ||
+                  error === "unknown" ||
+                  forms === undefined
+                )
                   return <p>エラーが発生しました</p>
 
                 if (error === "projectPending")
@@ -147,7 +151,11 @@ const ListProjectForms: PageFC = () => {
                     <p>責任者または副責任者となっている企画が存在しません</p>
                   )
 
-                if (forms === null) return <Spinner />
+                if (forms?.length === 0) {
+                  return <p>申請がありません</p>
+                }
+
+                return <Spinner />
               })()}
             </div>
           </Panel>
