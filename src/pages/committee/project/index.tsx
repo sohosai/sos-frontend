@@ -7,7 +7,14 @@ import { saveAs } from "file-saver"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
-import { Button, Head, IconButton, Panel, Spinner } from "src/components/"
+import {
+  Button,
+  Head,
+  IconButton,
+  Panel,
+  Spinner,
+  Tooltip,
+} from "src/components/"
 
 import {
   Project,
@@ -103,20 +110,21 @@ const ListProjects: PageFC = () => {
                   </p>
                   <div className={styles.projectCodeWrapper}>
                     <p className={styles.projectCode}>{project.code}</p>
-                    <div className={styles.projectCodeCopyButton}>
-                      <IconButton
-                        icon="clipboard"
-                        size="small"
-                        title="企画番号をクリップボードにコピー"
-                        onClick={async () => {
-                          await navigator.clipboard.writeText(project.code)
-                          addToast({
-                            title: "クリップボードにコピーしました",
-                            kind: "success",
-                          })
-                        }}
-                      />
-                    </div>
+                    <Tooltip title="企画番号をクリップボードにコピー">
+                      <div className={styles.projectCodeCopyButton}>
+                        <IconButton
+                          icon="clipboard"
+                          size="small"
+                          onClick={async () => {
+                            await navigator.clipboard.writeText(project.code)
+                            addToast({
+                              title: "クリップボードにコピーしました",
+                              kind: "success",
+                            })
+                          }}
+                        />
+                      </div>
+                    </Tooltip>
                   </div>
                   <div className={styles.projectCategoryAndAttributes}>
                     <p className={styles.projectCategory}>
@@ -134,14 +142,19 @@ const ListProjects: PageFC = () => {
                         }
 
                         return (
-                          <p
-                            key={attribute}
-                            className={styles.projectAttributeCode}
+                          <Tooltip
                             title={projectAttributeToUiText(attribute)}
-                            data-active={project.attributes.includes(attribute)}
+                            key={attribute}
                           >
-                            {projectAttributeCode[attribute]}
-                          </p>
+                            <p
+                              className={styles.projectAttributeCode}
+                              data-active={project.attributes.includes(
+                                attribute
+                              )}
+                            >
+                              {projectAttributeCode[attribute]}
+                            </p>
+                          </Tooltip>
                         )
                       })}
                     </div>

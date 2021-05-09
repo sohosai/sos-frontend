@@ -36,6 +36,7 @@ import {
   ProjectQuerySelector,
   Textarea,
   TextField,
+  Tooltip,
 } from "../../../components/"
 
 import styles from "./new.module.scss"
@@ -601,22 +602,31 @@ const NewForm: PageFC = () => {
                   </Panel>
                 </div>
                 <div className={styles.itemActions}>
-                  <IconButton
-                    icon="chevron-up"
-                    title="この項目を上に移動"
-                    onClick={() => swapItem(index, index - 1)}
-                  />
-                  <IconButton
-                    icon="chevron-down"
-                    title="この項目を下に移動"
-                    onClick={() => swapItem(index, index + 1)}
-                  />
-                  <IconButton
-                    icon="trash-alt"
-                    title="この項目を削除"
-                    danger={true}
-                    onClick={() => removeItem(index)}
-                  />
+                  <Tooltip title="この項目を上に移動" placement="left">
+                    <div>
+                      <IconButton
+                        icon="chevron-up"
+                        onClick={() => swapItem(index, index - 1)}
+                      />
+                    </div>
+                  </Tooltip>
+                  <Tooltip title="この項目を下に移動" placement="left">
+                    <div>
+                      <IconButton
+                        icon="chevron-down"
+                        onClick={() => swapItem(index, index + 1)}
+                      />
+                    </div>
+                  </Tooltip>
+                  <Tooltip title="この項目を削除" placement="left">
+                    <div>
+                      <IconButton
+                        icon="trash-alt"
+                        danger={true}
+                        onClick={() => removeItem(index)}
+                      />
+                    </div>
+                  </Tooltip>
                 </div>
               </div>
             )
