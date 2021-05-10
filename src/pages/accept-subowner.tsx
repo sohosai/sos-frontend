@@ -23,9 +23,12 @@ export type Query = {
 
 const AcceptSubowner: PageFC = () => {
   const [pendingProject, setPendingProject] = useState<PendingProject>()
-  const [error, setError] = useState<
-    "pendingProjectNotFound" | "hasOwnPendingProject" | "subownerAlreadyExists"
-  >()
+  const [error, setError] =
+    useState<
+      | "pendingProjectNotFound"
+      | "hasOwnPendingProject"
+      | "subownerAlreadyExists"
+    >()
 
   const { authState } = useAuthNeue()
   const { acceptSubowner, myProjectState } = useMyProject()

@@ -4,9 +4,8 @@ import { useToastCore } from "./useToastCore"
 
 type ToastDispatcher = Pick<ReturnType<typeof useToastCore>, "addToast">
 
-const toastDispatcherContext = createContext<ToastDispatcher | undefined>(
-  undefined
-)
+const toastDispatcherContext =
+  createContext<ToastDispatcher | undefined>(undefined)
 
 const useToastDispatcher = (): ToastDispatcher => {
   const context = useContext(toastDispatcherContext)

@@ -29,14 +29,12 @@ const TextField: FC<TextField.Props> = ({
   register,
   ...restAttributes
 }) => {
-  const descriptions = (Array.isArray(description)
-    ? description
-    : [description]
+  const descriptions = (
+    Array.isArray(description) ? description : [description]
   ).filter((text) => text)
-  const errors = (Array.isArray(error)
-    ? error
-    : [error]
-  ).filter((text): text is string => Boolean(text))
+  const errors = (Array.isArray(error) ? error : [error]).filter(
+    (text): text is string => Boolean(text)
+  )
 
   return (
     <div className={styles.wrapper}>

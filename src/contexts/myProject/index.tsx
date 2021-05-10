@@ -60,15 +60,14 @@ const MyProjectContextCore = (authState: AuthNeueState): MyProjectContext => {
   const [myProjectState, setMyProjectState] = useState<MyProjectState>(null)
 
   const createPendingProject = async (props: createPendingProjectApi.Props) => {
-    const {
-      pending_project: createdPendingProject,
-    } = await createPendingProjectApi({
-      props: { ...props.props },
-      idToken: props.idToken,
-    }).catch(async (err) => {
-      const body = await err.response?.json()
-      throw body ?? err
-    })
+    const { pending_project: createdPendingProject } =
+      await createPendingProjectApi({
+        props: { ...props.props },
+        idToken: props.idToken,
+      }).catch(async (err) => {
+        const body = await err.response?.json()
+        throw body ?? err
+      })
 
     setMyProjectState({
       isPending: true,

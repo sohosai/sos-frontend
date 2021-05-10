@@ -34,14 +34,12 @@ const Dropdown: FC<Dropdown.Props> = ({
   register,
   ...rest
 }) => {
-  const descriptions = (Array.isArray(description)
-    ? description
-    : [description]
+  const descriptions = (
+    Array.isArray(description) ? description : [description]
   ).filter((text) => text)
-  const errors = (Array.isArray(error)
-    ? error
-    : [error]
-  ).filter((text): text is string => Boolean(text))
+  const errors = (Array.isArray(error) ? error : [error]).filter(
+    (text): text is string => Boolean(text)
+  )
 
   return (
     <div className={styles.wrapper} data-full-width={fullWidth}>
