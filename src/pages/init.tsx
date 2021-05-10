@@ -144,20 +144,6 @@ const Init: PageFC = () => {
               <FormItemSpacer>
                 <TextField
                   type="text"
-                  label="名前"
-                  placeholder="太郎"
-                  autoComplete="given-name"
-                  error={[errors?.nameFirst?.types?.required && "必須項目です"]}
-                  required
-                  register={register("nameFirst", {
-                    required: true,
-                    setValueAs: (value) => value?.trim(),
-                  })}
-                />
-              </FormItemSpacer>
-              <FormItemSpacer>
-                <TextField
-                  type="text"
                   label="姓(ふりがな)"
                   placeholder="そうほう"
                   error={[
@@ -171,6 +157,20 @@ const Init: PageFC = () => {
                     validate: {
                       isKana: (value) => isKana(value),
                     },
+                    setValueAs: (value) => value?.trim(),
+                  })}
+                />
+              </FormItemSpacer>
+              <FormItemSpacer>
+                <TextField
+                  type="text"
+                  label="名前"
+                  placeholder="太郎"
+                  autoComplete="given-name"
+                  error={[errors?.nameFirst?.types?.required && "必須項目です"]}
+                  required
+                  register={register("nameFirst", {
+                    required: true,
                     setValueAs: (value) => value?.trim(),
                   })}
                 />
@@ -213,22 +213,6 @@ const Init: PageFC = () => {
                   })}
                 />
               </FormItemSpacer>
-              {/* TODO: ドロップダウンか何かにする */}
-              <FormItemSpacer>
-                <TextField
-                  type="text"
-                  label="所属学群・学類"
-                  placeholder="〇〇学群 〇〇学類"
-                  error={[
-                    errors?.affiliation?.types?.required && "必須項目です",
-                  ]}
-                  required
-                  register={register("affiliation", {
-                    required: true,
-                    setValueAs: (value) => value?.trim(),
-                  })}
-                />
-              </FormItemSpacer>
               <FormItemSpacer>
                 <Dropdown
                   label="区分"
@@ -243,6 +227,21 @@ const Init: PageFC = () => {
                   required
                   register={register("category", {
                     required: true,
+                  })}
+                />
+              </FormItemSpacer>
+              <FormItemSpacer>
+                <TextField
+                  type="text"
+                  label="所属学群・学類"
+                  placeholder="〇〇学群 〇〇学類"
+                  error={[
+                    errors?.affiliation?.types?.required && "必須項目です",
+                  ]}
+                  required
+                  register={register("affiliation", {
+                    required: true,
+                    setValueAs: (value) => value?.trim(),
                   })}
                 />
               </FormItemSpacer>

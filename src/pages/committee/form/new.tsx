@@ -36,6 +36,7 @@ import {
   ProjectQuerySelector,
   Textarea,
   TextField,
+  Tooltip,
 } from "../../../components/"
 
 import styles from "./new.module.scss"
@@ -240,6 +241,18 @@ const NewForm: PageFC = () => {
         })
         break
       }
+      case "radio": {
+        append({
+          id: uuid(),
+          name: "",
+          description: "",
+          conditions: [],
+          type: "radio",
+          is_required: false,
+          buttons: [],
+        })
+        break
+      }
     }
   }
 
@@ -386,16 +399,20 @@ const NewForm: PageFC = () => {
         <div className={styles.sectionWrapper}>
           <h2 className={styles.sectionTitle}>質問項目</h2>
           {fields.map(({ id }, index) => {
-            const type = watch(`items.${index}.type` as const)
+            const type = watch(
+              `items.${index}.type` as const
+            ) as FormItem["type"]
             const itemNamePlaceholders: {
               [itemType in FormItem["type"]]?: string
             } = {
               checkbox: "必要な文房具",
+              radio: "希望する実施日",
             }
             const itemTypeToUiText = (type: FormItem["type"]) => {
               const dict: { [type in FormItem["type"]]?: string } = {
                 text: "テキスト",
                 checkbox: "チェックボックス",
+                radio: "ドロップダウン",
               }
               return dict[type]
             }
@@ -579,7 +596,7 @@ const NewForm: PageFC = () => {
                                     ?.trim()
                                     .split("\n")
                                     .map((label: string) => {
-                                      if (!label) return
+                                      if (!label.trim()) return
                                       return {
                                         id: uuid(),
                                         label: label.trim(),
@@ -598,25 +615,85 @@ const NewForm: PageFC = () => {
                         </FormItemSpacer>
                       </>
                     )}
+                    {type === "radio" && (
+                      <>
+                        <FormItemSpacer>
+                          <Textarea
+                            label="選択肢"
+                            description="選択肢のテキストを改行区切りで入力してください"
+                            placeholder={"1日目\n2日目"}
+                            error={[
+                              (errors?.items?.[index] as any)?.buttons?.types
+                                ?.required && "必須項目です",
+                            ]}
+                            required
+                            register={register(
+                              `items.${index}.buttons` as const,
+                              {
+                                required: true,
+                                setValueAs: (value) =>
+                                  value
+                                    ?.trim()
+                                    .split("\n")
+                                    .map((label: string) => {
+                                      if (!label.trim()) return
+                                      return {
+                                        id: uuid(),
+                                        label: label.trim(),
+                                      }
+                                    })
+                                    .filter(
+                                      (
+                                        nullable:
+                                          | { id: string; label: string }
+                                          | undefined
+                                      ) => Boolean(nullable)
+                                    ),
+                              }
+                            )}
+                          />
+                        </FormItemSpacer>
+                        <FormItemSpacer>
+                          <Checkbox
+                            label="必須項目にする"
+                            checked={watch(
+                              `items.${index}.is_required` as const
+                            )}
+                            register={register(
+                              `items.${index}.is_required` as const
+                            )}
+                          />
+                        </FormItemSpacer>
+                      </>
+                    )}
                   </Panel>
                 </div>
                 <div className={styles.itemActions}>
-                  <IconButton
-                    icon="chevron-up"
-                    title="この項目を上に移動"
-                    onClick={() => swapItem(index, index - 1)}
-                  />
-                  <IconButton
-                    icon="chevron-down"
-                    title="この項目を下に移動"
-                    onClick={() => swapItem(index, index + 1)}
-                  />
-                  <IconButton
-                    icon="trash-alt"
-                    title="この項目を削除"
-                    danger={true}
-                    onClick={() => removeItem(index)}
-                  />
+                  <Tooltip title="この項目を上に移動" placement="left">
+                    <div>
+                      <IconButton
+                        icon="chevron-up"
+                        onClick={() => swapItem(index, index - 1)}
+                      />
+                    </div>
+                  </Tooltip>
+                  <Tooltip title="この項目を下に移動" placement="left">
+                    <div>
+                      <IconButton
+                        icon="chevron-down"
+                        onClick={() => swapItem(index, index + 1)}
+                      />
+                    </div>
+                  </Tooltip>
+                  <Tooltip title="この項目を削除" placement="left">
+                    <div>
+                      <IconButton
+                        icon="trash-alt"
+                        danger={true}
+                        onClick={() => removeItem(index)}
+                      />
+                    </div>
+                  </Tooltip>
                 </div>
               </div>
             )
@@ -642,6 +719,17 @@ const NewForm: PageFC = () => {
                 }}
               >
                 チェックボックス項目
+              </Button>
+            </div>
+            <div className={styles.addButton}>
+              <Button
+                icon="plus"
+                kind="secondary"
+                onClick={() => {
+                  addItem("radio")
+                }}
+              >
+                ドロップダウン項目
               </Button>
             </div>
           </div>

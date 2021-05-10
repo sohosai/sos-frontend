@@ -25,9 +25,8 @@ const ListProjectForms: PageFC = () => {
   const { myProjectState } = useMyProject()
 
   const [forms, setForms] = useState<Form[] | null | undefined>(null)
-  const [error, setError] = useState<
-    "unknown" | "projectPending" | "projectNotFound" | null
-  >(null)
+  const [error, setError] =
+    useState<"unknown" | "projectPending" | "projectNotFound" | null>(null)
 
   useEffect(() => {
     ;(async () => {
