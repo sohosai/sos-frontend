@@ -19,6 +19,7 @@ import { pagesPath } from "../../../utils/$path"
 import {
   Button,
   Checkbox,
+  Dropdown,
   FormItemSpacer,
   Head,
   Panel,
@@ -199,6 +200,13 @@ const AnswerForm: PageFC = () => {
                       ),
                     }
                   }
+                  case "radio": {
+                    return {
+                      item_id: formItem.id,
+                      type: "radio" as const,
+                      answer: null,
+                    }
+                  }
                 }
               })
               .filter(
@@ -337,6 +345,34 @@ const AnswerForm: PageFC = () => {
                               })()}
                             </p>
                           </>
+                        )
+                      }
+
+                      if (formItem.type === "radio") {
+                        return (
+                          <Dropdown
+                            label={formItem.name}
+                            description={formItem.description.split("\n")}
+                            options={[
+                              {
+                                value: "",
+                                label: "選択してください",
+                              },
+                              ...formItem.buttons.map(({ id, label }) => ({
+                                value: id,
+                                label,
+                              })),
+                            ]}
+                            error={[
+                              (errors?.items?.[index]?.answer as any)?.types
+                                ?.required && "必須項目です",
+                            ]}
+                            required={formItem.is_required}
+                            register={register(
+                              `items.${index}.answer` as const,
+                              { required: formItem.is_required }
+                            )}
+                          />
                         )
                       }
                     })()}
