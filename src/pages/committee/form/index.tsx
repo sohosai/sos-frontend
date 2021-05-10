@@ -6,7 +6,14 @@ import Link from "next/link"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
-import { Button, Head, IconButton, Panel, Spinner } from "../../../components/"
+import {
+  Button,
+  Head,
+  IconButton,
+  Panel,
+  Spinner,
+  Tooltip,
+} from "src/components/"
 
 import type { Form } from "../../../types/models/form"
 
@@ -100,29 +107,36 @@ const ListForms: PageFC = () => {
                       })()}
                     </span>
                   </p>
-                  <IconButton
-                    icon="download"
-                    title="回答をCSVでダウンロード"
-                    onClick={async () => {
-                      if (authState === null || authState.firebaseUser === null)
-                        return
+                  <Tooltip title="回答をCSVでダウンロード">
+                    <div>
+                      <IconButton
+                        icon="download"
+                        onClick={async () => {
+                          if (
+                            authState === null ||
+                            authState.firebaseUser === null
+                          )
+                            return
 
-                      const idToken = await authState.firebaseUser.getIdToken()
-
-                      exportFormAnswers({
-                        props: {
-                          form_id: form.id,
-                        },
-                        idToken,
-                      })
-                        .then((res) => {
-                          saveAs(createCsvBlob(res), `${form.name}-answers.csv`)
-                        })
-                        .catch((err) => {
-                          throw err
-                        })
-                    }}
-                  />
+                          exportFormAnswers({
+                            props: {
+                              form_id: form.id,
+                            },
+                            idToken: await authState.firebaseUser.getIdToken(),
+                          })
+                            .then((res) => {
+                              saveAs(
+                                createCsvBlob(res),
+                                `${form.name}-answers.csv`
+                              )
+                            })
+                            .catch((err) => {
+                              throw err
+                            })
+                        }}
+                      />
+                    </div>
+                  </Tooltip>
                 </div>
               </Panel>
             </div>
