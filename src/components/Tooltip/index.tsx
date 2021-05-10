@@ -15,9 +15,9 @@ declare namespace Tooltip {
 }
 
 /**
- * @param children React component を渡す直接場合は多分 div で囲う必要あり
+ * @param children React component を直接渡す場合は多分 div で囲う必要あり
  */
-export const Tooltip: FC<Tooltip.Props> = ({
+const Tooltip: FC<Tooltip.Props> = ({
   id,
   title,
   placement = "top",
@@ -38,3 +38,5 @@ export const Tooltip: FC<Tooltip.Props> = ({
     </MaterialUiTooltip>
   </StylesProvider>
 )
+
+export { Tooltip }
