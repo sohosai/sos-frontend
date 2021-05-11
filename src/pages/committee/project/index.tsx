@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import type { PageFC } from "next"
 
 import { saveAs } from "file-saver"
+import dayjs from "dayjs"
 
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
@@ -44,6 +45,28 @@ const ListProjects: PageFC = () => {
     "committee",
   ]
 
+  const downloadProjectsCsv = async () => {
+    if (authState?.status !== "bothSignedIn") return
+
+    setDownloading(true)
+
+    exportProjects({
+      idToken: await authState.firebaseUser.getIdToken(),
+    })
+      .then((res) => {
+        setDownloading(false)
+        saveAs(
+          createCsvBlob(res),
+          `sos-projects-${dayjs().format("YYYY-M-D-HH-mm")}.csv`
+        )
+      })
+      .catch(async (err) => {
+        setDownloading(false)
+        const body = await err.response?.json()
+        throw body ?? err
+      })
+  }
+
   useEffect(() => {
     ;(async () => {
       if (authState?.status !== "bothSignedIn") return
@@ -73,24 +96,7 @@ const ListProjects: PageFC = () => {
             <Button
               icon="download"
               processing={downloading}
-              onClick={async () => {
-                if (authState?.status !== "bothSignedIn") return
-
-                setDownloading(true)
-
-                exportProjects({
-                  idToken: await authState.firebaseUser.getIdToken(),
-                })
-                  .then((res) => {
-                    setDownloading(false)
-                    saveAs(createCsvBlob(res), "sos-projects.csv")
-                  })
-                  .catch(async (err) => {
-                    setDownloading(false)
-                    const body = await err.response?.json()
-                    throw body ?? err
-                  })
-              }}
+              onClick={downloadProjectsCsv}
             >
               CSVでダウンロード
             </Button>
