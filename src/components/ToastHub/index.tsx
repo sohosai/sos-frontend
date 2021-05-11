@@ -6,7 +6,7 @@ import { useToastConsumer } from "src/contexts/toast/"
 
 import { Toast } from "src/components/"
 
-import styles from "./ToastHub.module.scss"
+import styles from "./index.module.scss"
 
 const AnimatedToast = animated(Toast)
 
