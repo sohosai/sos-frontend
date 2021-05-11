@@ -6,7 +6,7 @@ declare namespace Spinner {
   type Props = Readonly<
     Partial<{
       color: "gray" | "white" | "brand"
-      size: "sm" | "md"
+      size: "xs" | "sm" | "md"
     }>
   >
 }
