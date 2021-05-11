@@ -38,9 +38,14 @@ const ListForms: PageFC = () => {
   const { addToast } = useToastDispatcher()
 
   const [forms, setForms] = useState<Form[] | undefined | null>(null)
+  const [downloadingForms, setDownloadingForms] = useState<{
+    [formId: string]: boolean
+  }>({})
 
   const downloadFormAnswersCsv = async (form: Form) => {
     if (authState === null || authState.firebaseUser === null) return
+
+    setDownloadingForms((prev) => ({ ...prev, [form.id]: true }))
 
     exportFormAnswers({
       props: {
@@ -49,12 +54,14 @@ const ListForms: PageFC = () => {
       idToken: await authState.firebaseUser.getIdToken(),
     })
       .then((res) => {
+        setDownloadingForms((prev) => ({ ...prev, [form.id]: false }))
         saveAs(
           createCsvBlob(res),
           `${form.name}-answers-${dayjs().format("YYYY-M-D-HH-mm")}.csv`
         )
       })
       .catch((err) => {
+        setDownloadingForms((prev) => ({ ...prev, [form.id]: false }))
         throw err
       })
   }
@@ -128,6 +135,7 @@ const ListForms: PageFC = () => {
                     <div>
                       <IconButton
                         icon="download"
+                        processing={downloadingForms[form.id]}
                         onClick={() => downloadFormAnswersCsv(form)}
                       />
                     </div>
