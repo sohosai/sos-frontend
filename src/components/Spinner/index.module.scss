@@ -1,5 +1,6 @@
 @import "../../styles/variables";
 
+$radius-xs: 6px;
 $radius-sm: 8px;
 $radius-md: 12px;
 
@@ -10,6 +11,20 @@ $lineWidth: 2px;
   position: relative;
   width: $radius-md * 2 + $lineWidth * 2;
   height: $radius-md * 2 + $lineWidth * 2;
+
+  &[data-size="xs"] {
+    width: $radius-xs * 2 + $lineWidth * 2;
+    height: $radius-xs * 2 + $lineWidth * 2;
+
+    .circular {
+      width: $radius-xs * 2 + $lineWidth * 2;
+      height: $radius-xs * 2 + $lineWidth * 2;
+    }
+
+    .path {
+      r: $radius-xs;
+    }
+  }
 
   &[data-size="sm"] {
     width: $radius-sm * 2 + $lineWidth * 2;
