@@ -26,6 +26,8 @@ import { createCsvBlob } from "../../../utils/createCsvBlob"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 import { saveAs } from "file-saver"
 
@@ -36,6 +38,26 @@ const ListForms: PageFC = () => {
   const { addToast } = useToastDispatcher()
 
   const [forms, setForms] = useState<Form[] | undefined | null>(null)
+
+  const downloadFormAnswersCsv = async (form: Form) => {
+    if (authState === null || authState.firebaseUser === null) return
+
+    exportFormAnswers({
+      props: {
+        form_id: form.id,
+      },
+      idToken: await authState.firebaseUser.getIdToken(),
+    })
+      .then((res) => {
+        saveAs(
+          createCsvBlob(res),
+          `${form.name}-answers-${dayjs().format("YYYY-M-D-HH-mm")}.csv`
+        )
+      })
+      .catch((err) => {
+        throw err
+      })
+  }
 
   useEffect(() => {
     ;(async () => {
@@ -54,11 +76,6 @@ const ListForms: PageFC = () => {
         })
     })()
   }, [authState])
-
-  useEffect(() => {
-    dayjs.extend(utc)
-    dayjs.extend(timezone)
-  }, [])
 
   return (
     <div className={styles.wrapper}>
@@ -111,29 +128,7 @@ const ListForms: PageFC = () => {
                     <div>
                       <IconButton
                         icon="download"
-                        onClick={async () => {
-                          if (
-                            authState === null ||
-                            authState.firebaseUser === null
-                          )
-                            return
-
-                          exportFormAnswers({
-                            props: {
-                              form_id: form.id,
-                            },
-                            idToken: await authState.firebaseUser.getIdToken(),
-                          })
-                            .then((res) => {
-                              saveAs(
-                                createCsvBlob(res),
-                                `${form.name}-answers.csv`
-                              )
-                            })
-                            .catch((err) => {
-                              throw err
-                            })
-                        }}
+                        onClick={() => downloadFormAnswersCsv(form)}
                       />
                     </div>
                   </Tooltip>

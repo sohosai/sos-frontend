@@ -12,6 +12,7 @@ import { listUsers } from "../../../lib/api/user/listUsers"
 import { exportUsers } from "../../../lib/api/user/exportUsers"
 
 import { saveAs } from "file-saver"
+import dayjs from "dayjs"
 
 import { createCsvBlob } from "../../../utils/createCsvBlob"
 
@@ -25,6 +26,27 @@ const ListUsers: PageFC = () => {
 
   const [users, setUsers] = useState<User[] | null>(null)
   const [downloading, setDownloading] = useState(false)
+
+  const downloadUsersCsv = async () => {
+    if (authState === null || authState.firebaseUser == null) return
+
+    setDownloading(true)
+
+    exportUsers({ idToken: await authState.firebaseUser.getIdToken() })
+      .then((res) => {
+        setDownloading(false)
+
+        saveAs(
+          createCsvBlob(res),
+          `sos-users-${dayjs().format("YYYY-M-D-HH-mm")}.csv`
+        )
+      })
+      .catch(async (err) => {
+        setDownloading(false)
+        const body = await err.response?.json()
+        console.error(body ?? err)
+      })
+  }
 
   useEffect(() => {
     ;(async () => {
@@ -54,24 +76,7 @@ const ListUsers: PageFC = () => {
         <Button
           icon="download"
           processing={downloading}
-          onClick={async () => {
-            if (authState === null || authState.firebaseUser == null) return
-
-            setDownloading(true)
-
-            exportUsers({ idToken: await authState.firebaseUser.getIdToken() })
-              .then((res) => {
-                setDownloading(false)
-
-                // TODO: datetime in filename
-                saveAs(createCsvBlob(res), "sos-users.csv")
-              })
-              .catch(async (err) => {
-                setDownloading(false)
-                const body = await err.response?.json()
-                console.error(body ?? err)
-              })
-          }}
+          onClick={downloadUsersCsv}
         >
           CSVでダウンロード
         </Button>
