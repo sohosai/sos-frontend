@@ -2,7 +2,7 @@ import { useState, FC } from "react"
 
 import { Story } from "@storybook/react"
 
-import { Panel } from "../"
+import { Panel, Tooltip } from "src/components"
 
 import styles from "./index.stories.module.scss"
 
@@ -27,21 +27,23 @@ const timeout = (milliseconds: number) =>
 
 const IconPanel: FC<{ icon: string }> = ({ icon }) => {
   const [tooltipString, setTooltipString] = useState(icon)
+
   return (
-    <div
-      className={styles.panelWrapper}
-      data-icon={tooltipString}
-      onClick={async () => {
-        await navigator.clipboard.writeText(icon)
-        setTooltipString("Copied!!")
-        await timeout(1000)
-        setTooltipString(icon)
-      }}
-    >
-      <Panel>
-        <i className={`jam-icons jam-${icon} ${styles.icon}`} />
-      </Panel>
-    </div>
+    <Tooltip title={tooltipString}>
+      <div
+        className={styles.panelWrapper}
+        onClick={async () => {
+          await navigator.clipboard.writeText(icon)
+          setTooltipString("Copied!!")
+          await timeout(1000)
+          setTooltipString(icon)
+        }}
+      >
+        <Panel>
+          <span className={`jam-icons jam-${icon} ${styles.icon}`} />
+        </Panel>
+      </div>
+    </Tooltip>
   )
 }
 
