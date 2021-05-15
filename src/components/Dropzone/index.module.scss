@@ -1,0 +1,60 @@
+@import "src/styles/variables";
+
+.label {
+  margin-bottom: 8px;
+}
+
+.dropzoneWrapper {
+  min-height: 100px;
+  padding: 32px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $color-gray-50;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border 200ms;
+
+  &:focus-within,
+  &[data-dropping] {
+    border: 2px solid $color-brand;
+    outline: none;
+  }
+
+  &[data-error] {
+    border: 2px solid $color-caution;
+  }
+}
+
+.uploadIcon {
+  margin-bottom: 12px;
+  font-size: 2em;
+  color: $color-text-sub;
+  transition: color 200ms;
+}
+
+.isMultipleTag {
+  margin-bottom: 12px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: white;
+  background-color: $color-brand;
+}
+
+.message {
+  color: $color-text-sub;
+  max-width: 20em;
+}
+
+.bottomTextWrapper {
+  margin-top: 8px;
+}
+
+.description {
+  color: $color-text-sub;
+}
+
+.error {
+  color: $color-caution;
+}
