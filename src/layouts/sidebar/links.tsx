@@ -54,7 +54,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       },
       {
         href: pagesPath.signup.$url(),
-        title: "アカウント登録",
+        title: "ユーザー登録",
         icon: "user-plus",
         visible: () => authState.status === "signedOut",
         active: () => router.pathname === pagesPath.signup.$url().pathname,

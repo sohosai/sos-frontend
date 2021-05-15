@@ -4,7 +4,7 @@ import type { PageOptions } from "next"
 
 import { Sidebar } from "./sidebar"
 
-import { ToastHub } from "src/components/Toast/ToastHub"
+import { ToastHub } from "src/components"
 
 import styles from "./layout.module.scss"
 

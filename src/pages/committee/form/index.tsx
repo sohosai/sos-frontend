@@ -6,7 +6,14 @@ import Link from "next/link"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
-import { Button, Head, IconButton, Panel, Spinner } from "../../../components/"
+import {
+  Button,
+  Head,
+  IconButton,
+  Panel,
+  Spinner,
+  Tooltip,
+} from "src/components/"
 
 import type { Form } from "../../../types/models/form"
 
@@ -19,6 +26,8 @@ import { createCsvBlob } from "../../../utils/createCsvBlob"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 import { saveAs } from "file-saver"
 
@@ -29,6 +38,33 @@ const ListForms: PageFC = () => {
   const { addToast } = useToastDispatcher()
 
   const [forms, setForms] = useState<Form[] | undefined | null>(null)
+  const [downloadingForms, setDownloadingForms] = useState<{
+    [formId: string]: boolean
+  }>({})
+
+  const downloadFormAnswersCsv = async (form: Form) => {
+    if (authState === null || authState.firebaseUser === null) return
+
+    setDownloadingForms((prev) => ({ ...prev, [form.id]: true }))
+
+    exportFormAnswers({
+      props: {
+        form_id: form.id,
+      },
+      idToken: await authState.firebaseUser.getIdToken(),
+    })
+      .then((res) => {
+        setDownloadingForms((prev) => ({ ...prev, [form.id]: false }))
+        saveAs(
+          createCsvBlob(res),
+          `${form.name}-answers-${dayjs().format("YYYY-M-D-HH-mm")}.csv`
+        )
+      })
+      .catch((err) => {
+        setDownloadingForms((prev) => ({ ...prev, [form.id]: false }))
+        throw err
+      })
+  }
 
   useEffect(() => {
     ;(async () => {
@@ -47,11 +83,6 @@ const ListForms: PageFC = () => {
         })
     })()
   }, [authState])
-
-  useEffect(() => {
-    dayjs.extend(utc)
-    dayjs.extend(timezone)
-  }, [])
 
   return (
     <div className={styles.wrapper}>
@@ -100,29 +131,15 @@ const ListForms: PageFC = () => {
                       })()}
                     </span>
                   </p>
-                  <IconButton
-                    icon="download"
-                    title="回答をCSVでダウンロード"
-                    onClick={async () => {
-                      if (authState === null || authState.firebaseUser === null)
-                        return
-
-                      const idToken = await authState.firebaseUser.getIdToken()
-
-                      exportFormAnswers({
-                        props: {
-                          form_id: form.id,
-                        },
-                        idToken,
-                      })
-                        .then((res) => {
-                          saveAs(createCsvBlob(res), `${form.name}-answers.csv`)
-                        })
-                        .catch((err) => {
-                          throw err
-                        })
-                    }}
-                  />
+                  <Tooltip title="回答をCSVでダウンロード">
+                    <div>
+                      <IconButton
+                        icon="download"
+                        processing={downloadingForms[form.id]}
+                        onClick={() => downloadFormAnswersCsv(form)}
+                      />
+                    </div>
+                  </Tooltip>
                 </div>
               </Panel>
             </div>

@@ -84,7 +84,7 @@ const Signup: PageFC = () => {
         <Panel style={{ padding: "48px" }}>
           <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
             <fieldset>
-              <legend className={styles.legend}>アカウント登録</legend>
+              <legend className={styles.legend}>ユーザー登録</legend>
               <FormItemSpacer>
                 <TextField
                   type="email"
@@ -100,7 +100,7 @@ const Signup: PageFC = () => {
                     errors?.email?.type === "invalidEmail" &&
                       "使用できないメールアドレスです",
                     errors?.email?.type === "emailAlreadyInUse" &&
-                      "このメールアドレスはアカウント登録済みです",
+                      "このメールアドレスはユーザー登録済みです",
                   ]}
                   placeholder="xxx@s.tsukuba.ac.jp"
                   required
@@ -155,7 +155,7 @@ const Signup: PageFC = () => {
                 icon="user-plus"
                 fullWidth={true}
               >
-                アカウント登録する
+                登録する
               </Button>
             </div>
           </form>
