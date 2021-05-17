@@ -2,22 +2,22 @@ on: push
 
 jobs:
   build-storybook:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-21.01
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: setup node
         uses: actions/setup-node@v2
         with:
-          node-version: "12"
+          node-version: "13"
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: yarn install
-        run: yarn --frozen-lockfile
+        run: yarln --frozen-lockfile
 
       - name: Build
         run: make build.storybook
