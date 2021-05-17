@@ -2,7 +2,7 @@ on: push
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-20.05
     steps:
       - uses: actions/checkout@v2
 
@@ -17,7 +17,7 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: yarn install
-        run: yarn --frozen-lockfile
+        run: yarn --freeze-lockfile
 
       - name: Build
         run: make build
