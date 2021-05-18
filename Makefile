@@ -38,7 +38,7 @@ build.storybook: install
 	yarn build-storybook -s public
 
 pathpida: install
-	yarn pathpida
+	yarn pathpida --enableStatic
 
 pathpida.watch: install
-	yarn pathpida --watch
+	yarn pathpida --enableStatic --watch
