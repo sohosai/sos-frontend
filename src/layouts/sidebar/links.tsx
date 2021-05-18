@@ -45,62 +45,62 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
           authState.firebaseUser?.emailVerified !== false,
         active: () => router.pathname === pagesPath.$url().pathname,
       },
-      {
-        href: pagesPath.login.$url(),
-        title: "ログイン",
-        icon: "log-in-alt",
-        visible: () => authState.status === "signedOut",
-        active: () => router.pathname === pagesPath.login.$url().pathname,
-      },
-      {
-        href: pagesPath.signup.$url(),
-        title: "ユーザー登録",
-        icon: "user-plus",
-        visible: () => authState.status === "signedOut",
-        active: () => router.pathname === pagesPath.signup.$url().pathname,
-      },
-      {
-        href: pagesPath.email_verification.$url(),
-        title: "メールアドレス確認",
-        icon: "envelope",
-        visible: () => Boolean(authState.firebaseUser?.emailVerified === false),
-        active: () =>
-          router.pathname === pagesPath.email_verification.$url().pathname,
-      },
-      {
-        href: pagesPath.init.$url(),
-        title: "アカウント情報登録",
-        icon: "user-circle",
-        visible: () =>
-          authState.status === "firebaseSignedIn" &&
-          Boolean(authState.firebaseUser.emailVerified),
-        active: () => router.pathname === pagesPath.init.$url().pathname,
-      },
-      {
-        href: pagesPath.project.new.$url(),
-        title: "企画応募",
-        icon: "write",
-        visible: () => authState.status === "bothSignedIn",
-        active: () => router.pathname === pagesPath.project.new.$url().pathname,
-      },
-      {
-        href: pagesPath.project.form.$url(),
-        title: "申請",
-        icon: "task-list",
-        visible: () =>
-          authState.status === "bothSignedIn" &&
-          !myProjectState?.error &&
-          Boolean(myProjectState?.myProject),
-        active: () =>
-          router.pathname.startsWith(pagesPath.project.form.$url().pathname),
-      },
-      {
-        href: pagesPath.me.$url(),
-        title: "マイページ",
-        icon: "user-circle",
-        visible: () => authState.status === "bothSignedIn",
-        active: () => router.pathname === pagesPath.me.$url().pathname,
-      },
+      // {
+      //   href: pagesPath.login.$url(),
+      //   title: "ログイン",
+      //   icon: "log-in-alt",
+      //   visible: () => authState.status === "signedOut",
+      //   active: () => router.pathname === pagesPath.login.$url().pathname,
+      // },
+      // {
+      //   href: pagesPath.signup.$url(),
+      //   title: "ユーザー登録",
+      //   icon: "user-plus",
+      //   visible: () => authState.status === "signedOut",
+      //   active: () => router.pathname === pagesPath.signup.$url().pathname,
+      // },
+      // {
+      //   href: pagesPath.email_verification.$url(),
+      //   title: "メールアドレス確認",
+      //   icon: "envelope",
+      //   visible: () => Boolean(authState.firebaseUser?.emailVerified === false),
+      //   active: () =>
+      //     router.pathname === pagesPath.email_verification.$url().pathname,
+      // },
+      // {
+      //   href: pagesPath.init.$url(),
+      //   title: "アカウント情報登録",
+      //   icon: "user-circle",
+      //   visible: () =>
+      //     authState.status === "firebaseSignedIn" &&
+      //     Boolean(authState.firebaseUser.emailVerified),
+      //   active: () => router.pathname === pagesPath.init.$url().pathname,
+      // },
+      // {
+      //   href: pagesPath.project.new.$url(),
+      //   title: "企画応募",
+      //   icon: "write",
+      //   visible: () => authState.status === "bothSignedIn",
+      //   active: () => router.pathname === pagesPath.project.new.$url().pathname,
+      // },
+      // {
+      //   href: pagesPath.project.form.$url(),
+      //   title: "申請",
+      //   icon: "task-list",
+      //   visible: () =>
+      //     authState.status === "bothSignedIn" &&
+      //     !myProjectState?.error &&
+      //     Boolean(myProjectState?.myProject),
+      //   active: () =>
+      //     router.pathname.startsWith(pagesPath.project.form.$url().pathname),
+      // },
+      // {
+      //   href: pagesPath.me.$url(),
+      //   title: "マイページ",
+      //   icon: "user-circle",
+      //   visible: () => authState.status === "bothSignedIn",
+      //   active: () => router.pathname === pagesPath.me.$url().pathname,
+      // },
     ],
     committee: [
       {

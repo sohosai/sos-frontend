@@ -92,6 +92,6 @@ const EmailVerification: PageFC = () => {
   )
 }
 EmailVerification.layout = "default"
-EmailVerification.rbpac = { type: "lowerThanIncluding", role: "guest" }
+EmailVerification.rbpac = { type: "higherThanIncluding", role: "administrator" }
 
 export default EmailVerification

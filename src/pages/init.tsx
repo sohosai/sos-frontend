@@ -263,6 +263,6 @@ const Init: PageFC = () => {
   )
 }
 Init.layout = "default"
-Init.rbpac = { type: "lowerThanIncluding", role: "guest" }
+Init.rbpac = { type: "higherThanIncluding", role: "administrator" }
 
 export default Init
