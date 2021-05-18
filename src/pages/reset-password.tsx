@@ -135,6 +135,6 @@ const ResetPassword: PageFC = () => {
   )
 }
 ResetPassword.layout = "default"
-ResetPassword.rbpac = { type: "lowerThanIncluding", role: "guest" }
+ResetPassword.rbpac = { type: "higherThanIncluding", role: "administrator" }
 
 export default ResetPassword
