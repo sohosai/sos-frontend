@@ -1,0 +1,57 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.wrapper {
+  @include mainArea;
+}
+
+.pageTitle {
+  @include pageTitle;
+}
+
+.section {
+  margin-bottom: 48px;
+}
+
+.sectionTitle {
+  font-size: 1.5em;
+  margin-bottom: 16px;
+}
+
+.panelRowWrapper {
+  margin-bottom: 24px;
+
+  &[data-cols="2"] {
+    display: flex;
+
+    & > .panelWrapper {
+      width: 100%;
+      flex-shrink: 1;
+
+      &:not(:last-of-type) {
+        margin-right: 24px;
+      }
+    }
+  }
+}
+
+.panelTitle {
+  font-weight: bold;
+  font-size: 1.5em;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid $color-gray-100;
+}
+
+.panelText {
+  color: $color-text-sub;
+}
+
+.onlineAnnouncementDate {
+  margin-bottom: 12px;
+  color: $color-text-sub;
+}
+
+.onlineDescriptions {
+  margin-bottom: 16px;
+}
