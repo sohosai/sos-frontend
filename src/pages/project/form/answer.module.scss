@@ -6,7 +6,7 @@
 }
 
 .title {
-  margin-bottom: 32px;
+  @include pageTitle;
 }
 
 .emptyWrapper {
@@ -31,11 +31,6 @@
 
 .formItems {
   margin-bottom: 32px;
-}
-
-.formError {
-  margin-top: 16px;
-  color: $color-caution;
 }
 
 .checkboxesTitle {

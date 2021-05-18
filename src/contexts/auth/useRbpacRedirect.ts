@@ -7,7 +7,7 @@
  * SOS バックからのエラーなどを受けてリダイレクトする場合はその場で処理
  */
 
-import { useEffect } from "react"
+import { useEffect, useRef, MutableRefObject } from "react"
 
 import { useRouter } from "next/router"
 import type { PageOptions } from "next"
@@ -20,61 +20,90 @@ import {
 } from "../../types/models/user/userRole"
 
 import { AuthNeueState } from "."
+import { useToastDispatcher } from "src/contexts/toast"
 
 export const useRbpacRedirect = ({
   rbpac,
   authState,
+  hasBeenSignedIn,
+  setRedirectSettled,
 }: {
   rbpac: PageOptions["rbpac"]
   authState: AuthNeueState
+  hasBeenSignedIn: MutableRefObject<boolean>
+  setRedirectSettled: () => void
 }): void => {
   const router = useRouter()
+  const { addToast } = useToastDispatcher()
+
+  const emailVerificationToastDispatched = useRef(false)
+  const initToastDispatched = useRef(false)
 
   useEffect(() => {
     ;(async () => {
       if (authState === null || authState.status === "error") return
 
       if (authState.firebaseUser?.emailVerified === false) {
-        if (router.pathname !== pagesPath.email_verification.$url().pathname) {
-          router.push(pagesPath.email_verification.$url())
+        router.push(pagesPath.email_verification.$url())
+        setRedirectSettled()
+        if (emailVerificationToastDispatched.current === false) {
+          emailVerificationToastDispatched.current = true
+          addToast({ title: "メールアドレスの確認をお願いします" })
         }
         return
       }
 
       if (authState.status === "firebaseSignedIn") {
-        if (router.pathname !== pagesPath.init.$url().pathname) {
-          router.push(pagesPath.init.$url())
+        router.push(pagesPath.init.$url())
+        setRedirectSettled()
+        if (initToastDispatched.current === false) {
+          initToastDispatched.current = true
+          addToast({ title: "アカウント情報を登録してください" })
         }
         return
       }
 
       if (
         authState.status === "signedOut" &&
-        router.pathname === pagesPath.init.$url().pathname
+        (router.pathname === pagesPath.init.$url().pathname ||
+          router.pathname === pagesPath.email_verification.$url().pathname)
       ) {
         router.push(pagesPath.login.$url())
+        setRedirectSettled()
+        return
       }
 
       const userRole = authState.sosUser?.role ?? "guest"
 
-      // TODO: toast
       const redirect = (): void => {
         if (authState.status === "signedOut") {
-          if (router.pathname !== pagesPath.login.$url().pathname) {
+          if (hasBeenSignedIn.current === true) {
+            router.push(pagesPath.$url())
+            addToast({ title: "ログアウトしました" })
+          } else {
             router.push(pagesPath.login.$url())
+            addToast({ title: "ログインしてください" })
           }
           return
         }
 
         if (userRole === "guest") {
+          addToast({ title: "ログインしてください" })
           router.push(pagesPath.login.$url())
         } else {
-          router.push(pagesPath.mypage.$url())
+          if (
+            router.pathname !== pagesPath.login.$url().pathname &&
+            router.pathname !== pagesPath.init.$url().pathname
+          ) {
+            addToast({ title: "アクセスできないページです" })
+          }
+          router.push(pagesPath.me.$url())
         }
       }
 
       switch (rbpac.type) {
         case "public": {
+          setRedirectSettled()
           return
         }
         case "higherThanIncluding": {
@@ -82,6 +111,8 @@ export const useRbpacRedirect = ({
             !isUserRoleHigherThanIncluding({ userRole, criteria: rbpac.role })
           ) {
             redirect()
+          } else {
+            setRedirectSettled()
           }
           return
         }
@@ -90,16 +121,20 @@ export const useRbpacRedirect = ({
             !isUserRoleLowerThanIncluding({ userRole, criteria: rbpac.role })
           ) {
             redirect()
+          } else {
+            setRedirectSettled()
           }
           return
         }
         case "enum": {
           if (!rbpac.role.includes(userRole)) {
             redirect()
+          } else {
+            setRedirectSettled()
           }
           return
         }
       }
     })()
-  })
+  }, [authState, rbpac])
 }

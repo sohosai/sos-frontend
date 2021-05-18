@@ -1,4 +1,11 @@
-import { useState, useEffect, createContext, useContext, FC } from "react"
+import {
+  useState,
+  useEffect,
+  createContext,
+  useContext,
+  useRef,
+  FC,
+} from "react"
 
 import type { PageOptions } from "next"
 
@@ -12,7 +19,7 @@ import type { User } from "../../types/models/user"
 import { getMe } from "../../lib/api/me/getMe"
 import { signup as signupSos } from "../../lib/api/signup"
 
-import { FullScreenLoading } from "../../foundations/fullScreenLoading"
+import { FullScreenLoading } from "src/components/"
 
 // ref: https://usehooks.com/useAuth/
 
@@ -65,6 +72,7 @@ export type AuthNeueState =
 type AuthNeue = {
   authState: AuthNeueState
 } & FirebaseAuthMethods & {
+    redirectSettled: boolean
     initSosUser: (props: signupSos.Props["props"]) => Promise<User>
   }
 
@@ -83,9 +91,15 @@ const AuthContextCore = ({
 }): AuthNeue => {
   const [authNeueState, setAuthNeueState] = useState<AuthNeueState>(null)
 
+  const [redirectSettled, setRedirectSettledState] = useState(false)
+
+  const hasBeenSignedIn = useRef(false)
+
   useRbpacRedirect({
     rbpac,
     authState: authNeueState,
+    hasBeenSignedIn,
+    setRedirectSettled: () => setRedirectSettledState(true),
   })
 
   const signin = async (email: string, password: string) => {
@@ -159,9 +173,9 @@ const AuthContextCore = ({
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
-        const idToken = await user.getIdToken(true).catch((err) => {
-          throw err
-        })
+        hasBeenSignedIn.current = true
+
+        const idToken = await user.getIdToken(true)
 
         getMe({
           idToken,
@@ -206,19 +220,11 @@ const AuthContextCore = ({
               return
             }
 
-            if (res?.user) {
-              setAuthNeueState({
-                status: "bothSignedIn",
-                sosUser: res.user,
-                firebaseUser: user,
-              })
-            } else {
-              setAuthNeueState({
-                status: "error",
-                sosUser: null,
-                firebaseUser: null,
-              })
-            }
+            setAuthNeueState({
+              status: "bothSignedIn",
+              sosUser: res.user,
+              firebaseUser: user,
+            })
           })
       } else {
         setAuthNeueState({
@@ -237,6 +243,7 @@ const AuthContextCore = ({
     sendEmailVerification,
     signout,
     sendPasswordResetEmail,
+    redirectSettled,
     initSosUser,
   }
 }
@@ -246,7 +253,9 @@ const AuthProvider: FC<Pick<PageOptions, "rbpac">> = ({ rbpac, children }) => {
 
   return (
     <>
-      {authNeue.authState === null || authNeue.authState.status === "error" ? (
+      {authNeue.authState === null ||
+      authNeue.authState.status === "error" ||
+      !authNeue.redirectSettled ? (
         <FullScreenLoading />
       ) : (
         <authNeueContext.Provider value={authNeue}>

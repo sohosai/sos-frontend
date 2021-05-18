@@ -4,8 +4,8 @@ import type { Project, PendingProject } from "../../types/models/project"
 
 import { AuthNeueState, useAuthNeue } from "../auth"
 
-import { listMyPendingProjects } from "../../lib/api/project/listMyPendingProjects"
-import { listMyProjects } from "../../lib/api/project/listMyProjects"
+import { getMyProject } from "../../lib/api/project/getMyProject"
+import { getMyPendingProject } from "../../lib/api/project/getMyPendingProject"
 import { createPendingProject as createPendingProjectApi } from "../../lib/api/project/createPendingProject"
 import { acceptSubowner as acceptSubownerApi } from "../../lib/api/project/acceptSubowner"
 
@@ -60,15 +60,14 @@ const MyProjectContextCore = (authState: AuthNeueState): MyProjectContext => {
   const [myProjectState, setMyProjectState] = useState<MyProjectState>(null)
 
   const createPendingProject = async (props: createPendingProjectApi.Props) => {
-    const {
-      pending_project: createdPendingProject,
-    } = await createPendingProjectApi({
-      props: { ...props.props },
-      idToken: props.idToken,
-    }).catch(async (err) => {
-      const body = await err.response?.json()
-      throw body ?? err
-    })
+    const { pending_project: createdPendingProject } =
+      await createPendingProjectApi({
+        props: { ...props.props },
+        idToken: props.idToken,
+      }).catch(async (err) => {
+        const body = await err.response?.json()
+        throw body ?? err
+      })
 
     setMyProjectState({
       isPending: true,
@@ -103,49 +102,43 @@ const MyProjectContextCore = (authState: AuthNeueState): MyProjectContext => {
       const idToken = await authState.firebaseUser.getIdToken()
 
       try {
-        //TODO: project/get になったら変える
-        const {
-          pending_projects: fetchedPendingProjects,
-        } = await listMyPendingProjects({ idToken })
-        const { projects: fetchedProjects } = await listMyProjects({ idToken })
+        const { myPendingProject } = await getMyPendingProject({ idToken })
+        const { myProject } = await getMyProject({ idToken })
 
-        const myPendingProject = fetchedPendingProjects.find(
-          ({ author_id }) => author_id === authState.sosUser.id
-        )
-        const myProject = fetchedProjects.find(
-          ({ owner_id, subowner_id }) =>
-            owner_id === authState.sosUser.id ||
-            subowner_id === authState.sosUser.id
-        )
-
-        if (myPendingProject) {
-          setMyProjectState({
-            isPending: true,
-            myProject: myPendingProject,
-            error: false,
-          })
-        } else if (myProject) {
-          setMyProjectState({
-            isPending: false,
-            myProject,
-            error: false,
-          })
-        } else {
+        if (myPendingProject === "notFound" && myProject === "notFound") {
           setMyProjectState({
             myProject: null,
             isPending: null,
             error: false,
           })
+          return
+        }
+
+        if (myPendingProject !== "notFound") {
+          setMyProjectState({
+            myProject: myPendingProject,
+            isPending: true,
+            error: false,
+          })
+          return
+        }
+
+        if (myProject !== "notFound") {
+          setMyProjectState({
+            myProject: myProject,
+            isPending: false,
+            error: false,
+          })
+          return
         }
       } catch (err) {
+        const body = await err.response?.json()
         setMyProjectState({
+          error: true,
           myProject: null,
           isPending: null,
-          error: true,
         })
-
-        const body = await err.response?.json()
-        console.error(body ? body : err)
+        throw body ?? err
       }
     })()
   }, [authState])

@@ -1,7 +1,6 @@
 import { PageFC } from "next"
-import Head from "next/head"
 
-import { Panel } from "../components"
+import { Head, Panel } from "../components"
 
 import styles from "./not-supported.module.scss"
 
@@ -13,11 +12,9 @@ const NotSupported: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
-      <Head>
-        <title>非対応ブラウザ</title>
-      </Head>
+      <Head title={isIe ? "非対応ブラウザ" : "非対応デバイス"} />
       <Panel>
-        <i className={`jam-icon jam-alert ${styles.icon}`} aria-hidden />
+        <i className={`jam-icons jam-alert ${styles.icon}`} aria-hidden />
         <h1 className={styles.title}>
           {isIe ? "非対応ブラウザ" : "非対応デバイス"}
         </h1>

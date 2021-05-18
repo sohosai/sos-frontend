@@ -9,11 +9,13 @@ import { useForm } from "react-hook-form"
 
 import type { UserCategory } from "../types/models/user"
 
-import { useAuthNeue } from "../contexts/auth"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
 
 import {
   Panel,
   FormItemSpacer,
+  Head,
   TextField,
   Button,
   Dropdown,
@@ -35,10 +37,9 @@ type Inputs = Readonly<{
 
 const Init: PageFC = () => {
   const [processing, setProcessing] = useState(false)
-  const [otherError, setOtherError] = useState<string>()
-  const [unknownError, setUnknownError] = useState(false)
 
   const { initSosUser } = useAuthNeue()
+  const { addToast } = useToastDispatcher()
 
   const router = useRouter()
 
@@ -81,8 +82,7 @@ const Init: PageFC = () => {
         const body = await err.response?.json()
 
         if (!body) {
-          // FIXME:
-          setUnknownError(true)
+          addToast({ title: "エラーが発生しました", kind: "error" })
           throw err
         }
 
@@ -91,59 +91,37 @@ const Init: PageFC = () => {
             switch (body.error.type) {
               case "API": {
                 if (body.error.info.type === "INVALID_FIELD") {
-                  setOtherError("入力内容が正しくありません")
-                } else {
-                  setUnknownError(true)
+                  addToast({
+                    title: "入力内容が正しくありません",
+                    kind: "error",
+                  })
+                  return
                 }
-                break
-              }
-              case "AUTHENTICATION": {
-                if (body.error.info.type === "UNAUTHORIZED") {
-                  router.push(pagesPath.login.$url())
-                } else {
-                  // FIXME:
-                  setUnknownError(true)
-                }
-                break
-              }
-
-              // FIXME:
-              case "REQUEST": {
-                setUnknownError(true)
-                break
-              }
-              default: {
-                setUnknownError(true)
-                break
               }
             }
             break
           }
-          case "401": {
-            router.push(pagesPath.login.$url())
-            break
-          }
           case "409": {
-            setOtherError("このアカウントの情報は登録済みです")
-            router.push(pagesPath.mypage.$url())
-            break
-          }
-          default: {
-            setUnknownError(true)
-            break
+            addToast({
+              title: "このアカウントの情報は登録済みです",
+              kind: "error",
+            })
+            router.push(pagesPath.me.$url())
+            return
           }
         }
 
+        addToast({ title: "エラーが発生しました", kind: "error" })
         throw body
       })
       .then(() => {
         setProcessing(false)
-        router.push(pagesPath.mypage.$url())
       })
   }
 
   return (
     <div className={styles.wrapper}>
+      <Head title="アカウント情報登録" />
       <div className={styles.formWrapper}>
         <Panel style={{ padding: "48px" }}>
           <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -166,20 +144,6 @@ const Init: PageFC = () => {
               <FormItemSpacer>
                 <TextField
                   type="text"
-                  label="名前"
-                  placeholder="太郎"
-                  autoComplete="given-name"
-                  error={[errors?.nameFirst?.types?.required && "必須項目です"]}
-                  required
-                  register={register("nameFirst", {
-                    required: true,
-                    setValueAs: (value) => value?.trim(),
-                  })}
-                />
-              </FormItemSpacer>
-              <FormItemSpacer>
-                <TextField
-                  type="text"
                   label="姓(ふりがな)"
                   placeholder="そうほう"
                   error={[
@@ -193,6 +157,20 @@ const Init: PageFC = () => {
                     validate: {
                       isKana: (value) => isKana(value),
                     },
+                    setValueAs: (value) => value?.trim(),
+                  })}
+                />
+              </FormItemSpacer>
+              <FormItemSpacer>
+                <TextField
+                  type="text"
+                  label="名前"
+                  placeholder="太郎"
+                  autoComplete="given-name"
+                  error={[errors?.nameFirst?.types?.required && "必須項目です"]}
+                  required
+                  register={register("nameFirst", {
+                    required: true,
                     setValueAs: (value) => value?.trim(),
                   })}
                 />
@@ -235,22 +213,6 @@ const Init: PageFC = () => {
                   })}
                 />
               </FormItemSpacer>
-              {/* TODO: ドロップダウンか何かにする */}
-              <FormItemSpacer>
-                <TextField
-                  type="text"
-                  label="所属学群・学類"
-                  placeholder="〇〇学群 〇〇学類"
-                  error={[
-                    errors?.affiliation?.types?.required && "必須項目です",
-                  ]}
-                  required
-                  register={register("affiliation", {
-                    required: true,
-                    setValueAs: (value) => value?.trim(),
-                  })}
-                />
-              </FormItemSpacer>
               <FormItemSpacer>
                 <Dropdown
                   label="区分"
@@ -268,6 +230,21 @@ const Init: PageFC = () => {
                   })}
                 />
               </FormItemSpacer>
+              <FormItemSpacer>
+                <TextField
+                  type="text"
+                  label="所属学群・学類"
+                  placeholder="〇〇学群 〇〇学類"
+                  error={[
+                    errors?.affiliation?.types?.required && "必須項目です",
+                  ]}
+                  required
+                  register={register("affiliation", {
+                    required: true,
+                    setValueAs: (value) => value?.trim(),
+                  })}
+                />
+              </FormItemSpacer>
             </fieldset>
             <div className={styles.submitButton}>
               <Button
@@ -279,17 +256,6 @@ const Init: PageFC = () => {
                 情報を登録する
               </Button>
             </div>
-            {otherError && (
-              <div className={styles.error}>
-                <p>{otherError}</p>
-              </div>
-            )}
-            {unknownError && (
-              <div className={styles.error}>
-                <p>不明なエラーが発生しました</p>
-                <p>時間をおいて再度お試しください</p>
-              </div>
-            )}
           </form>
         </Panel>
       </div>

@@ -4,6 +4,8 @@ import type { PageOptions } from "next"
 
 import { Sidebar } from "./sidebar"
 
+import { ToastHub } from "src/components"
+
 import styles from "./layout.module.scss"
 
 const Layout: FC<Pick<PageOptions, "layout">> = ({ layout, children }) => {
@@ -15,6 +17,9 @@ const Layout: FC<Pick<PageOptions, "layout">> = ({ layout, children }) => {
         <Sidebar layout={layout} />
       </div>
       <div className={styles.mainArea}>{children}</div>
+      <div className={styles.toastHubWrapper}>
+        <ToastHub />
+      </div>
     </div>
   )
 }

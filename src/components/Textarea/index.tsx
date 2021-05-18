@@ -8,7 +8,7 @@ import styles from "./index.module.scss"
 
 declare namespace Textarea {
   type Props = Readonly<{
-    label: string
+    label?: string
     description?: string[] | string
     error?: Array<string | false | undefined> | string | false
     register?: UseFormRegisterReturn
@@ -26,21 +26,21 @@ const Textarea: FC<Textarea.Props> = ({
   register,
   ...restAttributes
 }) => {
-  const descriptions = (Array.isArray(description)
-    ? description
-    : [description]
+  const descriptions = (
+    Array.isArray(description) ? description : [description]
   ).filter((text) => text)
-  const errors = (Array.isArray(error)
-    ? error
-    : [error]
-  ).filter((text): text is string => Boolean(text))
+  const errors = (Array.isArray(error) ? error : [error]).filter(
+    (text): text is string => Boolean(text)
+  )
 
   return (
     <div className={styles.wrapper}>
-      <label className={styles.label}>
-        {label}
-        {!required && <span className={styles.arbitrary}>(任意)</span>}
-      </label>
+      {Boolean(label) && (
+        <label className={styles.label}>
+          {label}
+          {!required && <span className={styles.arbitrary}>(任意)</span>}
+        </label>
+      )}
       <textarea
         className={styles.textarea}
         required={required}

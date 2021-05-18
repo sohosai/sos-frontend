@@ -3,9 +3,17 @@ import { useState, useEffect } from "react"
 import type { PageFC } from "next"
 import Link from "next/link"
 
-import { useAuthNeue } from "../../../contexts/auth"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
 
-import { Button, IconButton, Panel, Spinner } from "../../../components/"
+import {
+  Button,
+  Head,
+  IconButton,
+  Panel,
+  Spinner,
+  Tooltip,
+} from "src/components/"
 
 import type { Form } from "../../../types/models/form"
 
@@ -13,10 +21,13 @@ import { listForms } from "../../../lib/api/form/listForms"
 import { exportFormAnswers } from "../../../lib/api/formAnswer/exportFormAnswers"
 
 import { pagesPath } from "../../../utils/$path"
+import { createCsvBlob } from "../../../utils/createCsvBlob"
 
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 import { saveAs } from "file-saver"
 
@@ -24,9 +35,36 @@ import styles from "./index.module.scss"
 
 const ListForms: PageFC = () => {
   const { authState } = useAuthNeue()
+  const { addToast } = useToastDispatcher()
 
   const [forms, setForms] = useState<Form[] | undefined | null>(null)
-  const [error, setError] = useState(false)
+  const [downloadingForms, setDownloadingForms] = useState<{
+    [formId: string]: boolean
+  }>({})
+
+  const downloadFormAnswersCsv = async (form: Form) => {
+    if (authState === null || authState.firebaseUser === null) return
+
+    setDownloadingForms((prev) => ({ ...prev, [form.id]: true }))
+
+    exportFormAnswers({
+      props: {
+        form_id: form.id,
+      },
+      idToken: await authState.firebaseUser.getIdToken(),
+    })
+      .then((res) => {
+        setDownloadingForms((prev) => ({ ...prev, [form.id]: false }))
+        saveAs(
+          createCsvBlob(res),
+          `${form.name}-answers-${dayjs().format("YYYY-M-D-HH-mm")}.csv`
+        )
+      })
+      .catch((err) => {
+        setDownloadingForms((prev) => ({ ...prev, [form.id]: false }))
+        throw err
+      })
+  }
 
   useEffect(() => {
     ;(async () => {
@@ -40,20 +78,15 @@ const ListForms: PageFC = () => {
         })
         .catch(async (err) => {
           const body = await err.response?.json()
-          // TODO: err handling
-          setError(true)
+          addToast({ title: "エラーが発生しました", kind: "error" })
           throw body ?? err
         })
     })()
   }, [authState])
 
-  useEffect(() => {
-    dayjs.extend(utc)
-    dayjs.extend(timezone)
-  }, [])
-
   return (
     <div className={styles.wrapper}>
+      <Head title="申請一覧" />
       <h1 className={styles.title}>申請一覧</h1>
       <div className={styles.newFormButton}>
         <Link href={pagesPath.committee.form.new.$url()}>
@@ -77,7 +110,7 @@ const ListForms: PageFC = () => {
                   <p className={styles.formDate}>
                     {dayjs.tz(form.starts_at, "Asia/Tokyo").format("M/D HH:mm")}
                     <i
-                      className={`jam-icon jam-arrow-right ${styles.formDateIcon}`}
+                      className={`jam-icons jam-arrow-right ${styles.formDateIcon}`}
                     />
                     {dayjs.tz(form.ends_at, "Asia/Tokyo").format("M/D HH:mm")}
                     <span className={styles.formDateState}>
@@ -98,32 +131,15 @@ const ListForms: PageFC = () => {
                       })()}
                     </span>
                   </p>
-                  <IconButton
-                    icon="download"
-                    title="回答をCSVでダウンロード"
-                    onClick={async () => {
-                      if (authState === null || authState.firebaseUser === null)
-                        return
-
-                      const idToken = await authState.firebaseUser.getIdToken()
-
-                      exportFormAnswers({
-                        props: {
-                          form_id: form.id,
-                        },
-                        idToken,
-                      })
-                        .then((res) => {
-                          saveAs(
-                            new Blob([res], { type: "text/csv" }),
-                            `${form.name}-answers.csv`
-                          )
-                        })
-                        .catch((err) => {
-                          throw err
-                        })
-                    }}
-                  />
+                  <Tooltip title="回答をCSVでダウンロード">
+                    <div>
+                      <IconButton
+                        icon="download"
+                        processing={downloadingForms[form.id]}
+                        onClick={() => downloadFormAnswersCsv(form)}
+                      />
+                    </div>
+                  </Tooltip>
                 </div>
               </Panel>
             </div>
@@ -133,21 +149,13 @@ const ListForms: PageFC = () => {
         <div className={styles.panelWrapper}>
           <Panel>
             <div className={styles.emptyWrapper}>
-              {(() => {
-                if (error) {
-                  return <>エラーが発生しました</>
-                }
-
-                if (forms === null) {
-                  return (
-                    <>
-                      <Spinner />
-                    </>
-                  )
-                }
-
-                return <>申請が作成されていません</>
-              })()}
+              {forms === null ? (
+                <>
+                  <Spinner />
+                </>
+              ) : (
+                <p>申請が作成されていません</p>
+              )}
             </div>
           </Panel>
         </div>

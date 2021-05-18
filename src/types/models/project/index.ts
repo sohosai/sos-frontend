@@ -3,7 +3,7 @@ import type { UserId, UserName, UserKanaName } from "../user"
 export type PendingProject = Readonly<{
   id: PendingProjectId
   created_at: Date
-  author_id: UserId
+  owner_id: UserId
   name: string
   kana_name: string
   group_name: string
@@ -39,3 +39,31 @@ export type ProjectId = string
 export type ProjectCategory = "general" | "stage" | "cooking" | "food"
 
 export type ProjectAttribute = "academic" | "artistic" | "committee" | "outdoor"
+
+export const projectCategoryToUiText = (
+  projectCategory: ProjectCategory
+): string => {
+  const dict: {
+    [category in ProjectCategory]: string
+  } = {
+    general: "一般企画",
+    stage: "ステージ企画",
+    cooking: "調理企画",
+    food: "飲食物取扱企画",
+  }
+  return dict[projectCategory]
+}
+
+export const projectAttributeToUiText = (
+  projectAttribute: ProjectAttribute
+): string => {
+  const dict: {
+    [attribute in ProjectAttribute]: string
+  } = {
+    academic: "学術参加枠",
+    artistic: "芸術祭参加枠",
+    outdoor: "屋外企画",
+    committee: "委員会企画",
+  }
+  return dict[projectAttribute]
+}

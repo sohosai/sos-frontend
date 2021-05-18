@@ -1,3 +1,5 @@
+const path = require("path")
+
 module.exports = {
   stories: ["../src/components/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
@@ -12,4 +14,12 @@ module.exports = {
       },
     },
   ],
+  webpackFinal: async (config) => {
+    config.resolve.modules = [
+      ...(config.resolve.modules || []),
+      path.resolve("./"),
+    ]
+
+    return config
+  },
 }

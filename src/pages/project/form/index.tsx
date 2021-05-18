@@ -14,7 +14,7 @@ import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
 
-import { Panel, Spinner } from "../../../components"
+import { Head, Panel, Spinner } from "../../../components"
 
 import { pagesPath } from "../../../utils/$path"
 
@@ -25,9 +25,8 @@ const ListProjectForms: PageFC = () => {
   const { myProjectState } = useMyProject()
 
   const [forms, setForms] = useState<Form[] | null | undefined>(null)
-  const [error, setError] = useState<
-    "unknown" | "projectPending" | "projectNotFound" | null
-  >(null)
+  const [error, setError] =
+    useState<"unknown" | "projectPending" | "projectNotFound" | null>(null)
 
   useEffect(() => {
     ;(async () => {
@@ -71,6 +70,7 @@ const ListProjectForms: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head title="申請一覧" />
       <h1 className={styles.title}>申請一覧</h1>
       <div className={styles.panelWrapper}>
         {forms?.length ? (
@@ -91,36 +91,38 @@ const ListProjectForms: PageFC = () => {
                       }}
                     >
                       <div className={styles.formRowInner}>
-                        <p className={styles.formName}>{form.name}</p>
+                        <p className={styles.formName} title={form.name}>
+                          {form.name}
+                        </p>
                         <p className={styles.formDate}>
                           {dayjs
                             .tz(form.starts_at, "Asia/Tokyo")
                             .format("M/D HH:mm")}
                           <i
-                            className={`jam-icon jam-arrow-right ${styles.formDateIcon}`}
+                            className={`jam-icons jam-arrow-right ${styles.formDateIcon}`}
                           />
                           {dayjs
                             .tz(form.ends_at, "Asia/Tokyo")
                             .format("M/D HH:mm")}
-                          <span className={styles.formDateState}>
-                            {(() => {
-                              if (
-                                dayjs().isBefore(
-                                  dayjs.tz(form.starts_at, "Asia/Tokyo")
-                                )
+                        </p>
+                        <p className={styles.formDateState}>
+                          {(() => {
+                            if (
+                              dayjs().isBefore(
+                                dayjs.tz(form.starts_at, "Asia/Tokyo")
                               )
-                                return "開始前"
+                            )
+                              return "開始前"
 
-                              if (
-                                dayjs().isAfter(
-                                  dayjs.tz(form.ends_at, "Asia/Tokyo")
-                                )
+                            if (
+                              dayjs().isAfter(
+                                dayjs.tz(form.ends_at, "Asia/Tokyo")
                               )
-                                return "締切済"
+                            )
+                              return "締切済"
 
-                              return "受付中"
-                            })()}
-                          </span>
+                            return "受付中"
+                          })()}
                         </p>
                       </div>
                     </Panel>
@@ -133,7 +135,11 @@ const ListProjectForms: PageFC = () => {
           <Panel>
             <div className={styles.emptyWrapper}>
               {(() => {
-                if (error === "projectNotFound" || error === "unknown")
+                if (
+                  error === "projectNotFound" ||
+                  error === "unknown" ||
+                  forms === undefined
+                )
                   return <p>エラーが発生しました</p>
 
                 if (error === "projectPending")
@@ -144,7 +150,11 @@ const ListProjectForms: PageFC = () => {
                     <p>責任者または副責任者となっている企画が存在しません</p>
                   )
 
-                if (forms === null) return <Spinner />
+                if (forms?.length === 0) {
+                  return <p>申請がありません</p>
+                }
+
+                return <Spinner />
               })()}
             </div>
           </Panel>

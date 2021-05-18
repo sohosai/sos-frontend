@@ -29,21 +29,21 @@ const TextField: FC<TextField.Props> = ({
   register,
   ...restAttributes
 }) => {
-  const descriptions = (Array.isArray(description)
-    ? description
-    : [description]
+  const descriptions = (
+    Array.isArray(description) ? description : [description]
   ).filter((text) => text)
-  const errors = (Array.isArray(error)
-    ? error
-    : [error]
-  ).filter((text): text is string => Boolean(text))
+  const errors = (Array.isArray(error) ? error : [error]).filter(
+    (text): text is string => Boolean(text)
+  )
 
   return (
     <div className={styles.wrapper}>
-      <label className={styles.label}>
-        {label}
-        {!required && <span className={styles.arbitrary}>(任意)</span>}
-      </label>
+      {Boolean(label) && (
+        <label className={styles.label}>
+          {label}
+          {!required && <span className={styles.arbitrary}>(任意)</span>}
+        </label>
+      )}
       <input
         type={type}
         name={name}

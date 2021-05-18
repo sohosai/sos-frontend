@@ -15,7 +15,7 @@ import { Links } from "./links"
 import styles from "./index.module.scss"
 
 const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
-  const { authState, signout } = useAuthNeue()
+  const { authState } = useAuthNeue()
 
   const router = useRouter()
 
@@ -50,7 +50,7 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
                 }
               >
                 <a className={styles.switchLayoutButton}>
-                  <i className={`jam-icon jam-refresh ${styles.switchIcon}`} />
+                  <i className={`jam-icons jam-refresh ${styles.switchIcon}`} />
                   <p className={styles.switchText}>
                     {router.pathname.startsWith(
                       pagesPath.committee.$url().pathname
@@ -61,25 +61,15 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
                 </a>
               </Link>
             )}
-            <Link href={pagesPath.mypage.$url()}>
+            <Link href={pagesPath.me.$url()}>
               <a className={styles.mypageButtonWrapper}>
-                <i className={`jam-icon jam-user-circle ${styles.userIcon}`} />
+                <i className={`jam-icons jam-user-circle ${styles.userIcon}`} />
                 <p
                   className={styles.userName}
                   title={`${authState.sosUser.name.last} ${authState.sosUser.name.first}`}
                 >{`${authState.sosUser.name.last} ${authState.sosUser.name.first}`}</p>
               </a>
             </Link>
-            <button
-              type="button"
-              className={styles.logoutButton}
-              onClick={() => {
-                signout()
-              }}
-            >
-              <i className={`jam-icon jam-log-out ${styles.logoutIcon}`} />
-              <p className={styles.logoutText}>ログアウト</p>
-            </button>
           </>
         )}
       </div>

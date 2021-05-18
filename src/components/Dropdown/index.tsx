@@ -8,7 +8,7 @@ import styles from "./index.module.scss"
 
 declare namespace Dropdown {
   type Props = Readonly<{
-    label: string
+    label?: string
     name?: string
     required?: boolean
     options: Array<{
@@ -17,7 +17,8 @@ declare namespace Dropdown {
     }>
     description?: string[] | string
     error?: Array<string | false | undefined> | string | false
-    register: UseFormRegisterReturn
+    fullWidth?: boolean
+    register?: UseFormRegisterReturn
   }> &
     JSX.IntrinsicElements["select"]
 }
@@ -29,24 +30,25 @@ const Dropdown: FC<Dropdown.Props> = ({
   options,
   description,
   error,
+  fullWidth = true,
   register,
   ...rest
 }) => {
-  const descriptions = (Array.isArray(description)
-    ? description
-    : [description]
+  const descriptions = (
+    Array.isArray(description) ? description : [description]
   ).filter((text) => text)
-  const errors = (Array.isArray(error)
-    ? error
-    : [error]
-  ).filter((text): text is string => Boolean(text))
+  const errors = (Array.isArray(error) ? error : [error]).filter(
+    (text): text is string => Boolean(text)
+  )
 
   return (
-    <div className={styles.wrapper}>
-      <label className={styles.label}>
-        {label}
-        {!required && <span className={styles.arbitrary}>(任意)</span>}
-      </label>
+    <div className={styles.wrapper} data-full-width={fullWidth}>
+      {Boolean(label) && (
+        <label className={styles.label}>
+          {label}
+          {!required && <span className={styles.arbitrary}>(任意)</span>}
+        </label>
+      )}
       <select
         {...{ name, required }}
         className={styles.select}

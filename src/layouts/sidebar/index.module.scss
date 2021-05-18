@@ -10,7 +10,7 @@
 }
 
 .bottomWrapper {
-  margin: 0 32px 32px;
+  margin: 0 32px 40px;
 }
 
 .logotype {
@@ -65,30 +65,4 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-.logoutButton {
-  width: 100%;
-  height: 32px;
-  margin-top: 8px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  color: $color-text-sub;
-  border: none;
-  border-radius: 10px;
-  outline: none;
-  background-color: transparent;
-  transition: background-color 200ms, color 200ms;
-
-  &:hover {
-    background-color: $color-gray-50;
-    color: $color-caution;
-  }
-}
-
-.logoutIcon {
-  font-size: 1.2em;
-  margin-right: 8px;
 }

@@ -6,8 +6,7 @@
 }
 
 .title {
-  font-size: 2em;
-  margin-bottom: 32px;
+  @include pageTitle;
 }
 
 .downloadButton {
@@ -52,8 +51,4 @@
 
 .emptyWrapper {
   @include emptyWrapper;
-}
-
-.error {
-  color: $color-caution;
 }

@@ -10,6 +10,7 @@ import type {
 import { Checkbox } from "../"
 
 import styles from "./index.module.scss"
+import { Dropdown } from "../Dropdown"
 
 declare namespace ProjectQuerySelector {
   type Props = Readonly<{
@@ -18,7 +19,7 @@ declare namespace ProjectQuerySelector {
     }
     registers?: {
       [key in ProjectCategory | ProjectAttribute]: UseFormRegisterReturn
-    }
+    } & { attributesAndOr: UseFormRegisterReturn }
   }>
 }
 
@@ -70,6 +71,16 @@ const ProjectQuerySelector: FC<ProjectQuerySelector.Props> = ({
         <p className={styles.selectorsDescription}>
           選択しない場合全ての企画が対象となります
         </p>
+        <div className={styles.attributesAndOrWrapper}>
+          <Dropdown
+            options={[
+              { value: "or", label: "いずれかを満たす" },
+              { value: "and", label: "すべて満たす" },
+            ]}
+            fullWidth={false}
+            register={registers?.attributesAndOr}
+          />
+        </div>
         <div className={styles.checkbox}>
           <Checkbox
             checked={checked.academic}

@@ -6,7 +6,7 @@
 }
 
 .title {
-  margin-bottom: 32px;
+  @include pageTitle;
 }
 
 .sectionWrapper {
@@ -79,15 +79,14 @@
 .addItemWrapper {
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: -16px;
 }
 
 .addButton {
+  margin-bottom: 16px;
+
   &:not(:last-of-type) {
     margin-right: 16px;
   }
-}
-
-.errorText {
-  margin-top: 16px;
-  color: $color-caution;
 }

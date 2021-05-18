@@ -2,19 +2,20 @@ import { useState } from "react"
 
 import { PageFC } from "next"
 
-import { useAuthNeue } from "../contexts/auth"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
 
-import { Button, Panel } from "../components"
+import { Button, Head, Panel } from "../components"
 
 import styles from "./email-verification.module.scss"
 
 const EmailVerification: PageFC = () => {
   const [processing, setProcessing] = useState(false)
-  const [emailVerificationStatus, setEmailVerificationStatus] = useState<
-    undefined | "mailSent" | "error"
-  >(undefined)
+  const [emailVerificationStatus, setEmailVerificationStatus] =
+    useState<undefined | "mailSent" | "error">(undefined)
 
   const { sendEmailVerification } = useAuthNeue()
+  const { addToast } = useToastDispatcher()
 
   const resendVerification = () => {
     setProcessing(true)
@@ -26,6 +27,7 @@ const EmailVerification: PageFC = () => {
       })
       .catch((err) => {
         setProcessing(false)
+        addToast({ title: "エラーが発生しました", kind: "error" })
         setEmailVerificationStatus("error")
         console.error(err)
       })
@@ -33,6 +35,7 @@ const EmailVerification: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head title="メールアドレスの確認" />
       <div className={styles.panelWrapper}>
         <Panel style={{ padding: "48px" }}>
           {!emailVerificationStatus && (
@@ -46,9 +49,10 @@ const EmailVerification: PageFC = () => {
               <p className={styles.description}>
                 メールに記載されたリンクをクリックして登録を完了してください
               </p>
-              {/* TODO: アドレスを本番環境のものに差し替え */}
               <p className={styles.description}>
-                受信できない場合、noreply@hoge.firebaseapp.comからのメールが迷惑メールフォルダに配信されていないかご確認ください
+                受信できない場合、noreply@
+                {process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN}
+                からのメールが迷惑メールフォルダに配信されていないかご確認ください
               </p>
               <p className={styles.description}>
                 下のボタンから確認メールを再送することができます

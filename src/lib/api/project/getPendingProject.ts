@@ -13,15 +13,24 @@ const getPendingProject = async ({
   pendingProjectId,
   idToken,
 }: getPendingProject.Props): Promise<{
-  pending_project: PendingProject
+  pendingProject: PendingProject | null
 }> => {
-  return client({ idToken })
-    .get("pending-project/get", {
-      searchParams: {
-        pending_project_id: pendingProjectId,
-      },
-    })
-    .json()
+  try {
+    const { pending_project } = await client({ idToken })
+      .get("pending-project/get", {
+        searchParams: {
+          pending_project_id: pendingProjectId,
+        },
+      })
+      .json()
+    return { pendingProject: pending_project }
+  } catch (err) {
+    const body = await err.response?.json()
+    if (body.status === 404) {
+      return { pendingProject: null }
+    }
+    throw body ?? err
+  }
 }
 
 export { getPendingProject }

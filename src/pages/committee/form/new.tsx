@@ -16,24 +16,27 @@ import type {
   ProjectCategory,
   ProjectAttribute,
 } from "../../../types/models/project"
-import type { ProjectQuery } from "../../../types/models/project/projectQuery"
 import type { FormItem } from "../../../types/models/form/item"
 
 import { createForm } from "../../../lib/api/form/createForm"
 
-import { useAuthNeue } from "../../../contexts/auth"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
 
 import { pagesPath } from "../../../utils/$path"
 
 import {
   Button,
   Checkbox,
+  DateTimeSelector,
   FormItemSpacer,
+  Head,
   IconButton,
   Panel,
   ProjectQuerySelector,
   Textarea,
   TextField,
+  Tooltip,
 } from "../../../components/"
 
 import styles from "./new.module.scss"
@@ -59,17 +62,17 @@ type Inputs = {
   attributes: {
     [key in ProjectAttribute]: boolean
   }
+  attributesAndOr: "or" | "and"
   items: FormItem[]
 }
 
 const NewForm: PageFC = () => {
   const { authState } = useAuthNeue()
+  const { addToast } = useToastDispatcher()
 
   const router = useRouter()
 
   const [processing, setProcessing] = useState(false)
-  const [error, setError] = useState<string | undefined>()
-  const [unknownError, setUnknownError] = useState(false)
 
   const {
     register,
@@ -82,6 +85,19 @@ const NewForm: PageFC = () => {
     criteriaMode: "all",
     shouldFocusError: true,
     defaultValues: {
+      categories: {
+        general: false,
+        stage: false,
+        cooking: false,
+        food: false,
+      },
+      attributes: {
+        academic: false,
+        artistic: false,
+        outdoor: false,
+        committee: false,
+      },
+      attributesAndOr: "or",
       items: [],
     },
   })
@@ -98,45 +114,59 @@ const NewForm: PageFC = () => {
     ends_at,
     categories,
     attributes,
+    attributesAndOr,
     items,
   }: Inputs) => {
     if (authState === null || authState.firebaseUser == null) {
-      setUnknownError(true)
+      addToast({ title: "不明なエラーが発生しました", kind: "error" })
       return
     }
 
     const idToken = await authState.firebaseUser.getIdToken()
 
-    setError(undefined)
-
     if (!items.length) {
-      setError("質問項目を追加してください")
+      addToast({ title: "質問項目を追加してください", kind: "error" })
       return
     }
+
+    const categoriesArray = Object.entries(categories)
+      .map(([category, value]) => {
+        if (!value) return
+        return category as ProjectCategory
+      })
+      .filter((nullable): nullable is ProjectCategory => Boolean(nullable))
+
+    const nonEmptyCategoriesArray = categoriesArray.length
+      ? categoriesArray
+      : ([null] as const)
 
     const attributesArray = Object.entries(attributes)
       .map(([attribute, value]) => {
         if (!value) return
-        return attribute
+        return attribute as ProjectAttribute
       })
       .filter((nullable): nullable is ProjectAttribute => Boolean(nullable))
 
-    const query = Object.entries(categories)
-      .map(([category, value]) => {
-        if (!value || !category) return
-        return {
-          category: category as ProjectCategory,
-          attributes: attributesArray,
-        }
-      })
-      .filter((nullable): nullable is {
-        category: ProjectCategory
-        attributes: ProjectAttribute[]
-      } => Boolean(nullable))
+    const query =
+      attributesAndOr === "or"
+        ? nonEmptyCategoriesArray
+            .map((category: ProjectCategory | null) => {
+              if (!attributesArray.length)
+                return {
+                  category,
+                  attributes: [],
+                }
 
-    const nonEmptyQuery: ProjectQuery = query.length
-      ? query
-      : [{ category: null, attributes: attributesArray }]
+              return attributesArray.map((attribute) => ({
+                category,
+                attributes: [attribute],
+              }))
+            })
+            .flat()
+        : nonEmptyCategoriesArray.map((category: ProjectCategory | null) => ({
+            category,
+            attributes: attributesArray,
+          }))
 
     if (process.browser && window.confirm("申請を対象の企画に送信しますか?")) {
       setProcessing(true)
@@ -147,20 +177,20 @@ const NewForm: PageFC = () => {
           description: description ?? "",
           starts_at: dayjs
             .tz(
-              `${starts_at.month}-${starts_at.day}--${starts_at.hour}-${starts_at.minute}`,
-              "M-D--H-m",
+              `${starts_at.month}-${starts_at.day}-${starts_at.hour}-${starts_at.minute}`,
+              "M-D-H-m",
               "Asia/Tokyo"
             )
             .valueOf(),
           ends_at: dayjs
             .tz(
-              `${ends_at.month}-${ends_at.day}--${ends_at.hour}-${ends_at.minute}`,
-              "M-D--H-m",
+              `${ends_at.month}-${ends_at.day}-${ends_at.hour}-${ends_at.minute}`,
+              "M-D-H-m",
               "Asia/Tokyo"
             )
             .valueOf(),
           condition: {
-            query: nonEmptyQuery,
+            query,
             // TODO:
             includes: [],
             excludes: [],
@@ -172,12 +202,13 @@ const NewForm: PageFC = () => {
         .catch(async (err) => {
           setProcessing(false)
           // TODO: err handling
-          setUnknownError(true)
+          addToast({ title: "不明なエラーが発生しました", kind: "error" })
           const body = await err.response?.json()
-          throw body ? body : err
+          throw body ?? err
         })
         .then(async () => {
           setProcessing(false)
+          addToast({ title: "申請を送信しました", kind: "success" })
 
           router.push(pagesPath.committee.form.$url())
         })
@@ -210,6 +241,18 @@ const NewForm: PageFC = () => {
         })
         break
       }
+      case "radio": {
+        append({
+          id: uuid(),
+          name: "",
+          description: "",
+          conditions: [],
+          type: "radio",
+          is_required: false,
+          buttons: [],
+        })
+        break
+      }
     }
   }
 
@@ -231,6 +274,7 @@ const NewForm: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head title="新しい申請を作成" />
       <h1 className={styles.title}>新しい申請を作成</h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -263,176 +307,64 @@ const NewForm: PageFC = () => {
               />
             </FormItemSpacer>
             <FormItemSpacer>
-              <p className={styles.dateTimeInputLabel}>回答開始日時</p>
-              <div className={styles.dateTimeInputWrapper}>
-                <div className={styles.dateTimeInputItem}>
-                  <TextField
-                    type="number"
-                    min="1"
-                    max="12"
-                    defaultValue={dayjs().format("M")}
-                    label="月"
-                    error={[
-                      errors.starts_at?.month?.types?.required &&
-                        "必須項目です",
-                      errors.starts_at?.month?.types?.min && "不正な値です",
-                      errors.starts_at?.month?.types?.max && "不正な値です",
-                    ]}
-                    required
-                    register={register("starts_at.month", {
-                      required: true,
-                      min: 1,
-                      max: 12,
-                    })}
-                  />
-                </div>
-                <div className={styles.dateTimeInputItem}>
-                  <TextField
-                    type="number"
-                    min="1"
-                    max="31"
-                    defaultValue={dayjs().format("D")}
-                    label="日"
-                    error={[
-                      errors.starts_at?.day?.types?.required && "必須項目です",
-                      errors.starts_at?.day?.types?.min && "不正な値です",
-                      errors.starts_at?.day?.types?.max && "不正な値です",
-                    ]}
-                    required
-                    register={register("starts_at.day", {
-                      required: true,
-                      min: 1,
-                      max: 31,
-                    })}
-                  />
-                </div>
-                <div className={styles.dateTimeInputItem}>
-                  <TextField
-                    type="number"
-                    min="0"
-                    max="23"
-                    defaultValue="12"
-                    label="時"
-                    error={[
-                      errors.starts_at?.hour?.types?.required && "必須項目です",
-                      errors.starts_at?.hour?.types?.min && "不正な値です",
-                      errors.starts_at?.hour?.types?.max && "不正な値です",
-                    ]}
-                    required
-                    register={register("starts_at.hour", {
-                      required: true,
-                      min: 0,
-                      max: 23,
-                    })}
-                  />
-                </div>
-                <div className={styles.dateTimeInputItem}>
-                  <TextField
-                    type="number"
-                    min="0"
-                    max="59"
-                    defaultValue="0"
-                    label="分"
-                    error={[
-                      errors.starts_at?.minute?.types?.required &&
-                        "必須項目です",
-                      errors.starts_at?.minute?.types?.min && "不正な値です",
-                      errors.starts_at?.minute?.types?.max && "不正な値です",
-                    ]}
-                    required
-                    register={register("starts_at.minute", {
-                      required: true,
-                      min: 0,
-                      max: 59,
-                    })}
-                  />
-                </div>
-              </div>
+              <DateTimeSelector
+                label="受付開始日時"
+                register={register}
+                registerOptions={{
+                  month: {
+                    name: "starts_at.month",
+                    required: true,
+                  },
+                  day: {
+                    name: "starts_at.day",
+                    required: true,
+                  },
+                  hour: {
+                    name: "starts_at.hour",
+                    required: true,
+                  },
+                  minute: {
+                    name: "starts_at.minute",
+                    required: true,
+                  },
+                }}
+                errorTypes={{
+                  month: errors.starts_at?.month?.types,
+                  day: errors.starts_at?.day?.types,
+                  hour: errors.starts_at?.hour?.types,
+                  minute: errors.starts_at?.minute?.types,
+                }}
+              />
             </FormItemSpacer>
             <FormItemSpacer>
-              <p className={styles.dateTimeInputLabel}>回答終了日時</p>
-              <div className={styles.dateTimeInputWrapper}>
-                <div className={styles.dateTimeInputItem}>
-                  <TextField
-                    type="number"
-                    min="1"
-                    max="12"
-                    defaultValue={dayjs().add(7, "day").format("M")}
-                    label="月"
-                    error={[
-                      errors.ends_at?.month?.types?.required && "必須項目です",
-                      errors.ends_at?.month?.types?.min && "不正な値です",
-                      errors.ends_at?.month?.types?.max && "不正な値です",
-                    ]}
-                    required
-                    register={register("ends_at.month", {
-                      required: true,
-                      min: 1,
-                      max: 12,
-                    })}
-                  />
-                </div>
-                <div className={styles.dateTimeInputItem}>
-                  <TextField
-                    type="number"
-                    min="1"
-                    max="31"
-                    defaultValue={dayjs().add(7, "day").format("D")}
-                    label="日"
-                    error={[
-                      errors.ends_at?.day?.types?.required && "必須項目です",
-                      errors.ends_at?.day?.types?.min && "不正な値です",
-                      errors.ends_at?.day?.types?.max && "不正な値です",
-                    ]}
-                    required
-                    register={register("ends_at.day", {
-                      required: true,
-                      min: 1,
-                      max: 31,
-                    })}
-                  />
-                </div>
-                <div className={styles.dateTimeInputItem}>
-                  <TextField
-                    type="number"
-                    min="0"
-                    max="23"
-                    defaultValue="23"
-                    label="時"
-                    error={[
-                      errors.ends_at?.hour?.types?.required && "必須項目です",
-                      errors.ends_at?.hour?.types?.min && "不正な値です",
-                      errors.ends_at?.hour?.types?.max && "不正な値です",
-                    ]}
-                    required
-                    register={register("ends_at.hour", {
-                      required: true,
-                      min: 0,
-                      max: 23,
-                    })}
-                  />
-                </div>
-                <div className={styles.dateTimeInputItem}>
-                  <TextField
-                    type="number"
-                    min="0"
-                    max="59"
-                    defaultValue="59"
-                    label="分"
-                    error={[
-                      errors.ends_at?.minute?.types?.required && "必須項目です",
-                      errors.ends_at?.minute?.types?.min && "不正な値です",
-                      errors.ends_at?.minute?.types?.max && "不正な値です",
-                    ]}
-                    required
-                    register={register("ends_at.minute", {
-                      required: true,
-                      min: 0,
-                      max: 59,
-                    })}
-                  />
-                </div>
-              </div>
+              <DateTimeSelector
+                label="受付終了日時"
+                register={register}
+                registerOptions={{
+                  month: {
+                    name: "ends_at.month",
+                    required: true,
+                  },
+                  day: {
+                    name: "ends_at.day",
+                    required: true,
+                  },
+                  hour: {
+                    name: "ends_at.hour",
+                    required: true,
+                  },
+                  minute: {
+                    name: "ends_at.minute",
+                    required: true,
+                  },
+                }}
+                errorTypes={{
+                  month: errors.ends_at?.month?.types,
+                  day: errors.ends_at?.day?.types,
+                  hour: errors.ends_at?.hour?.types,
+                  minute: errors.ends_at?.minute?.types,
+                }}
+              />
             </FormItemSpacer>
           </Panel>
         </div>
@@ -459,6 +391,7 @@ const NewForm: PageFC = () => {
                 artistic: register("attributes.artistic"),
                 outdoor: register("attributes.outdoor"),
                 committee: register("attributes.committee"),
+                attributesAndOr: register("attributesAndOr"),
               }}
             />
           </Panel>
@@ -466,16 +399,20 @@ const NewForm: PageFC = () => {
         <div className={styles.sectionWrapper}>
           <h2 className={styles.sectionTitle}>質問項目</h2>
           {fields.map(({ id }, index) => {
-            const type = watch(`items.${index}.type` as const)
+            const type = watch(
+              `items.${index}.type` as const
+            ) as FormItem["type"]
             const itemNamePlaceholders: {
               [itemType in FormItem["type"]]?: string
             } = {
               checkbox: "必要な文房具",
+              radio: "希望する実施日",
             }
             const itemTypeToUiText = (type: FormItem["type"]) => {
               const dict: { [type in FormItem["type"]]?: string } = {
                 text: "テキスト",
                 checkbox: "チェックボックス",
+                radio: "ドロップダウン",
               }
               return dict[type]
             }
@@ -530,7 +467,6 @@ const NewForm: PageFC = () => {
                         <FormItemSpacer>
                           <Checkbox
                             label="必須項目にする"
-                            defaultChecked={false}
                             checked={watch(`items.${index}.is_required` as any)}
                             register={register(
                               `items.${index}.is_required` as const
@@ -540,7 +476,6 @@ const NewForm: PageFC = () => {
                         <FormItemSpacer>
                           <Checkbox
                             label="複数行テキストにする"
-                            defaultChecked={false}
                             checked={watch(
                               `items.${index}.accept_multiple_lines` as const
                             )}
@@ -560,7 +495,8 @@ const NewForm: PageFC = () => {
                                 register={register(
                                   `items.${index}.min_length` as const,
                                   {
-                                    valueAsNumber: true,
+                                    setValueAs: (value) =>
+                                      value === "" ? null : Number(value),
                                   }
                                 )}
                               />
@@ -574,7 +510,8 @@ const NewForm: PageFC = () => {
                                 register={register(
                                   `items.${index}.max_length` as const,
                                   {
-                                    valueAsNumber: true,
+                                    setValueAs: (value) =>
+                                      value === "" ? null : Number(value),
                                   }
                                 )}
                               />
@@ -612,7 +549,8 @@ const NewForm: PageFC = () => {
                                 register={register(
                                   `items.${index}.min_checks` as const,
                                   {
-                                    valueAsNumber: true,
+                                    setValueAs: (value) =>
+                                      value === "" ? null : Number(value),
                                   }
                                 )}
                               />
@@ -627,7 +565,8 @@ const NewForm: PageFC = () => {
                                 register={register(
                                   `items.${index}.max_checks` as const,
                                   {
-                                    valueAsNumber: true,
+                                    setValueAs: (value) =>
+                                      value === "" ? null : Number(value),
                                   }
                                 )}
                               />
@@ -657,7 +596,7 @@ const NewForm: PageFC = () => {
                                     ?.trim()
                                     .split("\n")
                                     .map((label: string) => {
-                                      if (!label) return
+                                      if (!label.trim()) return
                                       return {
                                         id: uuid(),
                                         label: label.trim(),
@@ -676,25 +615,85 @@ const NewForm: PageFC = () => {
                         </FormItemSpacer>
                       </>
                     )}
+                    {type === "radio" && (
+                      <>
+                        <FormItemSpacer>
+                          <Textarea
+                            label="選択肢"
+                            description="選択肢のテキストを改行区切りで入力してください"
+                            placeholder={"1日目\n2日目"}
+                            error={[
+                              (errors?.items?.[index] as any)?.buttons?.types
+                                ?.required && "必須項目です",
+                            ]}
+                            required
+                            register={register(
+                              `items.${index}.buttons` as const,
+                              {
+                                required: true,
+                                setValueAs: (value) =>
+                                  value
+                                    ?.trim()
+                                    .split("\n")
+                                    .map((label: string) => {
+                                      if (!label.trim()) return
+                                      return {
+                                        id: uuid(),
+                                        label: label.trim(),
+                                      }
+                                    })
+                                    .filter(
+                                      (
+                                        nullable:
+                                          | { id: string; label: string }
+                                          | undefined
+                                      ) => Boolean(nullable)
+                                    ),
+                              }
+                            )}
+                          />
+                        </FormItemSpacer>
+                        <FormItemSpacer>
+                          <Checkbox
+                            label="必須項目にする"
+                            checked={watch(
+                              `items.${index}.is_required` as const
+                            )}
+                            register={register(
+                              `items.${index}.is_required` as const
+                            )}
+                          />
+                        </FormItemSpacer>
+                      </>
+                    )}
                   </Panel>
                 </div>
                 <div className={styles.itemActions}>
-                  <IconButton
-                    icon="chevron-up"
-                    title="この項目を上に移動"
-                    onClick={() => swapItem(index, index - 1)}
-                  />
-                  <IconButton
-                    icon="chevron-down"
-                    title="この項目を下に移動"
-                    onClick={() => swapItem(index, index + 1)}
-                  />
-                  <IconButton
-                    icon="trash-alt"
-                    title="この項目を削除"
-                    danger={true}
-                    onClick={() => removeItem(index)}
-                  />
+                  <Tooltip title="この項目を上に移動" placement="left">
+                    <div>
+                      <IconButton
+                        icon="chevron-up"
+                        onClick={() => swapItem(index, index - 1)}
+                      />
+                    </div>
+                  </Tooltip>
+                  <Tooltip title="この項目を下に移動" placement="left">
+                    <div>
+                      <IconButton
+                        icon="chevron-down"
+                        onClick={() => swapItem(index, index + 1)}
+                      />
+                    </div>
+                  </Tooltip>
+                  <Tooltip title="この項目を削除" placement="left">
+                    <div>
+                      <IconButton
+                        icon="trash-alt"
+                        danger={true}
+                        onClick={() => removeItem(index)}
+                      />
+                    </div>
+                  </Tooltip>
                 </div>
               </div>
             )
@@ -722,6 +721,17 @@ const NewForm: PageFC = () => {
                 チェックボックス項目
               </Button>
             </div>
+            <div className={styles.addButton}>
+              <Button
+                icon="plus"
+                kind="secondary"
+                onClick={() => {
+                  addItem("radio")
+                }}
+              >
+                ドロップダウン項目
+              </Button>
+            </div>
           </div>
         </div>
         <Button
@@ -732,10 +742,6 @@ const NewForm: PageFC = () => {
         >
           申請を送信する
         </Button>
-        {unknownError && (
-          <p className={styles.errorText}>エラーが発生しました</p>
-        )}
-        {error && <p className={styles.errorText}>{error}</p>}
       </form>
     </div>
   )

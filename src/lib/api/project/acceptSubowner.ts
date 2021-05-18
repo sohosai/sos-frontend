@@ -16,7 +16,7 @@ const acceptSubowner = async ({
   project: Project
 }> => {
   return client({ idToken })
-    .post("pending-project/accept-subowner", {
+    .post("project/create", {
       json: {
         pending_project_id: pendingProjectId,
       },

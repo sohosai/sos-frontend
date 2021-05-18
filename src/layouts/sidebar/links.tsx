@@ -40,22 +40,32 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         href: pagesPath.$url(),
         title: "トップページ",
         icon: "home",
-        visible: () => true,
+        visible: () =>
+          authState.status !== "firebaseSignedIn" &&
+          authState.firebaseUser?.emailVerified !== false,
         active: () => router.pathname === pagesPath.$url().pathname,
       },
       {
         href: pagesPath.login.$url(),
         title: "ログイン",
-        icon: "log-in",
+        icon: "log-in-alt",
         visible: () => authState.status === "signedOut",
         active: () => router.pathname === pagesPath.login.$url().pathname,
       },
       {
         href: pagesPath.signup.$url(),
-        title: "アカウント登録",
+        title: "ユーザー登録",
         icon: "user-plus",
         visible: () => authState.status === "signedOut",
         active: () => router.pathname === pagesPath.signup.$url().pathname,
+      },
+      {
+        href: pagesPath.email_verification.$url(),
+        title: "メールアドレス確認",
+        icon: "envelope",
+        visible: () => Boolean(authState.firebaseUser?.emailVerified === false),
+        active: () =>
+          router.pathname === pagesPath.email_verification.$url().pathname,
       },
       {
         href: pagesPath.init.$url(),
@@ -85,11 +95,11 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
           router.pathname.startsWith(pagesPath.project.form.$url().pathname),
       },
       {
-        href: pagesPath.mypage.$url(),
+        href: pagesPath.me.$url(),
         title: "マイページ",
         icon: "user-circle",
         visible: () => authState.status === "bothSignedIn",
-        active: () => router.pathname === pagesPath.mypage.$url().pathname,
+        active: () => router.pathname === pagesPath.me.$url().pathname,
       },
     ],
     committee: [
@@ -123,8 +133,23 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
           router.pathname.startsWith(pagesPath.committee.form.$url().pathname),
       },
       {
-        href: pagesPath.committee.user.list.$url(),
-        title: "ユーザー一覧",
+        href: pagesPath.committee.project.$url(),
+        title: "企画",
+        icon: "universe",
+        visible: () =>
+          authState.status === "bothSignedIn" &&
+          isUserRoleHigherThanIncluding({
+            userRole: authState.sosUser.role,
+            criteria: "committee",
+          }),
+        active: () =>
+          router.pathname.startsWith(
+            pagesPath.committee.project.$url().pathname
+          ),
+      },
+      {
+        href: pagesPath.committee.user.$url(),
+        title: "ユーザー",
         icon: "users",
         visible: () =>
           Boolean(
@@ -135,7 +160,22 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
               })
           ),
         active: () =>
-          router.pathname === pagesPath.committee.user.list.$url().pathname,
+          router.pathname === pagesPath.committee.user.$url().pathname,
+      },
+      {
+        href: pagesPath.committee.meta.$url(),
+        title: "開発者ツール",
+        icon: "wrench",
+        visible: () =>
+          Boolean(
+            authState.status === "bothSignedIn" &&
+              isUserRoleHigherThanIncluding({
+                userRole: authState.sosUser.role,
+                criteria: "administrator",
+              })
+          ),
+        active: () =>
+          router.pathname === pagesPath.committee.meta.$url().pathname,
       },
     ],
   }
@@ -150,7 +190,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
             <li key={index}>
               <Link href={href}>
                 <a className={styles.link} data-active={active()}>
-                  <i className={`jam-icon jam-${icon} ${styles.linkIcon}`} />
+                  <i className={`jam-icons jam-${icon} ${styles.linkIcon}`} />
                   <p className={styles.label}>{title}</p>
                 </a>
               </Link>

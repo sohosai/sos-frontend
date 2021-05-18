@@ -1,0 +1,36 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.top {
+  margin-bottom: 24px;
+}
+
+.title {
+  color: $color-text-primary;
+  margin-bottom: 8px;
+}
+
+.p {
+  color: $color-text-sub;
+}
+
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 30em;
+}
+
+.panelWrapper {
+  position: relative;
+  margin-right: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.icon {
+  font-size: 1.5em;
+  color: $color-text-primary;
+}

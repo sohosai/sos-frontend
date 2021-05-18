@@ -2,6 +2,7 @@
 @import "../../styles/mixins";
 
 .button {
+  position: relative;
   width: 32px;
   height: 32px;
   padding: 0;
@@ -35,6 +36,26 @@
       }
     }
   }
+
+  &[data-processing] {
+    .spinnerWrapper {
+      opacity: 1;
+    }
+
+    .iconWrapper {
+      opacity: 0;
+    }
+  }
+}
+
+.spinnerWrapper,
+.iconWrapper {
+  position: absolute;
+  transition: opacity 100ms;
+}
+
+.spinnerWrapper {
+  opacity: 0;
 }
 
 .icon {
