@@ -1,8 +1,17 @@
 import type { PageFC } from "next"
+import Link from "next/link"
 
-import { staticPath } from "src/utils/$path"
+import { pagesPath, staticPath } from "src/utils/$path"
+
+import dayjs from "dayjs"
+import utc from "dayjs/plugin/utc"
+import timezone from "dayjs/plugin/timezone"
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 import { Timeline } from "react-twitter-widgets"
+
+import { announcements } from "src/constants/announcements"
 
 import { Button, Panel } from "src/components"
 
@@ -70,7 +79,21 @@ const Index: PageFC = () => {
         <div className={styles.panelRowWrapper} data-cols="2">
           <div className={styles.panelWrapper}>
             <Panel>
-              <p className={styles.panelText}>現在お知らせはありません</p>
+              {announcements.map(({ id, date, title }) => (
+                <Link
+                  href={pagesPath.announcement.$url({ query: { id } })}
+                  key={id}
+                >
+                  <a>
+                    <div className={styles.announcementRow}>
+                      <p className={styles.announcementTitle}>{title}</p>
+                      <p className={styles.announcementDate}>
+                        {date.format("YYYY/M/D HH:mm")}
+                      </p>
+                    </div>
+                  </a>
+                </Link>
+              ))}
             </Panel>
           </div>
           <div className={styles.panelWrapper}>
