@@ -1,0 +1,66 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.wrapper {
+  @include mainArea;
+  max-width: 900px;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.textWrapper {
+  margin-bottom: 24px;
+}
+
+.paragraph {
+  margin-bottom: 12px;
+}
+
+.date {
+  color: $color-text-sub;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+}
+
+.goBackButton {
+  margin-top: 24px;
+  color: $color-brand;
+}
+
+.goBackButtonText {
+  position: relative;
+  display: inline-flex;
+  padding-bottom: 3px;
+  align-items: center;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    left: 0;
+    bottom: -2px;
+    background-color: $color-brand;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 200ms ease-in-out;
+  }
+
+  &:hover,
+  &:focus-within {
+    outline: none;
+
+    &::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+  }
+}
+
+.goBackButtonIcon {
+  font-size: 1.2em;
+}

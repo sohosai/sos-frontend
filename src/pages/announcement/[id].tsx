@@ -8,17 +8,13 @@ import { pagesPath } from "src/utils/$path"
 
 import { Panel } from "src/components"
 
-import styles from "./announcement.module.scss"
-
-export type Query = {
-  id: string
-}
+import styles from "./[id].module.scss"
 
 const Announcement: PageFC = () => {
   const router = useRouter()
 
   // TODO: handle undefined
-  const { id: passedId } = router.query as Query
+  const { id: passedId } = router.query
 
   const announcement = announcements.find(({ id }) => id === passedId)
 
