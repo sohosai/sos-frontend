@@ -52,6 +52,31 @@
   color: $color-text-sub;
 }
 
-.onlineDescriptions {
+.onlineDescriptions,
+.newProjectsParagraph {
   margin-bottom: 16px;
+}
+
+.announcementRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: background-color 200ms;
+
+  &:hover {
+    background-color: $color-gray-50;
+  }
+}
+
+.announcementTitle {
+  flex-shrink: 1;
+  @include ellipsis;
+}
+
+.announcementDate {
+  @include ellipsis;
+  color: $color-text-sub;
+  flex-shrink: 1;
 }

@@ -13,7 +13,7 @@
     "uuid": "8.3.2"
   },
   "devDependencies": {
-    "@babel/core": "7.14.2",
+    "@babel/core": "7.14.3",
     "@material-ui/core": "4.11.4",
     "@storybook/addon-actions": "6.2.9",
     "@storybook/addon-essentials": "6.2.9",
@@ -43,7 +43,7 @@
     "normalize.css": "8.0.1",
     "pathpida": "0.15.1",
     "prettier": "2.3.0",
-    "react-twitter-widgets": "^1.10.0",
+    "react-twitter-widgets": "1.10.0",
     "sass": "1.32.13",
     "sass-loader": "10.2.0",
     "style-loader": "2.0.0",
