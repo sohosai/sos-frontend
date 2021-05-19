@@ -39,7 +39,7 @@
     "husky": "4.3.8",
     "lint-staged": "11.0.0",
     "next-secure-headers": "2.2.0",
-    "next-transpile-modules": "7.1.1",
+    "next-transpile-modules": "7.1.2",
     "normalize.css": "8.0.1",
     "pathpida": "0.15.1",
     "prettier": "2.3.0",
