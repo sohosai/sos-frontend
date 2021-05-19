@@ -8721,10 +8721,10 @@ next-secure-headers@2.2.0:
   resolved "https://registry.yarnpkg.com/next-secure-headers/-/next-secure-headers-2.2.0.tgz#d4eb1b00a424f811c1455d1288990a4aad3026af"
   integrity sha512-C7OfZ9JdSJyYMz2ZBMI/WwNbt0qNjlFWX9afUp8nEUzbz6ez3JbeopdyxSZJZJAzVLIAfyk6n73rFpd4e22jRg==
 
-next-transpile-modules@7.1.1:
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/next-transpile-modules/-/next-transpile-modules-7.1.1.tgz#6a07908662ec73788eae349e3da0d82e6e1fabee"
-  integrity sha512-5RMqiNAWkulK8/2Lx6MrPKlurro8zENbzB5sw47QKUyjzjHJ5+RJuBC1oNHK3PypISSAm/j31Vv5EULy+GTE6Q==
+next-transpile-modules@7.1.2:
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/next-transpile-modules/-/next-transpile-modules-7.1.2.tgz#a58add6f9a6910e0c4ef8c1ecafd4a5f33959186"
+  integrity sha512-uKizsjRNB++vIcIyJ6zlf+SagsYsnrXecRtKl8mdlCbEl1Q1KlaV0Arb/dopWWWR29dnOlvCKiaCxODW79k1xg==
   dependencies:
     enhanced-resolve "^5.7.0"
     escalade "^3.1.1"
