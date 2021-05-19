@@ -80,10 +80,7 @@ const Index: PageFC = () => {
           <div className={styles.panelWrapper}>
             <Panel>
               {announcements.map(({ id, date, title }) => (
-                <Link
-                  href={pagesPath.announcement.$url({ query: { id } })}
-                  key={id}
-                >
+                <Link href={pagesPath.announcement._id(id).$url()} key={id}>
                   <a>
                     <div className={styles.announcementRow}>
                       <p className={styles.announcementTitle}>{title}</p>
