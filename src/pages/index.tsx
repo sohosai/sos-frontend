@@ -95,17 +95,19 @@ const Index: PageFC = () => {
           </div>
           <div className={styles.panelWrapper}>
             <Panel>
-              <Timeline
-                dataSource={{
-                  sourceType: "profile",
-                  screenName: "kikakurenrakun",
-                }}
-                options={{
-                  lang: "en",
-                  height: "600",
-                  dnt: true,
-                }}
-              />
+              <div className={styles.twitterWrapper}>
+                <Timeline
+                  dataSource={{
+                    sourceType: "profile",
+                    screenName: "kikakurenrakun",
+                  }}
+                  options={{
+                    lang: "en",
+                    height: "600",
+                    dnt: true,
+                  }}
+                />
+              </div>
             </Panel>
           </div>
         </div>
