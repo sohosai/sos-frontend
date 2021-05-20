@@ -47,16 +47,18 @@
   }
 }
 
+.sectionInPanel {
+  &:not(:last-of-type) {
+    margin-bottom: 48px;
+  }
+}
+
 .panelTitle {
   font-weight: bold;
   font-size: 1.5em;
   margin-bottom: 16px;
   padding-bottom: 8px;
   border-bottom: 1px solid $color-gray-100;
-}
-
-.panelText {
-  color: $color-text-sub;
 }
 
 .onlineAnnouncementDate {
