@@ -1,0 +1,36 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.wrapper {
+  @include mainArea;
+  max-width: 900px;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.section {
+  &:not(:last-of-type) {
+    margin-bottom: 24px;
+  }
+}
+
+.sectionTitle {
+  font-size: 1.2em;
+  margin-bottom: 12px;
+}
+
+.list {
+  margin: 8px 0;
+  list-style: square;
+  padding-left: 2em;
+
+  li {
+    line-height: 21px;
+  }
+}
+
+.anchorLink {
+  text-decoration: underline;
+}

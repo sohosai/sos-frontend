@@ -6,7 +6,7 @@ import { announcements } from "src/constants/announcements"
 
 import { pagesPath } from "src/utils/$path"
 
-import { Panel } from "src/components"
+import { Head, Panel } from "src/components"
 
 import styles from "./[id].module.scss"
 
@@ -20,6 +20,7 @@ const Announcement: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      {announcement?.title && <Head title={announcement.title} />}
       {passedId && announcement ? (
         <>
           <h1 className={styles.title}>{announcement.title}</h1>
