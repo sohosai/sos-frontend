@@ -1,0 +1,54 @@
+@import "src/styles/variables";
+
+.wrapper {
+  width: 100%;
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover,
+  &:focus-within {
+    .item,
+    .linkItem {
+      color: $color-text-sub;
+    }
+  }
+}
+
+.item,
+.linkItem {
+  color: $color-gray-300;
+  transition: color 200ms;
+
+  &:not(:last-child) {
+    margin-right: 16px;
+  }
+}
+
+.linkItem {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    left: 0;
+    bottom: -2px;
+    background-color: $color-text-sub;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 200ms ease-in-out;
+  }
+
+  &:hover,
+  &:focus-visible {
+    outline: none;
+
+    &::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+  }
+}
