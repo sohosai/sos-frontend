@@ -1,12 +1,13 @@
 import { PageFC } from "next"
 
-import { Panel } from "src/components"
+import { Head, Panel } from "src/components"
 
 import styles from "./privacy-policy.module.scss"
 
 const PrivacyPolicy: PageFC = () => {
   return (
     <div className={styles.wrapper}>
+      <Head title="プライバシーポリシー" />
       <h1 className={styles.title}>プライバシーポリシー</h1>
       <Panel>
         <section className={styles.section}>
