@@ -22,7 +22,7 @@
 @mixin mainArea {
   @include mainAreaWidth();
   margin-top: 64px;
-  margin-bottom: 64px;
+  margin-bottom: 32px;
 }
 
 @mixin pageTitle {
