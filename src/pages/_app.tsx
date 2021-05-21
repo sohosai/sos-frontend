@@ -33,6 +33,24 @@ function MyApp({
         <title key="title">雙峰祭オンラインシステム</title>
         <meta name="robots" content="noindex" key="robots" />
         <meta name="googlebot" content="noindex" key="googlebot" />
+        {Boolean(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID) && (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
+            ></script>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+
+                  gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}');`,
+              }}
+            ></script>
+          </>
+        )}
       </Head>
       <ToastProvider>
         <AuthProvider rbpac={Component.rbpac}>

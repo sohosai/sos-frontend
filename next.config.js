@@ -3,6 +3,13 @@ const withTM = require("next-transpile-modules")(["ky"])
 const { createSecureHeaders } = require("next-secure-headers")
 
 if (
+  process.env.NEXT_PUBLIC_DEPLOY_ENV &&
+  !["dev", "staging", "production"].includes(process.env.NEXT_PUBLIC_DEPLOY_ENV)
+) {
+  throw new Error("Invalid NEXT_PUBLIC_DEPLOY_ENV")
+}
+
+if (
   !process.env.NEXT_PUBLIC_FIREBASE_API_KEY ||
   !process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ||
   !process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ||
