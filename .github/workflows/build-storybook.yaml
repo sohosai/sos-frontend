@@ -21,3 +21,10 @@ jobs:
 
       - name: Build
         run: make build.storybook
+        env:
+          NEXT_PUBLIC_FIREBASE_API_KEY: dummy
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: dummy
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: dummy
+          NEXT_PUBLIC_FIREBASE_APP_ID: dummy
+          NEXT_PUBLIC_FRONTEND_URL: http://localhost:3131/
+          NEXT_PUBLIC_BACKEND_BASE_URL: http://localhost:3000/

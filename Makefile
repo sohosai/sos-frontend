@@ -31,10 +31,10 @@ typecheck: install pathpida
 typecheck.watch: install pathpida
 	yarn tsc --noEmit --watch
 
-storybook: install
+storybook: install pathpida
 	yarn start-storybook -s public -p 6161
 
-build.storybook: install
+build.storybook: install pathpida
 	yarn build-storybook -s public
 
 pathpida: install
