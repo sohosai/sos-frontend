@@ -195,7 +195,11 @@ const NewForm: PageFC = () => {
             includes: [],
             excludes: [],
           },
-          items,
+          items: items.map((item) => ({
+            ...item,
+            // FIXME: react-hook-form が空配列勝手に消してくるのでとりあえず
+            conditions: item.conditions ?? [],
+          })),
         },
         idToken,
       })
