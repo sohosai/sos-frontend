@@ -1,0 +1,86 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+}
+
+.section {
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  font-size: 1.5em;
+  margin-bottom: 12px;
+}
+
+.timelineWrapper {
+  margin-top: 24px;
+}
+
+.timelineDescription {
+  color: $color-text-sub;
+}
+
+.generalInfoTableItem {
+  &:not(:last-child) {
+    margin-bottom: 24px;
+  }
+}
+
+.generalInfoTableKey {
+  color: $color-text-sub;
+  width: 8em;
+  margin-bottom: 8px;
+}
+
+.generalInfoTableValue {
+  flex-shrink: 1;
+}
+
+.attributeChipWrapper {
+  display: flex;
+}
+
+.attributeChip {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: $color-gray-100;
+  color: $color-text-sub;
+
+  &:not(:last-of-type) {
+    margin-right: 4px;
+  }
+
+  &[data-active="true"] {
+    background-color: $color-brand;
+    color: white;
+  }
+}
+
+.noRegistrationForms,
+.registrationFormLoading {
+  padding: 16px 0;
+  @include flexCenter;
+}
+
+.registrationFormRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid $color-gray-100;
+
+  &:first-child {
+    border-top: 1px solid $color-gray-100;
+  }
+}
