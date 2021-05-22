@@ -117,15 +117,9 @@ const NewProject: PageFC = () => {
         },
         idToken: await authState.firebaseUser.getIdToken(),
       })
-        .then(({ pendingProject }) => {
-          addToast({ title: "送信しました", kind: "success" })
-
-          // TODO: 企画トップページに変更
-          router.push(
-            pagesPath.accept_subowner.$url({
-              query: { pendingProjectId: pendingProject.id },
-            })
-          )
+        .then(() => {
+          addToast({ title: "仮登録が完了しました", kind: "success" })
+          router.push(pagesPath.project.$url())
         })
         .catch(async (err) => {
           const body = await err.response?.json()

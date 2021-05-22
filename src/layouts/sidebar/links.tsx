@@ -84,13 +84,20 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         active: () => router.pathname === pagesPath.project.new.$url().pathname,
       },
       {
+        href: pagesPath.project.$url(),
+        title: "企画",
+        icon: "universe",
+        visible: () => Boolean(myProjectState?.myProject),
+        active: () => router.pathname === pagesPath.project.$url().pathname,
+      },
+      {
         href: pagesPath.project.form.$url(),
         title: "申請",
         icon: "task-list",
         visible: () =>
           authState.status === "bothSignedIn" &&
-          !myProjectState?.error &&
-          Boolean(myProjectState?.myProject),
+          myProjectState?.error === false &&
+          myProjectState.isPending === false,
         active: () =>
           router.pathname.startsWith(pagesPath.project.form.$url().pathname),
       },
