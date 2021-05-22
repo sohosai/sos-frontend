@@ -7,7 +7,6 @@ export type User = Readonly<{
   kana_name: UserKanaName
   email: string
   phone_number: string
-  affiliation: string
   role: UserRole
   category: UserCategory
 }>
@@ -24,7 +23,16 @@ export type UserKanaName = Readonly<{
   last: string
 }>
 
-export type UserCategory =
+export type UserCategoryType =
   | "undergraduate_student"
   | "graduate_student"
   | "academic_staff"
+
+export type UserCategory =
+  | Readonly<{
+      type: Extract<UserCategoryType, "undergraduate_student">
+      affiliation: string
+    }>
+  | Readonly<{
+      type: Exclude<UserCategoryType, "undergraduate_student">
+    }>
