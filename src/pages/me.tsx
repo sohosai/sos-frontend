@@ -2,6 +2,8 @@ import type { PageFC } from "next"
 
 import { useAuthNeue } from "../contexts/auth"
 
+import { userCategoryTypeToUiText } from "src/types/models/user"
+
 import { Button, Head, Panel } from "../components"
 
 import styles from "./me.module.scss"
@@ -28,12 +30,16 @@ const Mypage: PageFC = () => {
             </div>
             <div className={styles.panelWrapper}>
               <Panel>
-                <h2 className={styles.panelTitle}>所属</h2>
+                <h2 className={styles.panelTitle}>区分</h2>
                 <p className={styles.panelText}>
                   <i
-                    className={`jam-icons jam-building ${styles.panelTextIcon}`}
+                    className={`jam-icons jam-id-card ${styles.panelTextIcon}`}
                   />
-                  {authState.sosUser.affiliation}
+                  {authState.sosUser.category.type === "undergraduate_student"
+                    ? `${userCategoryTypeToUiText(
+                        authState.sosUser.category.type
+                      )} / ${authState.sosUser.category.affiliation}`
+                    : userCategoryTypeToUiText(authState.sosUser.category.type)}
                 </p>
               </Panel>
             </div>
