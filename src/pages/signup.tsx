@@ -165,6 +165,6 @@ const Signup: PageFC = () => {
   )
 }
 Signup.layout = "default"
-Signup.rbpac = { type: "higherThanIncluding", role: "administrator" }
+Signup.rbpac = { type: "lowerThanIncluding", role: "guest" }
 
 export default Signup
