@@ -24,7 +24,7 @@ const Announcement: PageFC = () => {
       {passedId && announcement ? (
         <>
           <h1 className={styles.title}>{announcement.title}</h1>
-          <Panel>
+          <Panel style={{ padding: "48px" }}>
             <div className={styles.articleWrapper}>
               <div className={styles.textWrapper}>
                 {announcement.text.split("\n").map((text) => (
