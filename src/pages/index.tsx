@@ -33,7 +33,7 @@ const Index: PageFC = () => {
                   令和3年11月6日と11月7日に開催を予定しておりました学園祭について、新型コロナウイルスの感染が拡大している状況に鑑み対面開催の中止を決定いたしました。詳細については資料をご覧ください。
                 </p>
                 <p className={styles.panelText}>
-                  今後も学園祭について情報発信を行っていきますので、何卒ご理解のほどよろしくお願い申し上げます。
+                  今後も学園祭について情報発信を行ってまいりますので、何卒ご理解のほどよろしくお願い申し上げます。
                 </p>
               </div>
               <a
@@ -104,18 +104,20 @@ const Index: PageFC = () => {
         <div className={styles.panelRowWrapper} data-cols="2">
           <div className={styles.panelWrapper}>
             <Panel>
-              {announcements.map(({ id, date, title }) => (
-                <Link href={pagesPath.announcement._id(id).$url()} key={id}>
-                  <a>
-                    <div className={styles.announcementRow}>
-                      <p className={styles.announcementTitle}>{title}</p>
-                      <p className={styles.announcementDate}>
-                        {date.format("YYYY/M/D HH:mm")}
-                      </p>
-                    </div>
-                  </a>
-                </Link>
-              ))}
+              {announcements
+                .sort((a, b) => (a.date.isAfter(b.date) ? -1 : 1))
+                .map(({ id, date, title }) => (
+                  <Link href={pagesPath.announcement._id(id).$url()} key={id}>
+                    <a>
+                      <div className={styles.announcementRow}>
+                        <p className={styles.announcementTitle}>{title}</p>
+                        <p className={styles.announcementDate}>
+                          {date.format("YYYY/M/D HH:mm")}
+                        </p>
+                      </div>
+                    </a>
+                  </Link>
+                ))}
             </Panel>
           </div>
           <div className={styles.panelWrapper}>
