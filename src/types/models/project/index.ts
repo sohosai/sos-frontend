@@ -54,9 +54,13 @@ export const projectCategoryToUiText = (
   return dict[projectCategory]
 }
 
-export const projectAttributeToUiText = (
+export const projectAttributeToUiText = ({
+  projectAttribute,
+  truncated = false,
+}: {
   projectAttribute: ProjectAttribute
-): string => {
+  truncated?: boolean
+}): string => {
   const dict: {
     [attribute in ProjectAttribute]: string
   } = {
@@ -65,5 +69,14 @@ export const projectAttributeToUiText = (
     outdoor: "屋外企画",
     committee: "委員会企画",
   }
-  return dict[projectAttribute]
+  const truncatedDict: {
+    [attribute in ProjectAttribute]: string
+  } = {
+    academic: "学",
+    artistic: "芸",
+    outdoor: "外",
+    committee: "委",
+  }
+
+  return truncated ? truncatedDict[projectAttribute] : dict[projectAttribute]
 }

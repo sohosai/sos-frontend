@@ -7,7 +7,7 @@ import { pagesPath } from "../utils/$path"
 
 import { useForm } from "react-hook-form"
 
-import type { UserCategory } from "../types/models/user"
+import type { UserCategoryType } from "../types/models/user"
 
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
@@ -32,7 +32,7 @@ type Inputs = Readonly<{
   kanaNameLast: string
   phoneNumber: string
   affiliation: string
-  category: UserCategory
+  category: UserCategoryType
 }>
 
 const Init: PageFC = () => {
@@ -47,6 +47,7 @@ const Init: PageFC = () => {
     register,
     formState: { errors },
     handleSubmit,
+    watch,
   } = useForm<Inputs>({
     criteriaMode: "all",
     mode: "onBlur",
@@ -58,8 +59,8 @@ const Init: PageFC = () => {
     kanaNameFirst,
     kanaNameLast,
     phoneNumber,
-    affiliation,
     category,
+    affiliation,
   }: Inputs) => {
     setProcessing(true)
 
@@ -73,8 +74,13 @@ const Init: PageFC = () => {
         last: katakanaToHiragana(kanaNameLast),
       },
       phone_number: "+81" + phoneNumber.replaceAll("-", "").slice(1),
-      affiliation,
-      category,
+      category:
+        category === "undergraduate_student"
+          ? {
+              type: "undergraduate_student",
+              affiliation,
+            }
+          : { type: category },
     })
       .catch(async (err) => {
         setProcessing(false)
@@ -230,21 +236,23 @@ const Init: PageFC = () => {
                   })}
                 />
               </FormItemSpacer>
-              <FormItemSpacer>
-                <TextField
-                  type="text"
-                  label="所属学群・学類"
-                  placeholder="〇〇学群 〇〇学類"
-                  error={[
-                    errors?.affiliation?.types?.required && "必須項目です",
-                  ]}
-                  required
-                  register={register("affiliation", {
-                    required: true,
-                    setValueAs: (value) => value?.trim(),
-                  })}
-                />
-              </FormItemSpacer>
+              {watch("category") === "undergraduate_student" && (
+                <FormItemSpacer>
+                  <TextField
+                    type="text"
+                    label="所属学群・学類"
+                    placeholder="〇〇学群 〇〇学類"
+                    error={[
+                      errors?.affiliation?.types?.required && "必須項目です",
+                    ]}
+                    required
+                    register={register("affiliation", {
+                      required: true,
+                      setValueAs: (value) => value?.trim(),
+                    })}
+                  />
+                </FormItemSpacer>
+              )}
             </fieldset>
             <div className={styles.submitButton}>
               <Button

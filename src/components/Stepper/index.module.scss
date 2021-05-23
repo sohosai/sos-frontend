@@ -1,0 +1,53 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.stepWrapper {
+  display: flex;
+  margin: 6px 0;
+}
+
+.stepIcon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  border-radius: 100%;
+  background-color: $color-gray-200;
+
+  &[data-active="true"] {
+    background-color: $color-brand;
+
+    &::before {
+      color: white;
+    }
+
+    & + .titleWrapper {
+      color: $color-text-primary;
+    }
+  }
+
+  &::before {
+    content: attr(data-index);
+    @include absoluteCenter;
+    color: $color-text-primary;
+  }
+}
+
+.titleWrapper {
+  height: 24px;
+  display: flex;
+  align-items: center;
+  color: $color-text-sub;
+}
+
+.stepperContent {
+  margin-left: 12px;
+  padding-left: 20px;
+  border-left: 1px solid $color-gray-300;
+}
+
+.divider {
+  height: 24px;
+  margin-left: 12px;
+  border-left: 1px solid $color-gray-300;
+}
