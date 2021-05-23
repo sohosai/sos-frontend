@@ -31,6 +31,15 @@ export const announcements: Announcement[] = [
     ].join("\n"),
   },
   {
+    id: "ebf708a8-0eb7-48db-b2d9-d33c0184c951",
+    date: dayjs.tz("2021-05-23T18:30:00", "Asia/Tokyo"),
+    title: "企画団体向けTwitterアカウント",
+    text: [
+      "企画団体向けTwitterアカウント@kikakurenrakunでは、企画応募を検討されている皆様に便利な情報を随時お届けしております。ぜひご確認ください。",
+      "なお、ツイートはトップページのお知らせ欄からもご覧いただけます。",
+    ].join("\n"),
+  },
+  {
     id: "eb840c93-ca79-48c1-b1f0-9c4b9569ce6c",
     date: dayjs.tz("2021-05-23T18:30:00", "Asia/Tokyo"),
     title: "オンラインステージの企画応募開始について",
