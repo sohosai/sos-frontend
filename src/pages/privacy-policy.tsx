@@ -9,7 +9,7 @@ const PrivacyPolicy: PageFC = () => {
     <div className={styles.wrapper}>
       <Head title="プライバシーポリシー" />
       <h1 className={styles.title}>プライバシーポリシー</h1>
-      <Panel>
+      <Panel style={{ padding: "48px" }}>
         <section className={styles.section}>
           <p>
             雙峰祭オンラインシステムでは利用者の皆さまの個人情報を以下の通り取り扱います。
