@@ -149,7 +149,9 @@ const ListProjects: PageFC = () => {
 
                         return (
                           <Tooltip
-                            title={projectAttributeToUiText(attribute)}
+                            title={projectAttributeToUiText({
+                              projectAttribute: attribute,
+                            })}
                             key={attribute}
                           >
                             <p

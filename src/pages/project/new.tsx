@@ -5,8 +5,6 @@ import { pagesPath } from "../../utils/$path"
 
 import { useForm } from "react-hook-form"
 
-import dayjs from "dayjs"
-
 import { useAuthNeue } from "src/contexts/auth"
 import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"
@@ -14,8 +12,6 @@ import { useToastDispatcher } from "src/contexts/toast"
 import { ProjectCategory, ProjectAttribute } from "src/types/models/project"
 
 import { isKana, katakanaToHiragana } from "src/utils/jpKana"
-
-import { PROJECT_CREATE_STARTS_DATE } from "src/constants/datetime"
 
 import {
   Button,
@@ -91,11 +87,6 @@ const NewProject: PageFC = () => {
   }: Inputs) => {
     if (authState === null || authState.firebaseUser == null) return
 
-    if (dayjs().isBefore(PROJECT_CREATE_STARTS_DATE)) {
-      addToast({ title: "企画募集開始前です" })
-      return
-    }
-
     const attributesArray = Object.entries(attributes).reduce(
       (acc, [attribute, value]) => {
         if (value) acc.push(attribute as ProjectAttribute)
@@ -117,20 +108,17 @@ const NewProject: PageFC = () => {
         },
         idToken: await authState.firebaseUser.getIdToken(),
       })
-        .then(({ pendingProject }) => {
-          addToast({ title: "送信しました", kind: "success" })
-
-          // TODO: 企画トップページに変更
-          router.push(
-            pagesPath.accept_subowner.$url({
-              query: { pendingProjectId: pendingProject.id },
-            })
-          )
+        .then(() => {
+          addToast({ title: "仮登録が完了しました", kind: "success" })
+          router.push(pagesPath.project.$url())
         })
         .catch(async (err) => {
-          const body = await err.response?.json()
-          addToast({ title: "エラーが発生しました", kind: "error" })
-          throw body ? body : err
+          if (err?.error?.info?.type === "OUT_OF_PROJECT_CREATION_PERIOD") {
+            addToast({ title: "企画募集期間外です", kind: "error" })
+          } else {
+            addToast({ title: "エラーが発生しました", kind: "error" })
+          }
+          throw err
         })
     }
   }

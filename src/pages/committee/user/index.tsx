@@ -5,7 +5,7 @@ import type { PageFC } from "next"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
-import { User } from "../../../types/models/user"
+import { User, userCategoryTypeToUiText } from "../../../types/models/user"
 import { userRoleToUiText } from "../../../types/models/user/userRole"
 
 import { listUsers } from "../../../lib/api/user/listUsers"
@@ -93,14 +93,18 @@ const ListUsers: PageFC = () => {
                 </tr>
               </thead>
               <tbody>
-                {users.map(({ name, role, affiliation, id }) => {
+                {users.map(({ name, role, category, id }) => {
                   return (
                     <tr key={id} className={styles.row}>
                       <td
                         className={styles.cell}
                       >{`${name.last} ${name.first}`}</td>
                       <td className={styles.cell}>{userRoleToUiText(role)}</td>
-                      <td className={styles.cell}>{affiliation}</td>
+                      <td className={styles.cell}>
+                        {category.type === "undergraduate_student"
+                          ? category.affiliation
+                          : userCategoryTypeToUiText(category.type)}
+                      </td>
                     </tr>
                   )
                 })}
