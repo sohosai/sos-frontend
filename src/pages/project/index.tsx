@@ -7,11 +7,7 @@ import { useAuthNeue } from "src/contexts/auth"
 import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"
 
-import {
-  ProjectAttribute,
-  projectAttributeToUiText,
-  projectCategoryToUiText,
-} from "src/types/models/project"
+import { projectCategoryToUiText } from "src/types/models/project"
 import {
   RegistrationForm,
   RegistrationFormAnswer,
@@ -22,16 +18,9 @@ import { getMyRegistrationFormAnswer } from "src/lib/api/project/getMyRegistrati
 
 import { pagesPath } from "src/utils/$path"
 
-import { Button, Head, Panel, Spinner, Stepper, Tooltip } from "src/components"
+import { Button, Head, Panel, Spinner, Stepper } from "src/components"
 
 import styles from "./index.module.scss"
-
-const projectAttributes: ProjectAttribute[] = [
-  "academic",
-  "artistic",
-  "outdoor",
-  "committee",
-]
 
 const ProjectIndex: PageFC = () => {
   const { authState } = useAuthNeue()
@@ -177,29 +166,10 @@ const ProjectIndex: PageFC = () => {
                 </div>
                 <div className={styles.generalInfoTableItem}>
                   <p className={styles.generalInfoTableKey}>企画属性</p>
-                  <p
-                    className={`${styles.generalInfoTableValue} ${styles.attributeChipWrapper}`}
-                  >
-                    {projectAttributes.map((attribute) => (
-                      <Tooltip
-                        title={projectAttributeToUiText({
-                          projectAttribute: attribute,
-                        })}
-                        key={attribute}
-                      >
-                        <span
-                          className={styles.attributeChip}
-                          data-active={myProjectState.myProject.attributes.includes(
-                            attribute
-                          )}
-                        >
-                          {projectAttributeToUiText({
-                            projectAttribute: attribute,
-                            truncated: true,
-                          })}
-                        </span>
-                      </Tooltip>
-                    ))}
+                  <p className={styles.generalInfoTableValue}>
+                    {myProjectState.myProject.attributes.includes("academic")
+                      ? "学術参加枠"
+                      : "なし"}
                   </p>
                 </div>
                 {!myProjectState.isPending && (
