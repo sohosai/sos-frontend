@@ -81,9 +81,8 @@ export const useRbpacRedirect = ({
             router.push(pagesPath.$url())
             addToast({ title: "ログアウトしました" })
           } else {
-            router.push(pagesPath.$url())
-            // router.push(pagesPath.login.$url())
-            // addToast({ title: "ログインしてください" })
+            router.push(pagesPath.login.$url())
+            addToast({ title: "ログインしてください" })
           }
           return
         }
