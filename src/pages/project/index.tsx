@@ -60,7 +60,6 @@ const ProjectIndex: PageFC = () => {
           addToast({ title: "エラーが発生しました", kind: "error" })
           throw err
         })
-      console.log(fetchedRegistrationForms)
 
       // FIXME: N+1で最悪
       // バックから listMyRegistrationForms で回答の有無が返ってくるようになり次第消す
@@ -78,7 +77,6 @@ const ProjectIndex: PageFC = () => {
         addToast({ title: "エラーが発生しました", kind: "error" })
         throw err
       })
-      console.log(answers)
 
       setRegistrationForms(fetchedRegistrationForms)
       setRegistrationFormAnswers(answers.map((ans) => ans.answer))
@@ -240,13 +238,15 @@ const ProjectIndex: PageFC = () => {
                   registrationFormAnswers.length ? (
                     <>
                       {registrationForms.map((form, index) => (
-                        <>
+                        <div
+                          key={form.id}
+                          className={styles.registrationFormRowWrapper}
+                        >
                           {registrationFormAnswers[index] === null ? (
                             <Link
                               href={pagesPath.project.registration_form.answer
                                 ._id(form.id)
                                 .$url()}
-                              key={form.id}
                             >
                               <a className={styles.registrationFormRow}>
                                 <p className={styles.registrationFormName}>
@@ -256,10 +256,7 @@ const ProjectIndex: PageFC = () => {
                               </a>
                             </Link>
                           ) : (
-                            <div
-                              className={styles.registrationFormRow}
-                              key={form.id}
-                            >
+                            <div className={styles.registrationFormRow}>
                               <p className={styles.registrationFormName}>
                                 {form.name}
                               </p>
@@ -271,7 +268,7 @@ const ProjectIndex: PageFC = () => {
                               </p>
                             </div>
                           )}
-                        </>
+                        </div>
                       ))}
                     </>
                   ) : (

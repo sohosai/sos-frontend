@@ -73,11 +73,7 @@
   @include flexCenter;
 }
 
-.registrationFormRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px;
+.registrationFormRowWrapper {
   border-bottom: 1px solid $color-gray-100;
   transition: background-color 200ms;
 
@@ -89,6 +85,13 @@
   &:focus-within {
     background-color: $color-gray-50;
   }
+}
+
+.registrationFormRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
 }
 
 .isAnsweredChip {
