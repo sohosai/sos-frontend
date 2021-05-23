@@ -32,7 +32,7 @@ export const announcements: Announcement[] = [
   },
   {
     id: "eb840c93-ca79-48c1-b1f0-9c4b9569ce6c",
-    date: dayjs.tz("2021-05-23T08:30:00", "Asia/Tokyo"),
+    date: dayjs.tz("2021-05-23T18:30:00", "Asia/Tokyo"),
     title: "オンラインステージの企画応募開始について",
     text: [
       "5月24日月曜日18:30より、オンラインステージの企画応募を開始いたします。",
