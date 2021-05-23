@@ -46,27 +46,6 @@
   flex-shrink: 1;
 }
 
-.attributeChipWrapper {
-  display: flex;
-}
-
-.attributeChip {
-  display: inline-block;
-  padding: 2px 6px;
-  border-radius: 4px;
-  background-color: $color-gray-100;
-  color: $color-text-sub;
-
-  &:not(:last-of-type) {
-    margin-right: 4px;
-  }
-
-  &[data-active="true"] {
-    background-color: $color-brand;
-    color: white;
-  }
-}
-
 .noRegistrationForms,
 .registrationFormLoading {
   padding: 16px 0;

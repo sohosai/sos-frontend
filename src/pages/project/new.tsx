@@ -252,20 +252,8 @@ const NewProject: PageFC = () => {
                         label: "選択してください",
                       },
                       {
-                        value: "general",
-                        label: "一般企画",
-                      },
-                      {
                         value: "stage",
                         label: "ステージ企画",
-                      },
-                      {
-                        value: "cooking",
-                        label: "調理企画",
-                      },
-                      {
-                        value: "food",
-                        label: "飲食物取扱企画",
                       },
                     ]}
                     error={[errors.category?.types?.required && "必須項目です"]}
@@ -280,27 +268,6 @@ const NewProject: PageFC = () => {
                     label="学術参加枠での参加を希望する"
                     checked={watch("attributes.academic")}
                     register={register("attributes.academic")}
-                  />
-                </FormItemSpacer>
-                <FormItemSpacer>
-                  <Checkbox
-                    label="芸術祭参加枠での参加を希望する"
-                    checked={watch("attributes.artistic")}
-                    register={register("attributes.artistic")}
-                  />
-                </FormItemSpacer>
-                <FormItemSpacer>
-                  <Checkbox
-                    label="屋外での実施を希望する"
-                    checked={watch("attributes.outdoor")}
-                    register={register("attributes.outdoor")}
-                  />
-                </FormItemSpacer>
-                <FormItemSpacer>
-                  <Checkbox
-                    label="実行委員会企画として応募する"
-                    checked={watch("attributes.committee")}
-                    register={register("attributes.committee")}
                   />
                 </FormItemSpacer>
                 <FormItemSpacer
