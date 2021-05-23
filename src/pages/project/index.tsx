@@ -239,15 +239,39 @@ const ProjectIndex: PageFC = () => {
                   {registrationForms.length &&
                   registrationFormAnswers.length ? (
                     <>
-                      {registrationForms.map((form) => (
-                        <div
-                          className={styles.registrationFormRow}
-                          key={form.id}
-                        >
-                          <p className={styles.registrationFormName}>
-                            {form.name}
-                          </p>
-                        </div>
+                      {registrationForms.map((form, index) => (
+                        <>
+                          {registrationFormAnswers[index] === null ? (
+                            <Link
+                              href={pagesPath.project.registration_form.answer
+                                ._id(form.id)
+                                .$url()}
+                              key={form.id}
+                            >
+                              <a className={styles.registrationFormRow}>
+                                <p className={styles.registrationFormName}>
+                                  {form.name}
+                                </p>
+                                <p className={styles.isAnsweredChip}>未回答</p>
+                              </a>
+                            </Link>
+                          ) : (
+                            <div
+                              className={styles.registrationFormRow}
+                              key={form.id}
+                            >
+                              <p className={styles.registrationFormName}>
+                                {form.name}
+                              </p>
+                              <p
+                                className={styles.isAnsweredChip}
+                                data-answered
+                              >
+                                回答済み
+                              </p>
+                            </div>
+                          )}
+                        </>
                       ))}
                     </>
                   ) : (

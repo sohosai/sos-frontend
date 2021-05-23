@@ -77,10 +77,28 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0;
+  padding: 12px;
   border-bottom: 1px solid $color-gray-100;
+  transition: background-color 200ms;
 
   &:first-child {
     border-top: 1px solid $color-gray-100;
+  }
+
+  &:hover,
+  &:focus-within {
+    background-color: $color-gray-50;
+  }
+}
+
+.isAnsweredChip {
+  padding: 4px 12px;
+  border-radius: 4px;
+  background-color: $color-brand;
+  color: white;
+
+  &[data-answered] {
+    background-color: $color-gray-100;
+    color: $color-text-primary;
   }
 }

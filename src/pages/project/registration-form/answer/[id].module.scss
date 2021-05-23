@@ -1,0 +1,40 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+}
+
+.section {
+  margin-bottom: 32px;
+}
+
+.formName {
+  font-size: 1.5em;
+}
+
+.formDescription {
+  color: $color-text-sub;
+
+  &:first-of-type {
+    margin-top: 12px;
+  }
+}
+
+.form {
+  max-width: 600px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.submitButton {
+  margin-top: 32px;
+}
