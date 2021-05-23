@@ -13,8 +13,8 @@ import {
   RegistrationFormAnswer,
 } from "src/types/models/registrationForm"
 
-import { listMyRegistrationForms } from "src/lib/api/project/listMyRegistrationForms"
-import { getMyRegistrationFormAnswer } from "src/lib/api/project/getMyRegistrationFormAnswer"
+import { listMyRegistrationForms } from "src/lib/api/registrationForm/listMyRegistrationForms"
+import { getMyRegistrationFormAnswer } from "src/lib/api/registrationForm/getMyRegistrationFormAnswer"
 
 import { pagesPath } from "src/utils/$path"
 
