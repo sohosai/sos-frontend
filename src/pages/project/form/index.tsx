@@ -54,9 +54,11 @@ const FormRow: FC<{ form: FormWithHasAnswerFlag; answerable: boolean }> = ({
               />
               {dayjs.tz(form.ends_at, "Asia/Tokyo").format("M/D HH:mm")}
             </p>
-            <p className={styles.formAnsweredState}>
-              {form.has_answer ? "回答済み" : "未回答"}
-            </p>
+            <div className={styles.formAnsweredStateWrapper}>
+              <p className={styles.formAnsweredState}>
+                {form.has_answer ? "回答済み" : "未回答"}
+              </p>
+            </div>
           </div>
         </Panel>
       </a>

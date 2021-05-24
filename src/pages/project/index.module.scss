@@ -76,11 +76,6 @@
 .isAnsweredChip {
   padding: 4px 12px;
   border-radius: 4px;
-  background-color: $color-brand;
-  color: white;
-
-  &[data-answered="true"] {
-    background-color: $color-gray-100;
-    color: $color-text-primary;
-  }
+  background-color: $color-brand-tint-900;
+  color: $color-brand-tint-200;
 }

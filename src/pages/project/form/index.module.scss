@@ -43,15 +43,16 @@
 }
 
 .formName {
-  flex-grow: 1;
+  width: 200%;
   flex-shrink: 1;
   margin-right: 16px;
   @include ellipsis;
 }
 
 .formDate {
-  width: 15em;
-  flex-shrink: 0;
+  width: 100%;
+  min-width: 12em;
+  flex-shrink: 1;
   margin-right: 16px;
   color: $color-text-sub;
   display: flex;
@@ -62,9 +63,15 @@
   margin: 0 2px;
 }
 
-.formAnsweredState {
-  display: block;
+.formAnsweredStateWrapper {
+  width: 5em;
   flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.formAnsweredState {
+  display: inline-block;
   padding: 2px 8px;
   border-radius: 4px;
   background-color: $color-brand-tint-900;
