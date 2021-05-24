@@ -176,15 +176,15 @@ const ProjectIndex: PageFC = () => {
                   <>
                     <div className={styles.generalInfoTableItem}>
                       <p className={styles.generalInfoTableKey}>責任者</p>
-                      <div className={styles.generalInfoTableValue}>
-                        {myProjectState.myProject.owner_name}
-                      </div>
+                      <p className={styles.generalInfoTableValue}>
+                        {`${myProjectState.myProject.owner_name.last} ${myProjectState.myProject.owner_name.first}`}
+                      </p>
                     </div>
                     <div className={styles.generalInfoTableItem}>
                       <p className={styles.generalInfoTableKey}>副責任者</p>
-                      <div className={styles.generalInfoTableValue}>
-                        {myProjectState.myProject.subowner_name}
-                      </div>
+                      <p className={styles.generalInfoTableValue}>
+                        {`${myProjectState.myProject.subowner_name.last} ${myProjectState.myProject.subowner_name.first}`}
+                      </p>
                     </div>
                   </>
                 )}
