@@ -12,7 +12,7 @@ export type FormItem = Readonly<{
   id: FormItemId
   name: string
   description: string
-  conditions?: FormItemCondition[]
+  conditions: FormItemCondition[] | null
 }> &
   (
     | CheckboxFormItem

@@ -131,9 +131,20 @@ const AnswerForm: PageFC = () => {
         })
           .catch(async (err) => {
             setProcessing(false)
-            // TODO: err handling
-            addToast({ title: "エラーが発生しました", kind: "error" })
+
             const body = await err.response?.json()
+            switch (body.error?.info?.type) {
+              case "ALREADY_ANSWERED_FORM":
+                addToast({ title: "既に回答している申請です", kind: "error" })
+                break
+              case "OUT_OF_ANSWER_PERIOD":
+                addToast({ title: "回答受け付け期間外です", kind: "error" })
+                break
+              default:
+                addToast({ title: "エラーが発生しました", kind: "error" })
+                break
+            }
+
             throw body ?? err
           })
           .then(() => {

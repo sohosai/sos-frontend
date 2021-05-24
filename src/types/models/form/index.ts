@@ -16,12 +16,12 @@ export type FormCondition = Readonly<{
 
 export type Form = Readonly<{
   id: FormId
-  created_at: Date
+  created_at: number
   author_id: UserId
   name: string
   description: string
-  starts_at: Date
-  ends_at: Date
+  starts_at: number
+  ends_at: number
   items: FormItem[]
   condition: FormCondition
 }>
@@ -30,7 +30,7 @@ export type FormAnswer = Readonly<{
   id: FormAnswerId
   project_id: ProjectId
   form_id: FormId
-  created_at: Date
+  created_at: number
   author_id: UserId
   items: FormAnswerItem[]
 }>

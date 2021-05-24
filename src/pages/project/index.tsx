@@ -8,13 +8,9 @@ import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"
 
 import { projectCategoryToUiText } from "src/types/models/project"
-import {
-  RegistrationForm,
-  RegistrationFormAnswer,
-} from "src/types/models/registrationForm"
+import { RegistrationForm } from "src/types/models/registrationForm"
 
-import { listMyRegistrationForms } from "src/lib/api/project/listMyRegistrationForms"
-import { getMyRegistrationFormAnswer } from "src/lib/api/project/getMyRegistrationFormAnswer"
+import { listMyRegistrationForms } from "src/lib/api/registrationForm/listMyRegistrationForms"
 
 import { pagesPath } from "src/utils/$path"
 
@@ -28,9 +24,7 @@ const ProjectIndex: PageFC = () => {
   const { addToast } = useToastDispatcher()
 
   const [registrationForms, setRegistrationForms] =
-    useState<RegistrationForm[]>()
-  const [registrationFormAnswers, setRegistrationFormAnswers] =
-    useState<(RegistrationFormAnswer | null)[]>()
+    useState<Array<{ has_answer: boolean } & RegistrationForm>>()
   const [registrationFormsCompleted, setRegistrationFormsCompleted] =
     useState(false)
 
@@ -50,27 +44,9 @@ const ProjectIndex: PageFC = () => {
           throw err
         })
 
-      // FIXME: N+1で最悪
-      // バックから listMyRegistrationForms で回答の有無が返ってくるようになり次第消す
-      const answers = await Promise.all(
-        fetchedRegistrationForms.map(async ({ id }) =>
-          getMyRegistrationFormAnswer({
-            ...(myProjectState.isPending
-              ? { pendingProjectId: myProjectState.myProject.id }
-              : { projectId: myProjectState.myProject.id }),
-            registrationFormId: id,
-            idToken: await authState.firebaseUser.getIdToken(),
-          })
-        )
-      ).catch((err) => {
-        addToast({ title: "エラーが発生しました", kind: "error" })
-        throw err
-      })
-
       setRegistrationForms(fetchedRegistrationForms)
-      setRegistrationFormAnswers(answers.map((ans) => ans.answer))
       setRegistrationFormsCompleted(
-        !answers.some(({ answer }) => answer === null)
+        !fetchedRegistrationForms.some(({ has_answer }) => has_answer === false)
       )
     })()
   }, [authState, myProjectState])
@@ -176,15 +152,15 @@ const ProjectIndex: PageFC = () => {
                   <>
                     <div className={styles.generalInfoTableItem}>
                       <p className={styles.generalInfoTableKey}>責任者</p>
-                      <div className={styles.generalInfoTableValue}>
-                        {myProjectState.myProject.owner_name}
-                      </div>
+                      <p className={styles.generalInfoTableValue}>
+                        {`${myProjectState.myProject.owner_name.last} ${myProjectState.myProject.owner_name.first}`}
+                      </p>
                     </div>
                     <div className={styles.generalInfoTableItem}>
                       <p className={styles.generalInfoTableKey}>副責任者</p>
-                      <div className={styles.generalInfoTableValue}>
-                        {myProjectState.myProject.subowner_name}
-                      </div>
+                      <p className={styles.generalInfoTableValue}>
+                        {`${myProjectState.myProject.subowner_name.last} ${myProjectState.myProject.subowner_name.first}`}
+                      </p>
                     </div>
                   </>
                 )}
@@ -202,42 +178,36 @@ const ProjectIndex: PageFC = () => {
           <section className={styles.section} data-section="registrationForms">
             <h2 className={styles.sectionTitle}>登録申請</h2>
             <Panel>
-              {registrationForms && registrationFormAnswers ? (
+              {registrationForms ? (
                 <>
-                  {registrationForms.length &&
-                  registrationFormAnswers.length ? (
+                  {registrationForms.length ? (
                     <>
-                      {registrationForms.map((form, index) => (
+                      {registrationForms.map((form) => (
                         <div
                           key={form.id}
                           className={styles.registrationFormRowWrapper}
                         >
-                          {registrationFormAnswers[index] === null ? (
-                            <Link
-                              href={pagesPath.project.registration_form.answer
-                                ._id(form.id)
-                                .$url()}
-                            >
-                              <a className={styles.registrationFormRow}>
-                                <p className={styles.registrationFormName}>
-                                  {form.name}
-                                </p>
-                                <p className={styles.isAnsweredChip}>未回答</p>
-                              </a>
-                            </Link>
-                          ) : (
-                            <div className={styles.registrationFormRow}>
+                          <Link
+                            href={
+                              form.has_answer
+                                ? ""
+                                : pagesPath.project.registration_form.answer
+                                    ._id(form.id)
+                                    .$url()
+                            }
+                          >
+                            <a className={styles.registrationFormRow}>
                               <p className={styles.registrationFormName}>
                                 {form.name}
                               </p>
                               <p
                                 className={styles.isAnsweredChip}
-                                data-answered
+                                data-answered={form.has_answer}
                               >
-                                回答済み
+                                {form.has_answer ? "回答済み" : "未回答"}
                               </p>
-                            </div>
-                          )}
+                            </a>
+                          </Link>
                         </div>
                       ))}
                     </>
