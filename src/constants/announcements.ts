@@ -5,6 +5,7 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 
 import { staticPath } from "src/utils/$path"
+import { STAGE_GUIDANCE_URL } from "src/constants/links"
 
 type Announcement = {
   id: string
@@ -26,6 +27,12 @@ export const announcements: Announcement[] = [
       "本日付けでオンラインステージ用募集要項を公開いたします。対面開催中止に伴う前回学園祭からの変更点等について記載されておりますので、企画応募をご検討の皆様は必ずご確認ください。",
       "今後も学園祭について情報発信を行ってまいりますので、ご確認のほどよろしくお願い申し上げます。",
     ].join("\n"),
+    links: [
+      {
+        url: staticPath.docs["オンラインステージ企画用募集要項_210519_pdf"],
+        label: "オンラインステージ企画用募集要項",
+      },
+    ],
   },
   {
     id: "df454852-f9af-40cd-b281-f1a3c11265e2",
@@ -35,6 +42,12 @@ export const announcements: Announcement[] = [
       "オンラインステージ企画用雙峰祭ガイダンスを公開いたします。",
       "雙峰祭ガイダンスとは、前回学園祭からの変更点や特に重要な内容を簡潔にまとめた動画でございます。今年度は非常に多くの変更点がございますので、募集要項をご確認の際にぜひご一緒にご視聴ください。",
     ].join("\n"),
+    links: [
+      {
+        url: STAGE_GUIDANCE_URL,
+        label: "オンラインステージ企画用雙峰祭ガイダンス",
+      },
+    ],
   },
   {
     id: "ebf708a8-0eb7-48db-b2d9-d33c0184c951",
