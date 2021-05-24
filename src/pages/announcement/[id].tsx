@@ -33,6 +33,24 @@ const Announcement: PageFC = () => {
                   </p>
                 ))}
               </div>
+              {announcement.links && (
+                <div className={styles.linksWrapper}>
+                  {announcement.links?.map(({ url, label }) => (
+                    <a
+                      target="_blank"
+                      href={url}
+                      rel="noopener noreferrer"
+                      key={url}
+                      className={styles.link}
+                    >
+                      <span
+                        className={`jam-icons jam-link ${styles.linkIcon}`}
+                      />
+                      {label ?? url}
+                    </a>
+                  ))}
+                </div>
+              )}
               <p className={styles.date}>
                 {announcement.date.format("YYYY/M/D HH:mm")}
               </p>
