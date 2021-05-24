@@ -79,7 +79,7 @@
   background-color: $color-brand;
   color: white;
 
-  &[data-answered] {
+  &[data-answered="true"] {
     background-color: $color-gray-100;
     color: $color-text-primary;
   }
