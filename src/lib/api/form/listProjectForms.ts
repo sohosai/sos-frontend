@@ -14,7 +14,9 @@ declare namespace listProjectForms {
 const listProjectForms = async ({
   props: { project_id },
   idToken,
-}: listProjectForms.Props): Promise<{ forms: Form[] }> => {
+}: listProjectForms.Props): Promise<{
+  forms: Array<{ has_answer: true } & Form>
+}> => {
   return client({ idToken })
     .get("project/form/list", {
       searchParams: {
