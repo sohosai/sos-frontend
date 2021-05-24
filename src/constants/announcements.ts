@@ -4,11 +4,17 @@ import timezone from "dayjs/plugin/timezone"
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
+import { staticPath } from "src/utils/$path"
+
 type Announcement = {
   id: string
   date: dayjs.Dayjs
   title: string
   text: string
+  links?: {
+    url: string
+    label?: string
+  }[]
 }
 
 export const announcements: Announcement[] = [
@@ -52,7 +58,7 @@ export const announcements: Announcement[] = [
     ].join("\n"),
   },
   {
-    id: "eb840c93-ca79-48c1-b1f0-9c4b9569ce6c",
+    id: "bce0068c-56b5-4cc5-8183-088fd10120ff",
     date: dayjs.tz("2021-05-24T18:20:00", "Asia/Tokyo"),
     title: "感染症対策ガイドライン(案)の公開について",
     text: [
@@ -62,5 +68,14 @@ export const announcements: Announcement[] = [
       "また、本ガイドライン案は、本学の対策指針の変更などに応じて随時変更いたします。変更の際には改めてお知らせいたしますので、学実委からの情報にご注意ください。",
       "このガイドライン(案)に関するご意見・ご質問がございましたら、学実委までお問い合わせください。",
     ].join("\n"),
+    links: [
+      {
+        url: staticPath.docs[
+          "感染症拡大防止ガイドライン_案__オンラインステージ企画募集改0524_pdf"
+        ],
+        label:
+          "学園祭開催に向けた感染症対策ガイドライン(案)<オンラインステージ用>",
+      },
+    ],
   },
 ]
