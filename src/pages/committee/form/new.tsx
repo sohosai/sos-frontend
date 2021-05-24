@@ -195,11 +195,7 @@ const NewForm: PageFC = () => {
             includes: [],
             excludes: [],
           },
-          items: items.map((item) => ({
-            ...item,
-            // FIXME: react-hook-form が空配列勝手に消してくるのでとりあえず
-            conditions: item.conditions ?? [],
-          })),
+          items,
         },
         idToken,
       })
@@ -227,7 +223,7 @@ const NewForm: PageFC = () => {
           type: "text",
           name: "",
           description: "",
-          conditions: [],
+          conditions: null,
           accept_multiple_lines: false,
           is_required: false,
           placeholder: "",
@@ -240,7 +236,7 @@ const NewForm: PageFC = () => {
           type: "checkbox",
           name: "",
           description: "",
-          conditions: [],
+          conditions: null,
           boxes: [],
         })
         break
@@ -250,7 +246,7 @@ const NewForm: PageFC = () => {
           id: uuid(),
           name: "",
           description: "",
-          conditions: [],
+          conditions: null,
           type: "radio",
           is_required: false,
           buttons: [],

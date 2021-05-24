@@ -21,18 +21,24 @@ const listMyRegistrationForms = async ({
   pendingProjectId,
   idToken,
 }: listMyRegistrationForms.Props): Promise<{
-  registrationForms: RegistrationForm[]
+  registrationForms: Array<{ has_answer: boolean } & RegistrationForm>
 }> => {
   if (projectId) {
     try {
-      const { registration_forms } = await client({ idToken })
-        .get("project/registration-form/list", {
-          searchParams: {
-            project_id: projectId,
-          },
-        })
-        .json()
-      return { registrationForms: registration_forms }
+      const { registration_forms }: { registration_forms: RegistrationForm[] } =
+        await client({ idToken })
+          .get("project/registration-form/list", {
+            searchParams: {
+              project_id: projectId,
+            },
+          })
+          .json()
+      return {
+        registrationForms: registration_forms.map((form) => ({
+          ...form,
+          has_answer: true,
+        })),
+      }
     } catch (err) {
       const body = await err.response?.json()
       throw body ?? err
