@@ -15,6 +15,7 @@ import { exportUsers } from "../../../lib/api/user/exportUsers"
 import { saveAs } from "file-saver"
 import dayjs from "dayjs"
 
+import { pagesPath } from "../../../utils/$path"
 import { createCsvBlob } from "../../../utils/createCsvBlob"
 
 import { Button, Head, Panel, Spinner } from "../../../components"
@@ -95,7 +96,9 @@ const ListUsers: PageFC = () => {
                 {users.map(({ name, role, category, id }) => {
                   return (
                     <li key={id} className={styles.rowWrapper}>
-                      <Link href="">
+                      <Link
+                        href={pagesPath.committee.user.details._id(id).$url()}
+                      >
                         <a className={styles.row}>
                           <p
                             className={styles.cell}
