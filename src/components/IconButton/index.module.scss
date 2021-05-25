@@ -14,7 +14,8 @@
   transition: background-color 200ms;
   @include flexCenter;
 
-  &:hover {
+  &:hover,
+  &:focus-visible {
     background-color: $color-gray-100;
   }
 
