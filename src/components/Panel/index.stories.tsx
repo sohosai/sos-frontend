@@ -1,4 +1,4 @@
-import { Story } from "@storybook/react"
+import { ArgTypes, Story } from "@storybook/react"
 
 import { Panel } from "."
 import { Spinner } from "../"
@@ -8,11 +8,21 @@ export default {
   component: Panel,
 }
 
-export const Text: Story = () => (
+const argTypes: ArgTypes = {
+  style: {
+    control: false,
+  },
+  hoverStyle: {
+    defaultValue: "none",
+  },
+}
+
+export const Text: Story = ({ hoverStyle }) => (
   <Panel
     style={{
       width: "320px",
     }}
+    hoverStyle={hoverStyle}
   >
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at nulla
@@ -20,8 +30,9 @@ export const Text: Story = () => (
     </p>
   </Panel>
 )
+Text.argTypes = argTypes
 
-export const Loading: Story = () => (
+export const Loading: Story = ({ hoverStyle }) => (
   <Panel
     style={{
       minWidth: "320px",
@@ -30,7 +41,9 @@ export const Loading: Story = () => (
       alignItems: "center",
       justifyContent: "center",
     }}
+    hoverStyle={hoverStyle}
   >
     <Spinner />
   </Panel>
 )
+Loading.argTypes = argTypes

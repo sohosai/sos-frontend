@@ -5,4 +5,17 @@
   border-radius: 10px;
   border: 1px solid $color-gray-100;
   box-shadow: 0px 8px 16px 0px $color-gray-100;
+  transition: border 200ms;
+
+  &[data-hover-style="brand"] {
+    &:hover {
+      border-color: $color-brand;
+    }
+  }
+
+  &[data-hover-style="gray"] {
+    &:hover {
+      border-color: $color-gray-400;
+    }
+  }
 }
