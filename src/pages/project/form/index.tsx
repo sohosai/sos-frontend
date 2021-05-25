@@ -22,49 +22,58 @@ import styles from "./index.module.scss"
 
 type FormWithHasAnswerFlag = Form & { has_answer: boolean }
 
-const FormRow: FC<{ form: FormWithHasAnswerFlag; answerable: boolean }> = ({
-  form,
-  answerable,
-}) => (
-  <div className={styles.formRowWrapper} key={form.id}>
-    <Link
-      href={
-        !answerable || form.has_answer
-          ? ""
-          : pagesPath.project.form.answer.$url({
-              query: { formId: form.id },
-            })
-      }
+type FormRowProps = {
+  form: FormWithHasAnswerFlag
+  outOfAnswerPeriod?: boolean
+}
+
+const FormRow: FC<FormRowProps> = ({ form, outOfAnswerPeriod = false }) => {
+  const answerable = !outOfAnswerPeriod && form.has_answer === false
+
+  const FormRowInner: FC = () => (
+    <Panel
+      style={{
+        paddingTop: "24px",
+        paddingBottom: "24px",
+      }}
+      hoverStyle={answerable ? "gray" : "none"}
     >
-      <a>
-        <Panel
-          style={{
-            paddingTop: "24px",
-            paddingBottom: "24px",
-          }}
+      <div className={styles.formRowInner}>
+        <p className={styles.formName} title={form.name}>
+          {form.name}
+        </p>
+        <p className={styles.formDate}>
+          {dayjs.tz(form.starts_at, "Asia/Tokyo").format("M/D HH:mm")}
+          <i className={`jam-icons jam-arrow-right ${styles.formDateIcon}`} />
+          {dayjs.tz(form.ends_at, "Asia/Tokyo").format("M/D HH:mm")}
+        </p>
+        <div className={styles.formAnsweredStateWrapper}>
+          <p className={styles.formAnsweredState}>
+            {form.has_answer ? "回答済み" : "未回答"}
+          </p>
+        </div>
+      </div>
+    </Panel>
+  )
+
+  return (
+    <div className={styles.formRowWrapper} key={form.id}>
+      {answerable ? (
+        <Link
+          href={pagesPath.project.form.answer.$url({
+            query: { formId: form.id },
+          })}
         >
-          <div className={styles.formRowInner}>
-            <p className={styles.formName} title={form.name}>
-              {form.name}
-            </p>
-            <p className={styles.formDate}>
-              {dayjs.tz(form.starts_at, "Asia/Tokyo").format("M/D HH:mm")}
-              <i
-                className={`jam-icons jam-arrow-right ${styles.formDateIcon}`}
-              />
-              {dayjs.tz(form.ends_at, "Asia/Tokyo").format("M/D HH:mm")}
-            </p>
-            <div className={styles.formAnsweredStateWrapper}>
-              <p className={styles.formAnsweredState}>
-                {form.has_answer ? "回答済み" : "未回答"}
-              </p>
-            </div>
-          </div>
-        </Panel>
-      </a>
-    </Link>
-  </div>
-)
+          <a>
+            <FormRowInner />
+          </a>
+        </Link>
+      ) : (
+        <FormRowInner />
+      )}
+    </div>
+  )
+}
 
 const ListProjectForms: PageFC = () => {
   const { authState } = useAuthNeue()
@@ -146,7 +155,7 @@ const ListProjectForms: PageFC = () => {
               {answerableForms.length ? (
                 <>
                   {answerableForms.map((form) => (
-                    <FormRow form={form} key={form.id} answerable />
+                    <FormRow form={form} key={form.id} />
                   ))}
                 </>
               ) : (
@@ -164,7 +173,7 @@ const ListProjectForms: PageFC = () => {
               {notAnswerableForms.length ? (
                 <>
                   {notAnswerableForms.map((form) => (
-                    <FormRow form={form} key={form.id} answerable={false} />
+                    <FormRow form={form} key={form.id} outOfAnswerPeriod />
                   ))}
                 </>
               ) : (
