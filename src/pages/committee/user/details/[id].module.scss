@@ -1,0 +1,103 @@
+@import "src/styles/variables";
+@import "src/styles/mixins";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+}
+
+.section {
+  &:not(:last-child) {
+    margin-bottom: 24px;
+  }
+}
+
+.copyButton {
+  margin-left: 8px;
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
+.userName {
+  font-size: 1.5em;
+  margin-bottom: 12px;
+}
+
+.userKanaName {
+  color: $color-text-sub;
+
+  & + .userRole {
+    margin-top: 8px;
+  }
+}
+
+.userName,
+.userKanaName {
+  display: flex;
+  align-items: center;
+
+  &:hover,
+  &:focus-within {
+    .userNameCopyButton {
+      opacity: 1;
+    }
+  }
+}
+
+.userRole {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background-color: $color-brand-tint-900;
+  color: $color-brand-shade-200;
+  font-size: 0.9em;
+}
+
+$color-table-border: $color-gray-200;
+
+.table {
+  border-right: 1px solid $color-table-border;
+  border-left: 1px solid $color-table-border;
+  border-top: 1px solid $color-table-border;
+}
+
+.tableRow {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid $color-table-border;
+
+  &:hover,
+  &:focus-within {
+    .tableRowValueCopyButton {
+      opacity: 1;
+    }
+  }
+}
+
+.tableRowKey {
+  display: flex;
+  align-items: center;
+  min-width: 12em;
+  padding: 8px 12px;
+  background-color: $color-gray-50;
+}
+
+.tableRowValue {
+  flex-shrink: 1;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-left: 1px solid $color-table-border;
+  overflow-wrap: anywhere;
+}
+
+.tableRowValueCopyButton {
+  margin-left: 4px;
+}

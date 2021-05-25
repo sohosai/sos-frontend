@@ -13,40 +13,53 @@
   margin-bottom: 24px;
 }
 
-.usersTableWrapper {
-  color: $color-text-sub;
-}
-
 .table {
   width: 100%;
   border-collapse: collapse;
 }
 
 .head {
-  color: $color-text-primary;
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 0 12px;
+  @include ellipsis;
 }
 
 .headCell {
-  text-align: start;
+  width: 100%;
+  flex-shrink: 1;
+  color: $color-text-primary;
   font-weight: normal;
   font-size: 1.2em;
-  padding-bottom: 16px;
 }
 
 .row {
-  line-height: 24px;
-  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid $color-gray-100;
+  transition: background-color 200ms;
 
-  &:first-child {
-    .cell {
+  &:hover,
+  &:focus-within {
+    background-color: $color-gray-50;
+  }
+}
+
+.rowWrapper {
+  &:first-of-type {
+    .row {
       border-top: 1px solid $color-gray-100;
     }
   }
 }
 
 .cell {
-  padding: 12px 0;
-  border-bottom: 1px solid $color-gray-100;
+  width: 100%;
+  flex-shrink: 1;
+  color: $color-text-sub;
+  @include ellipsis;
 }
 
 .emptyWrapper {
