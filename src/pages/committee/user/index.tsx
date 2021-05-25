@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 
 import type { PageFC } from "next"
+import Link from "next/link"
 
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
@@ -84,32 +85,36 @@ const ListUsers: PageFC = () => {
       <Panel>
         {users?.length ? (
           <div className={styles.usersTableWrapper}>
-            <table className={styles.table}>
-              <thead className={styles.head}>
-                <tr>
-                  <th className={styles.headCell}>氏名</th>
-                  <th className={styles.headCell}>権限</th>
-                  <th className={styles.headCell}>所属</th>
-                </tr>
-              </thead>
-              <tbody>
+            <div className={styles.table}>
+              <div className={styles.head}>
+                <p className={styles.headCell}>氏名</p>
+                <p className={styles.headCell}>権限</p>
+                <p className={styles.headCell}>所属</p>
+              </div>
+              <ul>
                 {users.map(({ name, role, category, id }) => {
                   return (
-                    <tr key={id} className={styles.row}>
-                      <td
-                        className={styles.cell}
-                      >{`${name.last} ${name.first}`}</td>
-                      <td className={styles.cell}>{userRoleToUiText(role)}</td>
-                      <td className={styles.cell}>
-                        {category.type === "undergraduate_student"
-                          ? category.affiliation
-                          : userCategoryTypeToUiText(category.type)}
-                      </td>
-                    </tr>
+                    <li key={id} className={styles.rowWrapper}>
+                      <Link href="">
+                        <a className={styles.row}>
+                          <p
+                            className={styles.cell}
+                          >{`${name.last} ${name.first}`}</p>
+                          <p className={styles.cell}>
+                            {userRoleToUiText(role)}
+                          </p>
+                          <p className={styles.cell}>
+                            {category.type === "undergraduate_student"
+                              ? category.affiliation
+                              : userCategoryTypeToUiText(category.type)}
+                          </p>
+                        </a>
+                      </Link>
+                    </li>
                   )
                 })}
-              </tbody>
-            </table>
+              </ul>
+            </div>
           </div>
         ) : (
           <div className={styles.emptyWrapper}>
