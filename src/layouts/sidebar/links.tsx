@@ -160,7 +160,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
               })
           ),
         active: () =>
-          router.pathname === pagesPath.committee.user.$url().pathname,
+          router.pathname.startsWith(pagesPath.committee.user.$url().pathname),
       },
       {
         href: pagesPath.committee.meta.$url(),
