@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@react-spring/web": "9.1.2",
+    "@react-spring/web": "9.2.1",
     "dayjs": "1.10.5",
     "ky": "0.28.2",
     "next": "10.2.3",
