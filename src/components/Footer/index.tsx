@@ -20,7 +20,7 @@ export const Footer: FC = () => (
       rel="noopener noreferrer"
       className={styles.linkItem}
     >
-      雙峰祭実行委員会
+      学園祭実行委員会
     </a>
     <Link href={pagesPath.privacy_policy.$url()}>
       <a className={styles.linkItem}>プライバシーポリシー</a>
