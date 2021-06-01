@@ -107,7 +107,7 @@ const AnswerRegistrationForm: PageFC = () => {
               body: requestProps,
             },
           })
-          console.error(err)
+          console.error("failed to answer registration form", err)
         }
 
         switch (err.error?.info?.type) {
