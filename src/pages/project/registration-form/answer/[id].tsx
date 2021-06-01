@@ -16,6 +16,7 @@ import { getRegistrationForm } from "src/lib/api/registrationForm/getRegistratio
 import { answerRegistrationForm } from "src/lib/api/registrationForm/answerRegistrationForm"
 
 import { pagesPath } from "src/utils/$path"
+import { attachError } from "src/utils/attachError"
 
 import { Button, FormItemSpacer, Head, Panel, Spinner } from "src/components"
 import {
@@ -39,6 +40,7 @@ const AnswerRegistrationForm: PageFC = () => {
   const [registrationForm, setRegistrationForm] = useState<RegistrationForm>()
   const [generalError, setGeneralError] =
     useState<"noProject" | "noRegistrationFormId">()
+  const [processing, setProcessing] = useState(false)
 
   const { id: registrationFormId } = router.query as { id?: string }
 
@@ -62,15 +64,15 @@ const AnswerRegistrationForm: PageFC = () => {
   })
 
   const onSubmit = async ({ items }: Inputs) => {
-    console.log(items)
-
     // useEffect 側でハンドルしてるので適当
     if (authState?.status !== "bothSignedIn") return
     if (!myProjectState?.myProject) return
     if (!registrationFormId) return
 
     if (window.confirm("回答を送信しますか?")) {
-      answerRegistrationForm({
+      setProcessing(true)
+
+      const requestProps = {
         pendingProjectId: myProjectState.myProject.id,
         registrationFormId: registrationFormId,
         items: items.map((item) => {
@@ -85,16 +87,48 @@ const AnswerRegistrationForm: PageFC = () => {
           }
           return item
         }),
-        idToken: await authState.firebaseUser.getIdToken(),
-      })
-        .then(() => {
-          addToast({ title: "送信しました", kind: "success" })
-          router.push(pagesPath.project.$url())
+      }
+
+      try {
+        await answerRegistrationForm({
+          ...requestProps,
+          idToken: await authState.firebaseUser.getIdToken(),
         })
-        .catch((err) => {
-          addToast({ title: "エラーが発生しました", kind: "error" })
-          throw err
-        })
+        setProcessing(false)
+        addToast({ title: "送信しました", kind: "success" })
+        router.push(pagesPath.project.$url())
+      } catch (err) {
+        setProcessing(false)
+        const reportError = () => {
+          attachError({
+            message: "failed to answer registration form",
+            data: {
+              registrationForm,
+              body: requestProps,
+            },
+          })
+          console.error(err)
+        }
+
+        switch (err.error?.info?.type) {
+          case "ALREADY_ANSWERED_REGISTRATION_FORM": {
+            addToast({
+              title: "既に回答している登録申請です",
+              kind: "error",
+            })
+            break
+          }
+          case "OUT_OF_PROJECT_CREATION_PERIOD": {
+            addToast({ title: "企画応募期間外です", kind: "error" })
+            break
+          }
+          default: {
+            addToast({ title: "エラーが発生しました", kind: "error" })
+            reportError()
+            break
+          }
+        }
+      }
     }
   }
 
@@ -167,7 +201,6 @@ const AnswerRegistrationForm: PageFC = () => {
       )
 
       setRegistrationForm(fetchedRegistrationForm)
-      console.log(fetchedRegistrationForm)
     })()
   }, [authState, myProjectState, registrationFormId])
 
@@ -261,7 +294,12 @@ const AnswerRegistrationForm: PageFC = () => {
                   )
                 })}
                 <div className={styles.submitButton}>
-                  <Button fullWidth icon="paper-plane" type="submit">
+                  <Button
+                    fullWidth
+                    icon="paper-plane"
+                    type="submit"
+                    processing={processing}
+                  >
                     回答を送信する
                   </Button>
                 </div>
