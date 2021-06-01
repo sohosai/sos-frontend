@@ -1,4 +1,5 @@
 const withTM = require("next-transpile-modules")(["ky"])
+const { withSentryConfig } = require("@sentry/nextjs")
 
 const { createSecureHeaders } = require("next-secure-headers")
 
@@ -16,6 +17,17 @@ if (
   !process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 ) {
   throw new Error("Firebase config needed.")
+}
+
+if (
+  process.env.NEXT_PUBLIC_DEPLOY_ENV !== "dev" &&
+  (!process.env.NEXT_PUBLIC_SENTRY_DSN ||
+    !process.env.SENTRY_URL ||
+    !process.env.SENTRY_ORG ||
+    !process.env.SENTRY_PROJECT ||
+    !process.env.SENTRY_AUTH_TOKEN)
+) {
+  throw new Error("Sentry config needed in deploy env other than dev.")
 }
 
 if (!process.env.NEXT_PUBLIC_FRONTEND_URL) {
@@ -38,4 +50,6 @@ const config = {
   },
 }
 
-module.exports = withTM(config)
+module.exports = process.env.NEXT_PUBLIC_SENTRY_DSN
+  ? withSentryConfig(withTM(config))
+  : withTM(config)
