@@ -28,6 +28,7 @@ jobs:
       - name: Typecheck
         run: make typecheck
         env:
+          NEXT_PUBLIC_DEPLOY_ENV: dev
           NEXT_PUBLIC_FIREBASE_API_KEY: dummy
           NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: dummy
           NEXT_PUBLIC_FIREBASE_PROJECT_ID: dummy
