@@ -15,6 +15,7 @@ import { FormAnswerItemInForm } from "../../../types/models/form/answerItem"
 import { getProjectForm } from "../../../lib/api/form/getProjectForm"
 
 import { pagesPath } from "../../../utils/$path"
+import { attachError } from "src/utils/attachError"
 
 import {
   Button,
@@ -121,18 +122,26 @@ const AnswerForm: PageFC = () => {
       if (window.confirm("回答を送信しますか?")) {
         setProcessing(true)
 
-        answerForm({
-          props: {
-            projectId: myProjectState.myProject.id,
-            formId: form.id,
-            items,
-          },
-          idToken: await authState.firebaseUser.getIdToken(),
-        })
-          .catch(async (err) => {
-            setProcessing(false)
+        const requestProps = {
+          projectId: myProjectState.myProject.id,
+          formId: form.id,
+          items,
+        }
 
-            const body = await err.response?.json()
+        try {
+          await answerForm({
+            props: requestProps,
+            idToken: await authState.firebaseUser.getIdToken(),
+          })
+
+          setProcessing(false)
+          addToast({ title: "回答を送信しました", kind: "success" })
+          router.push(pagesPath.project.form.$url())
+        } catch (err) {
+          setProcessing(false)
+
+          const body = await err.response?.json()
+          if (body) {
             switch (body.error?.info?.type) {
               case "ALREADY_ANSWERED_FORM":
                 addToast({ title: "既に回答している申請です", kind: "error" })
@@ -140,18 +149,23 @@ const AnswerForm: PageFC = () => {
               case "OUT_OF_ANSWER_PERIOD":
                 addToast({ title: "回答受け付け期間外です", kind: "error" })
                 break
-              default:
+              default: {
                 addToast({ title: "エラーが発生しました", kind: "error" })
+                attachError({
+                  message: "failed to answer form",
+                  data: {
+                    form: form,
+                    body: requestProps,
+                  },
+                })
+                console.error("failed to answer form", body)
                 break
+              }
             }
-
-            throw body ?? err
-          })
-          .then(() => {
-            setProcessing(false)
-            addToast({ title: "回答を送信しました", kind: "success" })
-            router.push(pagesPath.project.form.$url())
-          })
+          } else {
+            console.error(err)
+          }
+        }
       }
     }
   }
