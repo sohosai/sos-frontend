@@ -158,7 +158,7 @@ const AnswerForm: PageFC = () => {
                     body: requestProps,
                   },
                 })
-                console.error(body)
+                console.error("failed to answer form", body)
                 break
               }
             }
