@@ -122,6 +122,28 @@ const AnswerRegistrationForm: PageFC = () => {
             addToast({ title: "企画応募期間外です", kind: "error" })
             break
           }
+          case "INVALID_FORM_ANSWER_ITEM": {
+            const invalidFormAnswerItemId: string | undefined =
+              err.error?.info?.id
+            const invalidFormAnswerItem = registrationForm?.items.find(
+              (item) => item.id === invalidFormAnswerItemId
+            )
+
+            if (invalidFormAnswerItemId && invalidFormAnswerItem) {
+              addToast({
+                title: `「${invalidFormAnswerItem.name}」への回答が正しくありません`,
+                descriptions: ["項目の説明文などを再度ご確認ください"],
+                kind: "error",
+              })
+              // TODO: 安定してきたらここはreportしなくて良い
+              reportError()
+              break
+            }
+
+            addToast({ title: "エラーが発生しました", kind: "error" })
+            reportError()
+            break
+          }
           default: {
             addToast({ title: "エラーが発生しました", kind: "error" })
             reportError()
