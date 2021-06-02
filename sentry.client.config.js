@@ -9,7 +9,10 @@ Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
   environment: process.env.NEXT_PUBLIC_DEPLOY_ENV,
   normalizeDepth: 10,
-  integrations: [new CaptureConsole(), new ExtraErrorData({ depth: 10 })],
+  integrations: [
+    new CaptureConsole({ levels: ["warn", "error", "debug", "assert"] }),
+    new ExtraErrorData({ depth: 10 }),
+  ],
   // Note: if you want to override the automatic release value, do not set a
   // `release` value here - use the environment variable `SENTRY_RELEASE`, so
   // that it will also get attached to your source maps
