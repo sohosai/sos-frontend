@@ -14,9 +14,9 @@ import { FormAnswerItemInForm } from "src/types/models/form/answerItem"
 
 import { getRegistrationForm } from "src/lib/api/registrationForm/getRegistrationForm"
 import { answerRegistrationForm } from "src/lib/api/registrationForm/answerRegistrationForm"
+import { attachError } from "src/lib/errorTracking/attachError"
 
 import { pagesPath } from "src/utils/$path"
-import { attachError } from "src/utils/attachError"
 
 import { Button, FormItemSpacer, Head, Panel, Spinner } from "src/components"
 import {

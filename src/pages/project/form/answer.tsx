@@ -13,9 +13,9 @@ import { Form } from "../../../types/models/form"
 import { FormAnswerItemInForm } from "../../../types/models/form/answerItem"
 
 import { getProjectForm } from "../../../lib/api/form/getProjectForm"
+import { attachError } from "src/lib/errorTracking/attachError"
 
 import { pagesPath } from "../../../utils/$path"
-import { attachError } from "src/utils/attachError"
 
 import {
   Button,
