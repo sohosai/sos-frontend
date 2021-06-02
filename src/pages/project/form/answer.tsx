@@ -13,7 +13,7 @@ import { Form } from "../../../types/models/form"
 import { FormAnswerItemInForm } from "../../../types/models/form/answerItem"
 
 import { getProjectForm } from "../../../lib/api/form/getProjectForm"
-import { attachError } from "src/lib/errorTracking/attachError"
+import { reportError as reportErrorHandler } from "src/lib/errorTracking/reportError"
 
 import { pagesPath } from "../../../utils/$path"
 
@@ -142,15 +142,12 @@ const AnswerForm: PageFC = () => {
 
           const body = await err.response?.json()
           if (body) {
-            const reportError = () => {
-              attachError({
-                message: "failed to answer form",
-                data: {
-                  form: form,
-                  body: requestProps,
-                },
+            const reportError = (message = "failed to answer form") => {
+              reportErrorHandler(message, {
+                error: err,
+                form: form,
+                body: requestProps,
               })
-              console.error("failed to answer form", body)
             }
 
             switch (body.error?.info?.type) {
@@ -174,7 +171,7 @@ const AnswerForm: PageFC = () => {
                     kind: "error",
                   })
                   // TODO: 安定してきたらここはreportしなくて良い
-                  reportError()
+                  reportError("failed to answer form: INVALID_FORM_ANSWER")
                   break
                 }
 

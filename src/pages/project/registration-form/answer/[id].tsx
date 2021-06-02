@@ -14,7 +14,7 @@ import { FormAnswerItemInForm } from "src/types/models/form/answerItem"
 
 import { getRegistrationForm } from "src/lib/api/registrationForm/getRegistrationForm"
 import { answerRegistrationForm } from "src/lib/api/registrationForm/answerRegistrationForm"
-import { attachError } from "src/lib/errorTracking/attachError"
+import { reportError as reportErrorHandler } from "src/lib/errorTracking/reportError"
 
 import { pagesPath } from "src/utils/$path"
 
@@ -99,15 +99,14 @@ const AnswerRegistrationForm: PageFC = () => {
         router.push(pagesPath.project.$url())
       } catch (err) {
         setProcessing(false)
-        const reportError = () => {
-          attachError({
-            message: "failed to answer registration form",
-            data: {
-              registrationForm,
-              body: requestProps,
-            },
+        const reportError = (
+          message = "failed to answer registration form"
+        ) => {
+          reportErrorHandler(message, {
+            error: err,
+            registrationForm,
+            body: requestProps,
           })
-          console.error("failed to answer registration form", err)
         }
 
         switch (err.error?.info?.type) {
@@ -136,7 +135,9 @@ const AnswerRegistrationForm: PageFC = () => {
                 kind: "error",
               })
               // TODO: 安定してきたらここはreportしなくて良い
-              reportError()
+              reportError(
+                "failed to answer registration form: INVALID_FORM_ANSWER_ITEM"
+              )
               break
             }
 
