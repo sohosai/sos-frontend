@@ -2272,7 +2272,7 @@
     "@sentry/types" "6.5.0"
     tslib "^1.9.3"
 
-"@sentry/nextjs@^6.5.0":
+"@sentry/nextjs@6.5.0":
   version "6.5.0"
   resolved "https://registry.yarnpkg.com/@sentry/nextjs/-/nextjs-6.5.0.tgz#b52ff92e73be6f6995895f9adf8c541bc74ada8a"
   integrity sha512-weF+NGV8QzE11e81O01vV8z6ScCSqKkBpzAGGqKHCIJRrv5e6AaTMD7I2d/pbSrnd0HbjAkk2x3UMcyJE6b8lg==
