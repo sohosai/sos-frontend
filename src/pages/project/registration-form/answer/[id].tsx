@@ -14,9 +14,9 @@ import { FormAnswerItemInForm } from "src/types/models/form/answerItem"
 
 import { getRegistrationForm } from "src/lib/api/registrationForm/getRegistrationForm"
 import { answerRegistrationForm } from "src/lib/api/registrationForm/answerRegistrationForm"
+import { reportError as reportErrorHandler } from "src/lib/errorTracking/reportError"
 
 import { pagesPath } from "src/utils/$path"
-import { attachError } from "src/utils/attachError"
 
 import { Button, FormItemSpacer, Head, Panel, Spinner } from "src/components"
 import {
@@ -99,15 +99,14 @@ const AnswerRegistrationForm: PageFC = () => {
         router.push(pagesPath.project.$url())
       } catch (err) {
         setProcessing(false)
-        const reportError = () => {
-          attachError({
-            message: "failed to answer registration form",
-            data: {
-              registrationForm,
-              body: requestProps,
-            },
+        const reportError = (
+          message = "failed to answer registration form"
+        ) => {
+          reportErrorHandler(message, {
+            error: err,
+            registrationForm,
+            body: requestProps,
           })
-          console.error("failed to answer registration form", err)
         }
 
         switch (err.error?.info?.type) {
@@ -120,6 +119,30 @@ const AnswerRegistrationForm: PageFC = () => {
           }
           case "OUT_OF_PROJECT_CREATION_PERIOD": {
             addToast({ title: "企画応募期間外です", kind: "error" })
+            break
+          }
+          case "INVALID_FORM_ANSWER_ITEM": {
+            const invalidFormAnswerItemId: string | undefined =
+              err.error?.info?.id
+            const invalidFormAnswerItem = registrationForm?.items.find(
+              (item) => item.id === invalidFormAnswerItemId
+            )
+
+            if (invalidFormAnswerItemId && invalidFormAnswerItem) {
+              addToast({
+                title: `「${invalidFormAnswerItem.name}」への回答が正しくありません`,
+                descriptions: ["項目の説明文などを再度ご確認ください"],
+                kind: "error",
+              })
+              // TODO: 安定してきたらここはreportしなくて良い
+              reportError(
+                "failed to answer registration form: INVALID_FORM_ANSWER_ITEM"
+              )
+              break
+            }
+
+            addToast({ title: "エラーが発生しました", kind: "error" })
+            reportError()
             break
           }
           default: {

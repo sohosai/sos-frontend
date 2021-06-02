@@ -13,9 +13,9 @@ import { Form } from "../../../types/models/form"
 import { FormAnswerItemInForm } from "../../../types/models/form/answerItem"
 
 import { getProjectForm } from "../../../lib/api/form/getProjectForm"
+import { reportError as reportErrorHandler } from "src/lib/errorTracking/reportError"
 
 import { pagesPath } from "../../../utils/$path"
-import { attachError } from "src/utils/attachError"
 
 import {
   Button,
@@ -142,6 +142,14 @@ const AnswerForm: PageFC = () => {
 
           const body = await err.response?.json()
           if (body) {
+            const reportError = (message = "failed to answer form") => {
+              reportErrorHandler(message, {
+                error: err,
+                form: form,
+                body: requestProps,
+              })
+            }
+
             switch (body.error?.info?.type) {
               case "ALREADY_ANSWERED_FORM":
                 addToast({ title: "既に回答している申請です", kind: "error" })
@@ -149,16 +157,31 @@ const AnswerForm: PageFC = () => {
               case "OUT_OF_ANSWER_PERIOD":
                 addToast({ title: "回答受け付け期間外です", kind: "error" })
                 break
+              case "INVALID_FORM_ANSWER": {
+                const invalidFormAnswerItemId: string | undefined =
+                  err.error?.info?.id
+                const invalidFormAnswerItem = form?.items.find(
+                  (item) => item.id === invalidFormAnswerItemId
+                )
+
+                if (invalidFormAnswerItemId && invalidFormAnswerItem) {
+                  addToast({
+                    title: `「${invalidFormAnswerItem.name}」への回答が正しくありません`,
+                    descriptions: ["項目の説明文などを再度ご確認ください"],
+                    kind: "error",
+                  })
+                  // TODO: 安定してきたらここはreportしなくて良い
+                  reportError("failed to answer form: INVALID_FORM_ANSWER")
+                  break
+                }
+
+                addToast({ title: "エラーが発生しました", kind: "error" })
+                reportError()
+                break
+              }
               default: {
                 addToast({ title: "エラーが発生しました", kind: "error" })
-                attachError({
-                  message: "failed to answer form",
-                  data: {
-                    form: form,
-                    body: requestProps,
-                  },
-                })
-                console.error("failed to answer form", body)
+                reportError()
                 break
               }
             }
