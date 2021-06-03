@@ -14,10 +14,11 @@ import { useRbpacRedirect } from "./useRbpacRedirect"
 import firebase from "firebase/app"
 import "firebase/auth"
 
-import type { User } from "../../types/models/user"
+import type { User } from "src/types/models/user"
 
-import { getMe } from "../../lib/api/me/getMe"
-import { signup as signupSos } from "../../lib/api/signup"
+import { getMe } from "src/lib/api/me/getMe"
+import { signup as signupSos } from "src/lib/api/signup"
+import { setErrorTrackerUser } from "src/lib/errorTracking/setErrorTrackerUser"
 
 import { FullScreenLoading } from "src/components/"
 
@@ -175,10 +176,12 @@ const AuthContextCore = ({
       if (user) {
         hasBeenSignedIn.current = true
 
-        const idToken = await user.getIdToken(true)
+        setErrorTrackerUser({
+          email: user.email ?? undefined,
+        })
 
         getMe({
-          idToken,
+          idToken: await user.getIdToken(true),
         })
           .catch(async (err) => {
             const body = await err.response?.json()
@@ -224,6 +227,11 @@ const AuthContextCore = ({
               status: "bothSignedIn",
               sosUser: res.user,
               firebaseUser: user,
+            })
+            setErrorTrackerUser({
+              id: res.user.id,
+              email: res.user.email,
+              username: `${res.user.name.last} ${res.user.name.first}`,
             })
           })
       } else {
