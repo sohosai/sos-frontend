@@ -72,7 +72,9 @@ const Index: PageFC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Button icon="download">募集要項(ステージ企画)</Button>
+                  <Button kind="secondary" icon="download">
+                    募集要項(ステージ企画)
+                  </Button>
                 </a>
               </div>
               <div className={styles.sectionInPanel}>
@@ -92,7 +94,9 @@ const Index: PageFC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Button icon="arrow-up-right">雙峰祭ガイダンス</Button>
+                  <Button kind="secondary" icon="arrow-up-right">
+                    雙峰祭ガイダンス
+                  </Button>
                 </a>
               </div>
             </Panel>
