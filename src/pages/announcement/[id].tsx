@@ -6,7 +6,7 @@ import { announcements } from "src/constants/announcements"
 
 import { pagesPath } from "src/utils/$path"
 
-import { Head, Panel } from "src/components"
+import { Head, Panel, ParagraphWithUrlParsing } from "src/components"
 
 import styles from "./[id].module.scss"
 
@@ -27,11 +27,11 @@ const Announcement: PageFC = () => {
           <Panel style={{ padding: "48px" }}>
             <div className={styles.articleWrapper}>
               <div className={styles.textWrapper}>
-                {announcement.text.split("\n").map((text) => (
-                  <p className={styles.paragraph} key={text}>
-                    {text}
-                  </p>
-                ))}
+                <ParagraphWithUrlParsing
+                  text={announcement.text}
+                  normalTextClassName={styles.paragraph}
+                  urlClassName={styles.paragraph}
+                />
               </div>
               {announcement.links && (
                 <div className={styles.linksWrapper}>
