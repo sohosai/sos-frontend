@@ -4,12 +4,15 @@ import { dataset } from "../../utils/dataset"
 
 import type { UseFormRegisterReturn } from "react-hook-form"
 
+import { ParagraphWithUrlParsing } from "../"
+
 import styles from "./index.module.scss"
 
 declare namespace Textarea {
   type Props = Readonly<{
     label?: string
     description?: string[] | string
+    descriptionUrlParsing?: boolean
     error?: Array<string | false | undefined> | string | false
     register?: UseFormRegisterReturn
   }> &
@@ -22,13 +25,14 @@ const Textarea: FC<Textarea.Props> = ({
   placeholder,
   rows = 3,
   description,
+  descriptionUrlParsing = false,
   error,
   register,
   ...restAttributes
 }) => {
   const descriptions = (
     Array.isArray(description) ? description : [description]
-  ).filter((text) => text)
+  ).filter((text): text is string => Boolean(text))
   const errors = (Array.isArray(error) ? error : [error]).filter(
     (text): text is string => Boolean(text)
   )
@@ -52,11 +56,20 @@ const Textarea: FC<Textarea.Props> = ({
       />
       {Boolean(descriptions?.length + errors?.length) && (
         <div className={styles.bottomText}>
-          {descriptions.map((text, index) => (
-            <p className={styles.description} key={index}>
-              {text}
-            </p>
-          ))}
+          {descriptionUrlParsing ? (
+            <ParagraphWithUrlParsing
+              text={descriptions}
+              normalTextClassName={styles.description}
+            />
+          ) : (
+            <>
+              {descriptions.map((text, index) => (
+                <p className={styles.description} key={index}>
+                  {text}
+                </p>
+              ))}
+            </>
+          )}
           {errors.map((text, index) => (
             <p className={styles.error} key={index}>
               {text}

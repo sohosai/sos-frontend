@@ -7,9 +7,11 @@ export default {
   component: TextField,
 }
 
-export const Index: Story<TextField.Props> = (options) => (
+export const Index: Story<
+  Omit<TextField.Props, "description"> & { description: string }
+> = (options) => (
   <div style={{ width: "320px" }}>
-    <TextField {...options} />
+    <TextField {...options} description={options.description.split(",")} />
   </div>
 )
 
