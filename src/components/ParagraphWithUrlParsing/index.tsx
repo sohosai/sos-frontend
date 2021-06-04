@@ -19,9 +19,11 @@ const ParagraphWithUrlParsing: FC<ParagraphWithUrlParsing.Props> = ({
   urlClassName = "",
   isURLOptions,
 }) => {
-  const splitTexts = Array.isArray(text)
-    ? text.map((txt) => txt.split("\n")).flat()
-    : text.split("\n")
+  const splitTexts = (
+    Array.isArray(text)
+      ? text.map((txt) => txt.split("\n")).flat()
+      : text.split("\n")
+  ).map((text) => text.trim())
 
   return (
     <div className={styles.wrapper}>
