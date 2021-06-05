@@ -10,6 +10,7 @@ declare namespace ParagraphWithUrlParsing {
     normalTextClassName?: string
     urlClassName?: string
     isURLOptions?: IsURLOptions
+    dangerouslyDisableForceExternal?: boolean
   }>
 }
 
@@ -18,6 +19,7 @@ const ParagraphWithUrlParsing: FC<ParagraphWithUrlParsing.Props> = ({
   normalTextClassName = "",
   urlClassName = "",
   isURLOptions,
+  dangerouslyDisableForceExternal = false,
 }) => {
   const splitTexts = (
     Array.isArray(text)
@@ -28,9 +30,16 @@ const ParagraphWithUrlParsing: FC<ParagraphWithUrlParsing.Props> = ({
   return (
     <div className={styles.wrapper}>
       {splitTexts.map((txt) =>
-        isURL(txt, isURLOptions) ? (
+        isURL(txt, {
+          protocols: ["http", "https"],
+          ...isURLOptions,
+        }) ? (
           <a
-            href={txt}
+            href={
+              !dangerouslyDisableForceExternal && !txt.startsWith("http")
+                ? "//" + txt
+                : txt
+            }
             target="_blank"
             rel="noreferrer noopener"
             className={`${styles.url} ${urlClassName}`}
