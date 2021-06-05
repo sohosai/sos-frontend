@@ -449,6 +449,9 @@ const NewForm: PageFC = () => {
                         label="説明"
                         rows={2}
                         defaultValue=""
+                        description={[
+                          "URLはリンクとして認識されます(URLのある行にはURL以外を記述しないでください)",
+                        ]}
                         error={[
                           errors?.items?.[index]?.description?.types
                             ?.maxLength && "1024字以内で入力してください",

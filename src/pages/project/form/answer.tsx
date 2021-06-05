@@ -24,6 +24,7 @@ import {
   FormItemSpacer,
   Head,
   Panel,
+  ParagraphWithUrlParsing,
   Spinner,
   Textarea,
   TextField,
@@ -299,6 +300,7 @@ const AnswerForm: PageFC = () => {
                               required={formItem.is_required}
                               placeholder={formItem.placeholder}
                               description={formItem.description.split("\n")}
+                              descriptionUrlParsing
                               error={[
                                 (errors?.items?.[index]?.answer as any)?.types
                                   ?.required && "必須項目です",
@@ -327,6 +329,7 @@ const AnswerForm: PageFC = () => {
                             required={formItem.is_required}
                             placeholder={formItem.placeholder}
                             description={formItem.description.split("\n")}
+                            descriptionUrlParsing
                             error={[
                               (errors?.items?.[index]?.answer as any)?.types
                                 ?.required && "必須項目です",
@@ -372,16 +375,12 @@ const AnswerForm: PageFC = () => {
                             ))}
                             {Boolean(formItem.description.length) && (
                               <div className={styles.checkboxDescriptions}>
-                                {formItem.description
-                                  .split("\n")
-                                  .map((text, index) => (
-                                    <p
-                                      className={styles.checkboxDescription}
-                                      key={index}
-                                    >
-                                      {text}
-                                    </p>
-                                  ))}
+                                <ParagraphWithUrlParsing
+                                  text={formItem.description}
+                                  normalTextClassName={
+                                    styles.checkboxDescription
+                                  }
+                                />
                               </div>
                             )}
                             <p className={styles.checkboxesError}>
@@ -401,6 +400,7 @@ const AnswerForm: PageFC = () => {
                           <Dropdown
                             label={formItem.name}
                             description={formItem.description.split("\n")}
+                            descriptionUrlParsing
                             options={[
                               {
                                 value: "",
