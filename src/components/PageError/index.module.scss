@@ -1,0 +1,31 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.wrapper {
+  @include flexCenter;
+}
+
+.statusCode {
+  font-size: 2em;
+  font-weight: normal;
+  line-height: 1em;
+}
+
+.messages {
+  position: relative;
+  margin-left: 16px;
+  color: $color-text-sub;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -0.5em;
+    width: 1px;
+    height: calc(100% + 1em);
+    background: $color-text-primary;
+  }
+}
+
+.message {
+  margin-left: 16px;
+}

@@ -7,9 +7,16 @@ export default {
   component: Textarea,
 }
 
-export const Index: Story<Textarea.Props> = (options) => (
+export const Index: Story<
+  Omit<Textarea.Props, "description"> & { description: string }
+> = (options) => (
   <div style={{ width: "320px" }}>
-    <Textarea {...options} />
+    <Textarea
+      {...options}
+      description={
+        options.description ? options.description.split(",") : undefined
+      }
+    />
   </div>
 )
 

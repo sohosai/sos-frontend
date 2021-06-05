@@ -4,6 +4,8 @@ import { UseFormRegisterReturn } from "react-hook-form"
 
 import { dataset } from "../../utils/dataset"
 
+import { ParagraphWithUrlParsing } from "../"
+
 import styles from "./index.module.scss"
 
 declare namespace TextField {
@@ -11,6 +13,7 @@ declare namespace TextField {
     type: "text" | "email" | "password" | "number"
     label?: string
     description?: string[] | string
+    descriptionUrlParsing?: boolean
     error?: Array<string | false | undefined> | string | false
     register?: UseFormRegisterReturn
   }> &
@@ -24,6 +27,7 @@ const TextField: FC<TextField.Props> = ({
   required = false,
   placeholder,
   description,
+  descriptionUrlParsing = false,
   error,
   autoComplete,
   register,
@@ -31,7 +35,7 @@ const TextField: FC<TextField.Props> = ({
 }) => {
   const descriptions = (
     Array.isArray(description) ? description : [description]
-  ).filter((text) => text)
+  ).filter((text): text is string => Boolean(text))
   const errors = (Array.isArray(error) ? error : [error]).filter(
     (text): text is string => Boolean(text)
   )
@@ -57,11 +61,20 @@ const TextField: FC<TextField.Props> = ({
       />
       {Boolean(descriptions?.length + errors?.length) && (
         <div className={styles.bottomText}>
-          {descriptions.map((text, index) => (
-            <p className={styles.description} key={index}>
-              {text}
-            </p>
-          ))}
+          {descriptionUrlParsing ? (
+            <ParagraphWithUrlParsing
+              text={descriptions}
+              normalTextClassName={styles.description}
+            />
+          ) : (
+            <>
+              {descriptions.map((text, index) => (
+                <p className={styles.description} key={index}>
+                  {text}
+                </p>
+              ))}
+            </>
+          )}
           {errors.map((text, index) => (
             <p className={styles.error} key={index}>
               {text}

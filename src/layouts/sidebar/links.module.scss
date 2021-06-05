@@ -1,4 +1,5 @@
 @import "../../styles/variables";
+@import "../../styles/mixins";
 
 .wrapper {
   padding: 0;
@@ -49,4 +50,9 @@
 .linkIcon {
   font-size: 1.5em;
   margin-right: 8px;
+}
+
+.loadingWrapper {
+  margin: 0 auto;
+  @include flexCenter;
 }

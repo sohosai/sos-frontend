@@ -8,7 +8,10 @@ export default {
 }
 
 export const Index: Story<
-  Omit<Dropdown.Props, "options"> & { options: string }
+  Omit<Dropdown.Props, "options" | "description"> & {
+    options: string
+    description: string
+  }
 > = (props) => (
   <div style={{ width: "320px" }}>
     <Dropdown
@@ -17,6 +20,9 @@ export const Index: Story<
         options: props.options
           .split(",")
           .map((str) => ({ value: str, label: str })),
+        description: props.description
+          ? props.description.split(",")
+          : undefined,
       }}
     />
   </div>
