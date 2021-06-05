@@ -11,13 +11,21 @@ import { useMyProject } from "../../contexts/myProject"
 
 import { isUserRoleHigherThanIncluding } from "../../types/models/user/userRole"
 
+import { Spinner } from "src/components"
+
 import styles from "./links.module.scss"
 
 export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
   const router = useRouter()
   const { authState } = useAuthNeue()
   const { myProjectState } = useMyProject()
-  if (authState === null || authState.status === "error") return null
+  if (authState === null || authState.status === "error") {
+    return (
+      <div className={styles.loadingWrapper}>
+        <Spinner />
+      </div>
+    )
+  }
 
   if (layout === "empty") return null
 
