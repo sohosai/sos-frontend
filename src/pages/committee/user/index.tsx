@@ -97,7 +97,9 @@ const ListUsers: PageFC = () => {
                   return (
                     <li key={id} className={styles.rowWrapper}>
                       <Link
-                        href={pagesPath.committee.user.details._id(id).$url()}
+                        href={pagesPath.committee.user.details.$url({
+                          query: { id },
+                        })}
                       >
                         <a className={styles.row}>
                           <p
