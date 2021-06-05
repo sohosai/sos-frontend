@@ -1,0 +1,10 @@
+@import "src/styles/mixins";
+
+.wrapper {
+  @include mainArea;
+}
+
+.panelInner {
+  @include flexCenter;
+  min-height: 256px;
+}
