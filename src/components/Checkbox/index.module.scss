@@ -4,6 +4,10 @@ $checkbox-size: 16px;
 
 .titleWrapper {
   margin-bottom: 4px;
+
+  & + .checkboxWrapper {
+    margin-top: 8px;
+  }
 }
 
 .descriptionsWrapper {

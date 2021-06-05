@@ -4,6 +4,8 @@ import { UseFormRegisterReturn } from "react-hook-form"
 
 import { dataset } from "../../utils/dataset"
 
+import { ParagraphWithUrlParsing } from "../"
+
 import styles from "./index.module.scss"
 
 declare namespace Checkbox {
@@ -11,7 +13,9 @@ declare namespace Checkbox {
     checked: boolean
     label?: string
     formItemTitle?: string[]
+    formItemTitleUrlParsing?: boolean
     descriptions?: string[]
+    descriptionsUrlParsing?: boolean
     errors?: Array<string | false | undefined>
     register?: UseFormRegisterReturn
   }> &
@@ -22,7 +26,9 @@ const Checkbox: FC<Checkbox.Props> = ({
   checked,
   label,
   formItemTitle,
+  formItemTitleUrlParsing = false,
   descriptions,
+  descriptionsUrlParsing = false,
   errors,
   register,
   ...inputRestAttributes
@@ -36,22 +42,41 @@ const Checkbox: FC<Checkbox.Props> = ({
       className={styles.wrapper}
       {...dataset({ checked, error: Boolean(normalizedErrors?.length) })}
     >
-      {Boolean(formItemTitle?.length) && (
+      {formItemTitle && Boolean(formItemTitle?.length) && (
         <div className={styles.titleWrapper}>
-          {formItemTitle?.map((text) => (
-            <p className={styles.title} key={text}>
-              {text}
-            </p>
-          ))}
+          {formItemTitleUrlParsing ? (
+            <ParagraphWithUrlParsing
+              text={formItemTitle}
+              normalTextClassName={styles.title}
+            />
+          ) : (
+            <>
+              {formItemTitle?.map((text) => (
+                <p className={styles.title} key={text}>
+                  {text}
+                </p>
+              ))}
+            </>
+          )}
         </div>
       )}
-      {Boolean(descriptions?.length) && (
+      {descriptions && Boolean(descriptions?.length) && (
         <div className={styles.descriptionsWrapper}>
-          {descriptions?.map((text) => (
-            <p className={styles.description} key={text}>
-              {text}
-            </p>
-          ))}
+          {descriptionsUrlParsing ? (
+            <ParagraphWithUrlParsing
+              text={descriptions}
+              normalTextClassName={styles.description}
+            />
+          ) : (
+            <>
+              {" "}
+              {descriptions?.map((text) => (
+                <p className={styles.description} key={text}>
+                  {text}
+                </p>
+              ))}
+            </>
+          )}
         </div>
       )}
       <div className={styles.checkboxWrapper}>

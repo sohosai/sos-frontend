@@ -4,6 +4,8 @@ import { UseFormRegisterReturn } from "react-hook-form"
 
 import { dataset } from "../../utils/dataset"
 
+import { ParagraphWithUrlParsing } from "../"
+
 import styles from "./index.module.scss"
 
 declare namespace Dropdown {
@@ -16,6 +18,7 @@ declare namespace Dropdown {
       label: string
     }>
     description?: string[] | string
+    descriptionUrlParsing?: boolean
     error?: Array<string | false | undefined> | string | false
     fullWidth?: boolean
     register?: UseFormRegisterReturn
@@ -29,6 +32,7 @@ const Dropdown: FC<Dropdown.Props> = ({
   required = false,
   options,
   description,
+  descriptionUrlParsing = false,
   error,
   fullWidth = true,
   register,
@@ -36,7 +40,7 @@ const Dropdown: FC<Dropdown.Props> = ({
 }) => {
   const descriptions = (
     Array.isArray(description) ? description : [description]
-  ).filter((text) => text)
+  ).filter((text): text is string => Boolean(text))
   const errors = (Array.isArray(error) ? error : [error]).filter(
     (text): text is string => Boolean(text)
   )
@@ -64,11 +68,20 @@ const Dropdown: FC<Dropdown.Props> = ({
       </select>
       {Boolean(descriptions?.length + errors?.length) && (
         <div className={styles.bottomText}>
-          {descriptions.map((text, index) => (
-            <p className={styles.description} key={index}>
-              {text}
-            </p>
-          ))}
+          {descriptionUrlParsing ? (
+            <ParagraphWithUrlParsing
+              text={descriptions}
+              normalTextClassName={styles.description}
+            />
+          ) : (
+            <>
+              {descriptions.map((text, index) => (
+                <p className={styles.description} key={index}>
+                  {text}
+                </p>
+              ))}
+            </>
+          )}
           {errors.map((text, index) => (
             <p className={styles.error} key={index}>
               {text}
