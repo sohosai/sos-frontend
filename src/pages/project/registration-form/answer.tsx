@@ -25,7 +25,11 @@ import {
   TextFormItem,
 } from "src/components/FormItem"
 
-import styles from "./[id].module.scss"
+import styles from "./answer.module.scss"
+
+export type Query = {
+  id: string
+}
 
 type Inputs = {
   items: FormAnswerItemInForm[]
@@ -42,7 +46,7 @@ const AnswerRegistrationForm: PageFC = () => {
     useState<"noProject" | "noRegistrationFormId">()
   const [processing, setProcessing] = useState(false)
 
-  const { id: registrationFormId } = router.query as { id?: string }
+  const { id: registrationFormId } = router.query as Partial<Query>
 
   const {
     register,
