@@ -8,13 +8,16 @@ import { pagesPath } from "src/utils/$path"
 
 import { Head, Panel, ParagraphWithUrlParsing } from "src/components"
 
-import styles from "./[id].module.scss"
+import styles from "./index.module.scss"
+
+export type Query = {
+  id: string
+}
 
 const Announcement: PageFC = () => {
   const router = useRouter()
 
-  // TODO: handle undefined
-  const { id: passedId } = router.query
+  const { id: passedId } = router.query as Partial<Query>
 
   const announcement = announcements.find(({ id }) => id === passedId)
 

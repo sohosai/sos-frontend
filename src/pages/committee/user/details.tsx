@@ -15,7 +15,11 @@ import { getUser } from "src/lib/api/user/getUser"
 
 import { Head, IconButton, Panel, Spinner, Tooltip } from "src/components"
 
-import styles from "./[id].module.scss"
+import styles from "./details.module.scss"
+
+export type Query = {
+  id: string
+}
 
 const TableRow: FC<{ keyString: string }> = ({ keyString, children }) => (
   <div className={styles.tableRow}>
@@ -34,7 +38,7 @@ const UserDetails: PageFC = () => {
   const [user, setUser] = useState<User>()
   const [error, setError] = useState<"notFound" | "unknown">()
 
-  const { id: userId } = router.query
+  const { id: userId } = router.query as Partial<Query>
 
   const CopyButton: FC<{ string: string; className?: string }> = ({
     string,
