@@ -42,8 +42,9 @@ const AnswerRegistrationForm: PageFC = () => {
   const router = useRouter()
 
   const [registrationForm, setRegistrationForm] = useState<RegistrationForm>()
-  const [generalError, setGeneralError] =
-    useState<"noProject" | "noRegistrationFormId">()
+  const [generalError, setGeneralError] = useState<
+    "noProject" | "noRegistrationFormId"
+  >()
   const [processing, setProcessing] = useState(false)
 
   const { id: registrationFormId } = router.query as Partial<Query>

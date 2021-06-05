@@ -79,12 +79,15 @@ const ListProjectForms: PageFC = () => {
   const { authState } = useAuthNeue()
   const { myProjectState } = useMyProject()
 
-  const [answerableForms, setAnswerableForms] =
-    useState<FormWithHasAnswerFlag[] | undefined>()
-  const [notAnswerableForms, setNotAnswerableForms] =
-    useState<FormWithHasAnswerFlag[] | undefined>()
-  const [error, setError] =
-    useState<"unknown" | "projectPending" | "projectNotFound" | null>(null)
+  const [answerableForms, setAnswerableForms] = useState<
+    FormWithHasAnswerFlag[] | undefined
+  >()
+  const [notAnswerableForms, setNotAnswerableForms] = useState<
+    FormWithHasAnswerFlag[] | undefined
+  >()
+  const [error, setError] = useState<
+    "unknown" | "projectPending" | "projectNotFound" | null
+  >(null)
 
   useEffect(() => {
     ;(async () => {

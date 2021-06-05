@@ -43,8 +43,9 @@ type Inputs = {
 
 const AnswerForm: PageFC = () => {
   const [form, setForm] = useState<Form>()
-  const [generalError, setGeneralError] =
-    useState<"formIdNotFound" | "formNotFound" | "projectPending" | "unknown">()
+  const [generalError, setGeneralError] = useState<
+    "formIdNotFound" | "formNotFound" | "projectPending" | "unknown"
+  >()
   const [formItemErrors, setFormItemErrors] = useState<
     Array<"minChecks" | "maxChecks" | null>
   >([])

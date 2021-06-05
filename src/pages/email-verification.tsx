@@ -11,8 +11,9 @@ import styles from "./email-verification.module.scss"
 
 const EmailVerification: PageFC = () => {
   const [processing, setProcessing] = useState(false)
-  const [emailVerificationStatus, setEmailVerificationStatus] =
-    useState<undefined | "mailSent" | "error">(undefined)
+  const [emailVerificationStatus, setEmailVerificationStatus] = useState<
+    undefined | "mailSent" | "error"
+  >(undefined)
 
   const { sendEmailVerification } = useAuthNeue()
   const { addToast } = useToastDispatcher()
