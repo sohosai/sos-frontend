@@ -28,7 +28,7 @@ export const useRbpacRedirect = ({
   hasBeenSignedIn,
   setRedirectSettled,
 }: {
-  rbpac: PageOptions["rbpac"]
+  rbpac?: PageOptions["rbpac"]
   authState: AuthNeueState
   hasBeenSignedIn: MutableRefObject<boolean>
   setRedirectSettled: () => void
@@ -101,7 +101,7 @@ export const useRbpacRedirect = ({
         }
       }
 
-      switch (rbpac.type) {
+      switch (rbpac?.type) {
         case "public": {
           setRedirectSettled()
           return

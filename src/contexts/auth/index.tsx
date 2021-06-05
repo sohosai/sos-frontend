@@ -261,9 +261,10 @@ const AuthProvider: FC<Pick<PageOptions, "rbpac">> = ({ rbpac, children }) => {
 
   return (
     <>
-      {authNeue.authState === null ||
-      authNeue.authState.status === "error" ||
-      !authNeue.redirectSettled ? (
+      {rbpac?.type !== "public" &&
+      (authNeue.authState === null ||
+        authNeue.authState.status === "error" ||
+        !authNeue.redirectSettled) ? (
         <FullScreenLoading />
       ) : (
         <authNeueContext.Provider value={authNeue}>
