@@ -191,9 +191,9 @@ const ProjectIndex: PageFC = () => {
                             href={
                               form.has_answer
                                 ? ""
-                                : pagesPath.project.registration_form.answer
-                                    ._id(form.id)
-                                    .$url()
+                                : pagesPath.project.registration_form.answer.$url(
+                                    { query: { id: form.id } }
+                                  )
                             }
                           >
                             <a className={styles.registrationFormRow}>

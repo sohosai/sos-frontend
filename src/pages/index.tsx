@@ -111,7 +111,10 @@ const Index: PageFC = () => {
               {announcements
                 .sort((a, b) => (a.date.isAfter(b.date) ? -1 : 1))
                 .map(({ id, date, title }) => (
-                  <Link href={pagesPath.announcement._id(id).$url()} key={id}>
+                  <Link
+                    href={pagesPath.announcement.$url({ query: { id } })}
+                    key={id}
+                  >
                     <a>
                       <div className={styles.announcementRow}>
                         <p className={styles.announcementTitle}>{title}</p>
