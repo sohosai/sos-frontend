@@ -25,6 +25,7 @@ const IntegerFormItem: FC<Props> = ({ formItem, register, errors }) => {
         formItem.placeholder ? String(formItem.placeholder) : undefined
       }
       description={formItem.description.split("\n")}
+      descriptionUrlParsing
       error={errors}
       register={register}
     />

@@ -20,6 +20,7 @@ const TextFormItem: FC<Props> = ({ formItem, register, errors }) => {
         required={formItem.is_required}
         placeholder={formItem.placeholder}
         description={formItem.description.split("\n")}
+        descriptionUrlParsing
         error={errors}
         register={register}
       />
@@ -32,6 +33,7 @@ const TextFormItem: FC<Props> = ({ formItem, register, errors }) => {
       required={formItem.is_required}
       placeholder={formItem.placeholder}
       description={formItem.description.split("\n")}
+      descriptionUrlParsing
       error={errors}
       register={register}
     />

@@ -16,6 +16,7 @@ const RadioFormItem: FC<Props> = ({ formItem, register, errors }) => (
   <Dropdown
     label={formItem.name}
     description={formItem.description.split("\n")}
+    descriptionUrlParsing
     options={[
       {
         value: "",

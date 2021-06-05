@@ -4,7 +4,7 @@ import { UseFormRegisterReturn } from "react-hook-form"
 
 import { FormItem } from "src/types/models/form/item"
 
-import { Checkbox } from "src/components"
+import { Checkbox, ParagraphWithUrlParsing } from "src/components"
 
 import styles from "./checkbox.module.scss"
 
@@ -34,11 +34,10 @@ const CheckboxFormItem: FC<Props> = ({
     ))}
     {Boolean(formItem.description.length) && (
       <div className={styles.descriptions}>
-        {formItem.description.split("\n").map((text, index) => (
-          <p className={styles.description} key={index}>
-            {text}
-          </p>
-        ))}
+        <ParagraphWithUrlParsing
+          text={formItem.description}
+          normalTextClassName={styles.description}
+        />
       </div>
     )}
     <p className={styles.error}>
