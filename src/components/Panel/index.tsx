@@ -7,14 +7,20 @@ import styles from "./index.module.scss"
 declare namespace Panel {
   type Props = Readonly<{
     style?: CSSProperties
+    className?: string
     hoverStyle?: "none" | "brand" | "gray"
   }>
 }
 
-const Panel: FC<Panel.Props> = ({ style, hoverStyle = "none", children }) => {
+const Panel: FC<Panel.Props> = ({
+  style,
+  className,
+  hoverStyle = "none",
+  children,
+}) => {
   return (
     <div
-      className={styles.wrapper}
+      className={`${styles.wrapper} ${className}`}
       style={{
         padding: "32px",
         ...style,
