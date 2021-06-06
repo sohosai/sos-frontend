@@ -1,0 +1,26 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+}
+
+.rowWrapper {
+  &:not(:last-child) {
+    margin-bottom: 16px;
+  }
+}
+
+.rowInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
