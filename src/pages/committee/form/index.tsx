@@ -15,7 +15,8 @@ import {
   Tooltip,
 } from "src/components/"
 
-import type { Form } from "../../../types/models/form"
+import type { Form } from "src/types/models/form"
+import { isUserRoleHigherThanIncluding } from "src/types/models/user/userRole"
 
 import { listForms } from "../../../lib/api/form/listForms"
 import { exportFormAnswers } from "../../../lib/api/formAnswer/exportFormAnswers"
@@ -41,6 +42,8 @@ const ListForms: PageFC = () => {
   const [downloadingForms, setDownloadingForms] = useState<{
     [formId: string]: boolean
   }>({})
+  const [isEligibleToCreateNewForm, setIsEligibleToCreateNewForm] =
+    useState(false)
 
   const downloadFormAnswersCsv = async (form: Form) => {
     if (authState === null || authState.firebaseUser === null) return
@@ -68,11 +71,18 @@ const ListForms: PageFC = () => {
 
   useEffect(() => {
     ;(async () => {
-      if (authState === null || authState.firebaseUser == null) return
+      if (authState?.status !== "bothSignedIn") return
 
-      const idToken = await authState.firebaseUser.getIdToken()
+      if (
+        isUserRoleHigherThanIncluding({
+          userRole: authState.sosUser.role,
+          criteria: "committee_operator",
+        })
+      ) {
+        setIsEligibleToCreateNewForm(true)
+      }
 
-      listForms({ idToken })
+      listForms({ idToken: await authState.firebaseUser.getIdToken() })
         .then(({ forms: fetchedForms }) => {
           setForms(fetchedForms)
         })
@@ -88,13 +98,15 @@ const ListForms: PageFC = () => {
     <div className={styles.wrapper}>
       <Head title="申請一覧" />
       <h1 className={styles.title}>申請一覧</h1>
-      <div className={styles.newFormButton}>
-        <Link href={pagesPath.committee.form.new.$url()}>
-          <a>
-            <Button icon="plus">申請を新規作成</Button>
-          </a>
-        </Link>
-      </div>
+      {isEligibleToCreateNewForm && (
+        <div className={styles.newFormButton}>
+          <Link href={pagesPath.committee.form.new.$url()}>
+            <a>
+              <Button icon="plus">申請を新規作成</Button>
+            </a>
+          </Link>
+        </div>
+      )}
       {forms?.length ? (
         <>
           {forms.map((form) => (
