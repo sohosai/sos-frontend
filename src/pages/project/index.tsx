@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { VFC, useEffect, useState } from "react"
 
 import { PageFC } from "next"
 import Link from "next/link"
@@ -17,6 +17,27 @@ import { pagesPath } from "src/utils/$path"
 import { Button, Head, Panel, Spinner, Stepper } from "src/components"
 
 import styles from "./index.module.scss"
+
+type RegistrationFormWithHasAnswerFlag = RegistrationForm & {
+  has_answer: boolean
+}
+
+const RegistrationFormRow: VFC<{ form: RegistrationFormWithHasAnswerFlag }> = ({
+  form,
+}) => (
+  <Panel
+    style={{
+      padding: "24px 32px",
+    }}
+    hoverStyle={form.has_answer ? "none" : "gray"}
+    className={styles.registrationFormRow}
+  >
+    <p className={styles.registrationFormName}>{form.name}</p>
+    <p className={styles.isAnsweredChip} data-answered={form.has_answer}>
+      {form.has_answer ? "回答済み" : "未回答"}
+    </p>
+  </Panel>
+)
 
 const ProjectIndex: PageFC = () => {
   const { authState } = useAuthNeue()
@@ -177,52 +198,54 @@ const ProjectIndex: PageFC = () => {
           </section>
           <section className={styles.section} data-section="registrationForms">
             <h2 className={styles.sectionTitle}>登録申請</h2>
-            <Panel>
-              {registrationForms ? (
-                <>
-                  {registrationForms.length ? (
-                    <>
-                      {registrationForms.map((form) => (
-                        <div
-                          key={form.id}
-                          className={styles.registrationFormRowWrapper}
-                        >
-                          <Link
-                            href={
-                              form.has_answer
-                                ? ""
-                                : pagesPath.project.registration_form.answer.$url(
-                                    { query: { id: form.id } }
-                                  )
-                            }
-                          >
-                            <a className={styles.registrationFormRow}>
-                              <p className={styles.registrationFormName}>
-                                {form.name}
-                              </p>
-                              <p
-                                className={styles.isAnsweredChip}
-                                data-answered={form.has_answer}
-                              >
-                                {form.has_answer ? "回答済み" : "未回答"}
-                              </p>
-                            </a>
-                          </Link>
-                        </div>
-                      ))}
-                    </>
-                  ) : (
+            {registrationForms ? (
+              <>
+                {registrationForms.length ? (
+                  <div className={styles.registrationForms}>
+                    {registrationForms.map((form) => (
+                      <>
+                        {!form.has_answer ? (
+                          <div className={styles.registrationFormRowWrapper}>
+                            <Link
+                              href={
+                                form.has_answer
+                                  ? ""
+                                  : pagesPath.project.registration_form.answer.$url(
+                                      {
+                                        query: { id: form.id },
+                                      }
+                                    )
+                              }
+                              key={form.id}
+                            >
+                              <a>
+                                <RegistrationFormRow form={form} />
+                              </a>
+                            </Link>
+                          </div>
+                        ) : (
+                          <div className={styles.registrationFormRowWrapper}>
+                            <RegistrationFormRow form={form} />
+                          </div>
+                        )}
+                      </>
+                    ))}
+                  </div>
+                ) : (
+                  <Panel>
                     <div className={styles.noRegistrationForms}>
                       <p>回答しなければならない登録申請はありません</p>
                     </div>
-                  )}
-                </>
-              ) : (
+                  </Panel>
+                )}
+              </>
+            ) : (
+              <Panel>
                 <div className={styles.registrationFormLoading}>
                   <Spinner />
                 </div>
-              )}
-            </Panel>
+              </Panel>
+            )}
           </section>
         </>
       ) : (
