@@ -32,6 +32,12 @@ const Committee: PageFC = () => {
       visible: () => true,
     },
     {
+      href: pagesPath.committee.registration_form.$url(),
+      title: "登録申請",
+      icon: "task-list-dashed",
+      visible: () => true,
+    },
+    {
       href: pagesPath.committee.project.$url(),
       title: "企画",
       icon: "universe",
