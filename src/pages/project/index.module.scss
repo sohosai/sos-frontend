@@ -14,12 +14,12 @@
 }
 
 .section {
-  margin-bottom: 32px;
+  margin-bottom: 40px;
 }
 
 .sectionTitle {
   font-size: 1.5em;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .timelineWrapper {
@@ -53,16 +53,8 @@
 }
 
 .registrationFormRowWrapper {
-  border-bottom: 1px solid $color-gray-100;
-  transition: background-color 200ms;
-
-  &:first-child {
-    border-top: 1px solid $color-gray-100;
-  }
-
-  &:hover,
-  &:focus-within {
-    background-color: $color-gray-50;
+  &:not(:last-child) {
+    margin-bottom: 16px;
   }
 }
 
@@ -70,7 +62,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px;
 }
 
 .isAnsweredChip {
