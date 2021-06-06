@@ -81,10 +81,7 @@ const RegistrationForms: PageFC = () => {
           await listRegistrationForms({
             idToken: await authState.firebaseUser.getIdToken(),
           })
-        setRegistrationForms([
-          ...fetchedRegistrationForms,
-          ...fetchedRegistrationForms,
-        ])
+        setRegistrationForms(fetchedRegistrationForms)
       } catch (err) {
         reportError("failed fetching registration forms", err)
         addToast({ title: "エラーが発生しました", kind: "error" })
