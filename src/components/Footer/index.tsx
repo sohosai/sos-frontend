@@ -25,32 +25,34 @@ export const Footer: FC = () => (
     <Link href={pagesPath.privacy_policy.$url()}>
       <a className={styles.linkItem}>プライバシーポリシー</a>
     </Link>
-    <a
-      href={TWITTER_KIKAKURENRAKUN}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={styles.linkItem}
-      title="Twitter"
-    >
-      <span className={`jam-icons jam-twitter ${styles.snsIcon}`} />
-    </a>
-    <a
-      href={INSTAGRAM}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={styles.linkItem}
-      title="Instagram"
-    >
-      <span className={`jam-icons jam-instagram ${styles.snsIcon}`} />
-    </a>
-    <a
-      href={FACEBOOK}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={styles.linkItem}
-      title="Facebook"
-    >
-      <span className={`jam-icons jam-facebook ${styles.snsIcon}`} />
-    </a>
+    <div className={styles.socialLinks}>
+      <a
+        href={TWITTER_KIKAKURENRAKUN}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={styles.linkItem}
+        title="Twitter"
+      >
+        <span className={`jam-icons jam-twitter ${styles.snsIcon}`} />
+      </a>
+      <a
+        href={INSTAGRAM}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={styles.linkItem}
+        title="Instagram"
+      >
+        <span className={`jam-icons jam-instagram ${styles.snsIcon}`} />
+      </a>
+      <a
+        href={FACEBOOK}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={styles.linkItem}
+        title="Facebook"
+      >
+        <span className={`jam-icons jam-facebook ${styles.snsIcon}`} />
+      </a>
+    </div>
   </footer>
 )
