@@ -129,7 +129,10 @@ const NewProject: PageFC = () => {
       <h1 className={styles.title}>企画応募</h1>
       <div className={styles.panelWrapper}>
         <Panel>
-          {!myProjectState?.error && myProjectState?.myProject === null ? (
+          <div className={styles.emptyWrapper}>
+            <p>企画募集期間外です</p>
+          </div>
+          {/* {!myProjectState?.error && myProjectState?.myProject === null ? (
             <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
               <legend className={styles.legend}>企画基本情報入力</legend>
               <fieldset>
@@ -312,7 +315,7 @@ const NewProject: PageFC = () => {
                 return <Spinner />
               })()}
             </div>
-          )}
+          )} */}
         </Panel>
       </div>
     </div>
