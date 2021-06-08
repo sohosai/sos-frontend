@@ -1,9 +1,15 @@
 @import "../../styles/variables";
 
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin: -12px -18px;
+}
+
 .selectorsWrapper {
-  &:not(:last-child) {
-    margin-bottom: 24px;
-  }
+  margin: 12px 18px;
 }
 
 .selectorsDescription {
