@@ -7,6 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
 
   &:hover,
   &:focus-within {
@@ -17,14 +18,10 @@
   }
 }
 
-.item,
 .linkItem {
   color: $color-gray-300;
   transition: color 200ms;
-
-  &:not(:last-child) {
-    margin-right: 16px;
-  }
+  margin: 8px 8px;
 }
 
 .linkItem {
@@ -52,6 +49,11 @@
       transform-origin: left;
     }
   }
+}
+
+.socialLinks {
+  display: flex;
+  align-items: center;
 }
 
 .snsIcon {
