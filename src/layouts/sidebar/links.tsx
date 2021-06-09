@@ -135,6 +135,21 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         active: () => router.pathname === pagesPath.committee.$url().pathname,
       },
       {
+        href: pagesPath.committee.project.$url(),
+        title: "企画",
+        icon: "universe",
+        visible: () =>
+          authState.status === "bothSignedIn" &&
+          isUserRoleHigherThanIncluding({
+            userRole: authState.sosUser.role,
+            criteria: "committee",
+          }),
+        active: () =>
+          router.pathname.startsWith(
+            pagesPath.committee.project.$url().pathname
+          ),
+      },
+      {
         href: pagesPath.committee.form.$url(),
         title: "申請",
         icon: "task-list",
@@ -164,21 +179,6 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         active: () =>
           router.pathname.startsWith(
             pagesPath.committee.registration_form.$url().pathname
-          ),
-      },
-      {
-        href: pagesPath.committee.project.$url(),
-        title: "企画",
-        icon: "universe",
-        visible: () =>
-          authState.status === "bothSignedIn" &&
-          isUserRoleHigherThanIncluding({
-            userRole: authState.sosUser.role,
-            criteria: "committee",
-          }),
-        active: () =>
-          router.pathname.startsWith(
-            pagesPath.committee.project.$url().pathname
           ),
       },
       {
