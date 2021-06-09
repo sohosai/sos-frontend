@@ -28,7 +28,7 @@ const ProjectQuerySelector: FC<ProjectQuerySelector.Props> = ({
   registers,
 }) => {
   return (
-    <>
+    <div className={styles.wrapper}>
       <div className={styles.selectorsWrapper}>
         <p className={styles.selectorsTitle}>企画区分</p>
         <p className={styles.selectorsDescription}>
@@ -110,7 +110,7 @@ const ProjectQuerySelector: FC<ProjectQuerySelector.Props> = ({
           />
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

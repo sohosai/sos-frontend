@@ -43,6 +43,9 @@ export const useRbpacRedirect = ({
     ;(async () => {
       if (authState === null || authState.status === "error") return
 
+      // FIXME: 責務外だと思うのでまともな方法で解決する
+      if (router.pathname === pagesPath.not_supported.$url().pathname) return
+
       if (authState.firebaseUser?.emailVerified === false) {
         router.push(pagesPath.email_verification.$url())
         setRedirectSettled()
