@@ -54,8 +54,7 @@ const AcceptSubowner: PageFC = () => {
       .then(() => {
         addToast({ title: "副責任者登録が完了しました", kind: "success" })
 
-        // TODO: 企画トップページに変更
-        router.push(pagesPath.me.$url())
+        router.push(pagesPath.project.$url())
       })
   }
 
