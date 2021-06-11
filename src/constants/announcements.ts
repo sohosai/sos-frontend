@@ -112,4 +112,13 @@ export const announcements: Announcement[] = [
       "https://www.youtube.com/watch?v=rl5eMsxUXkw",
     ].join("\n"),
   },
+  {
+    id: "a05bcf0a-0c02-4045-95b2-e5e2397685fc",
+    date: dayjs.tz("2021-06-12T09:00:00", "Asia/Tokyo"),
+    title: "オンラインステージ企画抽選会",
+    text: [
+      "本日13時から企画抽選会のライブ配信を実施いたします。限定公開となっておりますので以下のURLからご覧ください。ライブ終了後もこちらのURLからアーカイブ配信がご視聴いただけます。",
+      "https://youtu.be/4oB0UsBkJSM",
+    ].join("\n"),
+  },
 ]
