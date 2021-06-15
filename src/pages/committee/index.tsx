@@ -44,6 +44,17 @@ const Committee: PageFC = () => {
       visible: () => true,
     },
     {
+      href: pagesPath.committee.file.$url(),
+      title: "ファイル配布",
+      icon: "files",
+      visible: () =>
+        authState?.status === "bothSignedIn" &&
+        isUserRoleHigherThanIncluding({
+          userRole: authState.sosUser.role,
+          criteria: "committee",
+        }),
+    },
+    {
       href: pagesPath.committee.user.$url(),
       title: "ユーザー",
       icon: "users",

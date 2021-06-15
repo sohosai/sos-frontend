@@ -12,7 +12,7 @@ export type FileSharingId = string
 
 export type File = Readonly<{
   id: FileId
-  created_at: Date
+  created_at: number
   author_id: UserId
   blake3_digest: string
   name?: string
@@ -22,7 +22,7 @@ export type File = Readonly<{
 
 export type FileDistribution = Readonly<{
   id: FileDistributionId
-  created_at: Date
+  created_at: number
   author_id: UserId
   name: string
   description: string
@@ -30,6 +30,15 @@ export type FileDistribution = Readonly<{
     project_id: ProjectId
     sharing_id: FileSharingId
   }>
+}>
+
+export type DistributedFile = Readonly<{
+  distribution_id: string
+  distributed_at: number
+  name: string
+  description: string
+  project_id: string
+  sharing_id: string
 }>
 
 export type FileSharingScope =
@@ -48,9 +57,9 @@ export type FileSharingScope =
 
 export type FileSharing = Readonly<{
   id: FileSharingId
-  created_at: Date
+  created_at: number
   is_revoked: boolean
-  expires_at?: Date
+  expires_at?: number
   scope: FileSharingScope
   file_id: FileId
   file_name?: string
