@@ -82,8 +82,9 @@ const FileDistributionsForProject: PageFC = () => {
                   className={styles.rowWrapper}
                 >
                   <Link
-                    // TODO:
-                    href={pagesPath.project.file.$url()}
+                    href={pagesPath.project.file.distribution.$url({
+                      query: { distributionId: distribution.distribution_id },
+                    })}
                   >
                     <a>
                       <Panel
