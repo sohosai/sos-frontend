@@ -112,6 +112,16 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
           router.pathname.startsWith(pagesPath.project.form.$url().pathname),
       },
       {
+        href: pagesPath.project.file.$url(),
+        title: "ファイル配布",
+        icon: "files",
+        visible: () =>
+          authState.status === "bothSignedIn" &&
+          Boolean(myProjectState?.myProject),
+        active: () =>
+          router.pathname.startsWith(pagesPath.project.file.$url().pathname),
+      },
+      {
         href: pagesPath.me.$url(),
         title: "マイページ",
         icon: "user-circle",
