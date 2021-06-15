@@ -50,21 +50,15 @@ const sampleFiles: File[] = [
   },
 ]
 
-export const Index: Story<FileList.Props & { fileCount: number }> = ({
-  errorThresholdInByte,
-  errorMessage,
-  fileCount,
-}) => (
+export const Index: Story<
+  Omit<FileList.Props, "files"> & { fileCount: number }
+> = ({ fileCount, ...rest }) => (
   <div
     style={{
-      width: "320px",
+      width: "500px",
     }}
   >
-    <FileList
-      files={sampleFiles.slice(0, fileCount)}
-      errorThresholdInByte={errorThresholdInByte}
-      errorMessage={errorMessage}
-    />
+    <FileList files={sampleFiles.slice(0, fileCount)} {...rest} />
   </div>
 )
 

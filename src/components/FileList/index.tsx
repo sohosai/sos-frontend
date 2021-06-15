@@ -1,8 +1,10 @@
 import { FC } from "react"
 
+import { saveAs } from "file-saver"
+
 import { dataset } from "src/utils/dataset"
 
-import { Icon, Tooltip } from "src/components"
+import { Icon, IconButton, Tooltip } from "src/components"
 
 import styles from "./index.module.scss"
 
@@ -11,6 +13,7 @@ declare namespace FileList {
     files: File[]
     errorThresholdInByte?: number
     errorMessage?: string
+    downloadEnabled?: boolean
   }
 }
 
@@ -27,6 +30,7 @@ const FileList: FC<FileList.Props> = ({
   files,
   errorThresholdInByte = 0,
   errorMessage = "アップロードに失敗した可能性があります",
+  downloadEnabled = true,
 }) => {
   return (
     <ul className={styles.list}>
@@ -48,6 +52,20 @@ const FileList: FC<FileList.Props> = ({
                   />
                   <p className={styles.filename}>{file.name}</p>
                   <p className={styles.fileSize}>{formatBytes(file.size)}</p>
+                  {downloadEnabled && (
+                    <div className={styles.downloadButton}>
+                      <Tooltip title="ダウンロード">
+                        <div>
+                          <IconButton
+                            icon="download"
+                            onClick={() => {
+                              saveAs(file, file.name)
+                            }}
+                          />
+                        </div>
+                      </Tooltip>
+                    </div>
+                  )}
                 </li>
               </Tooltip>
             )
