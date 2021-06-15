@@ -1,0 +1,30 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.wrapper {
+  @include mainArea;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+}
+
+.sectionWrapper {
+  &:not(:last-child) {
+    margin-bottom: 24px;
+  }
+}
+
+.name {
+  font-size: 1.5em;
+  margin-bottom: 18px;
+}
+
+.description {
+  color: $color-text-sub;
+}
+
+.sectionTitle {
+  font-size: 1.2em;
+  margin-bottom: 24px;
+}

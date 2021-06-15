@@ -103,6 +103,16 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
           router.pathname.startsWith(pagesPath.project.form.$url().pathname),
       },
       {
+        href: pagesPath.project.file.$url(),
+        title: "ファイル配布",
+        icon: "files",
+        visible: () =>
+          authState.status === "bothSignedIn" &&
+          Boolean(myProjectState?.myProject),
+        active: () =>
+          router.pathname.startsWith(pagesPath.project.file.$url().pathname),
+      },
+      {
         href: pagesPath.me.$url(),
         title: "マイページ",
         icon: "user-circle",
@@ -171,6 +181,21 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
           router.pathname.startsWith(
             pagesPath.committee.registration_form.$url().pathname
           ),
+      },
+      {
+        href: pagesPath.committee.file.$url(),
+        title: "ファイル配布",
+        icon: "files",
+        visible: () =>
+          Boolean(
+            authState.status === "bothSignedIn" &&
+              isUserRoleHigherThanIncluding({
+                userRole: authState.sosUser.role,
+                criteria: "committee",
+              })
+          ),
+        active: () =>
+          router.pathname.startsWith(pagesPath.committee.file.$url().pathname),
       },
       {
         href: pagesPath.committee.user.$url(),

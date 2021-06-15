@@ -10,6 +10,7 @@ import { useToastDispatcher } from "src/contexts/toast"
 import { PendingProject } from "../types/models/project"
 
 import { getPendingProject } from "../lib/api/project/getPendingProject"
+import { reportError } from "../lib/errorTracking/reportError"
 
 import { pagesPath } from "../utils/$path"
 
@@ -46,10 +47,10 @@ const AcceptSubowner: PageFC = () => {
       idToken: await authState.firebaseUser.getIdToken(),
     })
       .catch(async (err) => {
-        const body = err.response?.json()
-        // FIXME:
+        const body = await err.response?.json()
+        // TODO: error handling
         addToast({ title: "エラーが発生しました", kind: "error" })
-        throw body ?? err
+        reportError("failed to create new project", body ?? err)
       })
       .then(() => {
         addToast({ title: "副責任者登録が完了しました", kind: "success" })

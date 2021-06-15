@@ -1,0 +1,52 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.fileWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border: 1px solid $color-gray-200;
+  border-radius: 10px;
+
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+
+  &[data-error] {
+    border-color: $color-caution;
+
+    .icon {
+      color: $color-caution;
+    }
+  }
+}
+
+.filename {
+  width: 100%;
+  flex-shrink: 1;
+  @include ellipsis;
+}
+
+.icon {
+  margin-right: 4px;
+}
+
+.fileSize {
+  color: $color-text-sub;
+  margin-left: 16px;
+  white-space: nowrap;
+}
+
+.downloadButton {
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
+.empty {
+  @include flexCenter;
+  padding: 8px 12px;
+  border: 1px solid $color-gray-200;
+  border-radius: 10px;
+}

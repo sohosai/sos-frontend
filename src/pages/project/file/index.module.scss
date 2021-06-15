@@ -1,0 +1,31 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+  flex-direction: column;
+}
+
+.rowWrapper {
+  &:not(:last-child) {
+    margin-bottom: 12px;
+  }
+}
+
+.rowInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.distributionName {
+  @include ellipsis;
+}
