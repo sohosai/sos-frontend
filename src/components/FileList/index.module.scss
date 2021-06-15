@@ -39,6 +39,11 @@
   white-space: nowrap;
 }
 
+.downloadButton {
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
 .empty {
   @include flexCenter;
   padding: 8px 12px;
