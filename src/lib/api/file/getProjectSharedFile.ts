@@ -24,10 +24,17 @@ const getProjectSharedFile = async ({
       },
     })
 
-    // TODO: get filename from response header
-    // console.log(Array.from(res.headers.entries()))
+    const contentDisposition = res.headers
+      .get("content-disposition")
+      ?.split(";")
+      ?.map((str) => str.trim())
+    const filenameStar = contentDisposition
+      ?.find((str) => str.startsWith("filename*"))
+      // TODO: これで大丈夫か?
+      ?.replace("filename*=UTF-8''", "")
+    const filename = filenameStar ? decodeURIComponent(filenameStar) : undefined
 
-    return { blob: (await res.blob()) as Blob }
+    return { blob: (await res.blob()) as Blob, filename }
   } catch (err) {
     const body = await err.response?.json()
 
