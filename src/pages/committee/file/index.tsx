@@ -14,7 +14,7 @@ import { reportError } from "src/lib/errorTracking/reportError"
 
 import { pagesPath } from "src/utils/$path"
 
-import { Button, Panel, Spinner } from "src/components"
+import { Button, Head, Panel, Spinner } from "src/components"
 
 import styles from "./index.module.scss"
 
@@ -55,6 +55,7 @@ const CommitteeFileDistributionList: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head title="ファイル配布" />
       <h1 className={styles.title}>ファイル配布</h1>
       {isEligibleToCreateNewFile && (
         <div className={styles.actionsWrapper}>
