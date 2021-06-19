@@ -5,6 +5,8 @@ import { PageFC } from "next"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
+import { reportError } from "src/lib/errorTracking/reportError"
+
 import { Button, Head, Panel } from "../components"
 
 import styles from "./email-verification.module.scss"
@@ -30,7 +32,9 @@ const EmailVerification: PageFC = () => {
         setProcessing(false)
         addToast({ title: "エラーが発生しました", kind: "error" })
         setEmailVerificationStatus("error")
-        console.error(err)
+        reportError("failed to re-send email verification email", {
+          error: err,
+        })
       })
   }
 

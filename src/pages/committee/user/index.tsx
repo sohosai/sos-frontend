@@ -11,6 +11,7 @@ import { userRoleToUiText } from "../../../types/models/user/userRole"
 
 import { listUsers } from "../../../lib/api/user/listUsers"
 import { exportUsers } from "../../../lib/api/user/exportUsers"
+import { reportError } from "../../../lib/errorTracking/reportError"
 
 import { saveAs } from "file-saver"
 import dayjs from "dayjs"
@@ -46,7 +47,7 @@ const ListUsers: PageFC = () => {
       .catch(async (err) => {
         setDownloading(false)
         const body = await err.response?.json()
-        console.error(body ?? err)
+        reportError("failed to export users in CSV", { error: body ?? err })
       })
   }
 

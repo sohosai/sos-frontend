@@ -188,7 +188,9 @@ const AnswerForm: PageFC = () => {
               }
             }
           } else {
-            console.error(err)
+            reportErrorHandler("failed to answer form with unknown error", {
+              error: err,
+            })
           }
         }
       }
