@@ -14,7 +14,14 @@ import { reportError } from "../lib/errorTracking/reportError"
 
 import { pagesPath } from "../utils/$path"
 
-import { Button, Head, Panel, Spinner } from "../components"
+import {
+  Button,
+  Head,
+  IconButton,
+  Panel,
+  Spinner,
+  Tooltip,
+} from "../components"
 
 import styles from "./accept-subowner.module.scss"
 
@@ -155,20 +162,34 @@ const AcceptSubowner: PageFC = () => {
             const link = `${process.env.NEXT_PUBLIC_FRONTEND_URL}accept-subowner?pendingProjectId=${myProjectState?.myProject?.id}`
             return (
               <>
-                <p className={styles.sameAsAuthor}>
+                <p className={styles.descriptionForPendingProjectOwner}>
                   企画応募を完了するためには副責任者を登録する必要があります
                 </p>
-                <p className={styles.sameAsAuthor}>
+                <p className={styles.descriptionForPendingProjectOwner}>
                   副責任者に以下のURLを送信してアクセスしていただき、副責任者を登録してください
                 </p>
-                <a
-                  href={link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={styles.linkForSubowner}
-                >
-                  {link}
-                </a>
+                <p className={styles.linkForSubowner}>
+                  <a href={link} target="_blank" rel="noreferrer">
+                    {link}
+                  </a>
+                  <span className={styles.copyButton}>
+                    <Tooltip title="URLをクリップボードにコピー">
+                      <div>
+                        <IconButton
+                          icon="clipboard"
+                          size="small"
+                          onClick={async () => {
+                            await navigator.clipboard.writeText(link)
+                            addToast({
+                              title: "クリップボードにコピーしました",
+                              kind: "success",
+                            })
+                          }}
+                        />
+                      </div>
+                    </Tooltip>
+                  </span>
+                </p>
               </>
             )
           })()}
