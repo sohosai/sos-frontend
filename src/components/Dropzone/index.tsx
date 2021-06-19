@@ -21,7 +21,8 @@ declare namespace Dropzone {
     rules?: UseControllerProps["rules"]
     triggerValidation?: () => Promise<boolean>
     errors?: Array<string | false | undefined>
-    dropzoneOptions?: DropzoneOptions
+    dropzoneOptions?: Omit<DropzoneOptions, "multiple">
+    multiple?: boolean
   }
 }
 
@@ -34,6 +35,7 @@ const Dropzone = function <T>({
   triggerValidation,
   errors,
   dropzoneOptions,
+  multiple = false,
 }: Dropzone.Props<T>): ReactElement {
   const normalizedErrors = errors?.filter((text): text is string =>
     Boolean(text)
@@ -47,6 +49,7 @@ const Dropzone = function <T>({
 
   const { getRootProps, getInputProps } = useDropzone({
     ...dropzoneOptions,
+    multiple,
     onDragEnter: (e) => {
       if (dropzoneOptions?.onDragEnter) dropzoneOptions.onDragEnter(e)
       setDropping(true)
@@ -60,7 +63,7 @@ const Dropzone = function <T>({
         dropzoneOptions.onDrop(acceptedFiles, fileRejections, event)
 
       onChange(
-        dropzoneOptions?.multiple
+        multiple
           ? [...(value ? Array.from(value as FileList) : []), ...acceptedFiles]
           : acceptedFiles
       )
@@ -80,9 +83,7 @@ const Dropzone = function <T>({
         {...dataset({ dropping, error: Boolean(normalizedErrors?.length) })}
       >
         <span className={`jam-icons jam-upload ${styles.uploadIcon}`} />
-        {dropzoneOptions?.multiple && (
-          <p className={styles.isMultipleTag}>複数ファイル</p>
-        )}
+        {multiple && <p className={styles.isMultipleTag}>複数ファイル</p>}
         <p className={styles.message}>
           ファイルをドラッグアンドドロップするか、クリックしてファイルを選択できます
         </p>
