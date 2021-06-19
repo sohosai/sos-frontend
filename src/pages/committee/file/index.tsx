@@ -68,17 +68,30 @@ const CommitteeFileDistributionList: PageFC = () => {
             <ul className={styles.list}>
               {distributions.map((distribution) => (
                 <li key={distribution.id} className={styles.rowWrapper}>
-                  <Panel
-                    style={{
-                      padding: "20px 32px",
-                    }}
+                  <Link
+                    href={pagesPath.committee.file.distribution.$url({
+                      query: {
+                        // distributionId: distribution.id,
+                        sharingId: distribution.files[0].sharing_id,
+                        targetProjectId: distribution.files[0].project_id,
+                      },
+                    })}
                   >
-                    <div className={styles.rowInner}>
-                      <p className={styles.distributionName}>
-                        {distribution.name}
-                      </p>
-                    </div>
-                  </Panel>
+                    <a>
+                      <Panel
+                        style={{
+                          padding: "20px 32px",
+                        }}
+                        hoverStyle="gray"
+                      >
+                        <div className={styles.rowInner}>
+                          <p className={styles.distributionName}>
+                            {distribution.name}
+                          </p>
+                        </div>
+                      </Panel>
+                    </a>
+                  </Link>
                 </li>
               ))}
             </ul>
