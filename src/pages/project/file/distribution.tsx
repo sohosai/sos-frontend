@@ -112,12 +112,14 @@ const FileDistribution: PageFC = () => {
           <div className={styles.sectionWrapper}>
             <Panel>
               <h1 className={styles.name}>{distribution.name}</h1>
-              <div className={styles.description}>
-                <ParagraphWithUrlParsing
-                  text={distribution.description}
-                  normalTextClassName={styles.description}
-                />
-              </div>
+              {distribution.description?.length !== 0 && (
+                <div className={styles.description}>
+                  <ParagraphWithUrlParsing
+                    text={distribution.description}
+                    normalTextClassName={styles.descriptionText}
+                  />
+                </div>
+              )}
             </Panel>
           </div>
           <div className={styles.sectionWrapper}>
