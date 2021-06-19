@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
+import { reportError } from "src/lib/errorTracking/reportError"
+
 import { Button, FormItemSpacer, Head, TextField, Panel } from "../components"
 
 import styles from "./signup.module.scss"
@@ -42,7 +44,13 @@ const Signup: PageFC = () => {
           })
           .catch((err) => {
             setProcessing(false)
-            console.error(err)
+            addToast({
+              title: "確認メールを送信できませんでした",
+              kind: "error",
+            })
+            reportError("failed to send email verification email", {
+              error: err,
+            })
           })
       })
       .catch((res) => {
