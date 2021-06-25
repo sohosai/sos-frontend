@@ -32,7 +32,12 @@ export type Query = {
 }
 
 type Inputs = {
-  items: FormAnswerItemInForm[]
+  items: Array<
+    Extract<
+      FormAnswerItemInForm,
+      { type: "text" | "integer" | "checkbox" | "radio" }
+    >
+  >
 }
 
 const AnswerRegistrationForm: PageFC = () => {
