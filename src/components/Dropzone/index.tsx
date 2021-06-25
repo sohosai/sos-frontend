@@ -16,6 +16,9 @@ declare namespace Dropzone {
   type Props<T> = {
     label?: string
     descriptions?: string[]
+    /**
+     * name to be registered in react-hook-form
+     */
     name: FieldPath<T>
     control: Control<T>
     rules?: UseControllerProps["rules"]
