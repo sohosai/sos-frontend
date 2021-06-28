@@ -10,9 +10,13 @@ import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"
 
 import { Form } from "../../../types/models/form"
-import { FormAnswerItemInForm } from "../../../types/models/form/answerItem"
+import {
+  FormAnswerItemInForm,
+  FormAnswerItemInFormWithRealFiles,
+} from "../../../types/models/form/answerItem"
 
 import { getProjectForm } from "../../../lib/api/form/getProjectForm"
+import { createFile } from "../../../lib/api/file/createFile"
 import { reportError as reportErrorHandler } from "src/lib/errorTracking/reportError"
 
 import { pagesPath } from "../../../utils/$path"
@@ -28,7 +32,8 @@ import {
   Spinner,
   Textarea,
   TextField,
-} from "../../../components"
+} from "src/components"
+import { FileFormItem } from "src/components/FormItem"
 
 import styles from "./answer.module.scss"
 import { answerForm } from "../../../lib/api/form/answerForm"
@@ -38,7 +43,7 @@ export type Query = {
 }
 
 type Inputs = {
-  items: FormAnswerItemInForm[]
+  items: Array<FormAnswerItemInFormWithRealFiles>
 }
 
 const AnswerForm: PageFC = () => {
@@ -124,13 +129,92 @@ const AnswerForm: PageFC = () => {
       if (window.confirm("回答を送信しますか?")) {
         setProcessing(true)
 
+        /**
+         * ファイルとして `File` ではなくバックから返ってきた `fileId` が入った items
+         */
+        const itemsWithUploadedFiles: Array<FormAnswerItemInForm> = items.map(
+          (item) => {
+            if (item.type === "file") {
+              return {
+                item_id: item.item_id,
+                type: "file",
+                answer: [],
+              }
+            }
+            return item
+          }
+        )
+
         const requestProps = {
           projectId: myProjectState.myProject.id,
           formId: form.id,
-          items,
+          items: itemsWithUploadedFiles,
         }
 
         try {
+          const fileUploadFormData = new FormData()
+          items.map((item) => {
+            if (item.type === "file" && item.answer?.length) {
+              item.answer.map((f) =>
+                fileUploadFormData.append(
+                  // name ディレクティブに FormItemId を入れて区別する
+                  item.item_id,
+                  f,
+                  encodeURIComponent(f.name)
+                )
+              )
+            }
+          })
+          if (
+            // ファイルが1つ以上存在する
+            !fileUploadFormData.values().next().done
+          ) {
+            try {
+              const fileUploadRes = await createFile({
+                props: {
+                  body: fileUploadFormData,
+                },
+                idToken: await authState.firebaseUser.getIdToken(),
+              })
+
+              if (fileUploadRes.error) {
+                setProcessing(false)
+                switch (fileUploadRes.error) {
+                  case "outOfFileUsageQuota": {
+                    addToast({
+                      title: "ファイルアップロードの容量上限に達しています",
+                      kind: "error",
+                    })
+                    break
+                  }
+                }
+                return
+              }
+
+              itemsWithUploadedFiles.map((item) => {
+                if (item.type === "file") {
+                  item.answer = fileUploadRes.files
+                    // name ディレクティブで当該 formItem に紐付けられたファイルだけ区別する
+                    .filter((f) => f.name === item.item_id)
+                    .map((f) => ({ file_id: f.file.id }))
+                }
+              })
+            } catch (err) {
+              setProcessing(false)
+              addToast({
+                title: "ファイルのアップロードに失敗しました",
+                kind: "error",
+              })
+              reportErrorHandler(
+                "failed to upload file before answering form",
+                {
+                  error: err,
+                }
+              )
+              return
+            }
+          }
+
           await answerForm({
             props: requestProps,
             idToken: await authState.firebaseUser.getIdToken(),
@@ -240,7 +324,7 @@ const AnswerForm: PageFC = () => {
                     return {
                       item_id: formItem.id,
                       type: "text" as const,
-                      answer: "",
+                      answer: null,
                     }
                   }
                   case "checkbox": {
@@ -256,6 +340,14 @@ const AnswerForm: PageFC = () => {
                     return {
                       item_id: formItem.id,
                       type: "radio" as const,
+                      answer: null,
+                    }
+                  }
+                  case "file": {
+                    return {
+                      item_id: formItem.id,
+                      type: "file" as const,
+                      // dirty: react-hook-form に defaultValue として空配列渡すと消える挙動の workaround
                       answer: null,
                     }
                   }
@@ -290,7 +382,7 @@ const AnswerForm: PageFC = () => {
             </Panel>
           </div>
           <Panel>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div className={styles.formItems}>
                 {form.items.map((formItem, index) => (
                   <FormItemSpacer key={formItem.id}>
@@ -320,6 +412,8 @@ const AnswerForm: PageFC = () => {
                                   required: formItem.is_required,
                                   maxLength: formItem.max_length,
                                   minLength: formItem.min_length,
+                                  setValueAs: (value: string) =>
+                                    value.length ? value.trim() : null,
                                 }
                               )}
                             />
@@ -349,6 +443,8 @@ const AnswerForm: PageFC = () => {
                                 required: formItem.is_required,
                                 maxLength: formItem.max_length,
                                 minLength: formItem.min_length,
+                                setValueAs: (value: string) =>
+                                  value.length ? value.trim() : null,
                               }
                             )}
                           />
@@ -423,6 +519,24 @@ const AnswerForm: PageFC = () => {
                               `items.${index}.answer` as const,
                               { required: formItem.is_required }
                             )}
+                          />
+                        )
+                      }
+
+                      if (formItem.type === "file") {
+                        return (
+                          <FileFormItem
+                            formItem={formItem}
+                            control={control}
+                            name={`items.${index}.answer` as const}
+                            errors={[
+                              (errors?.items?.[index]?.answer as any)?.types
+                                ?.required && "必須項目です",
+                            ]}
+                            files={
+                              (watch(`items.${index}.answer` as const) ??
+                                []) as File[]
+                            }
                           />
                         )
                       }

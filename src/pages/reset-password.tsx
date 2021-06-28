@@ -88,7 +88,11 @@ const ResetPassword: PageFC = () => {
               </p>
             </>
           ) : (
-            <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+            <form
+              className={styles.form}
+              onSubmit={handleSubmit(onSubmit)}
+              noValidate
+            >
               <fieldset>
                 <legend className={styles.legend}>パスワードの再設定</legend>
                 <FormItemSpacer>

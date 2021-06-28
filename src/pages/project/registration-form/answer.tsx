@@ -32,7 +32,12 @@ export type Query = {
 }
 
 type Inputs = {
-  items: FormAnswerItemInForm[]
+  items: Array<
+    Extract<
+      FormAnswerItemInForm,
+      { type: "text" | "integer" | "checkbox" | "radio" }
+    >
+  >
 }
 
 const AnswerRegistrationForm: PageFC = () => {
@@ -194,7 +199,7 @@ const AnswerRegistrationForm: PageFC = () => {
                 return {
                   item_id: formItem.id,
                   type: "text" as const,
-                  answer: "",
+                  answer: null,
                 }
               }
               case "checkbox": {
@@ -251,7 +256,11 @@ const AnswerRegistrationForm: PageFC = () => {
           </div>
           <div className={styles.section}>
             <Panel>
-              <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+              <form
+                className={styles.form}
+                onSubmit={handleSubmit(onSubmit)}
+                noValidate
+              >
                 {registrationForm.items.map((formItem, index) => {
                   return (
                     <FormItemSpacer key={formItem.id}>
@@ -265,6 +274,8 @@ const AnswerRegistrationForm: PageFC = () => {
                                 required: formItem.is_required,
                                 maxLength: formItem.max_length,
                                 minLength: formItem.min_length,
+                                setValueAs: (value: string) =>
+                                  value.length ? value.trim() : null,
                               }
                             )}
                             errors={[
