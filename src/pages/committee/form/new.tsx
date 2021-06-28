@@ -253,6 +253,19 @@ const NewForm: PageFC = () => {
         })
         break
       }
+      case "file": {
+        append({
+          id: uuid(),
+          name: "",
+          description: "",
+          conditions: null,
+          type: "file",
+          accepted_types: null,
+          is_required: false,
+          accept_multiple_files: false,
+        })
+        break
+      }
     }
   }
 
@@ -409,12 +422,31 @@ const NewForm: PageFC = () => {
               radio: "希望する実施日",
             }
             const itemTypeToUiText = (type: FormItem["type"]) => {
-              const dict: { [type in FormItem["type"]]?: string } = {
+              const dict: { [type in FormItem["type"]]: string } = {
                 text: "テキスト",
                 checkbox: "チェックボックス",
+                integer: "数値",
                 radio: "ドロップダウン",
+                grid_radio: "複数ドロップダウン",
+                file: "ファイル",
               }
               return dict[type]
+            }
+            const itemTypeDescription = (type: FormItem["type"]) => {
+              const map: { [type in FormItem["type"]]: string[] } = {
+                text: ["テキスト自由入力の項目です"],
+                checkbox: [
+                  "2つ以上の値を選択させる項目です",
+                  "単一選択にはドロップダウンをご利用ください",
+                ],
+                integer: ["整数を入力させる項目です"],
+                radio: ["複数の選択肢から1つを選択させる項目です"],
+                grid_radio: [
+                  "複数のドロップダウンから重複なしに値を選択させることができます",
+                ],
+                file: ["回答者にファイルをアップロードさせる項目です"],
+              }
+              return map[type]
             }
 
             return (
@@ -422,6 +454,11 @@ const NewForm: PageFC = () => {
                 <div className={styles.itemPanel}>
                   <Panel>
                     <p className={styles.itemType}>{itemTypeToUiText(type)}</p>
+                    <div className={styles.itemTypeDescription}>
+                      {itemTypeDescription(type).map((txt) => (
+                        <p key={txt}>{txt}</p>
+                      ))}
+                    </div>
                     <FormItemSpacer>
                       <TextField
                         type="text"
@@ -669,6 +706,32 @@ const NewForm: PageFC = () => {
                         </FormItemSpacer>
                       </>
                     )}
+                    {type === "file" && (
+                      <>
+                        <FormItemSpacer>
+                          <Checkbox
+                            label="複数ファイルを受け付ける"
+                            checked={watch(
+                              `items.${index}.accept_multiple_files` as const
+                            )}
+                            register={register(
+                              `items.${index}.accept_multiple_files` as const
+                            )}
+                          />
+                        </FormItemSpacer>
+                        <FormItemSpacer>
+                          <Checkbox
+                            label="必須項目にする"
+                            checked={watch(
+                              `items.${index}.is_required` as const
+                            )}
+                            register={register(
+                              `items.${index}.is_required` as const
+                            )}
+                          />
+                        </FormItemSpacer>
+                      </>
+                    )}
                   </Panel>
                 </div>
                 <div className={styles.itemActions}>
@@ -733,6 +796,17 @@ const NewForm: PageFC = () => {
                 }}
               >
                 ドロップダウン項目
+              </Button>
+            </div>
+            <div className={styles.addButton}>
+              <Button
+                icon="plus"
+                kind="secondary"
+                onClick={() => {
+                  addItem("file")
+                }}
+              >
+                ファイル項目
               </Button>
             </div>
           </div>
