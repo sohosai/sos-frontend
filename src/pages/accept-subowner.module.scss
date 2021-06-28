@@ -35,10 +35,28 @@
   flex-direction: column;
 }
 
-.sameAsAuthor {
+.descriptionForPendingProjectOwner {
   margin-bottom: 8px;
 }
 
 .linkForSubowner {
+  display: flex;
+  align-items: center;
   color: $color-brand;
+
+  &:hover {
+    .copyButton {
+      opacity: 1;
+    }
+  }
+}
+
+.copyButton {
+  margin-left: 4px;
+  opacity: 0;
+  transition: opacity 200ms;
+
+  &:focus-within {
+    opacity: 1;
+  }
 }

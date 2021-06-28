@@ -108,7 +108,8 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         icon: "files",
         visible: () =>
           authState.status === "bothSignedIn" &&
-          Boolean(myProjectState?.myProject),
+          myProjectState?.error === false &&
+          myProjectState.isPending === false,
         active: () =>
           router.pathname.startsWith(pagesPath.project.file.$url().pathname),
       },
