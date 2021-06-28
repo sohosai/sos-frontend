@@ -105,7 +105,10 @@ const Login: PageFC = () => {
                   required
                   register={register("email", {
                     required: true,
-                    pattern: /^[\w\-._]+@([\w\-._]+\.)?tsukuba\.ac\.jp$/,
+                    pattern:
+                      process.env.NEXT_PUBLIC_DEPLOY_ENV === "dev"
+                        ? /^[\w\-._+]+@([\w\-._]+\.)?tsukuba\.ac\.jp$/
+                        : /^[\w\-._]+@([\w\-._]+\.)?tsukuba\.ac\.jp$/,
                   })}
                 />
               </FormItemSpacer>

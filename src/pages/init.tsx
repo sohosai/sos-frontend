@@ -12,6 +12,8 @@ import type { UserCategoryType } from "../types/models/user"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
+import { reportError } from "src/lib/errorTracking/reportError"
+
 import {
   Panel,
   FormItemSpacer,
@@ -64,7 +66,7 @@ const Init: PageFC = () => {
   }: Inputs) => {
     setProcessing(true)
 
-    initSosUser({
+    const requestBody = {
       name: {
         first: nameFirst,
         last: nameLast,
@@ -77,52 +79,68 @@ const Init: PageFC = () => {
       category:
         category === "undergraduate_student"
           ? {
-              type: "undergraduate_student",
+              type: "undergraduate_student" as const,
               affiliation,
             }
           : { type: category },
-    })
-      .catch(async (err) => {
-        setProcessing(false)
+    }
 
-        const body = await err.response?.json()
+    try {
+      const res = await initSosUser(requestBody)
 
-        if (!body) {
-          addToast({ title: "エラーが発生しました", kind: "error" })
-          throw err
-        }
+      if ("errorCode" in res) {
+        res
+      }
 
-        switch (String(body.status)) {
-          case "400": {
-            switch (body.error.type) {
-              case "API": {
-                if (body.error.info.type === "INVALID_FIELD") {
-                  addToast({
-                    title: "入力内容が正しくありません",
-                    kind: "error",
-                  })
-                  return
-                }
+      setProcessing(false)
+    } catch (err) {
+      setProcessing(false)
+
+      const body = await err.response?.json()
+
+      if (!body) {
+        addToast({ title: "エラーが発生しました", kind: "error" })
+        reportError("failed to init user with unknown error", {
+          requestBody,
+          error: err,
+        })
+      }
+
+      switch (String(body.status)) {
+        case "400": {
+          switch (body.error.type) {
+            case "API": {
+              if (body.error.info.type === "INVALID_FIELD") {
+                addToast({
+                  title: "入力内容が正しくありません",
+                  kind: "error",
+                })
+                reportError("failed to init user with INVALID_FIELD", {
+                  requestBody,
+                  error: body,
+                })
+                return
               }
             }
-            break
           }
-          case "409": {
-            addToast({
-              title: "このアカウントの情報は登録済みです",
-              kind: "error",
-            })
-            router.push(pagesPath.me.$url())
-            return
-          }
+          break
         }
+        case "409": {
+          addToast({
+            title: "このアカウントの情報は登録済みです",
+            kind: "error",
+          })
+          router.push(pagesPath.me.$url())
+          return
+        }
+      }
 
-        addToast({ title: "エラーが発生しました", kind: "error" })
-        throw body
+      addToast({ title: "エラーが発生しました", kind: "error" })
+      reportError("failed to init user", {
+        requestBody,
+        error: body,
       })
-      .then(() => {
-        setProcessing(false)
-      })
+    }
   }
 
   return (

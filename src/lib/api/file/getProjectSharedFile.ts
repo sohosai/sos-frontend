@@ -43,7 +43,6 @@ const getProjectSharedFile = async ({
         return { errorCode: "fileNotFound", error: body }
     }
 
-    console.log({ body })
     throw body ?? err
   }
 }

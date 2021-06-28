@@ -45,7 +45,7 @@ type MyProjectContext = {
   ) => Promise<{ pendingProject: PendingProject }>
   acceptSubowner: (
     props: acceptSubownerApi.Props
-  ) => Promise<{ project: Project }>
+  ) => ReturnType<typeof acceptSubownerApi>
 }
 
 const myProjectContext = createContext<MyProjectContext | undefined>(undefined)
@@ -79,20 +79,22 @@ const MyProjectContextCore = (authState: AuthNeueState): MyProjectContext => {
   }
 
   const acceptSubowner = async (props: acceptSubownerApi.Props) => {
-    const { project: createdProject } = await acceptSubownerApi(props).catch(
-      async (err) => {
-        const body = await err.response?.json()
-        throw body ?? err
-      }
-    )
+    const res = await acceptSubownerApi(props).catch(async (err) => {
+      const body = await err.response?.json()
+      throw body ?? err
+    })
+
+    if ("errorCode" in res) {
+      return res
+    }
 
     setMyProjectState({
       isPending: false,
-      myProject: createdProject,
+      myProject: res,
       error: false,
     })
 
-    return { project: createdProject }
+    return res
   }
 
   useEffect(() => {

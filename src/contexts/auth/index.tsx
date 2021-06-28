@@ -74,7 +74,11 @@ type AuthNeue = {
   authState: AuthNeueState
 } & FirebaseAuthMethods & {
     redirectSettled: boolean
-    initSosUser: (props: signupSos.Props["props"]) => Promise<User>
+    initSosUser: (
+      props: signupSos.Props["props"]
+    ) => Promise<
+      User | { errorCode: "nullAuthState" | "insufficientAuthStatus" }
+    >
   }
 
 const authNeueContext = createContext<AuthNeue | undefined>(undefined)
@@ -143,15 +147,14 @@ const AuthContextCore = ({
 
   const initSosUser = async (props: signupSos.Props["props"]) => {
     if (authNeueState === null) {
-      throw new Error("authNeueState is null")
+      return { errorCode: "nullAuthState" as const }
     }
     if (
       authNeueState.status === "error" ||
       authNeueState.status === "signedOut" ||
       authNeueState.status === "bothSignedIn"
     ) {
-      console.log(authNeueState)
-      throw new Error("Can't init sosUser in this auth status")
+      return { errorCode: "insufficientAuthStatus" as const }
     }
 
     const { user } = await signupSos({

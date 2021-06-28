@@ -17,6 +17,7 @@ import {
   Dropzone,
   FileList,
   FormItemSpacer,
+  Head,
   Panel,
   Textarea,
   TextField,
@@ -147,7 +148,8 @@ const CommitteeFileUpload: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.title}>ファイル配布</h1>
+      <Head title="ファイルを配布する" />
+      <h1 className={styles.title}>ファイルを配布する</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.sectionWrapper}>
           <Panel>
