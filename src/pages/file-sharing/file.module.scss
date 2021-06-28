@@ -1,0 +1,10 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.wrapper {
+  @include mainArea;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+}
