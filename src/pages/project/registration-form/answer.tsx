@@ -194,7 +194,7 @@ const AnswerRegistrationForm: PageFC = () => {
                 return {
                   item_id: formItem.id,
                   type: "text" as const,
-                  answer: "",
+                  answer: null,
                 }
               }
               case "checkbox": {
@@ -265,6 +265,8 @@ const AnswerRegistrationForm: PageFC = () => {
                                 required: formItem.is_required,
                                 maxLength: formItem.max_length,
                                 minLength: formItem.min_length,
+                                setValueAs: (value: string) =>
+                                  value.length ? value.trim() : null,
                               }
                             )}
                             errors={[
