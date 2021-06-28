@@ -150,7 +150,7 @@ const CommitteeFileUpload: PageFC = () => {
     <div className={styles.wrapper}>
       <Head title="ファイルを配布する" />
       <h1 className={styles.title}>ファイルを配布する</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className={styles.sectionWrapper}>
           <Panel>
             <FormItemSpacer>

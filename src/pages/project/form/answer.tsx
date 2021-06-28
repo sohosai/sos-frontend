@@ -382,7 +382,7 @@ const AnswerForm: PageFC = () => {
             </Panel>
           </div>
           <Panel>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div className={styles.formItems}>
                 {form.items.map((formItem, index) => (
                   <FormItemSpacer key={formItem.id}>

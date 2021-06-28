@@ -256,7 +256,11 @@ const AnswerRegistrationForm: PageFC = () => {
           </div>
           <div className={styles.section}>
             <Panel>
-              <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+              <form
+                className={styles.form}
+                onSubmit={handleSubmit(onSubmit)}
+                noValidate
+              >
                 {registrationForm.items.map((formItem, index) => {
                   return (
                     <FormItemSpacer key={formItem.id}>
