@@ -8,11 +8,13 @@ import { Icon, IconButton, Tooltip } from "src/components"
 
 import styles from "./index.module.scss"
 
+export type FileLikeEntity = File | { error: true; filename?: string }
+
 declare namespace FileList {
   type Props = {
-    files: File[]
+    files: FileLikeEntity[]
     errorThresholdInByte?: number
-    errorMessage?: string
+    fileSizeErrorMessage?: string
     downloadEnabled?: boolean
   }
 }
@@ -26,48 +28,81 @@ const formatBytes = (bytes: number, decimals?: number): string => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i]
 }
 
+const FileListItem: FC<{
+  file: File | { error: true; name?: string }
+  downloadEnabled: boolean
+  errorMessage?: string
+}> = ({ file, errorMessage, downloadEnabled }) => (
+  <Tooltip title={errorMessage && file.name ? errorMessage : ""}>
+    <div
+      className={styles.itemWrapper}
+      {...dataset({
+        error: Boolean(errorMessage?.length),
+      })}
+    >
+      <Icon
+        icon={errorMessage?.length ? "triangle-danger" : "file"}
+        className={styles.icon}
+      />
+      <p className={styles.filename}>{file.name ?? errorMessage}</p>
+      {file instanceof File && (
+        <>
+          <p className={styles.fileSize}>{formatBytes(file.size)}</p>
+          {downloadEnabled && (
+            <div className={styles.downloadButton}>
+              <Tooltip title="ダウンロード">
+                <div>
+                  <IconButton
+                    icon="download"
+                    onClick={() => {
+                      saveAs(file, file.name)
+                    }}
+                  />
+                </div>
+              </Tooltip>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  </Tooltip>
+)
+
 const FileList: FC<FileList.Props> = ({
   files,
   errorThresholdInByte = 0,
-  errorMessage = "アップロードに失敗した可能性があります",
+  fileSizeErrorMessage = "アップロードに失敗した可能性があります",
   downloadEnabled = true,
 }) => {
   return (
     <ul className={styles.list}>
-      {files.length ? (
+      {files?.length ? (
         <>
-          {files.map((file) => {
-            const isError = file.size <= errorThresholdInByte
+          {files.map((file, index) => {
+            const fileSizeError =
+              !("error" in file) && file.size <= errorThresholdInByte
+
             return (
-              <Tooltip title={isError ? errorMessage : ""} key={file.name}>
-                <li
-                  className={styles.fileWrapper}
-                  {...dataset({
-                    error: isError,
-                  })}
-                >
-                  <Icon
-                    icon={isError ? "triangle-danger" : "file"}
-                    className={styles.icon}
+              <li
+                key={file instanceof File ? file.name + index : index}
+                className={styles.fileWrapper}
+              >
+                {"error" in file ? (
+                  <FileListItem
+                    file={{ error: true, name: file.filename }}
+                    errorMessage={"ファイルの読み込みに失敗しました"}
+                    downloadEnabled={false}
                   />
-                  <p className={styles.filename}>{file.name}</p>
-                  <p className={styles.fileSize}>{formatBytes(file.size)}</p>
-                  {downloadEnabled && (
-                    <div className={styles.downloadButton}>
-                      <Tooltip title="ダウンロード">
-                        <div>
-                          <IconButton
-                            icon="download"
-                            onClick={() => {
-                              saveAs(file, file.name)
-                            }}
-                          />
-                        </div>
-                      </Tooltip>
-                    </div>
-                  )}
-                </li>
-              </Tooltip>
+                ) : (
+                  <FileListItem
+                    file={file}
+                    downloadEnabled={downloadEnabled}
+                    errorMessage={
+                      fileSizeError ? fileSizeErrorMessage : undefined
+                    }
+                  />
+                )}
+              </li>
             )
           })}
         </>
