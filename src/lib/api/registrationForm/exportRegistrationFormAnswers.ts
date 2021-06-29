@@ -1,5 +1,7 @@
 import { client } from "../client"
 
+import { pagesPath } from "src/utils/$path"
+
 declare namespace exportRegistrationFormAnswers {
   type Props = Readonly<{
     registrationFormId: string
@@ -11,6 +13,10 @@ const exportRegistrationFormAnswers = async ({
   registrationFormId,
   idToken,
 }: exportRegistrationFormAnswers.Props): Promise<string> => {
+  const fileSharingPage = pagesPath.file_sharing.form_answer.$url({
+    query: { answerId: "{answer_id}", sharingIds: "{sharing_ids}" },
+  })
+
   try {
     return await client({ idToken })
       .get("registration-form/answer/export", {
@@ -21,8 +27,14 @@ const exportRegistrationFormAnswers = async ({
           field_project_id: "企画ID",
           field_pending_project_id: "仮登録企画ID",
           field_author_id: "回答者ユーザーID",
-          // TODO: file sharing
-          file_answer_template: "/file/{answer_id}/{sharing_ids}",
+          file_answer_template: new URL(
+            fileSharingPage.pathname +
+              "?" +
+              decodeURIComponent(
+                new URLSearchParams(fileSharingPage.query).toString()
+              ),
+            process.env.NEXT_PUBLIC_FRONTEND_URL
+          ).toString(),
         },
       })
       .text()
