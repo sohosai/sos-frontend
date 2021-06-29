@@ -30,6 +30,9 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
           オンライン
           <br />
           システム
+          {process.env.NEXT_PUBLIC_DEPLOY_ENV === "staging" && (
+            <span className={styles.stagingNotice}>テスト環境</span>
+          )}
         </p>
         <Links layout={layout} />
       </div>
