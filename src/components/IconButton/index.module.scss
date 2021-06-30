@@ -29,7 +29,8 @@
   }
 
   &[data-danger="true"] {
-    &:hover {
+    &:hover,
+    &:focus-visible {
       background-color: $color-caution-tint-900;
 
       .icon {
