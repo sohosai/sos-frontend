@@ -131,3 +131,6 @@ export const announcements: Announcement[] = [
     ].join("\n"),
   },
 ]
+/**
+ * この下を書き換えた場合は bin/scaffoldAnnouncement も書き換える必要がないか確認する
+ */
