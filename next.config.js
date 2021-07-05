@@ -7,7 +7,8 @@ if (
   !process.env.NEXT_PUBLIC_DEPLOY_ENV ||
   !["dev", "staging", "production"].includes(process.env.NEXT_PUBLIC_DEPLOY_ENV)
 ) {
-  throw new Error("Invalid NEXT_PUBLIC_DEPLOY_ENV")
+  console.error("ERROR: Invalid NEXT_PUBLIC_DEPLOY_ENV")
+  process.exit(1)
 }
 
 if (
@@ -16,7 +17,8 @@ if (
   !process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ||
   !process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 ) {
-  throw new Error("Firebase config needed.")
+  console.error("ERROR: Firebase config needed.")
+  process.exit(1)
 }
 
 if (
@@ -27,19 +29,25 @@ if (
     !process.env.SENTRY_PROJECT ||
     !process.env.SENTRY_AUTH_TOKEN)
 ) {
-  throw new Error("Sentry config needed in deploy env other than dev.")
+  console.error("ERROR: Sentry config needed in deploy env other than dev.")
+  process.exit(1)
 }
 
 if (!process.env.NEXT_PUBLIC_FRONTEND_URL) {
-  throw new Error("NEXT_PUBLIC_FRONTEND_URL env variable needed.")
+  console.error("ERROR: NEXT_PUBLIC_FRONTEND_URL env variable needed.")
+  process.exit(1)
 }
 
 if (!process.env.NEXT_PUBLIC_BACKEND_BASE_URL) {
-  throw new Error("NEXT_PUBLIC_BACKEND_BASE_URL env variable needed.")
+  console.error("ERROR: NEXT_PUBLIC_BACKEND_BASE_URL env variable needed.")
+  process.exit(1)
 }
 
 if (!/^https?:\/\/.+\/$/.test(process.env.NEXT_PUBLIC_FRONTEND_URL)) {
-  throw new Error("NEXT_PUBLIC_FRONTEND_URL env variable has a wrong format.")
+  console.error(
+    "ERROR: NEXT_PUBLIC_FRONTEND_URL env variable has a wrong format."
+  )
+  process.exit(1)
 }
 
 /** @type {import('next/dist/next-server/server/config-shared').NextConfig} */
