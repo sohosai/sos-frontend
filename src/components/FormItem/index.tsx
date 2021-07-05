@@ -1,4 +1,5 @@
 export { CheckboxFormItem } from "./checkbox"
+export { FileFormItem } from "./file"
 export { IntegerFormItem } from "./integer"
 export { RadioFormItem } from "./radio"
 export { TextFormItem } from "./text"

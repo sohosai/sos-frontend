@@ -16,6 +16,9 @@ declare namespace Dropzone {
   type Props<T> = {
     label?: string
     descriptions?: string[]
+    /**
+     * name to be registered in react-hook-form
+     */
     name: FieldPath<T>
     control: Control<T>
     rules?: UseControllerProps["rules"]
@@ -83,7 +86,9 @@ const Dropzone = function <T>({
         {...dataset({ dropping, error: Boolean(normalizedErrors?.length) })}
       >
         <span className={`jam-icons jam-upload ${styles.uploadIcon}`} />
-        {multiple && <p className={styles.isMultipleTag}>複数ファイル</p>}
+        <p className={styles.isMultipleTag}>
+          {multiple ? "複数ファイル" : "単一ファイル"}
+        </p>
         <p className={styles.message}>
           ファイルをドラッグアンドドロップするか、クリックしてファイルを選択できます
         </p>

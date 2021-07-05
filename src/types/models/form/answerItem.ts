@@ -44,6 +44,22 @@ export type FileFormAnswerItem = Readonly<{
   answer: FileSharingId[]
 }>
 
+export type FileFormAnswerItemInForm = {
+  readonly type: "file"
+  answer: Array<{
+    file_id: string
+  }>
+}
+
+export type FileFormAnswerItemInFormWithRealFiles = Readonly<{
+  type: "file"
+  /**
+   * `null`は react-hook-form に `defaultValue` として空配列渡すと消える挙動の workaround.
+   * バックに投げる前に空配列にする必要あり.
+   */
+  answer: File[] | null
+}>
+
 export type FormAnswerItem = { item_id: FormItemId } & (
   | TextFormAnswerItem
   | IntegerFormAnswerItem
@@ -60,6 +76,16 @@ export type FormAnswerItemInForm = { item_id: FormItemId } & (
   | CheckboxFormAnswerItemInForm
   | RadioFormAnswerItem
   | GridRadioFormAnswerItem
-  | FileFormAnswerItem
+  | FileFormAnswerItemInForm
+  | null
+)
+
+export type FormAnswerItemInFormWithRealFiles = { item_id: FormItemId } & (
+  | TextFormAnswerItem
+  | IntegerFormAnswerItem
+  | CheckboxFormAnswerItemInForm
+  | RadioFormAnswerItem
+  | GridRadioFormAnswerItem
+  | FileFormAnswerItemInFormWithRealFiles
   | null
 )

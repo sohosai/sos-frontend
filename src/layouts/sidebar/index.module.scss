@@ -23,6 +23,18 @@
   margin-bottom: 64px;
 }
 
+.stagingNotice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  padding: 2px 0;
+  border-radius: 10px;
+  color: white;
+  background-color: $color-brand;
+  font-size: 1rem;
+}
+
 .switchLayoutButton {
   background-color: $color-brand;
   padding: 0 16px;

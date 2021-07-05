@@ -90,7 +90,11 @@ const Signup: PageFC = () => {
       <Head title="ユーザー登録" />
       <div className={styles.formWrapper}>
         <Panel style={{ padding: "48px" }}>
-          <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <form
+            className={styles.form}
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+          >
             <fieldset>
               <legend className={styles.legend}>ユーザー登録</legend>
               <FormItemSpacer>

@@ -1,18 +1,26 @@
 @import "src/styles/mixins";
 @import "src/styles/variables";
 
+$paddingVertical: 8px;
+$borderWidth: 1px;
+$minInnerHeight: 32px;
+$minOuterHeight: $minInnerHeight + 2 * $paddingVertical + 2 * $borderWidth;
+
 .fileWrapper {
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+}
+
+.itemWrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
-  border: 1px solid $color-gray-200;
+  padding: $paddingVertical 12px;
+  min-height: $minOuterHeight;
+  border: $borderWidth solid $color-gray-200;
   border-radius: 10px;
-
-  &:not(:last-child) {
-    margin-bottom: 8px;
-  }
 
   &[data-error] {
     border-color: $color-caution;
@@ -46,7 +54,8 @@
 
 .empty {
   @include flexCenter;
-  padding: 8px 12px;
-  border: 1px solid $color-gray-200;
+  padding: $paddingVertical 12px;
+  min-height: $minOuterHeight;
+  border: $borderWidth solid $color-gray-200;
   border-radius: 10px;
 }

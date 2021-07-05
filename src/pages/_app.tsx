@@ -1,4 +1,4 @@
-import { ReactElement } from "react"
+import { ReactElement, useEffect } from "react"
 
 import type { AppProps } from "next/app"
 import Head from "next/head"
@@ -23,6 +23,14 @@ function MyApp({
   pageProps: AppProps["pageProps"]
 }): ReactElement {
   useIfSupported()
+
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_DEPLOY_ENV === "staging") {
+      window.alert(
+        "こちらはSOSの実委内テスト環境です\n本番環境とはデータなどが一切同期されておりませんので、お間違いのないようご注意ください"
+      )
+    }
+  }, [])
 
   return (
     <>

@@ -135,7 +135,11 @@ const NewProject: PageFC = () => {
           {IN_PROJECT_CREATION_PERIOD ? (
             <>
               {!myProjectState?.error && myProjectState?.myProject === null ? (
-                <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+                <form
+                  className={styles.form}
+                  onSubmit={handleSubmit(onSubmit)}
+                  noValidate
+                >
                   <legend className={styles.legend}>企画基本情報入力</legend>
                   <fieldset>
                     <FormItemSpacer>

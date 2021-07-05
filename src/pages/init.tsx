@@ -148,7 +148,11 @@ const Init: PageFC = () => {
       <Head title="アカウント情報登録" />
       <div className={styles.formWrapper}>
         <Panel style={{ padding: "48px" }}>
-          <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <form
+            className={styles.form}
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+          >
             <fieldset>
               <legend className={styles.legend}>アカウント情報登録</legend>
               <FormItemSpacer>
