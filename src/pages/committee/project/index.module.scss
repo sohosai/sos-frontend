@@ -22,7 +22,8 @@
     margin-bottom: 12px;
   }
 
-  &:hover {
+  &:hover,
+  &:focus-within {
     .projectCodeCopyButton {
       opacity: 1;
     }
