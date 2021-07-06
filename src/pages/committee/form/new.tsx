@@ -19,6 +19,7 @@ import type {
 import type { FormItem } from "../../../types/models/form/item"
 
 import { createForm } from "../../../lib/api/form/createForm"
+import { reportError } from "../../../lib/errorTracking/reportError"
 
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
@@ -171,47 +172,102 @@ const NewForm: PageFC = () => {
     if (process.browser && window.confirm("申請を対象の企画に送信しますか?")) {
       setProcessing(true)
 
-      await createForm({
-        props: {
-          name: title,
-          description: description ?? "",
-          starts_at: dayjs
-            .tz(
-              `${starts_at.month}-${starts_at.day}-${starts_at.hour}-${starts_at.minute}`,
-              "M-D-H-m",
-              "Asia/Tokyo"
-            )
-            .valueOf(),
-          ends_at: dayjs
-            .tz(
-              `${ends_at.month}-${ends_at.day}-${ends_at.hour}-${ends_at.minute}`,
-              "M-D-H-m",
-              "Asia/Tokyo"
-            )
-            .valueOf(),
-          condition: {
-            query,
-            // TODO:
-            includes: [],
-            excludes: [],
+      try {
+        const res = await createForm({
+          props: {
+            name: title,
+            description: description ?? "",
+            starts_at: dayjs
+              .tz(
+                `${starts_at.month}-${starts_at.day}-${starts_at.hour}-${starts_at.minute}`,
+                "M-D-H-m",
+                "Asia/Tokyo"
+              )
+              .valueOf(),
+            ends_at: dayjs
+              .tz(
+                `${ends_at.month}-${ends_at.day}-${ends_at.hour}-${ends_at.minute}`,
+                "M-D-H-m",
+                "Asia/Tokyo"
+              )
+              .valueOf(),
+            condition: {
+              query,
+              // TODO:
+              includes: [],
+              excludes: [],
+            },
+            items,
           },
-          items,
-        },
-        idToken,
-      })
-        .catch(async (err) => {
-          setProcessing(false)
-          // TODO: err handling
-          addToast({ title: "不明なエラーが発生しました", kind: "error" })
-          const body = await err.response?.json()
-          throw body ?? err
+          idToken,
         })
-        .then(async () => {
-          setProcessing(false)
-          addToast({ title: "申請を送信しました", kind: "success" })
 
-          router.push(pagesPath.committee.form.$url())
+        if ("errorCode" in res) {
+          setProcessing(false)
+
+          switch (res.errorCode) {
+            case "invalidField":
+              // TODO: どういうケースかよくわかってない
+              addToast({ title: "エラーが発生しました", kind: "error" })
+              reportError("failed to create new form", { error: res.error })
+              break
+            case "invalidFormItem": {
+              const invalidFormItemId = res.error?.info?.id
+              const invalidFormItem = invalidFormItemId
+                ? items.find((item) => item.id === invalidFormItemId)
+                : undefined
+
+              if (invalidFormItem) {
+                addToast({
+                  title: `「${invalidFormItem.name}」への入力が正しくありません`,
+                  descriptions: ["説明文などを再度ご確認ください"],
+                  kind: "error",
+                })
+              } else {
+                addToast({
+                  title: "エラーが発生しました",
+                  kind: "error",
+                })
+              }
+
+              reportError("failed to create new form", { error: res.error })
+              break
+            }
+            case "invalidFormPeriod":
+              addToast({
+                title: "入力された回答受付期間は正しくありません",
+                kind: "error",
+              })
+              break
+            case "tooEarlyFormPeriodStart":
+              addToast({
+                title:
+                  "現在より以前に回答開始される申請を作成することはできません",
+                kind: "error",
+              })
+              break
+            case "timeout":
+              addToast({
+                title: "フォームの作成を完了できませんでした",
+                descriptions: ["通信環境などをご確認ください"],
+                kind: "error",
+              })
+              break
+          }
+          return
+        }
+
+        setProcessing(false)
+        addToast({ title: "申請を送信しました", kind: "success" })
+
+        router.push(pagesPath.committee.form.$url())
+      } catch (err) {
+        setProcessing(false)
+        addToast({ title: "不明なエラーが発生しました", kind: "error" })
+        reportError("failed to create new form with unknown exception", {
+          error: err,
         })
+      }
     }
   }
 
