@@ -150,7 +150,7 @@ export const announcements: Announcement[] = [
     ].join("\n"),
     links: [
       {
-        url: staticPath.docs["企団給_説明資料_21_docx"],
+        url: staticPath.docs["企団給_説明資料_21_pdf"],
         label: "企団給_説明資料_21.docx",
       },
     ],
