@@ -275,7 +275,7 @@ const AnswerRegistrationForm: PageFC = () => {
                                 maxLength: formItem.max_length,
                                 minLength: formItem.min_length,
                                 setValueAs: (value: string) =>
-                                  value.length ? value.trim() : null,
+                                  value?.length ? value.trim() : null,
                               }
                             )}
                             errors={[
