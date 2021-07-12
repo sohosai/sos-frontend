@@ -12,7 +12,10 @@ dayjs.extend(timezone)
 import { Timeline } from "react-twitter-widgets"
 
 import { announcements } from "src/constants/announcements"
-import { STAGE_GUIDANCE_URL } from "src/constants/links"
+import {
+  STAGE_GUIDANCE_URL,
+  GENERAL_PROJECT_GUIDANCE_URL,
+} from "src/constants/links"
 
 import { Button, Panel } from "src/components"
 
@@ -55,14 +58,42 @@ const Index: PageFC = () => {
           <div className={styles.panelWrapper}>
             <Panel>
               <div className={styles.sectionInPanel}>
-                <h3 className={styles.panelTitle}>
-                  オンラインステージ用募集要項
-                </h3>
-                <div className={styles.newProjectsParagraph}>
-                  <p className={styles.panelText}>
-                    対面開催中止に伴う前回学園祭からの変更点等について記載されておりますので、企画応募をご検討の皆様は必ずご確認ください
-                  </p>
-                </div>
+                <p className={styles.panelText}>
+                  募集要項には対面開催中止に伴う前回学園祭からの変更点等が記載されておりますので、企画応募をご検討の皆様は必ずご確認ください
+                </p>
+                <p className={styles.panelText}>
+                  雙峰祭ガイダンスは雙峰祭オンラインシステムの使い方を説明した動画です
+                </p>
+                <p className={styles.panelText}>
+                  企画登録の際にぜひご確認ください
+                </p>
+              </div>
+              <div className={styles.sectionInPanel}>
+                <h3 className={styles.panelTitle}>一般企画</h3>
+                <div className={styles.newProjectsParagraph}></div>
+                <a
+                  href={staticPath.docs["オンライン一般企画用募集要項_pdf"]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.applicationGuideLinkItem}
+                >
+                  <Button kind="secondary" icon="download">
+                    募集要項
+                  </Button>
+                </a>
+                <a
+                  href={GENERAL_PROJECT_GUIDANCE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.applicationGuideLinkItem}
+                >
+                  <Button kind="secondary" icon="arrow-up-right">
+                    雙峰祭ガイダンス
+                  </Button>
+                </a>
+              </div>
+              <div className={styles.sectionInPanel}>
+                <h3 className={styles.panelTitle}>オンラインステージ</h3>
                 <a
                   href={
                     staticPath.docs[
@@ -71,28 +102,17 @@ const Index: PageFC = () => {
                   }
                   target="_blank"
                   rel="noopener noreferrer"
+                  className={styles.applicationGuideLinkItem}
                 >
                   <Button kind="secondary" icon="download">
-                    募集要項(ステージ企画)
+                    募集要項
                   </Button>
                 </a>
-              </div>
-              <div className={styles.sectionInPanel}>
-                <h3 className={styles.panelTitle}>
-                  オンライステージ用雙峰祭ガイダンス
-                </h3>
-                <div className={styles.newProjectsParagraph}>
-                  <p className={styles.panelText}>
-                    前回学園祭からの変更点や特に重要な内容を簡潔にまとめた動画です
-                  </p>
-                  <p className={styles.panelText}>
-                    今年度は非常に多くの変更点がございますので、募集要項をご確認の際にぜひご一緒にご視聴ください
-                  </p>
-                </div>
                 <a
                   href={STAGE_GUIDANCE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className={styles.applicationGuideLinkItem}
                 >
                   <Button kind="secondary" icon="arrow-up-right">
                     雙峰祭ガイダンス
