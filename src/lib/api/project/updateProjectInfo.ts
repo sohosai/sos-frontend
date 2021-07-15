@@ -87,7 +87,7 @@ async function updateProjectInfo(
     }
   } else {
     try {
-      const { project: pending_project } = await client({
+      const { pending_project } = await client({
         idToken: props.idToken,
       })
         .post("pending-project/update", {

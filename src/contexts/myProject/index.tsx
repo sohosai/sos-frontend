@@ -111,7 +111,7 @@ const MyProjectContextCore = (authState: AuthNeueState): MyProjectContext => {
     if ("projectId" in props) {
       try {
         const res = await updateProjectInfoApi(props)
-        if ("errorCode" in res) {
+        if (res && "errorCode" in res) {
           return res
         }
 
@@ -127,7 +127,7 @@ const MyProjectContextCore = (authState: AuthNeueState): MyProjectContext => {
     } else {
       try {
         const res = await updateProjectInfoApi(props)
-        if ("errorCode" in res) {
+        if (res && "errorCode" in res) {
           return res
         }
 
