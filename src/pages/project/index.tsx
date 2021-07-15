@@ -7,7 +7,10 @@ import { useAuthNeue } from "src/contexts/auth"
 import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"
 
-import { projectCategoryToUiText } from "src/types/models/project"
+import {
+  projectCategoryToUiText,
+  projectAttributeToUiText,
+} from "src/types/models/project"
 import { RegistrationForm } from "src/types/models/registrationForm"
 
 import { listMyRegistrationForms } from "src/lib/api/registrationForm/listMyRegistrationForms"
@@ -166,9 +169,15 @@ const ProjectIndex: PageFC = () => {
                 <div className={styles.generalInfoTableItem}>
                   <p className={styles.generalInfoTableKey}>企画属性</p>
                   <p className={styles.generalInfoTableValue}>
-                    {myProjectState.myProject.attributes.includes("academic")
-                      ? "学術参加枠"
-                      : "なし"}
+                    {myProjectState.myProject.attributes.length === 0
+                      ? "なし"
+                      : myProjectState.myProject.attributes
+                          .map((attribute) =>
+                            projectAttributeToUiText({
+                              projectAttribute: attribute,
+                            })
+                          )
+                          .join(" / ")}
                   </p>
                 </div>
                 {!myProjectState.isPending && (
