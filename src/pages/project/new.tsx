@@ -12,6 +12,7 @@ import { useToastDispatcher } from "src/contexts/toast"
 import { ProjectCategory, ProjectAttribute } from "src/types/models/project"
 
 import { isKana, katakanaToHiragana } from "src/utils/jpKana"
+import { awesomeCharacterCount } from "src/utils/awesomeCharacterCount"
 
 import {
   Button,
@@ -42,16 +43,6 @@ type Inputs = {
 
 // FIXME: adhoc
 const IN_PROJECT_CREATION_PERIOD = true
-
-/**
- * 半角・全角英数字及び半角記号を3文字でかな2文字分としてカウントする謎のやつ
- */
-const awesomeCharacterCount = (string: string): number => {
-  const notSpecialCharactersPattern =
-    /[^\u0021-\u007e\uff10-\uff19\uff21-\uff3a\uff41-\uff5a]/g
-  const specialCharacters = string.replace(notSpecialCharactersPattern, "")
-  return string.length - specialCharacters.length / 3
-}
 
 const NewProject: PageFC = () => {
   const { authState } = useAuthNeue()
