@@ -11,6 +11,8 @@ import { useToastDispatcher } from "src/contexts/toast"
 
 import { ProjectCategory, ProjectAttribute } from "src/types/models/project"
 
+import { IN_PROJECT_CREATION_PERIOD } from "src/constants/datetime"
+
 import { isKana, katakanaToHiragana } from "src/utils/jpKana"
 import { awesomeCharacterCount } from "src/utils/awesomeCharacterCount"
 
@@ -40,9 +42,6 @@ type Inputs = {
   }
   agreeTerms: boolean
 }
-
-// FIXME: adhoc
-const IN_PROJECT_CREATION_PERIOD = true
 
 const NewProject: PageFC = () => {
   const { authState } = useAuthNeue()
@@ -253,8 +252,8 @@ const NewProject: PageFC = () => {
                             label: "選択してください",
                           },
                           {
-                            value: "stage",
-                            label: "ステージ企画",
+                            value: "general",
+                            label: "一般企画",
                           },
                         ]}
                         error={[
@@ -271,6 +270,13 @@ const NewProject: PageFC = () => {
                         label="学術参加枠での参加を希望する"
                         checked={watch("attributes.academic")}
                         register={register("attributes.academic")}
+                      />
+                    </FormItemSpacer>
+                    <FormItemSpacer>
+                      <Checkbox
+                        label="芸術祭参加枠での参加を希望する"
+                        checked={watch("attributes.artistic")}
+                        register={register("attributes.artistic")}
                       />
                     </FormItemSpacer>
                     <FormItemSpacer
