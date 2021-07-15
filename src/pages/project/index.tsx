@@ -14,7 +14,9 @@ import { listMyRegistrationForms } from "src/lib/api/registrationForm/listMyRegi
 
 import { pagesPath } from "src/utils/$path"
 
-import { Button, Head, Panel, Spinner, Stepper } from "src/components"
+import { IN_PROJECT_CREATION_PERIOD } from "src/constants/datetime"
+
+import { Button, Head, Panel, Spinner, Stepper, Tooltip } from "src/components"
 
 import styles from "./index.module.scss"
 
@@ -186,14 +188,23 @@ const ProjectIndex: PageFC = () => {
                   </>
                 )}
               </div>
-              {/* TODO: */}
-              {/* <div className={styles.generalInfoEditButton}>
-                <Tooltip title="企画募集期間中は基本情報を編集できます">
-                  <div style={{ display: "inline-block" }}>
-                    <Button icon="pencil">編集する</Button>
+              {IN_PROJECT_CREATION_PERIOD &&
+                // FIXME: ad-hoc
+                myProjectState.myProject.category !== "stage" && (
+                  <div className={styles.generalInfoEditButton}>
+                    <Tooltip title="企画募集期間中は基本情報を編集できます">
+                      <div className={styles.generalInfoEditButtonInner}>
+                        <Link href={pagesPath.project.edit.$url()}>
+                          <a>
+                            <Button icon="pencil" kind="secondary">
+                              編集する
+                            </Button>
+                          </a>
+                        </Link>
+                      </div>
+                    </Tooltip>
                   </div>
-                </Tooltip>
-              </div> */}
+                )}
             </Panel>
           </section>
           <section className={styles.section} data-section="registrationForms">
