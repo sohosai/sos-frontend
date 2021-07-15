@@ -46,6 +46,14 @@
   flex-shrink: 1;
 }
 
+.generalInfoEditButton {
+  margin-top: 24px;
+}
+
+.generalInfoEditButtonInner {
+  display: inline-block;
+}
+
 .noRegistrationForms,
 .registrationFormLoading {
   padding: 16px 0;

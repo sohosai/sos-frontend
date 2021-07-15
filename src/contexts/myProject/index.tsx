@@ -8,6 +8,7 @@ import { getMyProject } from "../../lib/api/project/getMyProject"
 import { getMyPendingProject } from "../../lib/api/project/getMyPendingProject"
 import { createPendingProject as createPendingProjectApi } from "../../lib/api/project/createPendingProject"
 import { acceptSubowner as acceptSubownerApi } from "../../lib/api/project/acceptSubowner"
+import { updateProjectInfo as updateProjectInfoApi } from "../../lib/api/project/updateProjectInfo"
 
 type MyProjectState =
   | {
@@ -46,6 +47,7 @@ type MyProjectContext = {
   acceptSubowner: (
     props: acceptSubownerApi.Props
   ) => ReturnType<typeof acceptSubownerApi>
+  updateProjectInfo: typeof updateProjectInfoApi
 }
 
 const myProjectContext = createContext<MyProjectContext | undefined>(undefined)
@@ -95,6 +97,50 @@ const MyProjectContextCore = (authState: AuthNeueState): MyProjectContext => {
     })
 
     return res
+  }
+
+  async function updateProjectInfo(
+    props: Extract<updateProjectInfoApi.Props, { projectId: string }>
+  ): Promise<Project | updateProjectInfoApi.ErrorType>
+  async function updateProjectInfo(
+    props: Extract<updateProjectInfoApi.Props, { pendingProjectId: string }>
+  ): Promise<PendingProject | updateProjectInfoApi.ErrorType>
+  async function updateProjectInfo(
+    props: updateProjectInfoApi.Props
+  ): Promise<Project | PendingProject | updateProjectInfoApi.ErrorType> {
+    if ("projectId" in props) {
+      try {
+        const res = await updateProjectInfoApi(props)
+        if ("errorCode" in res) {
+          return res
+        }
+
+        setMyProjectState({
+          isPending: false,
+          myProject: res,
+          error: false,
+        })
+        return res
+      } catch (err) {
+        return { errorCode: "unknown", error: err }
+      }
+    } else {
+      try {
+        const res = await updateProjectInfoApi(props)
+        if ("errorCode" in res) {
+          return res
+        }
+
+        setMyProjectState({
+          isPending: true,
+          myProject: res,
+          error: false,
+        })
+        return res
+      } catch (err) {
+        return { errorCode: "unknown", error: err }
+      }
+    }
   }
 
   useEffect(() => {
@@ -149,6 +195,7 @@ const MyProjectContextCore = (authState: AuthNeueState): MyProjectContext => {
     myProjectState,
     createPendingProject,
     acceptSubowner,
+    updateProjectInfo,
   }
 }
 
