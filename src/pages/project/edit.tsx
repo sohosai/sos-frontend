@@ -247,7 +247,8 @@ const EditProjectInfo: PageFC = () => {
             committee: false as boolean,
             outdoor: false as boolean,
           }
-        )
+        ),
+        { shouldValidate: true }
       )
     })()
   }, [authState, myProjectState, setValue])
@@ -396,6 +397,13 @@ const EditProjectInfo: PageFC = () => {
                     label="学術参加枠での参加を希望する"
                     checked={watch("attributes.academic")}
                     register={register("attributes.academic")}
+                  />
+                </FormItemSpacer>
+                <FormItemSpacer>
+                  <Checkbox
+                    label="芸術祭参加枠での参加を希望する"
+                    checked={watch("attributes.artistic")}
+                    register={register("attributes.artistic")}
                   />
                 </FormItemSpacer>
               </fieldset>
