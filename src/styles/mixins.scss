@@ -40,4 +40,5 @@
   height: 256px;
   color: $color-text-sub;
   @include flexCenter;
+  flex-direction: column;
 }
