@@ -1,3 +1,5 @@
+import { HTTPError, TimeoutError } from "ky"
+
 import { client } from "../client"
 
 import type { RegistrationFormAnswer } from "src/types/models/registrationForm"
@@ -17,14 +19,40 @@ declare namespace getMyRegistrationFormAnswer {
       registrationFormId: string
       idToken: string
     }>
+
+  type ErrorType = {
+    errorCode:
+      | "registrationFormNotFound"
+      | "projectNotFound"
+      | "pendingProjectNotFound"
+      | "timeout"
+      | "unknown"
+    error?: any
+  }
 }
 
-const handleException = async (error: any) => {
-  const body = await error.response?.json()
-  if (body?.error?.info?.type === "REGISTRATION_FORM_ANSWER_NOT_FOUND") {
-    return { answer: null }
+const handleException = async (
+  error: any
+): Promise<{ answer: null } | getMyRegistrationFormAnswer.ErrorType> => {
+  if (error instanceof HTTPError) {
+    const body = await error.response.json()
+    switch (body.error?.info?.type) {
+      case "REGISTRATION_FORM_ANSWER_NOT_FOUND":
+        return { answer: null }
+      case "REGISTRATION_FORM_NOT_FOUND":
+        return { errorCode: "registrationFormNotFound", error }
+      case "PROJECT_NOT_FOUND":
+        return { errorCode: "projectNotFound", error }
+      case "PENDING_PROJECT_NOT_FOUND":
+        return { errorCode: "pendingProjectNotFound", error }
+      default:
+        return { errorCode: "unknown", error }
+    }
+  } else if (error instanceof TimeoutError) {
+    return { errorCode: "timeout", error }
+  } else {
+    return { errorCode: "unknown", error }
   }
-  throw body ?? error
 }
 
 const getMyRegistrationFormAnswer = async ({
@@ -32,9 +60,12 @@ const getMyRegistrationFormAnswer = async ({
   pendingProjectId,
   registrationFormId,
   idToken,
-}: getMyRegistrationFormAnswer.Props): Promise<{
-  answer: RegistrationFormAnswer | null
-}> => {
+}: getMyRegistrationFormAnswer.Props): Promise<
+  | {
+      answer: RegistrationFormAnswer | null
+    }
+  | getMyRegistrationFormAnswer.ErrorType
+> => {
   if (projectId) {
     try {
       const { answer } = await client({ idToken })

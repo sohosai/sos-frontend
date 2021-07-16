@@ -11,7 +11,10 @@ import { useToastDispatcher } from "src/contexts/toast"
 
 import { ProjectCategory, ProjectAttribute } from "src/types/models/project"
 
+import { IN_PROJECT_CREATION_PERIOD } from "src/constants/datetime"
+
 import { isKana, katakanaToHiragana } from "src/utils/jpKana"
+import { awesomeCharacterCount } from "src/utils/awesomeCharacterCount"
 
 import {
   Button,
@@ -38,19 +41,6 @@ type Inputs = {
     [attribute in ProjectAttribute]: boolean
   }
   agreeTerms: boolean
-}
-
-// FIXME: adhoc
-const IN_PROJECT_CREATION_PERIOD = true
-
-/**
- * 半角・全角英数字及び半角記号を3文字でかな2文字分としてカウントする謎のやつ
- */
-const awesomeCharacterCount = (string: string): number => {
-  const notSpecialCharactersPattern =
-    /[^\u0021-\u007e\uff10-\uff19\uff21-\uff3a\uff41-\uff5a]/g
-  const specialCharacters = string.replace(notSpecialCharactersPattern, "")
-  return string.length - specialCharacters.length / 3
 }
 
 const NewProject: PageFC = () => {
@@ -262,8 +252,8 @@ const NewProject: PageFC = () => {
                             label: "選択してください",
                           },
                           {
-                            value: "stage",
-                            label: "ステージ企画",
+                            value: "general",
+                            label: "一般企画",
                           },
                         ]}
                         error={[
@@ -280,6 +270,13 @@ const NewProject: PageFC = () => {
                         label="学術参加枠での参加を希望する"
                         checked={watch("attributes.academic")}
                         register={register("attributes.academic")}
+                      />
+                    </FormItemSpacer>
+                    <FormItemSpacer>
+                      <Checkbox
+                        label="芸術祭参加枠での参加を希望する"
+                        checked={watch("attributes.artistic")}
+                        register={register("attributes.artistic")}
                       />
                     </FormItemSpacer>
                     <FormItemSpacer

@@ -7,14 +7,19 @@ import { useAuthNeue } from "src/contexts/auth"
 import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"
 
-import { projectCategoryToUiText } from "src/types/models/project"
+import {
+  projectCategoryToUiText,
+  projectAttributeToUiText,
+} from "src/types/models/project"
 import { RegistrationForm } from "src/types/models/registrationForm"
 
 import { listMyRegistrationForms } from "src/lib/api/registrationForm/listMyRegistrationForms"
 
 import { pagesPath } from "src/utils/$path"
 
-import { Button, Head, Panel, Spinner, Stepper } from "src/components"
+import { IN_PROJECT_CREATION_PERIOD } from "src/constants/datetime"
+
+import { Button, Head, Panel, Spinner, Stepper, Tooltip } from "src/components"
 
 import styles from "./index.module.scss"
 
@@ -29,7 +34,7 @@ const RegistrationFormRow: VFC<{ form: RegistrationFormWithHasAnswerFlag }> = ({
     style={{
       padding: "24px 32px",
     }}
-    hoverStyle={form.has_answer ? "none" : "gray"}
+    hoverStyle="gray"
     className={styles.registrationFormRow}
   >
     <p className={styles.registrationFormName}>{form.name}</p>
@@ -164,9 +169,15 @@ const ProjectIndex: PageFC = () => {
                 <div className={styles.generalInfoTableItem}>
                   <p className={styles.generalInfoTableKey}>企画属性</p>
                   <p className={styles.generalInfoTableValue}>
-                    {myProjectState.myProject.attributes.includes("academic")
-                      ? "学術参加枠"
-                      : "なし"}
+                    {myProjectState.myProject.attributes.length === 0
+                      ? "なし"
+                      : myProjectState.myProject.attributes
+                          .map((attribute) =>
+                            projectAttributeToUiText({
+                              projectAttribute: attribute,
+                            })
+                          )
+                          .join(" / ")}
                   </p>
                 </div>
                 {!myProjectState.isPending && (
@@ -186,14 +197,23 @@ const ProjectIndex: PageFC = () => {
                   </>
                 )}
               </div>
-              {/* TODO: */}
-              {/* <div className={styles.generalInfoEditButton}>
-                <Tooltip title="企画募集期間中は基本情報を編集できます">
-                  <div style={{ display: "inline-block" }}>
-                    <Button icon="pencil">編集する</Button>
+              {IN_PROJECT_CREATION_PERIOD &&
+                // FIXME: ad-hoc
+                myProjectState.myProject.category !== "stage" && (
+                  <div className={styles.generalInfoEditButton}>
+                    <Tooltip title="企画募集期間中は基本情報を編集できます">
+                      <div className={styles.generalInfoEditButtonInner}>
+                        <Link href={pagesPath.project.edit.$url()}>
+                          <a>
+                            <Button icon="pencil" kind="secondary">
+                              編集する
+                            </Button>
+                          </a>
+                        </Link>
+                      </div>
+                    </Tooltip>
                   </div>
-                </Tooltip>
-              </div> */}
+                )}
             </Panel>
           </section>
           <section className={styles.section} data-section="registrationForms">
@@ -203,32 +223,25 @@ const ProjectIndex: PageFC = () => {
                 {registrationForms.length ? (
                   <div className={styles.registrationForms}>
                     {registrationForms.map((form) => (
-                      <>
-                        {!form.has_answer ? (
-                          <div className={styles.registrationFormRowWrapper}>
-                            <Link
-                              href={
-                                form.has_answer
-                                  ? ""
-                                  : pagesPath.project.registration_form.answer.$url(
-                                      {
-                                        query: { id: form.id },
-                                      }
-                                    )
-                              }
-                              key={form.id}
-                            >
-                              <a>
-                                <RegistrationFormRow form={form} />
-                              </a>
-                            </Link>
-                          </div>
-                        ) : (
-                          <div className={styles.registrationFormRowWrapper}>
+                      <div
+                        className={styles.registrationFormRowWrapper}
+                        key={form.id}
+                      >
+                        <Link
+                          href={pagesPath.project.registration_form.answer.$url(
+                            {
+                              query: {
+                                id: form.id,
+                                ...(form.has_answer ? { update: true } : {}),
+                              },
+                            }
+                          )}
+                        >
+                          <a>
                             <RegistrationFormRow form={form} />
-                          </div>
-                        )}
-                      </>
+                          </a>
+                        </Link>
+                      </div>
                     ))}
                   </div>
                 ) : (

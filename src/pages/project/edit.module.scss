@@ -1,0 +1,24 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+}
+
+.form {
+  max-width: 600px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.submitButtonWrapper {
+  margin-top: 32px;
+}
