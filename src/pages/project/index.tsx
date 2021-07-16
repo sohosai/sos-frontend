@@ -86,51 +86,64 @@ const ProjectIndex: PageFC = () => {
           {myProjectState.isPending && (
             <section className={styles.section} data-section="isPending">
               <Panel>
-                <p>あなたの企画は仮登録状態です</p>
-                <p>
-                  企画登録を完了させるためには登録申請に全て回答し、副責任者を登録する必要があります
-                </p>
-                <div className={styles.timelineWrapper}>
-                  <Stepper>
-                    <Stepper.Step
-                      title="登録申請に全て回答する"
-                      index={1}
-                      active={!registrationFormsCompleted}
-                    />
-                    <Stepper.StepContent>
-                      <p className={styles.timelineDescription}>
-                        回答状況はこのページ下部から確認できます
-                      </p>
-                    </Stepper.StepContent>
-                    <Stepper.Divider />
-                    <Stepper.Step
-                      title="副責任者を登録する"
-                      index={2}
-                      active={registrationFormsCompleted}
-                    />
-                    {registrationFormsCompleted && (
-                      <Stepper.StepContent>
-                        <Link
-                          href={pagesPath.accept_subowner.$url({
-                            query: {
-                              pendingProjectId: myProjectState.myProject.id,
-                            },
-                          })}
-                        >
-                          <a>
-                            <Button icon="arrow-right">副責任者の登録へ</Button>
-                          </a>
-                        </Link>
-                      </Stepper.StepContent>
-                    )}
-                    <Stepper.Divider />
-                    <Stepper.Step
-                      title="企画応募完了"
-                      index={3}
-                      active={false}
-                    />
-                  </Stepper>
-                </div>
+                {IN_PROJECT_CREATION_PERIOD &&
+                // FIXME: ad-hoc
+                myProjectState.myProject.category !== "stage" ? (
+                  <>
+                    <p>あなたの企画は仮登録状態です</p>
+                    <p>
+                      企画登録を完了させるためには登録申請に全て回答し、副責任者を登録する必要があります
+                    </p>
+                    <div className={styles.timelineWrapper}>
+                      <Stepper>
+                        <Stepper.Step
+                          title="登録申請に全て回答する"
+                          index={1}
+                          active={!registrationFormsCompleted}
+                        />
+                        <Stepper.StepContent>
+                          <p className={styles.timelineDescription}>
+                            回答状況はこのページ下部から確認できます
+                          </p>
+                        </Stepper.StepContent>
+                        <Stepper.Divider />
+                        <Stepper.Step
+                          title="副責任者を登録する"
+                          index={2}
+                          active={registrationFormsCompleted}
+                        />
+                        {registrationFormsCompleted && (
+                          <Stepper.StepContent>
+                            <Link
+                              href={pagesPath.accept_subowner.$url({
+                                query: {
+                                  pendingProjectId: myProjectState.myProject.id,
+                                },
+                              })}
+                            >
+                              <a>
+                                <Button icon="arrow-right">
+                                  副責任者の登録へ
+                                </Button>
+                              </a>
+                            </Link>
+                          </Stepper.StepContent>
+                        )}
+                        <Stepper.Divider />
+                        <Stepper.Step
+                          title="企画応募完了"
+                          index={3}
+                          active={false}
+                        />
+                      </Stepper>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p>あなたの企画は仮登録状態です</p>
+                    <p>企画応募期間外のため、応募を完了することはできません</p>
+                  </>
+                )}
               </Panel>
             </section>
           )}
