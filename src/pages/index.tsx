@@ -88,9 +88,20 @@ const Index: PageFC = () => {
                   className={styles.applicationGuideLinkItem}
                 >
                   <Button kind="secondary" icon="arrow-up-right">
-                    雙峰祭ガイダンス
+                    雙峰祭ガイダンス1
                   </Button>
                 </a>
+                <Link
+                  href={pagesPath.announcement.$url({
+                    query: { id: "1999a012-d3f5-4f6d-886e-ca2349c3d565" },
+                  })}
+                >
+                  <a className={styles.applicationGuideLinkItem}>
+                    <Button kind="secondary" icon="arrow-up-right">
+                      雙峰祭ガイダンス2
+                    </Button>
+                  </a>
+                </Link>
               </div>
               <div className={styles.sectionInPanel}>
                 <h3 className={styles.panelTitle}>オンラインステージ</h3>

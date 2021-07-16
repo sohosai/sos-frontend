@@ -27,6 +27,10 @@
   display: flex;
   align-items: center;
   color: $color-brand;
+
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
 }
 
 .linkIcon {

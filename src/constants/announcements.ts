@@ -250,6 +250,31 @@ export const announcements: Announcement[] = [
       },
     ],
   },
+  {
+    id: "1999a012-d3f5-4f6d-886e-ca2349c3d565",
+    date: dayjs.tz("2021-07-16T18:00:00", "Asia/Tokyo"),
+    title: "オンライン一般企画用雙峰祭ガイダンス",
+    text: [
+      "オンライン一般企画用雙峰祭ガイダンスを公開いたします。",
+      "雙峰祭ガイダンスとは、特に重要な内容を簡潔にまとめたものでございます。",
+      "今年度は非常に多くの変更点がございますので、募集要項をご確認の際にぜひご一緒にご視聴ください。",
+      "なお、雙峰祭ガイダンスは以下の3つの動画に分かれております。",
+    ].join("\n"),
+    links: [
+      {
+        url: "https://youtu.be/wCcmVhDdcfU",
+        label: "Part2-1(宣伝規定)",
+      },
+      {
+        url: "https://youtu.be/cz6wck_lXCw",
+        label: "Part2-2(機材・レンタル・教室貸出)",
+      },
+      {
+        url: "https://youtu.be/4XHerlpyB3o",
+        label: "Part2-3(オンライン物品販売・著作権・感染症拡大防止対策)",
+      },
+    ],
+  },
 ]
 /**
  * この下を書き換えた場合は bin/scaffoldAnnouncement も書き換える必要がないか確認する
