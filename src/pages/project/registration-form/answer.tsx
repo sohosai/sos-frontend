@@ -12,9 +12,11 @@ import { useToastDispatcher } from "src/contexts/toast"
 import { RegistrationForm } from "src/types/models/registrationForm"
 import { FormAnswerItemInForm } from "src/types/models/form/answerItem"
 
-import { getRegistrationForm } from "src/lib/api/registrationForm/getRegistrationForm"
 import { answerRegistrationForm } from "src/lib/api/registrationForm/answerRegistrationForm"
-import { reportError as reportErrorHandler } from "src/lib/errorTracking/reportError"
+import { getRegistrationForm } from "src/lib/api/registrationForm/getRegistrationForm"
+import { getMyRegistrationFormAnswer } from "src/lib/api/registrationForm/getMyRegistrationFormAnswer"
+import { updateRegistrationFormAnswer } from "src/lib/api/registrationForm/updateRegistrationFormAnswer"
+import { reportError as reportErrorHandler } from "src/lib/errorTracking"
 
 import { pagesPath } from "src/utils/$path"
 
@@ -29,6 +31,7 @@ import styles from "./answer.module.scss"
 
 export type Query = {
   id: string
+  update?: boolean
 }
 
 type Inputs = {
@@ -48,17 +51,25 @@ const AnswerRegistrationForm: PageFC = () => {
 
   const [registrationForm, setRegistrationForm] = useState<RegistrationForm>()
   const [generalError, setGeneralError] = useState<
-    "noProject" | "noRegistrationFormId"
+    | "noProject"
+    | "noRegistrationFormId"
+    | "registrationFormNotFound"
+    | "projectNotFound"
+    | "pendingProjectNotFound"
+    | "timeout"
+    | "unknown"
   >()
   const [processing, setProcessing] = useState(false)
 
-  const { id: registrationFormId } = router.query as Partial<Query>
+  const { id: registrationFormId, update: updateMode = false } =
+    router.query as Partial<Query>
 
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<Inputs>({
     mode: "onBlur",
     criteriaMode: "all",
@@ -79,86 +90,174 @@ const AnswerRegistrationForm: PageFC = () => {
     if (!myProjectState?.myProject) return
     if (!registrationFormId) return
 
-    if (window.confirm("回答を送信しますか?")) {
-      setProcessing(true)
+    if (updateMode) {
+      if (
+        window.confirm(
+          [
+            "企画基本情報を編集すると企画登録の完了日時が現在の日時に更新され、先着順で企画数を制限する教室貸出などで不利になる可能性があります",
+            "送信してよろしいですか?",
+          ].join("\n")
+        )
+      ) {
+        setProcessing(true)
 
-      const requestProps = {
-        pendingProjectId: myProjectState.myProject.id,
-        registrationFormId: registrationFormId,
-        items: items.map((item) => {
-          if (item.type === "checkbox") {
-            return {
-              ...item,
-              answer: Object.entries(item.answer).reduce((acc, [id, value]) => {
-                if (value) acc.push(id)
-                return acc
-              }, [] as string[]),
+        const requestProps = {
+          ...(myProjectState.isPending === false
+            ? {
+                projectId: myProjectState.myProject.id,
+              }
+            : { pendingProjectId: myProjectState.myProject.id }),
+          registrationFormId,
+          items: items.map((item) => {
+            if (item.type === "checkbox") {
+              return {
+                ...item,
+                answer: Object.entries(item.answer).reduce(
+                  (acc, [id, value]) => {
+                    if (value) acc.push(id)
+                    return acc
+                  },
+                  [] as string[]
+                ),
+              }
             }
-          }
-          return item
-        }),
-      }
-
-      try {
-        await answerRegistrationForm({
-          ...requestProps,
-          idToken: await authState.firebaseUser.getIdToken(),
-        })
-        setProcessing(false)
-        addToast({ title: "送信しました", kind: "success" })
-        router.push(pagesPath.project.$url())
-      } catch (err) {
-        setProcessing(false)
-        const reportError = (
-          message = "failed to answer registration form"
-        ) => {
-          reportErrorHandler(message, {
-            error: err,
-            registrationForm,
-            body: requestProps,
-          })
+            return item
+          }),
         }
 
-        switch (err.error?.info?.type) {
-          case "ALREADY_ANSWERED_REGISTRATION_FORM": {
-            addToast({
-              title: "既に回答している登録申請です",
-              kind: "error",
-            })
-            break
-          }
-          case "OUT_OF_PROJECT_CREATION_PERIOD": {
-            addToast({ title: "企画応募期間外です", kind: "error" })
-            break
-          }
-          case "INVALID_FORM_ANSWER_ITEM": {
-            const invalidFormAnswerItemId: string | undefined =
-              err.error?.info?.id
-            const invalidFormAnswerItem = registrationForm?.items.find(
-              (item) => item.id === invalidFormAnswerItemId
-            )
+        try {
+          const res = await updateRegistrationFormAnswer({
+            ...requestProps,
+            idToken: await authState.firebaseUser.getIdToken(),
+          })
 
-            if (invalidFormAnswerItemId && invalidFormAnswerItem) {
+          setProcessing(false)
+
+          if (res && "errorCode" in res) {
+            switch (res.errorCode) {
+              case "outOfProjectCreationPeriod":
+                addToast({
+                  title: "企画応募期間外です",
+                  descriptions: [
+                    "企画応募期間外に登録申請の回答を修正することはできません",
+                  ],
+                  kind: "error",
+                })
+                break
+              case "timeout":
+                addToast({ title: "通信に失敗しました", kind: "error" })
+                break
+              case "unknown":
+                addToast({ title: "不明なエラーが発生しました", kind: "error" })
+                reportErrorHandler(
+                  "failed to update registration form answer",
+                  {
+                    registrationForm,
+                    requestProps,
+                    error: res,
+                  }
+                )
+                break
+            }
+          } else {
+            addToast({ title: "回答を修正しました", kind: "success" })
+            router.push(pagesPath.project.$url())
+          }
+        } catch (err) {
+          setProcessing(false)
+          addToast({ title: "不明なエラーが発生しました", kind: "error" })
+          reportErrorHandler("failed to update registration form answer", {
+            registrationForm,
+            requestProps,
+            error: err,
+          })
+        }
+      }
+    } else {
+      if (window.confirm("回答を送信しますか?")) {
+        setProcessing(true)
+
+        const requestProps = {
+          pendingProjectId: myProjectState.myProject.id,
+          registrationFormId: registrationFormId,
+          items: items.map((item) => {
+            if (item.type === "checkbox") {
+              return {
+                ...item,
+                answer: Object.entries(item.answer).reduce(
+                  (acc, [id, value]) => {
+                    if (value) acc.push(id)
+                    return acc
+                  },
+                  [] as string[]
+                ),
+              }
+            }
+            return item
+          }),
+        }
+
+        try {
+          await answerRegistrationForm({
+            ...requestProps,
+            idToken: await authState.firebaseUser.getIdToken(),
+          })
+          setProcessing(false)
+          addToast({ title: "送信しました", kind: "success" })
+          router.push(pagesPath.project.$url())
+        } catch (err) {
+          setProcessing(false)
+          const reportError = (
+            message = "failed to answer registration form"
+          ) => {
+            reportErrorHandler(message, {
+              error: err,
+              registrationForm,
+              body: requestProps,
+            })
+          }
+
+          switch (err.error?.info?.type) {
+            case "ALREADY_ANSWERED_REGISTRATION_FORM": {
               addToast({
-                title: `「${invalidFormAnswerItem.name}」への回答が正しくありません`,
-                descriptions: ["項目の説明文などを再度ご確認ください"],
+                title: "既に回答している登録申請です",
                 kind: "error",
               })
-              // TODO: 安定してきたらここはreportしなくて良い
-              reportError(
-                "failed to answer registration form: INVALID_FORM_ANSWER_ITEM"
-              )
               break
             }
+            case "OUT_OF_PROJECT_CREATION_PERIOD": {
+              addToast({ title: "企画応募期間外です", kind: "error" })
+              break
+            }
+            case "INVALID_FORM_ANSWER_ITEM": {
+              const invalidFormAnswerItemId: string | undefined =
+                err.error?.info?.id
+              const invalidFormAnswerItem = registrationForm?.items.find(
+                (item) => item.id === invalidFormAnswerItemId
+              )
 
-            addToast({ title: "エラーが発生しました", kind: "error" })
-            reportError()
-            break
-          }
-          default: {
-            addToast({ title: "エラーが発生しました", kind: "error" })
-            reportError()
-            break
+              if (invalidFormAnswerItemId && invalidFormAnswerItem) {
+                addToast({
+                  title: `「${invalidFormAnswerItem.name}」への回答が正しくありません`,
+                  descriptions: ["項目の説明文などを再度ご確認ください"],
+                  kind: "error",
+                })
+                // TODO: 安定してきたらここはreportしなくて良い
+                reportError(
+                  "failed to answer registration form: INVALID_FORM_ANSWER_ITEM"
+                )
+                break
+              }
+
+              addToast({ title: "エラーが発生しました", kind: "error" })
+              reportError()
+              break
+            }
+            default: {
+              addToast({ title: "エラーが発生しました", kind: "error" })
+              reportError()
+              break
+            }
           }
         }
       }
@@ -234,13 +333,101 @@ const AnswerRegistrationForm: PageFC = () => {
       )
 
       setRegistrationForm(fetchedRegistrationForm)
+
+      if (updateMode) {
+        try {
+          const res = await getMyRegistrationFormAnswer({
+            ...(myProjectState.isPending === true
+              ? {
+                  pendingProjectId: myProjectState.myProject.id,
+                }
+              : {
+                  projectId: myProjectState.myProject.id,
+                }),
+            registrationFormId,
+            idToken: await authState.firebaseUser.getIdToken(),
+          })
+
+          if ("errorCode" in res) {
+            switch (res.errorCode) {
+              case "timeout":
+                addToast({ title: "通信に失敗しました", kind: "error" })
+                setGeneralError("timeout")
+                break
+              default: {
+                addToast({ title: "不明なエラーが発生しました", kind: "error" })
+                setGeneralError("unknown")
+                reportErrorHandler(
+                  "failed to get my past registration form answer",
+                  {
+                    registrationForm: fetchedRegistrationForm,
+                    error: res,
+                  }
+                )
+                break
+              }
+            }
+          } else {
+            if (
+              fetchedRegistrationForm.items.length !== res.answer?.items.length
+            ) {
+              addToast({ title: "不明なエラーが発生しました", kind: "error" })
+              setGeneralError("unknown")
+              reportErrorHandler(
+                "number of registration form items doesn't match",
+                {
+                  registrationForm: fetchedRegistrationForm,
+                  answer: res.answer,
+                  error: res,
+                }
+              )
+              return
+            }
+
+            res.answer.items.map((answerItem, index) => {
+              switch (answerItem.type) {
+                case "text":
+                  setValue(
+                    `items.${index}.answer` as const,
+                    answerItem.answer,
+                    { shouldValidate: true }
+                  )
+                  break
+                case "radio":
+                  setValue(
+                    `items.${index}.answer` as const,
+                    answerItem.answer,
+                    { shouldValidate: true }
+                  )
+                  break
+                case "integer":
+                  setValue(
+                    `items.${index}.answer` as const,
+                    answerItem.answer,
+                    { shouldValidate: true }
+                  )
+                  break
+              }
+            })
+          }
+        } catch (err) {
+          addToast({ title: "不明なエラーが発生しました", kind: "error" })
+          setGeneralError("unknown")
+          reportErrorHandler("failed to get my past registration form answer", {
+            registrationForm: fetchedRegistrationForm,
+            error: err,
+          })
+        }
+      }
     })()
   }, [authState, myProjectState, registrationFormId])
 
   return (
     <div className={styles.wrapper}>
-      <Head title="登録申請に回答" />
-      <h1 className={styles.title}>登録申請に回答</h1>
+      <Head title={updateMode ? "登録申請の回答を修正" : "登録申請に回答"} />
+      <h1 className={styles.title}>
+        {updateMode ? "登録申請の回答を修正" : "登録申請に回答"}
+      </h1>
       {registrationForm && generalError === undefined ? (
         <>
           <div className={styles.section}>
@@ -339,7 +526,7 @@ const AnswerRegistrationForm: PageFC = () => {
                     type="submit"
                     processing={processing}
                   >
-                    回答を送信する
+                    {updateMode ? "修正した回答を送信する" : "回答を送信する"}
                   </Button>
                 </div>
               </form>
@@ -356,6 +543,11 @@ const AnswerRegistrationForm: PageFC = () => {
 
                 if (generalError === "noRegistrationFormId")
                   return <p>お探しの登録申請は見つかりませんでした</p>
+
+                if (generalError === "timeout") return <p>通信に失敗しました</p>
+
+                if (generalError === "unknown")
+                  return <p>不明なエラーが発生しました</p>
 
                 return <Spinner />
               })()}
