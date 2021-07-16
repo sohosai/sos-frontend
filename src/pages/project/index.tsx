@@ -34,7 +34,7 @@ const RegistrationFormRow: VFC<{ form: RegistrationFormWithHasAnswerFlag }> = ({
     style={{
       padding: "24px 32px",
     }}
-    hoverStyle={form.has_answer ? "none" : "gray"}
+    hoverStyle="gray"
     className={styles.registrationFormRow}
   >
     <p className={styles.registrationFormName}>{form.name}</p>
@@ -223,32 +223,25 @@ const ProjectIndex: PageFC = () => {
                 {registrationForms.length ? (
                   <div className={styles.registrationForms}>
                     {registrationForms.map((form) => (
-                      <>
-                        {!form.has_answer ? (
-                          <div className={styles.registrationFormRowWrapper}>
-                            <Link
-                              href={
-                                form.has_answer
-                                  ? ""
-                                  : pagesPath.project.registration_form.answer.$url(
-                                      {
-                                        query: { id: form.id },
-                                      }
-                                    )
-                              }
-                              key={form.id}
-                            >
-                              <a>
-                                <RegistrationFormRow form={form} />
-                              </a>
-                            </Link>
-                          </div>
-                        ) : (
-                          <div className={styles.registrationFormRowWrapper}>
+                      <div
+                        className={styles.registrationFormRowWrapper}
+                        key={form.id}
+                      >
+                        <Link
+                          href={pagesPath.project.registration_form.answer.$url(
+                            {
+                              query: {
+                                id: form.id,
+                                ...(form.has_answer ? { update: true } : {}),
+                              },
+                            }
+                          )}
+                        >
+                          <a>
                             <RegistrationFormRow form={form} />
-                          </div>
-                        )}
-                      </>
+                          </a>
+                        </Link>
+                      </div>
                     ))}
                   </div>
                 ) : (
