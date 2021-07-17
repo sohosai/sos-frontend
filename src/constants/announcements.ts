@@ -273,6 +273,10 @@ export const announcements: Announcement[] = [
         url: "https://youtu.be/4XHerlpyB3o",
         label: "Part2-3(オンライン物品販売・著作権・感染症拡大防止対策)",
       },
+      {
+        url: staticPath.docs["雙ガ全体資料_pdf"],
+        label: "雙ガ全体資料.pdf",
+      },
     ],
   },
   {
