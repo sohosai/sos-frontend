@@ -21,7 +21,7 @@ import { saveAs } from "file-saver"
 
 import { createCsvBlob } from "src/utils/createCsvBlob"
 
-import { IconButton, Panel, Spinner, Tooltip } from "src/components"
+import { Head, IconButton, Panel, Spinner, Tooltip } from "src/components"
 
 import styles from "./index.module.scss"
 
@@ -92,6 +92,7 @@ const RegistrationForms: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head title="登録申請" />
       <h1 className={styles.title}>登録申請</h1>
       {registrationForms?.length && !error ? (
         <ul className={styles.registrationForms}>
