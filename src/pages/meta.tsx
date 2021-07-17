@@ -9,10 +9,6 @@ import {
   BuildInfo,
 } from "src/lib/api/meta"
 
-import { isUserRoleHigherThanIncluding } from "src/types/models/user/userRole"
-
-import { useAuthNeue } from "src/contexts/auth"
-
 import { Head, Panel, Spinner } from "src/components"
 
 import styles from "./meta.module.scss"
@@ -22,47 +18,37 @@ const Meta: PageFC = () => {
   const [livenessRes, setLivenessRes] = useState<Response | "error">()
   const [buildInfo, setBuildInfo] = useState<BuildInfo | "error">()
 
-  const { authState } = useAuthNeue()
-
   useEffect(() => {
-    if (
-      authState?.status === "bothSignedIn" &&
-      isUserRoleHigherThanIncluding({
-        userRole: authState.sosUser.role,
-        criteria: "administrator",
+    healthCheck()
+      .then((res) => {
+        setHealthCheckRes(res)
+        console.log(res)
       })
-    ) {
-      healthCheck()
-        .then((res) => {
-          setHealthCheckRes(res)
-          console.log(res)
-        })
-        .catch((err) => {
-          setHealthCheckRes("error")
-          throw err
-        })
+      .catch((err) => {
+        setHealthCheckRes("error")
+        throw err
+      })
 
-      checkLiveness()
-        .then((res) => {
-          setLivenessRes(res)
-          console.log(res)
-        })
-        .catch((err) => {
-          setLivenessRes("error")
-          throw err
-        })
+    checkLiveness()
+      .then((res) => {
+        setLivenessRes(res)
+        console.log(res)
+      })
+      .catch((err) => {
+        setLivenessRes("error")
+        throw err
+      })
 
-      getBuildInfo()
-        .then((res) => {
-          setBuildInfo(res)
-          console.log(res)
-        })
-        .catch((err) => {
-          setBuildInfo("error")
-          throw err
-        })
-    }
-  }, [authState])
+    getBuildInfo()
+      .then((res) => {
+        setBuildInfo(res)
+        console.log(res)
+      })
+      .catch((err) => {
+        setBuildInfo("error")
+        throw err
+      })
+  }, [])
 
   return (
     <div className={styles.wrapper}>
@@ -157,6 +143,6 @@ const Meta: PageFC = () => {
   )
 }
 Meta.layout = "committee"
-Meta.rbpac = { type: "higherThanIncluding", role: "administrator" }
+Meta.rbpac = { type: "public" }
 
 export default Meta
