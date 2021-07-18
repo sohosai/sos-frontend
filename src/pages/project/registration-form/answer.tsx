@@ -144,6 +144,34 @@ const AnswerRegistrationForm: PageFC = () => {
                   kind: "error",
                 })
                 break
+              case "invalidFormAnswer": {
+                const invalidFormAnswerItemId: string | undefined =
+                  res.error?.error?.info?.id
+                const invalidFormAnswerItem = registrationForm?.items.find(
+                  (item) => item.id === invalidFormAnswerItemId
+                )
+
+                if (invalidFormAnswerItemId && invalidFormAnswerItem) {
+                  addToast({
+                    title: `「${invalidFormAnswerItem.name}」への回答が正しくありません`,
+                    descriptions: ["項目の説明文などを再度ご確認ください"],
+                    kind: "error",
+                  })
+                  // TODO: 安定してきたらここはreportしなくて良い
+                  reportErrorHandler(
+                    "failed to update registration form answer: INVALID_FORM_ANSWER_ITEM",
+                    { error: res, registrationForm, requestProps }
+                  )
+                  break
+                }
+
+                addToast({ title: "エラーが発生しました", kind: "error" })
+                reportErrorHandler(
+                  "failed to handle INVALID_FORM_ANSWER_ITEM in updating registration form answer",
+                  { error: res, registrationForm, requestProps }
+                )
+                break
+              }
               case "timeout":
                 addToast({ title: "通信に失敗しました", kind: "error" })
                 break
