@@ -27,14 +27,14 @@
 
 .userName {
   font-size: 1.5em;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .userKanaName {
   color: $color-text-sub;
 
   & + .userRole {
-    margin-top: 8px;
+    margin-top: 12px;
   }
 }
 

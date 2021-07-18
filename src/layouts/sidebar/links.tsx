@@ -214,7 +214,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
           router.pathname.startsWith(pagesPath.committee.user.$url().pathname),
       },
       {
-        href: pagesPath.committee.meta.$url(),
+        href: pagesPath.meta.$url(),
         title: "開発者ツール",
         icon: "wrench",
         visible: () =>
@@ -225,8 +225,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
                 criteria: "administrator",
               })
           ),
-        active: () =>
-          router.pathname === pagesPath.committee.meta.$url().pathname,
+        active: () => router.pathname === pagesPath.meta.$url().pathname,
       },
     ],
   }

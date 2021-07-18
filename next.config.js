@@ -53,6 +53,7 @@ if (!/^https?:\/\/.+\/$/.test(process.env.NEXT_PUBLIC_FRONTEND_URL)) {
 /** @type {import('next/dist/next-server/server/config-shared').NextConfig} */
 const config = {
   reactStrictMode: true,
+  trailingSlash: true,
   async headers() {
     return [{ source: "/(.*)", headers: createSecureHeaders() }]
   },

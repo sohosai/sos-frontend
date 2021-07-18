@@ -66,7 +66,7 @@ const Committee: PageFC = () => {
         }),
     },
     {
-      href: pagesPath.committee.meta.$url(),
+      href: pagesPath.meta.$url(),
       title: "開発者ツール",
       icon: "wrench",
       visible: () =>
