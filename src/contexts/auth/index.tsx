@@ -243,6 +243,7 @@ const AuthContextCore = ({
           sosUser: null,
           firebaseUser: null,
         })
+        setErrorTrackerUser(null)
       }
     })
   }, [])
