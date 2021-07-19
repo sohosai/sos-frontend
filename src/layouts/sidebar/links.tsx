@@ -98,7 +98,14 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         visible: () =>
           authState.status === "bothSignedIn" &&
           Boolean(myProjectState?.myProject),
-        active: () => router.pathname === pagesPath.project.$url().pathname,
+        active: () =>
+          router.pathname === pagesPath.project.$url().pathname ||
+          router.pathname === pagesPath.project.edit.$url().pathname ||
+          router.pathname.startsWith(
+            pagesPath.project.registration_form.answer.$url({
+              query: { id: "" },
+            }).pathname
+          ),
       },
       {
         href: pagesPath.project.form.$url(),
