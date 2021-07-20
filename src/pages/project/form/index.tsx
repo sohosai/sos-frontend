@@ -198,7 +198,7 @@ const ListProjectForms: PageFC = () => {
                   return <p>エラーが発生しました</p>
 
                 if (error === "projectPending")
-                  return <p>副責任者の登録を完了してください</p>
+                  return <p>企画応募を完了してください</p>
 
                 if (myProjectState && !myProjectState.myProject)
                   return (
