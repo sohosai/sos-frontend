@@ -363,6 +363,9 @@ const NewForm: PageFC = () => {
             <FormItemSpacer>
               <Textarea
                 label="申請の説明"
+                description={[
+                  "URLはリンクとして認識されます(URLのある行にはURL以外を記述しないでください)",
+                ]}
                 error={[
                   errors.description?.types?.maxLength &&
                     "1024字以内で入力してください",
