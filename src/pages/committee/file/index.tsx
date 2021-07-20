@@ -74,7 +74,7 @@ const CommitteeFileDistributionList: PageFC = () => {
                 <li key={distribution.id} className={styles.rowWrapper}>
                   <Panel
                     style={{
-                      padding: "24px 32px",
+                      padding: "20px 32px",
                     }}
                   >
                     <div className={styles.rowInner}>

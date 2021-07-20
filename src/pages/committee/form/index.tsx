@@ -113,8 +113,8 @@ const ListForms: PageFC = () => {
             <div className={styles.formRowWrapper} key={form.id}>
               <Panel
                 style={{
-                  paddingTop: "24px",
-                  paddingBottom: "24px",
+                  paddingTop: "16px",
+                  paddingBottom: "16px",
                 }}
               >
                 <div className={styles.formRowInner}>
