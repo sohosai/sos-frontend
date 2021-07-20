@@ -20,7 +20,14 @@ import { reportError as reportErrorHandler } from "src/lib/errorTracking"
 
 import { pagesPath } from "src/utils/$path"
 
-import { Button, FormItemSpacer, Head, Panel, Spinner } from "src/components"
+import {
+  Button,
+  FormItemSpacer,
+  Head,
+  Panel,
+  ParagraphWithUrlParsing,
+  Spinner,
+} from "src/components"
 import {
   IntegerFormItem,
   RadioFormItem,
@@ -461,12 +468,12 @@ const AnswerRegistrationForm: PageFC = () => {
           <div className={styles.section}>
             <Panel>
               <h2 className={styles.formName}>{registrationForm.name}</h2>
-              {registrationForm.description &&
-                registrationForm.description.split("\n").map((text, index) => (
-                  <p className={styles.formDescription} key={index}>
-                    {text}
-                  </p>
-                ))}
+              {registrationForm.description && (
+                <ParagraphWithUrlParsing
+                  text={registrationForm.description}
+                  normalTextClassName={styles.formDescription}
+                />
+              )}
             </Panel>
           </div>
           <div className={styles.section}>

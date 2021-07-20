@@ -106,8 +106,8 @@ const ListProjects: PageFC = () => {
             <div className={styles.rowWrapper} key={project.id}>
               <Panel
                 style={{
-                  paddingTop: "24px",
-                  paddingBottom: "24px",
+                  paddingTop: "20px",
+                  paddingBottom: "20px",
                 }}
               >
                 <div className={styles.rowInner}>

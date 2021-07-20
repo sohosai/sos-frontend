@@ -33,8 +33,8 @@ const FormRow: FC<FormRowProps> = ({ form, outOfAnswerPeriod = false }) => {
   const FormRowInner: FC = () => (
     <Panel
       style={{
-        paddingTop: "24px",
-        paddingBottom: "24px",
+        paddingTop: "16px",
+        paddingBottom: "16px",
       }}
       hoverStyle={answerable ? "gray" : "none"}
     >

@@ -373,12 +373,12 @@ const AnswerForm: PageFC = () => {
           <div className={styles.formGeneralInfoWrapper}>
             <Panel>
               <h2 className={styles.formName}>{form.name}</h2>
-              {form.description &&
-                form.description.split("\n").map((text, index) => (
-                  <p className={styles.formDescription} key={index}>
-                    {text}
-                  </p>
-                ))}
+              {form.description && (
+                <ParagraphWithUrlParsing
+                  text={form.description}
+                  normalTextClassName={styles.formDescription}
+                />
+              )}
             </Panel>
           </div>
           <Panel>
