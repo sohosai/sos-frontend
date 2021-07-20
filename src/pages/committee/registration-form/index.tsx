@@ -101,7 +101,7 @@ const RegistrationForms: PageFC = () => {
               <Panel
                 className={styles.rowInner}
                 style={{
-                  padding: "24px 32px",
+                  padding: "16px 32px",
                 }}
               >
                 <p className={styles.formName}>{name}</p>
