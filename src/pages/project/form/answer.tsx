@@ -560,7 +560,7 @@ const AnswerForm: PageFC = () => {
           <div className={styles.emptyWrapper}>
             {(() => {
               if (generalError === "projectPending")
-                return <p>登録申請への回答と副責任者登録を完了してください</p>
+                return <p>企画応募を完了してください</p>
 
               if (
                 generalError === "formIdNotFound" ||
