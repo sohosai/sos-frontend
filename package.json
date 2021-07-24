@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@react-spring/web": "9.2.4",
-    "@sentry/nextjs": "6.9.0",
+    "@sentry/nextjs": "6.10.0",
     "dayjs": "1.10.6",
     "ky": "0.28.5",
     "next": "10.2.3",
@@ -38,7 +38,7 @@
     "eslint-plugin-react": "7.24.0",
     "eslint-plugin-react-hooks": "4.2.0",
     "file-saver": "2.0.5",
-    "firebase": "8.7.1",
+    "firebase": "8.8.0",
     "husky": "4.3.8",
     "lint-staged": "11.0.0",
     "next-secure-headers": "2.2.0",
