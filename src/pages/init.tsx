@@ -89,7 +89,11 @@ const Init: PageFC = () => {
       const res = await initSosUser(requestBody)
 
       if ("errorCode" in res) {
-        res
+        addToast({ title: "エラーが発生しました", kind: "error" })
+        reportError("failed to init user", {
+          requestBody,
+          error: res,
+        })
       }
 
       setProcessing(false)
