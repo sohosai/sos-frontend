@@ -1,21 +1,7 @@
 import { PageFC } from "next"
 import { useRouter } from "next/router"
 
-import { pagesPath } from "../../utils/$path"
-
 import { useForm } from "react-hook-form"
-
-import { useAuthNeue } from "src/contexts/auth"
-import { useMyProject } from "src/contexts/myProject"
-import { useToastDispatcher } from "src/contexts/toast"
-
-import { ProjectCategory, ProjectAttribute } from "src/types/models/project"
-
-import { IN_PROJECT_CREATION_PERIOD } from "src/constants/datetime"
-
-import { isKana, katakanaToHiragana } from "src/utils/jpKana"
-import { awesomeCharacterCount } from "src/utils/awesomeCharacterCount"
-
 import {
   Button,
   Checkbox,
@@ -27,8 +13,18 @@ import {
   Textarea,
   TextField,
 } from "../../components"
+import { pagesPath } from "../../utils/$path"
 
 import styles from "./new.module.scss"
+import { IN_PROJECT_CREATION_PERIOD } from "src/constants/datetime"
+import { useAuthNeue } from "src/contexts/auth"
+import { useMyProject } from "src/contexts/myProject"
+import { useToastDispatcher } from "src/contexts/toast"
+
+import { ProjectCategory, ProjectAttribute } from "src/types/models/project"
+
+import { awesomeCharacterCount } from "src/utils/awesomeCharacterCount"
+import { isKana, katakanaToHiragana } from "src/utils/jpKana"
 
 type Inputs = {
   name: string

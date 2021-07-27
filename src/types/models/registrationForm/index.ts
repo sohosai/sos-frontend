@@ -1,5 +1,5 @@
-import { FormItem } from "../form/item"
 import { FormAnswerItem } from "../form/answerItem"
+import { FormItem } from "../form/item"
 import { ProjectQuery } from "../project/projectQuery"
 
 export type RegistrationForm = Readonly<{

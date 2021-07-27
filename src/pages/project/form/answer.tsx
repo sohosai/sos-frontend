@@ -1,26 +1,19 @@
-import { useState, useEffect } from "react"
-
 import { PageFC } from "next"
 import { useRouter } from "next/router"
+import { useState, useEffect } from "react"
 
 import { useForm, useFieldArray } from "react-hook-form"
 
-import { useAuthNeue } from "src/contexts/auth"
-import { useMyProject } from "src/contexts/myProject"
-import { useToastDispatcher } from "src/contexts/toast"
-
+import { createFile } from "../../../lib/api/file/createFile"
+import { answerForm } from "../../../lib/api/form/answerForm"
+import { getProjectForm } from "../../../lib/api/form/getProjectForm"
 import { Form } from "../../../types/models/form"
 import {
   FormAnswerItemInForm,
   FormAnswerItemInFormWithRealFiles,
 } from "../../../types/models/form/answerItem"
-
-import { getProjectForm } from "../../../lib/api/form/getProjectForm"
-import { createFile } from "../../../lib/api/file/createFile"
-import { reportError as reportErrorHandler } from "src/lib/errorTracking/reportError"
-
 import { pagesPath } from "../../../utils/$path"
-
+import styles from "./answer.module.scss"
 import {
   Button,
   Checkbox,
@@ -34,9 +27,11 @@ import {
   TextField,
 } from "src/components"
 import { FileFormItem } from "src/components/FormItem"
+import { useAuthNeue } from "src/contexts/auth"
+import { useMyProject } from "src/contexts/myProject"
+import { useToastDispatcher } from "src/contexts/toast"
 
-import styles from "./answer.module.scss"
-import { answerForm } from "../../../lib/api/form/answerForm"
+import { reportError as reportErrorHandler } from "src/lib/errorTracking/reportError"
 
 export type Query = {
   formId: string

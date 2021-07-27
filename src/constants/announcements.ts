@@ -1,14 +1,15 @@
 import dayjs from "dayjs"
-import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
-dayjs.extend(utc)
-dayjs.extend(timezone)
+import utc from "dayjs/plugin/utc"
 
-import { staticPath } from "src/utils/$path"
 import {
   STAGE_GUIDANCE_URL,
   GENERAL_PROJECT_GUIDANCE_URL,
 } from "src/constants/links"
+import { staticPath } from "src/utils/$path"
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 type Announcement = {
   id: string

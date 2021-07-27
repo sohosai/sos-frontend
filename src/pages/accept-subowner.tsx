@@ -1,18 +1,6 @@
-import { useState, useEffect } from "react"
-
 import { PageFC } from "next"
 import { useRouter } from "next/router"
-
-import { useAuthNeue } from "src/contexts/auth"
-import { useMyProject } from "src/contexts/myProject"
-import { useToastDispatcher } from "src/contexts/toast"
-
-import { PendingProject } from "../types/models/project"
-
-import { getPendingProject } from "../lib/api/project/getPendingProject"
-import { reportError } from "../lib/errorTracking/reportError"
-
-import { pagesPath } from "../utils/$path"
+import { useState, useEffect } from "react"
 
 import {
   Button,
@@ -22,8 +10,14 @@ import {
   Spinner,
   Tooltip,
 } from "../components"
-
+import { getPendingProject } from "../lib/api/project/getPendingProject"
+import { reportError } from "../lib/errorTracking/reportError"
+import { PendingProject } from "../types/models/project"
+import { pagesPath } from "../utils/$path"
 import styles from "./accept-subowner.module.scss"
+import { useAuthNeue } from "src/contexts/auth"
+import { useMyProject } from "src/contexts/myProject"
+import { useToastDispatcher } from "src/contexts/toast"
 
 export type Query = {
   pendingProjectId: string

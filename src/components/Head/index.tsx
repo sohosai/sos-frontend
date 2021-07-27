@@ -1,6 +1,5 @@
-import { FC } from "react"
-
 import NextHead from "next/head"
+import { FC } from "react"
 
 export const Head: FC<{ title: string }> = ({ title }) => (
   <NextHead>

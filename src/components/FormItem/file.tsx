@@ -1,10 +1,8 @@
 import { ReactElement } from "react"
 
-import { FormItem } from "src/types/models/form/item"
-
-import { Dropzone, FileList, ParagraphWithUrlParsing } from "src/components"
-
 import styles from "./file.module.scss"
+import { Dropzone, FileList, ParagraphWithUrlParsing } from "src/components"
+import { FormItem } from "src/types/models/form/item"
 
 type Props<T> = {
   formItem: Extract<FormItem, { type: "file" }>

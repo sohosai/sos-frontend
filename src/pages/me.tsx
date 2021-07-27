@@ -1,12 +1,10 @@
 import type { PageFC } from "next"
 
+import { Button, Head, Panel } from "../components"
 import { useAuthNeue } from "../contexts/auth"
 
-import { userCategoryTypeToUiText } from "src/types/models/user"
-
-import { Button, Head, Panel } from "../components"
-
 import styles from "./me.module.scss"
+import { userCategoryTypeToUiText } from "src/types/models/user"
 
 const Mypage: PageFC = () => {
   const { authState, signout } = useAuthNeue()

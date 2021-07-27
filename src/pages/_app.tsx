@@ -1,16 +1,15 @@
-import { ReactElement, useEffect } from "react"
-
+import type { PageOptions } from "next"
 import type { AppProps } from "next/app"
 import Head from "next/head"
-import type { PageOptions } from "next"
+import { ReactElement, useEffect } from "react"
 
 import { AuthProvider } from "../contexts/auth"
 import { MyProjectProvider } from "../contexts/myProject"
-import { ToastProvider } from "src/contexts/toast"
 
 import { useIfSupported } from "../hooks/useIfSupported"
 
 import { Layout } from "../layouts/layout"
+import { ToastProvider } from "src/contexts/toast"
 
 import "normalize.css"
 import "../styles/globals.scss"

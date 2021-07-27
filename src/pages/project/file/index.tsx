@@ -1,22 +1,18 @@
-import { useState, useEffect } from "react"
-
 import { PageFC } from "next"
 import Link from "next/link"
+import { useState, useEffect } from "react"
 
+import styles from "./index.module.scss"
+import { Head, Icon, Panel, Spinner } from "src/components"
 import { useAuthNeue } from "src/contexts/auth"
 import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"
 
-import { DistributedFile } from "src/types/models/files"
-
 import { listProjectFileDistributions } from "src/lib/api/file/listProjectFileDistributions"
 import { reportError } from "src/lib/errorTracking/reportError"
+import { DistributedFile } from "src/types/models/files"
 
 import { pagesPath } from "src/utils/$path"
-
-import { Head, Icon, Panel, Spinner } from "src/components"
-
-import styles from "./index.module.scss"
 
 const FileDistributionsForProject: PageFC = () => {
   const { authState } = useAuthNeue()

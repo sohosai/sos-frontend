@@ -1,7 +1,6 @@
-import { FC, ReactNode } from "react"
-
 import { Tooltip as MaterialUiTooltip, TooltipProps } from "@material-ui/core"
 import { StylesProvider } from "@material-ui/core/styles"
+import { FC, ReactNode } from "react"
 
 import styles from "./index.module.scss"
 

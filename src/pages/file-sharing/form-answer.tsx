@@ -1,18 +1,15 @@
-import { useState, useEffect } from "react"
-
 import { PageFC } from "next"
 import { useRouter } from "next/router"
+import { useState, useEffect } from "react"
 
+import styles from "./form-answer.module.scss"
+import { Head, Panel, Spinner } from "src/components"
+import { FileLikeEntity, FileList } from "src/components/FileList"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
 import { getFormAnswerSharedFile } from "src/lib/api/file/getFormAnswerSharedFile"
 import { reportError } from "src/lib/errorTracking/reportError"
-
-import { Head, Panel, Spinner } from "src/components"
-import { FileLikeEntity, FileList } from "src/components/FileList"
-
-import styles from "./form-answer.module.scss"
 
 export type Query = {
   answerId: string
