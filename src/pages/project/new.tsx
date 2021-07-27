@@ -124,7 +124,11 @@ const NewProject: PageFC = () => {
         <Panel>
           {IN_PROJECT_CREATION_PERIOD ? (
             <>
-              {!myProjectState?.error && myProjectState?.myProject === null ? (
+              {!myProjectState?.error &&
+              (myProjectState?.myProject === null ||
+                // FIXME: ad-hoc
+                (myProjectState?.myProject.category === "stage" &&
+                  myProjectState.isPending)) ? (
                 <form
                   className={styles.form}
                   onSubmit={handleSubmit(onSubmit)}
