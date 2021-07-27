@@ -15,6 +15,7 @@ const exportProjects = async ({
         field_id: "企画ID",
         field_code: "企画番号",
         field_created_at: "企画登録日時",
+        field_updated_at: "企画最終更新日時",
         field_owner_id: "責任者ユーザーID",
         field_owner_last_name: "責任者 姓",
         field_owner_first_name: "責任者 名",
