@@ -1,3 +1,5 @@
+.PHONY:
+
 install:
 	yarn install
 
