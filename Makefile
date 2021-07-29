@@ -47,4 +47,4 @@ scaffold.announcement: install
 	yarn ts-node -r tsconfig-paths/register bin/scaffoldAnnouncement
 	yarn prettier --write src/constants/announcements.ts
 
-.PHONY: install dev build start export lint lint.fix format format.check typecheck typecheck.watch storybook build.storybook pathpida pathpida.watch pathpida.watch scaffold.announcement
+.PHONY: install $(MAKECMDGOALS)
