@@ -24,6 +24,7 @@ const exportRegistrationFormAnswers = async ({
           registration_form_id: registrationFormId,
           field_id: "回答ID",
           field_created_at: "回答日時",
+          field_updated_at: "企画最終更新日時",
           field_project_id: "企画ID",
           field_pending_project_id: "仮登録企画ID",
           field_author_id: "回答者ユーザーID",
