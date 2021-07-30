@@ -30,5 +30,8 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# storybook
+storybook-static
+
 # pathpida
 src/utils/$path.ts
