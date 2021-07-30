@@ -32,5 +32,8 @@ yarn-error.log*
 
 *.md
 
+# storybook
+storybook-static
+
 # pathpida
 src/utils/$path.ts
