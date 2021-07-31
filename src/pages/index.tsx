@@ -170,6 +170,11 @@ const Index: PageFC = () => {
                     lang: "en",
                     height: "600",
                     dnt: true,
+                    /**
+                     * ad-hoc workaround
+                     * @see https://github.com/andrewsuzuki/react-twitter-widgets/issues/45
+                     */
+                    id: "profile:TwitterDev",
                   }}
                 />
               </div>
