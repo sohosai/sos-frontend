@@ -113,8 +113,8 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
         icon: "task-list",
         visible: () =>
           authState.status === "bothSignedIn" &&
-          myProjectState?.error === false &&
-          myProjectState.isPending === false,
+          !myProjectState?.error &&
+          Boolean(myProjectState?.myProject),
         active: () =>
           router.pathname.startsWith(pagesPath.project.form.$url().pathname),
       },
