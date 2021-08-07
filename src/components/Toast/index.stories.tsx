@@ -28,6 +28,7 @@ Index.argTypes = {
   },
   descriptions: {
     control: { type: "text" },
+    defaultValue: "",
   },
   progress: {
     control: { type: "range", min: 0, max: 1, step: 0.1 },
