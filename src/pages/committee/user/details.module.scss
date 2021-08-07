@@ -101,3 +101,12 @@ $color-table-border: $color-gray-200;
 .tableRowValueCopyButton {
   margin-left: 4px;
 }
+
+.transformedAddressWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.transformedAddressDescription {
+  color: $color-caution;
+}
