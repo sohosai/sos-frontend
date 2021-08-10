@@ -39,7 +39,7 @@
     "eslint-plugin-react": "7.24.0",
     "eslint-plugin-react-hooks": "4.2.0",
     "file-saver": "2.0.5",
-    "firebase": "8.8.1",
+    "firebase": "8.9.1",
     "husky": "4.3.8",
     "lint-staged": "11.1.1",
     "next-secure-headers": "2.2.0",
