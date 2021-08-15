@@ -1,14 +1,12 @@
+import { Story } from "@storybook/react"
 import { FC } from "react"
 
-import { Story } from "@storybook/react"
-
-import { useToastDispatcher, ToastProvider } from "src/contexts/toast"
-
+import styles from "./index.stories.module.scss"
 import { ToastHub } from "."
+
 import { Button } from "src/components"
 import type { Toast } from "src/components"
-
-import styles from "./index.stories.module.scss"
+import { useToastDispatcher, ToastProvider } from "src/contexts/toast"
 
 export default {
   title: ToastHub.name,

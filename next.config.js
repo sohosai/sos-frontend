@@ -1,7 +1,6 @@
-const withTM = require("next-transpile-modules")(["ky"])
 const { withSentryConfig } = require("@sentry/nextjs")
-
 const { createSecureHeaders } = require("next-secure-headers")
+const withTM = require("next-transpile-modules")(["ky"])
 
 if (
   !process.env.NEXT_PUBLIC_DEPLOY_ENV ||

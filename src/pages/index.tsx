@@ -1,25 +1,22 @@
+import dayjs from "dayjs"
+import timezone from "dayjs/plugin/timezone"
+import utc from "dayjs/plugin/utc"
 import type { PageFC } from "next"
 import Link from "next/link"
 
-import { pagesPath, staticPath } from "src/utils/$path"
-
-import dayjs from "dayjs"
-import utc from "dayjs/plugin/utc"
-import timezone from "dayjs/plugin/timezone"
-dayjs.extend(utc)
-dayjs.extend(timezone)
-
 import { Timeline } from "react-twitter-widgets"
 
+import styles from "./index.module.scss"
+import { Button, Panel } from "src/components"
 import { announcements } from "src/constants/announcements"
 import {
   STAGE_GUIDANCE_URL,
   GENERAL_PROJECT_GUIDANCE_URL,
 } from "src/constants/links"
+import { pagesPath, staticPath } from "src/utils/$path"
 
-import { Button, Panel } from "src/components"
-
-import styles from "./index.module.scss"
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const Index: PageFC = () => {
   return (

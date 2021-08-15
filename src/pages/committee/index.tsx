@@ -1,15 +1,13 @@
 import type { PageFC } from "next"
 import Link from "next/link"
 
+import styles from "./index.module.scss"
+import { Head, Panel } from "src/components"
 import { useAuthNeue } from "src/contexts/auth"
 
 import { isUserRoleHigherThanIncluding } from "src/types/models/user/userRole"
 
 import { pagesPath } from "src/utils/$path"
-
-import { Head, Panel } from "src/components"
-
-import styles from "./index.module.scss"
 
 const Committee: PageFC = () => {
   const { authState } = useAuthNeue()

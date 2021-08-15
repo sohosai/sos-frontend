@@ -1,6 +1,5 @@
-import { client } from "../client"
-
 import type { PendingProject } from "../../../types/models/project"
+import { client } from "../client"
 
 declare namespace getMyPendingProject {
   type Props = Readonly<{

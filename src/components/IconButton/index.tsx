@@ -1,10 +1,8 @@
 import type { FC } from "react"
 
-import { dataset } from "src/utils/dataset"
-
-import { Spinner } from "src/components"
-
 import styles from "./index.module.scss"
+import { Spinner } from "src/components"
+import { dataset } from "src/utils/dataset"
 
 declare namespace IconButton {
   type Props = Readonly<{

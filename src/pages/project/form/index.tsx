@@ -1,24 +1,23 @@
-import { useState, useEffect, FC } from "react"
-
+import dayjs from "dayjs"
+import timezone from "dayjs/plugin/timezone"
+import utc from "dayjs/plugin/utc"
 import type { PageFC } from "next"
 import Link from "next/link"
+import { useState, useEffect, FC } from "react"
 
+import { Head, Panel, Spinner } from "../../../components"
+import { useAuthNeue } from "../../../contexts/auth"
+import { useMyProject } from "../../../contexts/myProject"
 import { listProjectForms } from "../../../lib/api/form/listProjectForms"
 
 import { Form } from "../../../types/models/form"
 
-import { useAuthNeue } from "../../../contexts/auth"
-import { useMyProject } from "../../../contexts/myProject"
-
-import dayjs from "dayjs"
-import utc from "dayjs/plugin/utc"
-import timezone from "dayjs/plugin/timezone"
-
-import { Head, Panel, Spinner } from "../../../components"
-
 import { pagesPath } from "../../../utils/$path"
 
 import styles from "./index.module.scss"
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 type FormWithHasAnswerFlag = Form & { has_answer: boolean }
 
@@ -140,11 +139,6 @@ const ListProjectForms: PageFC = () => {
       }
     })()
   }, [authState, myProjectState])
-
-  useEffect(() => {
-    dayjs.extend(utc)
-    dayjs.extend(timezone)
-  }, [])
 
   return (
     <div className={styles.wrapper}>

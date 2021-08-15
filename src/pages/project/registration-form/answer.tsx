@@ -1,25 +1,10 @@
-import { useEffect, useState } from "react"
-
 import { PageFC } from "next"
 import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 
 import { useForm, useFieldArray } from "react-hook-form"
 
-import { useAuthNeue } from "src/contexts/auth"
-import { useMyProject } from "src/contexts/myProject"
-import { useToastDispatcher } from "src/contexts/toast"
-
-import { RegistrationForm } from "src/types/models/registrationForm"
-import { FormAnswerItemInForm } from "src/types/models/form/answerItem"
-
-import { answerRegistrationForm } from "src/lib/api/registrationForm/answerRegistrationForm"
-import { getRegistrationForm } from "src/lib/api/registrationForm/getRegistrationForm"
-import { getMyRegistrationFormAnswer } from "src/lib/api/registrationForm/getMyRegistrationFormAnswer"
-import { updateRegistrationFormAnswer } from "src/lib/api/registrationForm/updateRegistrationFormAnswer"
-import { reportError as reportErrorHandler } from "src/lib/errorTracking"
-
-import { pagesPath } from "src/utils/$path"
-
+import styles from "./answer.module.scss"
 import {
   Button,
   FormItemSpacer,
@@ -33,8 +18,19 @@ import {
   RadioFormItem,
   TextFormItem,
 } from "src/components/FormItem"
+import { useAuthNeue } from "src/contexts/auth"
+import { useMyProject } from "src/contexts/myProject"
+import { useToastDispatcher } from "src/contexts/toast"
 
-import styles from "./answer.module.scss"
+import { answerRegistrationForm } from "src/lib/api/registrationForm/answerRegistrationForm"
+import { getMyRegistrationFormAnswer } from "src/lib/api/registrationForm/getMyRegistrationFormAnswer"
+import { getRegistrationForm } from "src/lib/api/registrationForm/getRegistrationForm"
+import { updateRegistrationFormAnswer } from "src/lib/api/registrationForm/updateRegistrationFormAnswer"
+import { reportError as reportErrorHandler } from "src/lib/errorTracking"
+import { FormAnswerItemInForm } from "src/types/models/form/answerItem"
+import { RegistrationForm } from "src/types/models/registrationForm"
+
+import { pagesPath } from "src/utils/$path"
 
 export type Query = {
   id: string

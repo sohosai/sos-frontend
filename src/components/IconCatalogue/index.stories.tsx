@@ -1,10 +1,8 @@
+import { Story } from "@storybook/react"
 import { useState, FC } from "react"
 
-import { Story } from "@storybook/react"
-
-import { Panel, Tooltip } from "src/components"
-
 import styles from "./index.stories.module.scss"
+import { Panel, Tooltip } from "src/components"
 
 export default {
   title: "IconCatalogue",

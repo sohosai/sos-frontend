@@ -13,7 +13,7 @@ start: install
 export: build
 	yarn next export
 
-lint: install
+lint: install pathpida
 	yarn eslint .
 
 lint.fix: install

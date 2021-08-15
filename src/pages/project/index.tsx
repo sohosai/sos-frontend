@@ -1,27 +1,22 @@
-import { VFC, useEffect, useState } from "react"
-
 import { PageFC } from "next"
 import Link from "next/link"
+import { VFC, useEffect, useState } from "react"
 
+import styles from "./index.module.scss"
+import { Button, Head, Panel, Spinner, Stepper, Tooltip } from "src/components"
+import { IN_PROJECT_CREATION_PERIOD } from "src/constants/datetime"
 import { useAuthNeue } from "src/contexts/auth"
 import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"
 
+import { listMyRegistrationForms } from "src/lib/api/registrationForm/listMyRegistrationForms"
 import {
   projectCategoryToUiText,
   projectAttributeToUiText,
 } from "src/types/models/project"
 import { RegistrationForm } from "src/types/models/registrationForm"
 
-import { listMyRegistrationForms } from "src/lib/api/registrationForm/listMyRegistrationForms"
-
 import { pagesPath } from "src/utils/$path"
-
-import { IN_PROJECT_CREATION_PERIOD } from "src/constants/datetime"
-
-import { Button, Head, Panel, Spinner, Stepper, Tooltip } from "src/components"
-
-import styles from "./index.module.scss"
 
 type RegistrationFormWithHasAnswerFlag = RegistrationForm & {
   has_answer: boolean

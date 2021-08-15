@@ -1,7 +1,7 @@
 import { client } from "../client"
 
-import type { RegistrationFormAnswer } from "src/types/models/registrationForm"
 import { FormAnswerItem } from "src/types/models/form/answerItem"
+import type { RegistrationFormAnswer } from "src/types/models/registrationForm"
 
 declare namespace answerRegistrationForm {
   type Props = Readonly<{

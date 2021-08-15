@@ -2,11 +2,9 @@ import { FC } from "react"
 
 import { UseFormRegisterReturn } from "react-hook-form"
 
-import { FormItem } from "src/types/models/form/item"
-
-import { Checkbox, ParagraphWithUrlParsing } from "src/components"
-
 import styles from "./checkbox.module.scss"
+import { Checkbox, ParagraphWithUrlParsing } from "src/components"
+import { FormItem } from "src/types/models/form/item"
 
 type Props = {
   formItem: Extract<FormItem, { type: "checkbox" }>
