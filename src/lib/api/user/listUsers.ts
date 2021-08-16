@@ -1,6 +1,5 @@
-import { client } from "../client"
-
 import type { User } from "../../../types/models/user"
+import { client } from "../client"
 
 declare namespace listUsers {
   type Props = Readonly<{

@@ -1,8 +1,7 @@
 import { PageFC } from "next"
 
-import { PageError, Panel } from "src/components"
-
 import styles from "./404.module.scss"
+import { PageError, Panel } from "src/components"
 
 const Custom404: PageFC = () => {
   return (

@@ -1,17 +1,14 @@
-import { useState } from "react"
-
 import { PageFC } from "next"
+import { useState } from "react"
 
 import { useForm } from "react-hook-form"
 
+import { Button, FormItemSpacer, Head, TextField, Panel } from "../components"
+import styles from "./signup.module.scss"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
 import { reportError } from "src/lib/errorTracking/reportError"
-
-import { Button, FormItemSpacer, Head, TextField, Panel } from "../components"
-
-import styles from "./signup.module.scss"
 
 type Inputs = Readonly<{
   email: string

@@ -1,12 +1,9 @@
+import { saveAs } from "file-saver"
 import { FC } from "react"
 
-import { saveAs } from "file-saver"
-
-import { dataset } from "src/utils/dataset"
-
-import { Icon, IconButton, Tooltip } from "src/components"
-
 import styles from "./index.module.scss"
+import { Icon, IconButton, Tooltip } from "src/components"
+import { dataset } from "src/utils/dataset"
 
 export type FileLikeEntity = File | { error: true; filename?: string }
 

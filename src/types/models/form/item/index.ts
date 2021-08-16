@@ -1,10 +1,10 @@
 import type { CheckboxFormItem } from "./checkbox"
 import type { FileFormItem } from "./file"
+import type { FormItemCondition } from "./formItemCondition"
 import type { GridRadioFormItem } from "./gridRadio"
 import type { IntegerFormItem } from "./integer"
 import type { RadioFormItem } from "./radio"
 import type { TextFormItem } from "./text"
-import type { FormItemCondition } from "./formItemCondition"
 
 export type FormItemId = string
 

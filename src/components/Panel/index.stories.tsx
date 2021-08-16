@@ -1,7 +1,7 @@
 import { ArgTypes, Story } from "@storybook/react"
 
-import { Panel } from "."
 import { Spinner } from "../"
+import { Panel } from "."
 
 export default {
   title: Panel.name,

@@ -1,19 +1,16 @@
-import { FC } from "react"
-
+import { PageOptions } from "next"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { PageOptions } from "next"
-
-import { pagesPath } from "../../utils/$path"
+import { FC } from "react"
 
 import { useAuthNeue } from "../../contexts/auth"
 import { useMyProject } from "../../contexts/myProject"
 
 import { isUserRoleHigherThanIncluding } from "../../types/models/user/userRole"
-
-import { Spinner } from "src/components"
+import { pagesPath } from "../../utils/$path"
 
 import styles from "./links.module.scss"
+import { Spinner } from "src/components"
 
 export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
   const router = useRouter()

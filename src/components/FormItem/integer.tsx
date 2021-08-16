@@ -2,9 +2,8 @@ import { FC } from "react"
 
 import { UseFormRegisterReturn } from "react-hook-form"
 
-import { FormItem } from "src/types/models/form/item"
-
 import { TextField } from "src/components"
+import { FormItem } from "src/types/models/form/item"
 
 type Props = {
   formItem: Extract<FormItem, { type: "integer" }>

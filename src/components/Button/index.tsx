@@ -1,8 +1,7 @@
 import type { FC } from "react"
 
-import { dataset } from "../../utils/dataset"
-
 import { Spinner } from "../"
+import { dataset } from "../../utils/dataset"
 
 import styles from "./index.module.scss"
 
