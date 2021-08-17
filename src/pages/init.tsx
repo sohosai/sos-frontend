@@ -1,18 +1,8 @@
-import { useState } from "react"
-
 import { PageFC } from "next"
 import { useRouter } from "next/router"
-
-import { pagesPath } from "../utils/$path"
+import { useState } from "react"
 
 import { useForm } from "react-hook-form"
-
-import type { UserCategoryType } from "../types/models/user"
-
-import { useAuthNeue } from "src/contexts/auth"
-import { useToastDispatcher } from "src/contexts/toast"
-
-import { reportError } from "src/lib/errorTracking/reportError"
 
 import {
   Panel,
@@ -22,10 +12,15 @@ import {
   Button,
   Dropdown,
 } from "../components"
+import type { UserCategoryType } from "../types/models/user"
 
+import { pagesPath } from "../utils/$path"
 import { isKana, katakanaToHiragana } from "../utils/jpKana"
-
 import styles from "./init.module.scss"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
+
+import { reportError } from "src/lib/errorTracking/reportError"
 
 type Inputs = Readonly<{
   nameFirst: string

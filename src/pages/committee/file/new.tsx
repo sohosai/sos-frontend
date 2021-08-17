@@ -3,15 +3,7 @@ import { useRouter } from "next/router"
 
 import { useForm } from "react-hook-form"
 
-import { useAuthNeue } from "src/contexts/auth"
-import { useToastDispatcher } from "src/contexts/toast"
-
-import { createFile } from "src/lib/api/file/createFile"
-import { createFileDistribution } from "src/lib/api/file/createFileDistribution"
-import { reportError } from "src/lib/errorTracking/reportError"
-
-import { pagesPath } from "src/utils/$path"
-
+import styles from "./new.module.scss"
 import {
   Button,
   Dropzone,
@@ -22,8 +14,14 @@ import {
   Textarea,
   TextField,
 } from "src/components"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
 
-import styles from "./new.module.scss"
+import { createFile } from "src/lib/api/file/createFile"
+import { createFileDistribution } from "src/lib/api/file/createFileDistribution"
+import { reportError } from "src/lib/errorTracking/reportError"
+
+import { pagesPath } from "src/utils/$path"
 
 type Inputs = {
   name: string

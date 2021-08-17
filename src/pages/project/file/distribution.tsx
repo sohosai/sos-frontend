@@ -1,18 +1,8 @@
-import { useState, useEffect } from "react"
-
 import { PageFC } from "next"
 import { useRouter } from "next/router"
+import { useState, useEffect } from "react"
 
-import { useAuthNeue } from "src/contexts/auth"
-import { useMyProject } from "src/contexts/myProject"
-import { useToastDispatcher } from "src/contexts/toast"
-
-import { DistributedFile } from "src/types/models/files"
-
-import { getProjectFileDistribution } from "src/lib/api/file/getProjectFileDistribution"
-import { getProjectSharedFile } from "src/lib/api/file/getProjectSharedFile"
-import { reportError } from "src/lib/errorTracking/reportError"
-
+import styles from "./distribution.module.scss"
 import {
   FileList,
   Head,
@@ -20,8 +10,14 @@ import {
   ParagraphWithUrlParsing,
   Spinner,
 } from "src/components"
+import { useAuthNeue } from "src/contexts/auth"
+import { useMyProject } from "src/contexts/myProject"
+import { useToastDispatcher } from "src/contexts/toast"
 
-import styles from "./distribution.module.scss"
+import { getProjectFileDistribution } from "src/lib/api/file/getProjectFileDistribution"
+import { getProjectSharedFile } from "src/lib/api/file/getProjectSharedFile"
+import { reportError } from "src/lib/errorTracking/reportError"
+import { DistributedFile } from "src/types/models/files"
 
 export type Query = {
   distributionId: string

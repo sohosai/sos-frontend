@@ -1,18 +1,15 @@
-import { FC } from "react"
-
 import type { PageOptions } from "next"
-import { useRouter } from "next/router"
 import Link from "next/link"
-
-import { pagesPath } from "../../utils/$path"
+import { useRouter } from "next/router"
+import { FC } from "react"
 
 import { useAuthNeue } from "../../contexts/auth"
 
 import { isUserRoleHigherThanIncluding } from "../../types/models/user/userRole"
-
-import { Links } from "./links"
+import { pagesPath } from "../../utils/$path"
 
 import styles from "./index.module.scss"
+import { Links } from "./links"
 
 const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
   const { authState } = useAuthNeue()

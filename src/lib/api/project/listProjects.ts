@@ -1,6 +1,5 @@
-import { client } from "../client"
-
 import type { Project } from "../../../types/models/project"
+import { client } from "../client"
 
 declare namespace listProjects {
   type Props = Readonly<{

@@ -2,15 +2,14 @@ import { FC } from "react"
 
 import type { UseFormRegisterReturn } from "react-hook-form"
 
+import { Checkbox } from "../"
 import type {
   ProjectCategory,
   ProjectAttribute,
 } from "../../types/models/project"
 
-import { Checkbox } from "../"
-
-import styles from "./index.module.scss"
 import { Dropdown } from "../Dropdown"
+import styles from "./index.module.scss"
 
 declare namespace ProjectQuerySelector {
   type Props = Readonly<{

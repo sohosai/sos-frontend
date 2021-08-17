@@ -1,14 +1,12 @@
 import { PageFC } from "next"
-import { useRouter } from "next/router"
 import Link from "next/link"
+import { useRouter } from "next/router"
 
+import styles from "./index.module.scss"
+import { Head, Panel, ParagraphWithUrlParsing } from "src/components"
 import { announcements } from "src/constants/announcements"
 
 import { pagesPath } from "src/utils/$path"
-
-import { Head, Panel, ParagraphWithUrlParsing } from "src/components"
-
-import styles from "./index.module.scss"
 
 export type Query = {
   id: string

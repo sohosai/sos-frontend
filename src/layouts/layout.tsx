@@ -1,13 +1,11 @@
-import { useRef, useEffect, FC } from "react"
-
 import type { PageOptions } from "next"
 import { useRouter } from "next/router"
+import { useRef, useEffect, FC } from "react"
 
+import styles from "./layout.module.scss"
 import { Sidebar } from "./sidebar"
 
 import { Footer, ToastHub } from "src/components"
-
-import styles from "./layout.module.scss"
 
 const Layout: FC<Pick<PageOptions, "layout">> = ({ layout, children }) => {
   const router = useRouter()

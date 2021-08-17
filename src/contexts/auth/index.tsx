@@ -1,3 +1,5 @@
+import firebase from "firebase/app"
+import type { PageOptions } from "next"
 import {
   useState,
   useEffect,
@@ -7,20 +9,16 @@ import {
   FC,
 } from "react"
 
-import type { PageOptions } from "next"
-
 import { useRbpacRedirect } from "./useRbpacRedirect"
 
-import firebase from "firebase/app"
 import "firebase/auth"
 
-import type { User } from "src/types/models/user"
-
+import { FullScreenLoading } from "src/components/"
 import { getMe } from "src/lib/api/me/getMe"
+
 import { signup as signupSos } from "src/lib/api/signup"
 import { setErrorTrackerUser } from "src/lib/errorTracking/setErrorTrackerUser"
-
-import { FullScreenLoading } from "src/components/"
+import type { User } from "src/types/models/user"
 
 // ref: https://usehooks.com/useAuth/
 

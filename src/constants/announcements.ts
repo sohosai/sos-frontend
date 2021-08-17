@@ -1,14 +1,15 @@
 import dayjs from "dayjs"
-import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
-dayjs.extend(utc)
-dayjs.extend(timezone)
+import utc from "dayjs/plugin/utc"
 
-import { staticPath } from "src/utils/$path"
 import {
   STAGE_GUIDANCE_URL,
   GENERAL_PROJECT_GUIDANCE_URL,
 } from "src/constants/links"
+import { staticPath } from "src/utils/$path"
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 type Announcement = {
   id: string
@@ -389,6 +390,26 @@ export const announcements: Announcement[] = [
       "本日より新たな申請フォームを設け、期限も8/20まで延長いたしました。フォーム名は「【一般・ステージ】機材申請(事前収録用)」です。",
       "これから申請をされる企画者様は、こちらにご回答をお願いいたします。",
       "混乱を招いてしまい大変申し訳ございません。",
+    ].join("\n"),
+  },
+  {
+    id: "34594361-1818-42dd-b7e4-77e9174f3279",
+    date: dayjs.tz("2021-08-17T12:00:00", "Asia/Tokyo"),
+    title: "臨時企画団体責任者連絡集会",
+    text: [
+      "8月17日18:30より臨時企画団体責任者連絡集会を実施いたします。一般企画企画団体におかれましては、雙峰祭オンラインシステムの申請ページにございます「臨時企画団体責任者連絡集会・出席確認フォーム」より資料と動画のご視聴をお願いいたします。",
+      "動画のご視聴が終わりましたら「臨時企画団体責任者連絡集会・出席確認フォーム」内で動画内で提示いたしますクイズ・キーワードをお答えください。",
+    ].join("\n"),
+  },
+  {
+    id: "122ad788-4159-4825-84c0-87f4225802b4",
+    date: dayjs.tz("2021-08-17T12:00:00", "Asia/Tokyo"),
+    title: "【急告】茨城県の非常事態宣言に伴う事前収録の制限について",
+    text: [
+      "昨日8月16日付で、茨城県より「茨城県非常事態宣言」が発出されました。この中では部活動を全面禁止することとされており、大学にも同様の要請をしたことが発表されております。",
+      "つきましては今月末までの間、企画者の皆様が行う学園祭に関する活動について、同居人以外と同じ場所で活動を行うことを全面的に禁止いたします。なお、この規制はすでに実施された活動に対して適応されるものではございません。",
+      "急なお願いにより企画者の皆様には多大なるご迷惑をおかけいたしますことを深くお詫び申し上げます。",
+      "なお、オンラインステージ企画につきましては、本規制により提出が締切に間に合わない場合の救済措置を検討しております。詳細は追ってご連絡いたしますので、今後の情報にご注意ください。",
     ].join("\n"),
   },
 ]

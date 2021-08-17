@@ -2,9 +2,8 @@ import { FC } from "react"
 
 import { UseFormRegisterReturn } from "react-hook-form"
 
-import { dataset } from "../../utils/dataset"
-
 import { ParagraphWithUrlParsing } from "../"
+import { dataset } from "../../utils/dataset"
 
 import styles from "./index.module.scss"
 

@@ -1,8 +1,7 @@
 import { PageFC } from "next"
 
-import { Head, Panel } from "src/components"
-
 import styles from "./privacy-policy.module.scss"
+import { Head, Panel } from "src/components"
 
 const PrivacyPolicy: PageFC = () => {
   return (

@@ -7,17 +7,15 @@
  * SOS バックからのエラーなどを受けてリダイレクトする場合はその場で処理
  */
 
-import { useEffect, useRef, MutableRefObject } from "react"
-
-import { useRouter } from "next/router"
 import type { PageOptions } from "next"
-
-import { pagesPath } from "../../utils/$path"
+import { useRouter } from "next/router"
+import { useEffect, useRef, MutableRefObject } from "react"
 
 import {
   isUserRoleHigherThanIncluding,
   isUserRoleLowerThanIncluding,
 } from "../../types/models/user/userRole"
+import { pagesPath } from "../../utils/$path"
 
 import { AuthNeueState } from "."
 import { useToastDispatcher } from "src/contexts/toast"

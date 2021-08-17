@@ -1,15 +1,12 @@
+import { PageFC } from "next"
 import { useState } from "react"
 
-import { PageFC } from "next"
-
+import { Button, Head, Panel } from "../components"
+import styles from "./email-verification.module.scss"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
 import { reportError } from "src/lib/errorTracking/reportError"
-
-import { Button, Head, Panel } from "../components"
-
-import styles from "./email-verification.module.scss"
 
 const EmailVerification: PageFC = () => {
   const [processing, setProcessing] = useState(false)

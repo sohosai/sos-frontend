@@ -1,8 +1,8 @@
-import type { CheckboxId } from "./item/checkbox"
-import type { RadioId } from "./item/radio"
-import type { GridRadioRowId, GridRadioColumnId } from "./item/gridRadio"
-import type { FormItemId } from "./item"
 import { FileSharingId } from "../files"
+import type { FormItemId } from "./item"
+import type { CheckboxId } from "./item/checkbox"
+import type { GridRadioRowId, GridRadioColumnId } from "./item/gridRadio"
+import type { RadioId } from "./item/radio"
 
 export type TextFormAnswerItem = Readonly<{
   type: "text"

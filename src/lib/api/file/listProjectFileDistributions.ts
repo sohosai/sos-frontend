@@ -1,6 +1,5 @@
-import { client } from "../client"
-
 import type { DistributedFile } from "../../../types/models/files"
+import { client } from "../client"
 
 declare namespace listProjectFileDistributions {
   type Props = Readonly<{

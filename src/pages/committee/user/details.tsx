@@ -1,21 +1,16 @@
-import { useState, useEffect, FC, ReactElement } from "react"
-
+import dayjs from "dayjs"
 import { PageFC } from "next"
 import { useRouter } from "next/router"
+import { useState, useEffect, FC, ReactElement } from "react"
 
-import dayjs from "dayjs"
-
+import styles from "./details.module.scss"
+import { Head, IconButton, Panel, Spinner, Tooltip } from "src/components"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
+import { getUser } from "src/lib/api/user/getUser"
 import { User, userCategoryTypeToUiText } from "src/types/models/user"
 import { userRoleToUiText } from "src/types/models/user/userRole"
-
-import { getUser } from "src/lib/api/user/getUser"
-
-import { Head, IconButton, Panel, Spinner, Tooltip } from "src/components"
-
-import styles from "./details.module.scss"
 
 export type Query = {
   id: string

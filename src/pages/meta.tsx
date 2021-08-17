@@ -1,17 +1,14 @@
+import { PageFC } from "next"
 import { useState, useEffect } from "react"
 
-import { PageFC } from "next"
-
+import styles from "./meta.module.scss"
+import { Head, Panel, Spinner } from "src/components"
 import {
   healthCheck,
   checkLiveness,
   getBuildInfo,
   BuildInfo,
 } from "src/lib/api/meta"
-
-import { Head, Panel, Spinner } from "src/components"
-
-import styles from "./meta.module.scss"
 
 const Meta: PageFC = () => {
   const [healthCheckRes, setHealthCheckRes] = useState<Response | "error">()
