@@ -1,24 +1,39 @@
 import dayjs from "dayjs"
 import timezone from "dayjs/plugin/timezone"
 import utc from "dayjs/plugin/utc"
-import type { PageFC } from "next"
+import type { PageFC, GetStaticProps, InferGetStaticPropsType } from "next"
 import Link from "next/link"
 
 import { Timeline } from "react-twitter-widgets"
 
 import styles from "./index.module.scss"
 import { Button, Panel } from "src/components"
-import { announcements } from "src/constants/announcements"
 import {
   STAGE_GUIDANCE_URL,
   GENERAL_PROJECT_GUIDANCE_URL,
 } from "src/constants/links"
+import { getRecentAnnouncements } from "src/lib/contentful"
+import type { PromiseType } from "src/types/utils"
 import { pagesPath, staticPath } from "src/utils/$path"
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-const Index: PageFC = () => {
+export const getStaticProps: GetStaticProps<{
+  announcements: PromiseType<ReturnType<typeof getRecentAnnouncements>>
+}> = async () => {
+  const announcements = await getRecentAnnouncements({ limit: 100 })
+
+  return {
+    props: {
+      announcements,
+    },
+  }
+}
+
+const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  announcements,
+}) => {
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.pageTitle}>雙峰祭オンラインシステム</h1>
@@ -136,23 +151,23 @@ const Index: PageFC = () => {
         <div className={styles.panelRowWrapper} data-cols="2">
           <div className={styles.panelWrapper}>
             <Panel>
-              {announcements
-                .sort((a, b) => (a.date.isAfter(b.date) ? -1 : 1))
-                .map(({ id, date, title }) => (
-                  <Link
-                    href={pagesPath.announcement.$url({ query: { id } })}
-                    key={id}
-                  >
-                    <a>
-                      <div className={styles.announcementRow}>
-                        <p className={styles.announcementTitle}>{title}</p>
-                        <p className={styles.announcementDate}>
-                          {date.format("YYYY/M/D HH:mm")}
-                        </p>
-                      </div>
-                    </a>
-                  </Link>
-                ))}
+              {announcements && "errorCode" in announcements
+                ? "お知らせの取得に失敗しました"
+                : announcements.map(({ id, date, title }) => (
+                    <Link
+                      href={pagesPath.announcement.$url({ query: { id } })}
+                      key={id}
+                    >
+                      <a>
+                        <div className={styles.announcementRow}>
+                          <p className={styles.announcementTitle}>{title}</p>
+                          <p className={styles.announcementDate}>
+                            {dayjs(date).format("YYYY/M/D HH:mm")}
+                          </p>
+                        </div>
+                      </a>
+                    </Link>
+                  ))}
             </Panel>
           </div>
           <div className={styles.panelWrapper}>
