@@ -7792,7 +7792,7 @@ ignore@^4.0.3, ignore@^4.0.6:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-4.0.6.tgz#750e3db5862087b4737ebac8207ffd1ef27b25fc"
   integrity sha512-cyFDKrqc/YdcWFniJhzI42+AzS+gNwmUzOSFcRCQYwySuBBBy/KjuxWLZ/FHEH6Moq1NizMOBWyTcv8O4OZIMg==
 
-ignore@^5.1.4:
+ignore@^5.1.4, ignore@^5.1.8:
   version "5.1.8"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.1.8.tgz#f150a8b50a34289b33e22f5889abd4d8016f0e57"
   integrity sha512-BMpfD7PpiETpBl/A6S498BaIJ6Y/ABT93ETbby2fP00v4EbvPBXWEoaR1UBPKs3iR53pJY7EtZk5KACI57i1Uw==
@@ -10092,12 +10092,13 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-pathpida@0.15.5:
-  version "0.15.5"
-  resolved "https://registry.yarnpkg.com/pathpida/-/pathpida-0.15.5.tgz#91a2024fb2baf0edfab15cf87e5c957b219c73d0"
-  integrity sha512-sn+T1MxM0celmunTs+ik9ufD4+g79D5/pJNPRyU6PB6S4IIsSAQb6iUcQHNck1RRjQPstY13ZuIewVUQoq1HPg==
+pathpida@0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/pathpida/-/pathpida-0.16.0.tgz#d5dc103d034d8bba3ba7537529cf1aa0e66a9a2b"
+  integrity sha512-zfgANsZagrqm54Pd01LIFGHLsgs0MuaZ7BVXOksBBulR1W1Ygz5RbxopsdEQ+WSRcE914RH03uByKqV/oP59jQ==
   dependencies:
     chokidar "^3.5.2"
+    ignore "^5.1.8"
     minimist "^1.2.5"
 
 pbkdf2@^3.0.3:
