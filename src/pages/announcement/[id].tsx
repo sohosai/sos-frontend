@@ -14,6 +14,7 @@ import {
   getRecentAnnouncements,
 } from "src/lib/contentful/index"
 
+import { reportError } from "src/lib/errorTracking"
 import type { PromiseType } from "src/types/utils"
 
 import { pagesPath } from "src/utils/$path"
@@ -48,6 +49,13 @@ export const getStaticProps: GetStaticProps<
 const Announcement: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   announcement,
 }) => {
+  if (!announcement || (announcement && "errorCode" in announcement)) {
+    reportError(
+      "failed to fetch specific announcement from Contentful",
+      announcement
+    )
+  }
+
   return (
     <div className={styles.wrapper}>
       <Head

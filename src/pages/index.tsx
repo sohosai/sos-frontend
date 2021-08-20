@@ -14,6 +14,7 @@ import {
   GENERAL_PROJECT_GUIDANCE_2_URL,
 } from "src/constants/links"
 import { getRecentAnnouncements } from "src/lib/contentful"
+import { reportError } from "src/lib/errorTracking"
 import type { PromiseType } from "src/types/utils"
 import { pagesPath, staticPath } from "src/utils/$path"
 
@@ -35,6 +36,10 @@ export const getStaticProps: GetStaticProps<{
 const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   announcements,
 }) => {
+  if (!announcements || (announcements && "errorCode" in announcements)) {
+    reportError("failed to fetch announcements from Contentful", announcements)
+  }
+
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.pageTitle}>雙峰祭オンラインシステム</h1>
