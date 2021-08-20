@@ -68,3 +68,27 @@ export const getRecentAnnouncements = async ({
     }
   }
 }
+
+export const getAnnouncement = async ({
+  id,
+  query,
+}: {
+  id: string
+  query?: any
+}): Promise<
+  Announcement | { errorCode: "noToken" | "unknown"; error?: any }
+> => {
+  const client = getContentfulClient()
+
+  if (client === "noToken") return { errorCode: "noToken" }
+
+  try {
+    const res = await client.getEntry<AnnouncementContentModel>(id, query)
+    return announcementEntryToAnnouncement(res)
+  } catch (error) {
+    return {
+      errorCode: "unknown",
+      error: error instanceof Error ? error.toString() : undefined,
+    }
+  }
+}

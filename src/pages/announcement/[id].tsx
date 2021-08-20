@@ -1,28 +1,63 @@
-import { PageFC } from "next"
+import dayjs from "dayjs"
+import type {
+  PageFC,
+  GetStaticProps,
+  InferGetStaticPropsType,
+  GetStaticPaths,
+} from "next"
 import Link from "next/link"
-import { useRouter } from "next/router"
 
-import styles from "./index.module.scss"
+import styles from "./[id].module.scss"
 import { Head, Panel, ParagraphWithUrlParsing } from "src/components"
-import { announcements } from "src/constants/announcements"
+import {
+  getAnnouncement,
+  getRecentAnnouncements,
+} from "src/lib/contentful/index"
+
+import type { PromiseType } from "src/types/utils"
 
 import { pagesPath } from "src/utils/$path"
 
-export type Query = {
-  id: string
+export const getStaticPaths: GetStaticPaths = async () => {
+  const res = await getRecentAnnouncements({ limit: 100 })
+  return {
+    paths:
+      res && "errorCode" in res
+        ? []
+        : res.map(({ id }) => ({ params: { id } })),
+    fallback: "blocking",
+  }
 }
 
-const Announcement: PageFC = () => {
-  const router = useRouter()
+export const getStaticProps: GetStaticProps<
+  {
+    announcement: PromiseType<ReturnType<typeof getAnnouncement>>
+  },
+  { id: string }
+> = async ({ params }) => {
+  const announcement = params
+    ? await getAnnouncement({ id: params.id })
+    : { errorCode: "unknown" as const }
+  return {
+    props: {
+      announcement,
+    },
+  }
+}
 
-  const { id: passedId } = router.query as Partial<Query>
-
-  const announcement = announcements.find(({ id }) => id === passedId)
-
+const Announcement: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  announcement,
+}) => {
   return (
     <div className={styles.wrapper}>
-      {announcement?.title && <Head title={announcement.title} />}
-      {passedId && announcement ? (
+      <Head
+        title={
+          announcement && "errorCode" in announcement
+            ? "お知らせが見つかりませんでした"
+            : announcement.title
+        }
+      />
+      {announcement && !("errorCode" in announcement) ? (
         <>
           <h1 className={styles.title}>{announcement.title}</h1>
           <Panel style={{ padding: "48px" }}>
@@ -53,7 +88,7 @@ const Announcement: PageFC = () => {
                 </div>
               )}
               <p className={styles.date}>
-                {announcement.date.format("YYYY/M/D HH:mm")}
+                {dayjs(announcement.date).format("YYYY/M/D HH:mm")}
               </p>
             </div>
           </Panel>

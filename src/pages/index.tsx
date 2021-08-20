@@ -11,6 +11,7 @@ import { Button, Panel } from "src/components"
 import {
   STAGE_GUIDANCE_URL,
   GENERAL_PROJECT_GUIDANCE_URL,
+  GENERAL_PROJECT_GUIDANCE_2_URL,
 } from "src/constants/links"
 import { getRecentAnnouncements } from "src/lib/contentful"
 import type { PromiseType } from "src/types/utils"
@@ -103,17 +104,16 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
                     雙峰祭ガイダンス1
                   </Button>
                 </a>
-                <Link
-                  href={pagesPath.announcement.$url({
-                    query: { id: "1999a012-d3f5-4f6d-886e-ca2349c3d565" },
-                  })}
+                <a
+                  href={GENERAL_PROJECT_GUIDANCE_2_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.applicationGuideLinkItem}
                 >
-                  <a className={styles.applicationGuideLinkItem}>
-                    <Button kind="secondary" icon="arrow-up-right">
-                      雙峰祭ガイダンス2
-                    </Button>
-                  </a>
-                </Link>
+                  <Button kind="secondary" icon="arrow-up-right">
+                    雙峰祭ガイダンス2
+                  </Button>
+                </a>
               </div>
               <div className={styles.sectionInPanel}>
                 <h3 className={styles.panelTitle}>オンラインステージ</h3>
@@ -154,10 +154,7 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
               {announcements && "errorCode" in announcements
                 ? "お知らせの取得に失敗しました"
                 : announcements.map(({ id, date, title }) => (
-                    <Link
-                      href={pagesPath.announcement.$url({ query: { id } })}
-                      key={id}
-                    >
+                    <Link href={pagesPath.announcement._id(id).$url()} key={id}>
                       <a>
                         <div className={styles.announcementRow}>
                           <p className={styles.announcementTitle}>{title}</p>
