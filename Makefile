@@ -1,50 +1,56 @@
 install:
-	yarn install
+	if test $(INSTALL_MODE) = "skip"; then \
+		echo "Skipping 'yarn install'..."; \
+	elif test $(INSTALL_MODE) = "ci"; then \
+		yarn install --frozen-lockfile; \
+	else \
+	  yarn install; \
+	fi
 
 dev: install pathpida
-	yarn next dev -p 3131
+	yarn run next dev -p 3131
 
 build: install pathpida
-	yarn next build
+	yarn run next build
 
 start: install
-	yarn next start -p 3131
+	yarn run next start -p 3131
 
 export: build
-	yarn next export
+	yarn run next export
 
 lint: install pathpida
-	yarn eslint .
+	yarn run eslint .
 
 lint.fix: install
-	yarn eslint --fix .
+	yarn run eslint --fix .
 
 format: install
-	yarn prettier --write .
+	yarn run prettier --write .
 
 format.check: install
-	yarn prettier --check .
+	yarn run prettier --check .
 
 typecheck: install pathpida
-	yarn tsc --noEmit
+	yarn run tsc --noEmit
 
 typecheck.watch: install pathpida
-	yarn tsc --noEmit --watch
+	yarn run tsc --noEmit --watch
 
 storybook: install pathpida
-	yarn start-storybook -s public -p 6161
+	yarn run start-storybook -s public -p 6161
 
 build.storybook: install pathpida
-	yarn build-storybook -s public
+	yarn run build-storybook -s public
 
 pathpida: install
-	yarn pathpida --enableStatic
+	yarn run pathpida --enableStatic
 
 pathpida.watch: install
-	yarn pathpida --enableStatic --watch
+	yarn run pathpida --enableStatic --watch
 
 scaffold.announcement: install
-	yarn ts-node -r tsconfig-paths/register bin/scaffoldAnnouncement
-	yarn prettier --write src/constants/announcements.ts
+	yarn run ts-node -r tsconfig-paths/register bin/scaffoldAnnouncement
+	yarn run prettier --write src/constants/announcements.ts
 
 .PHONY: install $(MAKECMDGOALS)
