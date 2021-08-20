@@ -43,6 +43,7 @@ export const getStaticProps: GetStaticProps<
     props: {
       announcement,
     },
+    revalidate: 60,
   }
 }
 

@@ -30,6 +30,7 @@ export const getStaticProps: GetStaticProps<{
     props: {
       announcements,
     },
+    revalidate: 60,
   }
 }
 
