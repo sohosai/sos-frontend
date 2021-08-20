@@ -61,6 +61,9 @@ if (!/^https?:\/\/.+\/$/.test(process.env.NEXT_PUBLIC_FRONTEND_URL)) {
 const config = {
   reactStrictMode: true,
   trailingSlash: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   async headers() {
     return [{ source: "/(.*)", headers: createSecureHeaders() }]
   },

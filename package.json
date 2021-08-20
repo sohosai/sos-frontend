@@ -71,5 +71,8 @@
     "*.{js,jsx,ts,tsx}": [
       "eslint"
     ]
+  },
+  "scripts": {
+    "vercel-build": "make build"
   }
 }
