@@ -24,8 +24,8 @@ export type Announcement = {
   date: string
   title: string
   text: string
-  links?: {
+  links: {
     url: string
-    label?: string
+    label: string | null
   }[]
 }

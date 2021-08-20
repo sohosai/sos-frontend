@@ -33,11 +33,11 @@ const announcementEntryToAnnouncement = (
   links: [
     ...(item.fields.files ?? []).map((asset) => ({
       url: asset.fields.file.url,
-      label: asset.fields.title,
+      label: asset.fields.title ?? null,
     })),
     ...(item.fields.links ?? []).map((link) => ({
       url: link.fields.url,
-      label: link.fields.title,
+      label: link.fields.title ?? null,
     })),
   ],
 })
@@ -64,7 +64,7 @@ export const getRecentAnnouncements = async ({
   } catch (error) {
     return {
       errorCode: "unknown",
-      error: error instanceof Error ? error.toString() : undefined,
+      error: error instanceof Error ? error.toString() : null,
     }
   }
 }
@@ -88,7 +88,7 @@ export const getAnnouncement = async ({
   } catch (error) {
     return {
       errorCode: "unknown",
-      error: error instanceof Error ? error.toString() : undefined,
+      error: error instanceof Error ? error.toString() : null,
     }
   }
 }
