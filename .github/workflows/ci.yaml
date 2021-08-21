@@ -30,13 +30,13 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Lint
-        run: make -e lint
+        run: make lint
 
       - name: Prettier
-        run: make -e format.check
+        run: make format.check
 
       - name: Typecheck
-        run: make -e typecheck
+        run: make typecheck
 
   build:
     runs-on: ubuntu-20.04
@@ -57,7 +57,7 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Build
-        run: make -e build
+        run: make build
 
   storybook:
     runs-on: ubuntu-20.04
@@ -78,4 +78,4 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Build
-        run: make -e build.storybook
+        run: make build.storybook
