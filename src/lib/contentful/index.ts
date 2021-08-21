@@ -3,6 +3,7 @@ import dayjs from "dayjs"
 import timezone from "dayjs/plugin/timezone"
 import utc from "dayjs/plugin/utc"
 
+import { reportError } from "src/lib/errorTracking"
 import type {
   Announcement,
   AnnouncementContentModel,
@@ -42,16 +43,21 @@ const announcementEntryToAnnouncement = (
   ],
 })
 
-export const getRecentAnnouncements = async ({
+export const getAnnouncements = async ({
   limit = 20,
 }: {
   limit?: number
-}): Promise<
-  Announcement[] | { errorCode: "noToken" | "unknown"; error?: any }
-> => {
+}): Promise<{
+  total: number
+  announcements: Announcement[]
+}> => {
   const client = getContentfulClient()
-
-  if (client === "noToken") return { errorCode: "noToken" }
+  if (client === "noToken") {
+    return {
+      total: 0,
+      announcements: [],
+    }
+  }
 
   try {
     const res = await client.getEntries<AnnouncementContentModel>({
@@ -60,11 +66,17 @@ export const getRecentAnnouncements = async ({
       limit,
     })
 
-    return res.items.map((item) => announcementEntryToAnnouncement(item))
-  } catch (error) {
     return {
-      errorCode: "unknown",
-      error: error instanceof Error ? error.toString() : null,
+      total: res.total,
+      announcements: res.items.map((item) =>
+        announcementEntryToAnnouncement(item)
+      ),
+    }
+  } catch (error) {
+    reportError("failed to fetch announcements from Contentful", { error })
+    return {
+      total: 0,
+      announcements: [],
     }
   }
 }
@@ -75,20 +87,17 @@ export const getAnnouncement = async ({
 }: {
   id: string
   query?: any
-}): Promise<
-  Announcement | { errorCode: "noToken" | "unknown"; error?: any }
-> => {
+}): Promise<Announcement | null> => {
   const client = getContentfulClient()
-
-  if (client === "noToken") return { errorCode: "noToken" }
+  if (client === "noToken") return null
 
   try {
     const res = await client.getEntry<AnnouncementContentModel>(id, query)
-    return announcementEntryToAnnouncement(res)
+    return res ? announcementEntryToAnnouncement(res) : null
   } catch (error) {
-    return {
-      errorCode: "unknown",
-      error: error instanceof Error ? error.toString() : null,
-    }
+    reportError("failed to fetch specific announcement from Contentful", {
+      error,
+    })
+    return null
   }
 }

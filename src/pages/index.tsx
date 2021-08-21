@@ -13,18 +13,17 @@ import {
   GENERAL_PROJECT_GUIDANCE_URL,
   GENERAL_PROJECT_GUIDANCE_2_URL,
 } from "src/constants/links"
-import { getRecentAnnouncements } from "src/lib/contentful"
-import { reportError } from "src/lib/errorTracking"
-import type { PromiseType } from "src/types/utils"
+import { getAnnouncements } from "src/lib/contentful"
+import { Announcement } from "src/types/models/announcement"
 import { pagesPath, staticPath } from "src/utils/$path"
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
 export const getStaticProps: GetStaticProps<{
-  announcements: PromiseType<ReturnType<typeof getRecentAnnouncements>>
+  announcements: Announcement[]
 }> = async () => {
-  const announcements = await getRecentAnnouncements({ limit: 100 })
+  const { announcements } = await getAnnouncements({ limit: 100 })
 
   return {
     props: {
@@ -37,10 +36,6 @@ export const getStaticProps: GetStaticProps<{
 const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   announcements,
 }) => {
-  if (!announcements || (announcements && "errorCode" in announcements)) {
-    reportError("failed to fetch announcements from Contentful", announcements)
-  }
-
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.pageTitle}>雙峰祭オンラインシステム</h1>
@@ -157,9 +152,8 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
         <div className={styles.panelRowWrapper} data-cols="2">
           <div className={styles.panelWrapper}>
             <Panel>
-              {announcements && "errorCode" in announcements
-                ? "お知らせの取得に失敗しました"
-                : announcements.map(({ id, date, title }) => (
+              {announcements?.length
+                ? announcements.map(({ id, date, title }) => (
                     <Link href={pagesPath.announcement._id(id).$url()} key={id}>
                       <a>
                         <div className={styles.announcementRow}>
@@ -170,7 +164,8 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
                         </div>
                       </a>
                     </Link>
-                  ))}
+                  ))
+                : "お知らせの取得に失敗しました"}
             </Panel>
           </div>
           <div className={styles.panelWrapper}>
