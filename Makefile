@@ -1,12 +1,10 @@
 install:
-	@if test "$(INSTALL_MODE)" = "skip"; then \
-		echo "Skipping 'yarn install'..."; \
-	elif test "$(INSTALL_MODE)" = "ci"; then \
-		echo "yarn intall --frozen-lockfile"; \
-		yarn install --frozen-lockfile; \
-	else \
-	  yarn install; \
-	fi
+ifeq ("$(INSTALL_MODE)", "skip")
+	@echo "Skipping 'yarn install'..."
+else
+	yarn install
+endif
+
 
 dev: install pathpida
 	yarn next dev -p 3131
