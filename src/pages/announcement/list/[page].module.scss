@@ -1,0 +1,42 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.listItem {
+  border-top: 1px solid $color-gray-100;
+  transition: background-color 200ms;
+
+  &:last-child {
+    border-bottom: 1px solid $color-gray-100;
+  }
+
+  &:hover,
+  &:focus-within {
+    background-color: $color-gray-50;
+  }
+}
+
+.row {
+  padding: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  outline: none;
+}
+
+.announcementTitle {
+  @include ellipsis;
+}
+
+.announcementDate {
+  color: $color-text-sub;
+  flex-shrink: 0;
+}
