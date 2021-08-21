@@ -47,14 +47,21 @@
 
 .goBackButton {
   margin-top: 24px;
-  color: $color-brand;
 }
 
 .goBackButtonText {
   display: inline-flex;
-  padding-bottom: 3px;
   align-items: center;
+  padding: 0;
+  padding-bottom: 3px;
+  border: none;
+  background-color: transparent;
+  color: $color-brand;
   @include hoverUnderline($color-brand);
+}
+
+.goBackButtonIcon {
+  color: $color-brand;
 }
 
 .goBackButtonIcon {
