@@ -13,7 +13,7 @@ declare namespace Panel {
 
 const Panel: FC<Panel.Props> = ({
   style,
-  className,
+  className = "",
   hoverStyle = "none",
   children,
 }) => {

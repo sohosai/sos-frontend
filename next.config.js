@@ -32,6 +32,14 @@ if (
   process.exit(1)
 }
 
+if (
+  process.env.NEXT_PUBLIC_DEPLOY_ENV !== "dev" &&
+  (!process.env.CONTENTFUL_SPACE_ID || !process.env.CONTENTFUL_TOKEN)
+) {
+  console.error("ERROR: Contentful config needed in deploy env other than dev.")
+  process.exit(1)
+}
+
 if (!process.env.NEXT_PUBLIC_FRONTEND_URL) {
   console.error("ERROR: NEXT_PUBLIC_FRONTEND_URL env variable needed.")
   process.exit(1)
@@ -53,6 +61,9 @@ if (!/^https?:\/\/.+\/$/.test(process.env.NEXT_PUBLIC_FRONTEND_URL)) {
 const config = {
   reactStrictMode: true,
   trailingSlash: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   async headers() {
     return [{ source: "/(.*)", headers: createSecureHeaders() }]
   },

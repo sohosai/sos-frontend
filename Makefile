@@ -1,5 +1,10 @@
 install:
+ifeq ("$(INSTALL_MODE)", "skip")
+	@echo "Skipping 'yarn install'..."
+else
 	yarn install
+endif
+
 
 dev: install pathpida
 	yarn next dev -p 3131
