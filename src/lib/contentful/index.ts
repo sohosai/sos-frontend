@@ -45,8 +45,10 @@ const announcementEntryToAnnouncement = (
 
 export const getAnnouncements = async ({
   limit = 20,
+  skip = 0,
 }: {
   limit?: number
+  skip?: number
 }): Promise<{
   total: number
   announcements: Announcement[]
@@ -64,6 +66,7 @@ export const getAnnouncements = async ({
       content_type: "announcement",
       order: "-fields.publishedAt",
       limit,
+      skip,
     })
 
     return {
