@@ -7,7 +7,7 @@ import Link from "next/link"
 import { Timeline } from "react-twitter-widgets"
 
 import styles from "./index.module.scss"
-import { Button, Panel } from "src/components"
+import { Button, Panel, Icon } from "src/components"
 import {
   STAGE_GUIDANCE_URL,
   GENERAL_PROJECT_GUIDANCE_URL,
@@ -23,7 +23,7 @@ dayjs.extend(timezone)
 export const getStaticProps: GetStaticProps<{
   announcements: Announcement[]
 }> = async () => {
-  const { announcements } = await getAnnouncements({ limit: 100 })
+  const { announcements } = await getAnnouncements({ limit: 20 })
 
   return {
     props: {
@@ -152,20 +152,35 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
         <div className={styles.panelRowWrapper} data-cols="2">
           <div className={styles.panelWrapper}>
             <Panel>
-              {announcements?.length
-                ? announcements.map(({ id, date, title }) => (
-                    <Link href={pagesPath.announcement._id(id).$url()} key={id}>
-                      <a>
-                        <div className={styles.announcementRow}>
+              {announcements?.length ? (
+                <ul className={styles.announcementsList}>
+                  {announcements.map(({ id, date, title }) => (
+                    <li className={styles.announcementsListItem} key={id}>
+                      <Link href={pagesPath.announcement._id(id).$url()}>
+                        <a className={styles.announcementRow}>
                           <p className={styles.announcementTitle}>{title}</p>
                           <p className={styles.announcementDate}>
                             {dayjs(date).format("YYYY/M/D HH:mm")}
                           </p>
-                        </div>
-                      </a>
-                    </Link>
-                  ))
-                : "お知らせの取得に失敗しました"}
+                        </a>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                "お知らせの取得に失敗しました"
+              )}
+              <div className={styles.moreAnnouncements}>
+                <Link href={pagesPath.announcement.list._page(1).$url()}>
+                  <a className={styles.moreAnnouncementsLink}>
+                    <Icon
+                      icon="arrow-right"
+                      className={styles.moreAnnouncementsLinkIcon}
+                    />
+                    お知らせ一覧
+                  </a>
+                </Link>
+              </div>
             </Panel>
           </div>
           <div className={styles.panelWrapper}>
