@@ -40,3 +40,37 @@
   color: $color-text-sub;
   flex-shrink: 0;
 }
+
+.paginationNavigation {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.paginationLinkAnchor {
+  outline: none;
+  display: block;
+
+  &[data-active="true"] {
+    .paginationLinkInner,
+    .paginationLinkIcon {
+      color: $color-brand;
+    }
+
+    @include hoverUnderline($color-brand);
+  }
+}
+
+.paginationLinkInner {
+  position: relative;
+  display: inline-flex;
+  padding-bottom: 3px;
+  align-items: center;
+  color: $color-gray-400;
+}
+
+.paginationLinkIcon {
+  color: $color-gray-400;
+}
