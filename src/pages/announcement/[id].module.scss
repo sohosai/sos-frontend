@@ -47,37 +47,21 @@
 
 .goBackButton {
   margin-top: 24px;
-  color: $color-brand;
 }
 
 .goBackButtonText {
-  position: relative;
   display: inline-flex;
-  padding-bottom: 3px;
   align-items: center;
+  padding: 0;
+  padding-bottom: 3px;
+  border: none;
+  background-color: transparent;
+  color: $color-brand;
+  @include hoverUnderline($color-brand);
+}
 
-  &::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 1px;
-    left: 0;
-    bottom: -2px;
-    background-color: $color-brand;
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 200ms ease-in-out;
-  }
-
-  &:hover,
-  &:focus-within {
-    outline: none;
-
-    &::after {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-  }
+.goBackButtonIcon {
+  color: $color-brand;
 }
 
 .goBackButtonIcon {

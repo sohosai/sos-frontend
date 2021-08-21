@@ -5,7 +5,6 @@ else
 	yarn install
 endif
 
-
 dev: install pathpida
 	yarn next dev -p 3131
 
@@ -47,9 +46,5 @@ pathpida: install
 
 pathpida.watch: install
 	yarn pathpida --enableStatic --watch
-
-scaffold.announcement: install
-	yarn ts-node -r tsconfig-paths/register bin/scaffoldAnnouncement
-	yarn prettier --write src/constants/announcements.ts
 
 .PHONY: install $(MAKECMDGOALS)

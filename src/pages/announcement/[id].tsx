@@ -5,40 +5,29 @@ import type {
   InferGetStaticPropsType,
   GetStaticPaths,
 } from "next"
-import Link from "next/link"
+import { useRouter } from "next/router"
 
 import styles from "./[id].module.scss"
-import { Head, Panel, ParagraphWithUrlParsing } from "src/components"
-import {
-  getAnnouncement,
-  getRecentAnnouncements,
-} from "src/lib/contentful/index"
+import { Head, Panel, ParagraphWithUrlParsing, Icon } from "src/components"
+import { getAnnouncement, getAnnouncements } from "src/lib/contentful/index"
 
-import { reportError } from "src/lib/errorTracking"
-import type { PromiseType } from "src/types/utils"
-
-import { pagesPath } from "src/utils/$path"
+import type { Announcement } from "src/types/models/announcement"
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await getRecentAnnouncements({ limit: 100 })
+  const { announcements } = await getAnnouncements({ limit: 100 })
   return {
-    paths:
-      res && "errorCode" in res
-        ? []
-        : res.map(({ id }) => ({ params: { id } })),
+    paths: announcements.map(({ id }) => ({ params: { id } })),
     fallback: "blocking",
   }
 }
 
 export const getStaticProps: GetStaticProps<
   {
-    announcement: PromiseType<ReturnType<typeof getAnnouncement>>
+    announcement: Announcement | null
   },
   { id: string }
 > = async ({ params }) => {
-  const announcement = params
-    ? await getAnnouncement({ id: params.id })
-    : { errorCode: "unknown" as const }
+  const announcement = params ? await getAnnouncement({ id: params.id }) : null
   return {
     props: {
       announcement,
@@ -47,82 +36,75 @@ export const getStaticProps: GetStaticProps<
   }
 }
 
-const Announcement: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  announcement,
-}) => {
-  if (!announcement || (announcement && "errorCode" in announcement)) {
-    reportError(
-      "failed to fetch specific announcement from Contentful",
-      announcement
-    )
-  }
+const AnnouncementPage: PageFC<InferGetStaticPropsType<typeof getStaticProps>> =
+  ({ announcement }) => {
+    const router = useRouter()
 
-  return (
-    <div className={styles.wrapper}>
-      <Head
-        title={
-          announcement && "errorCode" in announcement
-            ? "お知らせが見つかりませんでした"
-            : announcement.title
-        }
-      />
-      {announcement && !("errorCode" in announcement) ? (
-        <>
-          <h1 className={styles.title}>{announcement.title}</h1>
-          <Panel style={{ padding: "48px" }}>
-            <div className={styles.articleWrapper}>
-              <div className={styles.textWrapper}>
-                <ParagraphWithUrlParsing
-                  text={announcement.text}
-                  normalTextClassName={styles.paragraph}
-                  urlClassName={styles.paragraph}
-                />
-              </div>
-              {announcement.links && (
-                <div className={styles.linksWrapper}>
-                  {announcement.links?.map(({ url, label }) => (
-                    <a
-                      target="_blank"
-                      href={url}
-                      rel="noopener noreferrer"
-                      key={url}
-                      className={styles.link}
-                    >
-                      <span
-                        className={`jam-icons jam-link ${styles.linkIcon}`}
-                      />
-                      {label ?? url}
-                    </a>
-                  ))}
+    return (
+      <div className={styles.wrapper}>
+        <Head
+          title={
+            announcement ? announcement.title : "お知らせが見つかりませんでした"
+          }
+        />
+        {announcement ? (
+          <>
+            <h1 className={styles.title}>{announcement.title}</h1>
+            <Panel style={{ padding: "48px" }}>
+              <div className={styles.articleWrapper}>
+                <div className={styles.textWrapper}>
+                  <ParagraphWithUrlParsing
+                    text={announcement.text}
+                    normalTextClassName={styles.paragraph}
+                    urlClassName={styles.paragraph}
+                  />
                 </div>
-              )}
-              <p className={styles.date}>
-                {dayjs(announcement.date).format("YYYY/M/D HH:mm")}
-              </p>
+                {announcement.links && (
+                  <div className={styles.linksWrapper}>
+                    {announcement.links?.map(({ url, label }) => (
+                      <a
+                        target="_blank"
+                        href={url}
+                        rel="noopener noreferrer"
+                        key={url}
+                        className={styles.link}
+                      >
+                        <span
+                          className={`jam-icons jam-link ${styles.linkIcon}`}
+                        />
+                        {label ?? url}
+                      </a>
+                    ))}
+                  </div>
+                )}
+                <p className={styles.date}>
+                  {dayjs(announcement.date).format("YYYY/M/D HH:mm")}
+                </p>
+              </div>
+            </Panel>
+          </>
+        ) : (
+          <Panel>
+            <div className={styles.emptyWrapper}>
+              <p>お探しのお知らせが見つかりませんでした</p>
             </div>
           </Panel>
-        </>
-      ) : (
-        <Panel>
-          <div className={styles.emptyWrapper}>
-            <p>お探しのお知らせが見つかりませんでした</p>
-          </div>
-        </Panel>
-      )}
-      <div className={styles.goBackButton}>
-        <Link href={pagesPath.$url()}>
-          <a className={styles.goBackButtonText}>
-            <span
-              className={`jam-icons jam-arrow-left ${styles.goBackButtonIcon}`}
-            />
-            トップページへ戻る
-          </a>
-        </Link>
+        )}
+        <div className={styles.goBackButton}>
+          <button
+            className={styles.goBackButtonText}
+            onClick={() => {
+              router.back()
+            }}
+          >
+            <Icon icon="arrow-left" className={styles.goBackButtonIcon} />
+            戻る
+          </button>
+        </div>
       </div>
-    </div>
-  )
-}
-Announcement.layout = "default"
-Announcement.rbpac = { type: "public" }
+    )
+  }
+AnnouncementPage.layout = "default"
+AnnouncementPage.rbpac = { type: "public" }
 
-export default Announcement
+export default AnnouncementPage

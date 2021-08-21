@@ -75,15 +75,23 @@
   margin-bottom: 16px;
 }
 
+.announcementsListItem {
+  border-top: 1px solid $color-gray-100;
+
+  &:last-child {
+    border-bottom: 1px solid $color-gray-100;
+  }
+}
+
 .announcementRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 8px 12px;
-  border-radius: 10px;
   transition: background-color 200ms;
 
-  &:hover {
+  &:hover,
+  &:focus-within {
     background-color: $color-gray-50;
   }
 }
@@ -98,6 +106,23 @@
   @include ellipsis;
   color: $color-text-sub;
   flex-shrink: 0;
+}
+
+.moreAnnouncements {
+  margin-top: 12px;
+
+  &Link {
+    color: $color-brand;
+    display: inline-flex;
+    padding-bottom: 3px;
+    align-items: center;
+    @include hoverUnderline($color-brand);
+
+    &Icon {
+      color: $color-brand;
+      margin-right: 2px;
+    }
+  }
 }
 
 .twitterWrapper {
