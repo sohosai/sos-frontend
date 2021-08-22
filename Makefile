@@ -14,9 +14,6 @@ build: install pathpida
 start: install
 	yarn next start -p 3131
 
-export: build
-	yarn next export
-
 lint: install pathpida
 	yarn eslint .
 
