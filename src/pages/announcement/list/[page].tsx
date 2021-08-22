@@ -80,7 +80,11 @@ export const getStaticProps: GetStaticProps<
   { page: string }
 > = async ({ params }) => {
   const pageIndex = params ? parseInt(params.page) : 1
-  const normalizedPageIndex = isNaN(pageIndex) ? 1 : pageIndex
+  const normalizedPageIndex = isNaN(pageIndex)
+    ? 1
+    : pageIndex > 0
+    ? pageIndex
+    : 1
 
   try {
     const { announcements, total } = await getAnnouncements({
