@@ -120,23 +120,27 @@ const AnnouncementsList: PageFC<
       <Head title="お知らせ一覧" />
       <h1 className={styles.title}>お知らせ一覧</h1>
       <Panel>
-        <ul className={styles.list}>
-          {announcements.map(({ id, date, title }) => (
-            <li className={styles.listItem} key={id}>
-              <Link href={pagesPath.announcement._id(id).$url()}>
-                <a className={styles.row}>
-                  <p className={styles.announcementTitle}>{title}</p>
-                  <p className={styles.announcementDate}>
-                    {dayjs(date).format("YYYY/M/D HH:mm")}
-                  </p>
-                </a>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {announcements.length === 0 ? (
+          <p>お知らせが見つかりませんでした</p>
+        ) : (
+          <ul className={styles.list}>
+            {announcements.map(({ id, date, title }) => (
+              <li className={styles.listItem} key={id}>
+                <Link href={pagesPath.announcement._id(id).$url()}>
+                  <a className={styles.row}>
+                    <p className={styles.announcementTitle}>{title}</p>
+                    <p className={styles.announcementDate}>
+                      {dayjs(date).format("YYYY/M/D HH:mm")}
+                    </p>
+                  </a>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </Panel>
       <div className={styles.paginationNavigation}>
-        {pageIndex === 1 ? (
+        {pageIndex === 1 || announcements.length === 0 ? (
           <PaginationLink direction="prev" active={false} />
         ) : (
           <PaginationLink
@@ -145,7 +149,7 @@ const AnnouncementsList: PageFC<
             href={pagesPath.announcement.list._page(pageIndex - 1).$url()}
           />
         )}
-        {pageIndex === totalPages ? (
+        {pageIndex === totalPages || announcements.length === 0 ? (
           <PaginationLink direction="next" active={false} />
         ) : (
           <PaginationLink
