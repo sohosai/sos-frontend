@@ -73,3 +73,21 @@ make storybook // localhost:6161 で起動
 
 make build.storybook // ビルド
 ```
+
+### お知らせの開発
+
+お知らせは Headless CMS である [Contentful](https://www.contentful.com/) から fetch している
+
+お知らせ関連ページを開発する場合、自分のアカウントで空の Space を作って `.env.local` に `CONTENTFUL_SPACE_ID` / `CONTENTFUL_TOKEN` を記述する
+
+Contentful CLI を利用して本番環境で使用されている Content models をインポートすることができる([ドキュメント](https://www.contentful.com/developers/docs/tutorials/cli/import-and-export/)参照)
+
+```
+contentful-cli login // ログイン
+
+contentful-cli space use // 操作対象 Space を選択
+
+contentful-cli import --content-file etc/contentful-models.json
+```
+
+インポートされた `Announcement` type の Entry を作成することでお知らせを追加できる
