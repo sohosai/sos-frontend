@@ -34,7 +34,7 @@ const announcementEntryToAnnouncement = (
   links: [
     ...(item.fields.files ?? []).map((asset) => ({
       url: asset.fields.file.url,
-      label: asset.fields.title ?? null,
+      label: asset.fields.file.fileName ?? null,
     })),
     ...(item.fields.links ?? []).map((link) => ({
       url: link.fields.url,
