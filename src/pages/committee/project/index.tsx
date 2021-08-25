@@ -70,7 +70,9 @@ const ListProjects: PageFC = () => {
 
       listProjects({ idToken })
         .then(({ projects: fetchedProjects }) => {
-          setProjects(fetchedProjects)
+          setProjects(
+            fetchedProjects.sort((a, b) => (a.code > b.code ? 1 : -1))
+          )
         })
         .catch(async (err) => {
           const body = await err.response?.json()
