@@ -56,7 +56,14 @@ const ListUsers: PageFC = () => {
       if (idToken) {
         listUsers({ idToken })
           .then(({ users: fetchedUsers }) => {
-            setUsers(fetchedUsers)
+            setUsers(
+              fetchedUsers.sort((a, b) =>
+                a.kana_name.last + a.kana_name.first >
+                b.kana_name.last + b.kana_name.first
+                  ? 1
+                  : -1
+              )
+            )
           })
           .catch(async (e) => {
             const body = await e.response?.json()
