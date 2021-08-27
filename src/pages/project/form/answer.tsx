@@ -225,7 +225,7 @@ const AnswerForm: PageFC = () => {
           if (body) {
             const reportError = (message = "failed to answer form") => {
               reportErrorHandler(message, {
-                error: err,
+                error: body,
                 form: form,
                 body: requestProps,
               })
@@ -240,7 +240,7 @@ const AnswerForm: PageFC = () => {
                 break
               case "INVALID_FORM_ANSWER": {
                 const invalidFormAnswerItemId: string | undefined =
-                  err.error?.info?.id
+                  body.error?.info?.id
                 const invalidFormAnswerItem = form?.items.find(
                   (item) => item.id === invalidFormAnswerItemId
                 )
