@@ -1,0 +1,35 @@
+@import "src/styles/variables.scss";
+
+$border: 1px solid $color-gray-200;
+
+.table {
+  border-right: $border;
+  border-left: $border;
+  border-bottom: $border;
+}
+
+.tableRow {
+  display: flex;
+  align-items: stretch;
+  border-top: $border;
+}
+
+.tableRowKey,
+.tableRowValue {
+  flex-basis: 0;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  overflow-wrap: anywhere;
+  line-height: 1.5em;
+}
+
+.tableRowKey {
+  flex-grow: var(--key-flex-grow);
+  background-color: $color-gray-50;
+}
+
+.tableRowValue {
+  flex-grow: var(--value-flex-grow);
+  border-left: $border;
+}
