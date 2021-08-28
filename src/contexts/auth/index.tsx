@@ -1,4 +1,14 @@
-import firebase from "firebase/app"
+import { initializeApp as initializeFirebaseApp } from "firebase/app"
+import {
+  signInWithEmailAndPassword,
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification as sendEmailVerificationViaFirebase,
+  signOut,
+  onAuthStateChanged,
+  sendPasswordResetEmail as sendPasswordResetEmailViaFirebase,
+  User as FirebaseUser,
+} from "firebase/auth"
 import type { PageOptions } from "next"
 import {
   useState,
@@ -11,8 +21,6 @@ import {
 
 import { useRbpacRedirect } from "./useRbpacRedirect"
 
-import "firebase/auth"
-
 import { FullScreenLoading } from "src/components/"
 import { getMe } from "src/lib/api/me/getMe"
 
@@ -22,18 +30,18 @@ import type { User } from "src/types/models/user"
 
 // ref: https://usehooks.com/useAuth/
 
-if (!firebase.apps.length) {
-  firebase.initializeApp({
-    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-    appID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  })
-}
+const firebaseApp = initializeFirebaseApp({
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+})
+
+const firebaseAuth = getAuth(firebaseApp)
 
 type FirebaseAuthMethods = {
-  signin: (email: string, password: string) => Promise<firebase.User | null>
-  signup: (email: string, password: string) => Promise<firebase.User | null>
+  signin: (email: string, password: string) => Promise<FirebaseUser | null>
+  signup: (email: string, password: string) => Promise<FirebaseUser | null>
   sendEmailVerification: () => Promise<void>
   signout: () => void
   sendPasswordResetEmail: (email: string) => Promise<boolean>
@@ -43,11 +51,11 @@ export type AuthNeueState =
   | {
       status: "bothSignedIn"
       sosUser: User
-      firebaseUser: firebase.User
+      firebaseUser: FirebaseUser
     }
   | {
       status: "firebaseSignedIn"
-      firebaseUser: firebase.User
+      firebaseUser: FirebaseUser
       sosUser: null
     }
 
@@ -106,41 +114,40 @@ const AuthContextCore = ({
   })
 
   const signin = async (email: string, password: string) => {
-    return await firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((response) => {
+    return await signInWithEmailAndPassword(firebaseAuth, email, password).then(
+      (response) => {
         return response.user
-      })
+      }
+    )
   }
 
   const signup = async (email: string, password: string) => {
-    return await firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((response) => {
-        return response.user
-      })
+    return await createUserWithEmailAndPassword(
+      firebaseAuth,
+      email,
+      password
+    ).then((response) => {
+      return response.user
+    })
   }
 
   const sendEmailVerification = async () => {
-    if (!firebase.auth().currentUser) throw new Error("No logged in user found")
-    return await firebase.auth().currentUser?.sendEmailVerification({
+    if (!firebaseAuth.currentUser) throw new Error("No logged in user found")
+    return await sendEmailVerificationViaFirebase(firebaseAuth.currentUser, {
       url: process.env.NEXT_PUBLIC_FRONTEND_URL ?? "",
     })
   }
 
   const signout = async () => {
-    return await firebase.auth().signOut()
+    return await signOut(firebaseAuth)
   }
 
   const sendPasswordResetEmail = async (email: string) => {
-    return await firebase
-      .auth()
-      .sendPasswordResetEmail(email)
-      .then(() => {
+    return await sendPasswordResetEmailViaFirebase(firebaseAuth, email).then(
+      () => {
         return true
-      })
+      }
+    )
   }
 
   const initSosUser = async (props: signupSos.Props["props"]) => {
@@ -173,7 +180,7 @@ const AuthContextCore = ({
   }
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(async (user) => {
+    onAuthStateChanged(firebaseAuth, async (user) => {
       if (user) {
         hasBeenSignedIn.current = true
 
