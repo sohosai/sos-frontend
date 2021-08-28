@@ -1,5 +1,6 @@
 export { Button } from "./Button"
 export { Checkbox } from "./Checkbox"
+export { CopyButton } from "./CopyButton"
 export { DateSelector } from "./DateSelector"
 export { DateTimeSelector } from "./DateTimeSelector"
 export { Dropdown } from "./Dropdown"
