@@ -1,0 +1,19 @@
+@import "src/styles/variables.scss";
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.projectAttributeCode {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: $color-gray-100;
+  color: $color-text-sub;
+
+  &[data-active="true"] {
+    background-color: $color-brand;
+    color: white;
+  }
+}

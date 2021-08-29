@@ -1,6 +1,7 @@
 import dayjs from "dayjs"
 import { saveAs } from "file-saver"
 import type { PageFC } from "next"
+import Link from "next/link"
 import { useState, useEffect } from "react"
 
 import { exportProjects } from "../../../lib/api/project/exportProjects"
@@ -25,6 +26,7 @@ import {
 } from "src/components/"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
+import { pagesPath } from "src/utils/$path"
 
 const ListProjects: PageFC = () => {
   const { authState } = useAuthNeue()
@@ -98,76 +100,92 @@ const ListProjects: PageFC = () => {
               CSVでダウンロード
             </Button>
           </div>
-          {projects.map((project) => (
-            // TODO: link to the project details page
-            <div className={styles.rowWrapper} key={project.id}>
-              <Panel
-                style={{
-                  paddingTop: "20px",
-                  paddingBottom: "20px",
-                }}
-              >
-                <div className={styles.rowInner}>
-                  <p className={styles.projectName} title={project.name}>
-                    {project.name}
-                  </p>
-                  <div className={styles.projectCodeWrapper}>
-                    <p className={styles.projectCode}>{project.code}</p>
-                    <Tooltip title="企画番号をクリップボードにコピー">
-                      <div className={styles.projectCodeCopyButton}>
-                        <IconButton
-                          icon="clipboard"
-                          size="small"
-                          onClick={async () => {
-                            await navigator.clipboard.writeText(project.code)
-                            addToast({
-                              title: "クリップボードにコピーしました",
-                              kind: "success",
-                            })
-                          }}
-                        />
-                      </div>
-                    </Tooltip>
-                  </div>
-                  <div className={styles.projectCategoryAndAttributes}>
-                    <p className={styles.projectCategory}>
-                      {projectCategoryToUiText(project.category)}
-                    </p>
-                    <div className={styles.projectAttributesWrapper}>
-                      {projectAttributes.map((attribute) => {
-                        const projectAttributeCode: {
-                          [attribute in ProjectAttribute]: string
-                        } = {
-                          academic: "学",
-                          artistic: "芸",
-                          outdoor: "外",
-                          committee: "委",
-                        }
+          <ul>
+            {projects.map((project) => (
+              <li className={styles.rowWrapper} key={project.id}>
+                <Link
+                  href={pagesPath.committee.project.details.$url({
+                    query: {
+                      id: project.id,
+                    },
+                  })}
+                >
+                  <a>
+                    <Panel
+                      style={{
+                        paddingTop: "20px",
+                        paddingBottom: "20px",
+                      }}
+                      hoverStyle="gray"
+                    >
+                      <div className={styles.rowInner}>
+                        <p className={styles.projectName} title={project.name}>
+                          {project.name}
+                        </p>
+                        <div className={styles.projectCodeWrapper}>
+                          <p className={styles.projectCode}>{project.code}</p>
+                          <Tooltip title="企画番号をクリップボードにコピー">
+                            <div className={styles.projectCodeCopyButton}>
+                              <IconButton
+                                icon="clipboard"
+                                size="small"
+                                onClick={async (e) => {
+                                  e.preventDefault()
 
-                        return (
-                          <Tooltip
-                            title={projectAttributeToUiText({
-                              projectAttribute: attribute,
-                            })}
-                            key={attribute}
-                          >
-                            <p
-                              className={styles.projectAttributeCode}
-                              data-active={project.attributes.includes(
-                                attribute
-                              )}
-                            >
-                              {projectAttributeCode[attribute]}
-                            </p>
+                                  await navigator.clipboard.writeText(
+                                    project.code
+                                  )
+                                  addToast({
+                                    title: "クリップボードにコピーしました",
+                                    kind: "success",
+                                  })
+                                }}
+                              />
+                            </div>
                           </Tooltip>
-                        )
-                      })}
-                    </div>
-                  </div>
-                </div>
-              </Panel>
-            </div>
-          ))}
+                        </div>
+                        <div className={styles.projectCategoryAndAttributes}>
+                          <p className={styles.projectCategory}>
+                            {projectCategoryToUiText(project.category)}
+                          </p>
+                          <div className={styles.projectAttributesWrapper}>
+                            {projectAttributes.map((attribute) => {
+                              const projectAttributeCode: {
+                                [attribute in ProjectAttribute]: string
+                              } = {
+                                academic: "学",
+                                artistic: "芸",
+                                outdoor: "外",
+                                committee: "委",
+                              }
+
+                              return (
+                                <Tooltip
+                                  title={projectAttributeToUiText({
+                                    projectAttribute: attribute,
+                                  })}
+                                  key={attribute}
+                                >
+                                  <p
+                                    className={styles.projectAttributeCode}
+                                    data-active={project.attributes.includes(
+                                      attribute
+                                    )}
+                                  >
+                                    {projectAttributeCode[attribute]}
+                                  </p>
+                                </Tooltip>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    </Panel>
+                  </a>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </>
       ) : (
         <div className={styles.panelWrapper}>
