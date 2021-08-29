@@ -6,12 +6,7 @@ import { useState, useEffect } from "react"
 
 import { exportProjects } from "../../../lib/api/project/exportProjects"
 import { listProjects } from "../../../lib/api/project/listProjects"
-import {
-  Project,
-  ProjectAttribute,
-  projectCategoryToUiText,
-  projectAttributeToUiText,
-} from "../../../types/models/project"
+import { Project, projectCategoryToUiText } from "../../../types/models/project"
 
 import { createCsvBlob } from "../../../utils/createCsvBlob"
 
@@ -23,6 +18,7 @@ import {
   Panel,
   Spinner,
   Tooltip,
+  ProjectAttributeChips,
 } from "src/components/"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
@@ -34,13 +30,6 @@ const ListProjects: PageFC = () => {
 
   const [projects, setProjects] = useState<Project[] | null>(null)
   const [downloading, setDownloading] = useState(false)
-
-  const projectAttributes: ProjectAttribute[] = [
-    "academic",
-    "artistic",
-    "outdoor",
-    "committee",
-  ]
 
   const downloadProjectsCsv = async () => {
     if (authState?.status !== "bothSignedIn") return
@@ -149,34 +138,9 @@ const ListProjects: PageFC = () => {
                             {projectCategoryToUiText(project.category)}
                           </p>
                           <div className={styles.projectAttributesWrapper}>
-                            {projectAttributes.map((attribute) => {
-                              const projectAttributeCode: {
-                                [attribute in ProjectAttribute]: string
-                              } = {
-                                academic: "学",
-                                artistic: "芸",
-                                outdoor: "外",
-                                committee: "委",
-                              }
-
-                              return (
-                                <Tooltip
-                                  title={projectAttributeToUiText({
-                                    projectAttribute: attribute,
-                                  })}
-                                  key={attribute}
-                                >
-                                  <p
-                                    className={styles.projectAttributeCode}
-                                    data-active={project.attributes.includes(
-                                      attribute
-                                    )}
-                                  >
-                                    {projectAttributeCode[attribute]}
-                                  </p>
-                                </Tooltip>
-                              )
-                            })}
+                            <ProjectAttributeChips
+                              attributes={project.attributes}
+                            />
                           </div>
                         </div>
                       </div>
