@@ -1,4 +1,8 @@
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+})
 const { withSentryConfig } = require("@sentry/nextjs")
+const withPlugins = require("next-compose-plugins")
 const { createSecureHeaders } = require("next-secure-headers")
 const withTM = require("next-transpile-modules")(["ky"])
 
@@ -69,6 +73,11 @@ const config = {
   },
 }
 
-module.exports = process.env.NEXT_PUBLIC_SENTRY_DSN
-  ? withSentryConfig(withTM(config))
-  : withTM(config)
+module.exports = withPlugins(
+  [
+    [withBundleAnalyzer],
+    process.env.NEXT_PUBLIC_SENTRY_DSN ? [withSentryConfig] : null,
+    [withTM],
+  ].filter((plugin) => plugin != null),
+  config
+)
