@@ -10181,10 +10181,10 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-pathpida@0.16.0:
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/pathpida/-/pathpida-0.16.0.tgz#d5dc103d034d8bba3ba7537529cf1aa0e66a9a2b"
-  integrity sha512-zfgANsZagrqm54Pd01LIFGHLsgs0MuaZ7BVXOksBBulR1W1Ygz5RbxopsdEQ+WSRcE914RH03uByKqV/oP59jQ==
+pathpida@0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/pathpida/-/pathpida-0.17.0.tgz#0cad36c97e1c2d96af9205c7c42c33ab8039cd99"
+  integrity sha512-Ajk/uMPJUECIK0jb1rG1rOATTjU2PSksSVIWS2n6w2jp3QgN4kHbGnPDFLqeaag2eudI2tOPQfAzDO7F26XSmg==
   dependencies:
     chokidar "^3.5.2"
     ignore "^5.1.8"
