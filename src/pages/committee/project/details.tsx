@@ -14,6 +14,7 @@ import {
   CopyButton,
   Icon,
   ProjectAttributeChips,
+  ParagraphWithUrlParsing,
 } from "src/components"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
@@ -253,7 +254,9 @@ const ProjectDetails: PageFC = () => {
               />
               <Table.Row
                 keyElement="説明文"
-                valueElement={project.description}
+                valueElement={
+                  <ParagraphWithUrlParsing text={project.description} />
+                }
               />
             </Table>
           </div>
