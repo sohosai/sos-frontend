@@ -24,9 +24,11 @@
 }
 
 .link {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   color: $color-brand;
+  padding-bottom: 2px;
+  @include hoverUnderline($color-brand);
 
   &:not(:last-child) {
     margin-bottom: 8px;
