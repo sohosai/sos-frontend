@@ -62,18 +62,19 @@ const AnnouncementPage: PageFC<InferGetStaticPropsType<typeof getStaticProps>> =
                 {announcement.links && (
                   <div className={styles.linksWrapper}>
                     {announcement.links?.map(({ url, label }) => (
-                      <a
-                        target="_blank"
-                        href={url}
-                        rel="noopener noreferrer"
-                        key={url}
-                        className={styles.link}
-                      >
-                        <span
-                          className={`jam-icons jam-link ${styles.linkIcon}`}
-                        />
-                        {label ?? url}
-                      </a>
+                      <div key={url} className={styles.linkWrapper}>
+                        <a
+                          target="_blank"
+                          href={url}
+                          rel="noopener noreferrer"
+                          className={styles.link}
+                        >
+                          <span
+                            className={`jam-icons jam-link ${styles.linkIcon}`}
+                          />
+                          {label ?? url}
+                        </a>
+                      </div>
                     ))}
                   </div>
                 )}
