@@ -34,18 +34,20 @@ const ParagraphWithUrlParsing: FC<ParagraphWithUrlParsing.Props> = ({
           protocols: ["http", "https"],
           ...isURLOptions,
         }) ? (
-          <a
-            href={
-              !dangerouslyDisableForceExternal && !txt.startsWith("http")
-                ? "//" + txt
-                : txt
-            }
-            target="_blank"
-            rel="noreferrer noopener"
-            className={`${styles.url} ${urlClassName}`}
-          >
-            {txt}
-          </a>
+          <div>
+            <a
+              href={
+                !dangerouslyDisableForceExternal && !txt.startsWith("http")
+                  ? "//" + txt
+                  : txt
+              }
+              target="_blank"
+              rel="noreferrer noopener"
+              className={`${styles.url} ${urlClassName}`}
+            >
+              {txt}
+            </a>
+          </div>
         ) : (
           <p
             key={txt}
