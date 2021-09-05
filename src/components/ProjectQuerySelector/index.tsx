@@ -47,26 +47,9 @@ const ProjectQuerySelector: FC<ProjectQuerySelector.Props> = ({
             register={registers?.stage}
           />
         </div>
-        <div className={styles.checkbox}>
-          <Checkbox
-            checked={checked.cooking}
-            label="調理企画"
-            register={registers?.cooking}
-          />
-        </div>
-        <div className={styles.checkbox}>
-          <Checkbox
-            checked={checked.food}
-            label="飲食物取扱企画"
-            register={registers?.food}
-          />
-        </div>
       </div>
       <div className={styles.selectorsWrapper}>
-        <p className={styles.selectorsTitle}>
-          {/* TODO: これで良いか検討 */}
-          企画属性
-        </p>
+        <p className={styles.selectorsTitle}>企画属性</p>
         <p className={styles.selectorsDescription}>
           選択しない場合全ての企画が対象となります
         </p>
@@ -92,20 +75,6 @@ const ProjectQuerySelector: FC<ProjectQuerySelector.Props> = ({
             checked={checked.artistic}
             label="芸術祭参加枠"
             register={registers?.artistic}
-          />
-        </div>
-        <div className={styles.checkbox}>
-          <Checkbox
-            checked={checked.outdoor}
-            label="屋外企画"
-            register={registers?.outdoor}
-          />
-        </div>
-        <div className={styles.checkbox}>
-          <Checkbox
-            checked={checked.committee}
-            label="委員会企画"
-            register={registers?.committee}
           />
         </div>
       </div>
