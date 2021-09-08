@@ -27,7 +27,8 @@ const RegistrationFormRow: VFC<{ form: RegistrationFormWithHasAnswerFlag }> = ({
 }) => (
   <Panel
     style={{
-      padding: "24px 32px",
+      paddingTop: "16px",
+      paddingBottom: "16px",
     }}
     hoverStyle="gray"
     className={styles.registrationFormRow}
