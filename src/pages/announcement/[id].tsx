@@ -56,7 +56,7 @@ const AnnouncementPage: PageFC<InferGetStaticPropsType<typeof getStaticProps>> =
                   <ParagraphWithUrlParsing
                     text={announcement.text}
                     normalTextClassName={styles.paragraph}
-                    urlClassName={styles.paragraph}
+                    urlWrapperDivClassName={styles.paragraph}
                   />
                 </div>
                 {announcement.links && (
