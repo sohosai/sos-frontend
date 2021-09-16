@@ -4,9 +4,10 @@ import isURL, { IsURLOptions } from "validator/lib/isURL"
 
 import styles from "./index.module.scss"
 
-declare namespace ParagraphWithUrlParsing {
+declare namespace Paragraph {
   type Props = Readonly<{
     text: string | string[]
+    parseUrl?: boolean
     normalTextClassName?: string
     urlClassName?: string
     urlWrapperDivClassName?: string
@@ -15,8 +16,9 @@ declare namespace ParagraphWithUrlParsing {
   }>
 }
 
-const ParagraphWithUrlParsing: FC<ParagraphWithUrlParsing.Props> = ({
+const Paragraph: FC<Paragraph.Props> = ({
   text,
+  parseUrl = true,
   normalTextClassName = "",
   urlClassName = "",
   urlWrapperDivClassName = "",
@@ -32,6 +34,7 @@ const ParagraphWithUrlParsing: FC<ParagraphWithUrlParsing.Props> = ({
   return (
     <div className={styles.wrapper}>
       {splitTexts.map((txt) =>
+        parseUrl &&
         isURL(txt, {
           protocols: ["http", "https"],
           ...isURLOptions,
@@ -63,4 +66,4 @@ const ParagraphWithUrlParsing: FC<ParagraphWithUrlParsing.Props> = ({
   )
 }
 
-export { ParagraphWithUrlParsing }
+export { Paragraph }

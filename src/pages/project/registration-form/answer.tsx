@@ -10,7 +10,7 @@ import {
   FormItemSpacer,
   Head,
   Panel,
-  ParagraphWithUrlParsing,
+  Paragraph,
   Spinner,
 } from "src/components"
 import {
@@ -465,7 +465,7 @@ const AnswerRegistrationForm: PageFC = () => {
             <Panel>
               <h2 className={styles.formName}>{registrationForm.name}</h2>
               {registrationForm.description && (
-                <ParagraphWithUrlParsing
+                <Paragraph
                   text={registrationForm.description}
                   normalTextClassName={styles.formDescription}
                 />

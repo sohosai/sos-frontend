@@ -2,7 +2,7 @@ import { FC } from "react"
 
 import { UseFormRegisterReturn } from "react-hook-form"
 
-import { ParagraphWithUrlParsing } from "../"
+import { Paragraph } from "../"
 import { dataset } from "../../utils/dataset"
 
 import styles from "./index.module.scss"
@@ -68,7 +68,7 @@ const Dropdown: FC<Dropdown.Props> = ({
       {Boolean(descriptions?.length + errors?.length) && (
         <div className={styles.bottomText}>
           {descriptionUrlParsing ? (
-            <ParagraphWithUrlParsing
+            <Paragraph
               text={descriptions}
               normalTextClassName={styles.description}
             />
