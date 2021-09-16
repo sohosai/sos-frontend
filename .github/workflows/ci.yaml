@@ -79,3 +79,10 @@ jobs:
 
       - name: Build
         run: make build.storybook
+
+      - name: Deploy to GitHub Pages
+        if: ${{ github.ref == 'refs/heads/storybook-gh-pages' }}
+        uses: peaceiris/actions-gh-pages@068dc23d9710f1ba62e86896f84735d869951305
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./storybook-static
