@@ -3,7 +3,7 @@ import { FC } from "react"
 import { UseFormRegisterReturn } from "react-hook-form"
 
 import styles from "./checkbox.module.scss"
-import { Checkbox, ParagraphWithUrlParsing } from "src/components"
+import { Checkbox, Paragraph } from "src/components"
 import { FormItem } from "src/types/models/form/item"
 
 type Props = {
@@ -32,7 +32,7 @@ const CheckboxFormItem: FC<Props> = ({
     ))}
     {Boolean(formItem.description.length) && (
       <div className={styles.descriptions}>
-        <ParagraphWithUrlParsing
+        <Paragraph
           text={formItem.description}
           normalTextClassName={styles.description}
         />

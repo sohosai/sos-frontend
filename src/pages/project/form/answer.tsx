@@ -21,7 +21,7 @@ import {
   FormItemSpacer,
   Head,
   Panel,
-  ParagraphWithUrlParsing,
+  Paragraph,
   Spinner,
   Textarea,
   TextField,
@@ -369,7 +369,7 @@ const AnswerForm: PageFC = () => {
             <Panel>
               <h2 className={styles.formName}>{form.name}</h2>
               {form.description && (
-                <ParagraphWithUrlParsing
+                <Paragraph
                   text={form.description}
                   normalTextClassName={styles.formDescription}
                 />
@@ -469,7 +469,7 @@ const AnswerForm: PageFC = () => {
                             ))}
                             {Boolean(formItem.description.length) && (
                               <div className={styles.checkboxDescriptions}>
-                                <ParagraphWithUrlParsing
+                                <Paragraph
                                   text={formItem.description}
                                   normalTextClassName={
                                     styles.checkboxDescription

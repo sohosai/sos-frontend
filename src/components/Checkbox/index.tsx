@@ -2,7 +2,7 @@ import { FC } from "react"
 
 import { UseFormRegisterReturn } from "react-hook-form"
 
-import { ParagraphWithUrlParsing } from "../"
+import { Paragraph } from "../"
 import { dataset } from "../../utils/dataset"
 
 import styles from "./index.module.scss"
@@ -44,7 +44,7 @@ const Checkbox: FC<Checkbox.Props> = ({
       {formItemTitle && Boolean(formItemTitle?.length) && (
         <div className={styles.titleWrapper}>
           {formItemTitleUrlParsing ? (
-            <ParagraphWithUrlParsing
+            <Paragraph
               text={formItemTitle}
               normalTextClassName={styles.title}
             />
@@ -62,7 +62,7 @@ const Checkbox: FC<Checkbox.Props> = ({
       {descriptions && Boolean(descriptions?.length) && (
         <div className={styles.descriptionsWrapper}>
           {descriptionsUrlParsing ? (
-            <ParagraphWithUrlParsing
+            <Paragraph
               text={descriptions}
               normalTextClassName={styles.description}
             />
