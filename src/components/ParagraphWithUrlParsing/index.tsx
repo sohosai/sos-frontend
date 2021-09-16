@@ -9,6 +9,7 @@ declare namespace ParagraphWithUrlParsing {
     text: string | string[]
     normalTextClassName?: string
     urlClassName?: string
+    urlWrapperDivClassName?: string
     isURLOptions?: IsURLOptions
     dangerouslyDisableForceExternal?: boolean
   }>
@@ -18,6 +19,7 @@ const ParagraphWithUrlParsing: FC<ParagraphWithUrlParsing.Props> = ({
   text,
   normalTextClassName = "",
   urlClassName = "",
+  urlWrapperDivClassName = "",
   isURLOptions,
   dangerouslyDisableForceExternal = false,
 }) => {
@@ -34,7 +36,7 @@ const ParagraphWithUrlParsing: FC<ParagraphWithUrlParsing.Props> = ({
           protocols: ["http", "https"],
           ...isURLOptions,
         }) ? (
-          <div>
+          <div className={urlWrapperDivClassName}>
             <a
               href={
                 !dangerouslyDisableForceExternal && !txt.startsWith("http")
