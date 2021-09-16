@@ -8,7 +8,7 @@ import type {
 import { useRouter } from "next/router"
 
 import styles from "./[id].module.scss"
-import { Head, Panel, ParagraphWithUrlParsing, Icon } from "src/components"
+import { Head, Panel, Paragraph, Icon } from "src/components"
 import { getAnnouncement, getAnnouncements } from "src/lib/contentful/index"
 
 import type { Announcement } from "src/types/models/announcement"
@@ -53,7 +53,7 @@ const AnnouncementPage: PageFC<InferGetStaticPropsType<typeof getStaticProps>> =
             <Panel style={{ padding: "48px" }}>
               <div className={styles.articleWrapper}>
                 <div className={styles.textWrapper}>
-                  <ParagraphWithUrlParsing
+                  <Paragraph
                     text={announcement.text}
                     normalTextClassName={styles.paragraph}
                     urlWrapperDivClassName={styles.paragraph}
