@@ -3,13 +3,7 @@ import { useRouter } from "next/router"
 import { useState, useEffect } from "react"
 
 import styles from "./distribution.module.scss"
-import {
-  FileList,
-  Head,
-  Panel,
-  ParagraphWithUrlParsing,
-  Spinner,
-} from "src/components"
+import { FileList, Head, Panel, Paragraph, Spinner } from "src/components"
 import { useAuthNeue } from "src/contexts/auth"
 import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"
@@ -110,7 +104,7 @@ const FileDistribution: PageFC = () => {
               <h1 className={styles.name}>{distribution.name}</h1>
               {distribution.description?.length !== 0 && (
                 <div className={styles.description}>
-                  <ParagraphWithUrlParsing
+                  <Paragraph
                     text={distribution.description}
                     normalTextClassName={styles.descriptionText}
                   />

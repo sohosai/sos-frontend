@@ -1,7 +1,7 @@
 import { ReactElement } from "react"
 
 import styles from "./file.module.scss"
-import { Dropzone, FileList, ParagraphWithUrlParsing } from "src/components"
+import { Dropzone, FileList, Paragraph } from "src/components"
 import { FormItem } from "src/types/models/form/item"
 
 type Props<T> = {
@@ -27,7 +27,7 @@ const FileFormItem = function <T>({
         </p>
         {formItem.description && Boolean(formItem.description?.length) && (
           <div className={styles.description}>
-            <ParagraphWithUrlParsing text={formItem.description} />
+            <Paragraph text={formItem.description} />
           </div>
         )}
       </div>
