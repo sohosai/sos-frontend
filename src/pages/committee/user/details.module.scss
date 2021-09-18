@@ -60,42 +60,13 @@
   font-size: 0.9em;
 }
 
-$color-table-border: $color-gray-200;
-
-.table {
-  border-right: 1px solid $color-table-border;
-  border-left: 1px solid $color-table-border;
-  border-top: 1px solid $color-table-border;
-}
-
 .tableRow {
-  display: flex;
-  align-items: stretch;
-  border-bottom: 1px solid $color-table-border;
-
   &:hover,
   &:focus-within {
     .tableRowValueCopyButton {
       opacity: 1;
     }
   }
-}
-
-.tableRowKey {
-  display: flex;
-  align-items: center;
-  min-width: 12em;
-  padding: 8px 12px;
-  background-color: $color-gray-50;
-}
-
-.tableRowValue {
-  flex-shrink: 1;
-  display: flex;
-  align-items: center;
-  padding: 8px 12px;
-  border-left: 1px solid $color-table-border;
-  overflow-wrap: anywhere;
 }
 
 .tableRowValueCopyButton {

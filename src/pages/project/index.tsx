@@ -3,7 +3,16 @@ import Link from "next/link"
 import { VFC, useEffect, useState } from "react"
 
 import styles from "./index.module.scss"
-import { Button, Head, Panel, Spinner, Stepper, Tooltip } from "src/components"
+import {
+  Button,
+  Head,
+  Panel,
+  Spinner,
+  Stepper,
+  Tooltip,
+  Paragraph,
+  Table,
+} from "src/components"
 import { IN_PROJECT_CREATION_PERIOD } from "src/constants/datetime"
 import { useAuthNeue } from "src/contexts/auth"
 import { useMyProject } from "src/contexts/myProject"
@@ -146,39 +155,34 @@ const ProjectIndex: PageFC = () => {
           <section className={styles.section} data-section="generalInfo">
             <h2 className={styles.sectionTitle}>基本情報</h2>
             <Panel>
-              <div className={styles.generalInfoTable}>
-                <div className={styles.generalInfoTableItem}>
-                  <p className={styles.generalInfoTableKey}>企画名</p>
-                  <p className={styles.generalInfoTableValue}>
-                    {`${myProjectState.myProject.name} (${myProjectState.myProject.kana_name})`}
-                  </p>
-                </div>
-                <div className={styles.generalInfoTableItem}>
-                  <p className={styles.generalInfoTableKey}>団体名</p>
-                  <p className={styles.generalInfoTableValue}>
-                    {`${myProjectState.myProject.group_name} (${myProjectState.myProject.kana_group_name})`}
-                  </p>
-                </div>
-                <div className={styles.generalInfoTableItem}>
-                  <p className={styles.generalInfoTableKey}>概要</p>
-                  <div className={styles.generalInfoTableValue}>
-                    {myProjectState.myProject.description
-                      .split("\n")
-                      .map((text) => (
-                        <p key={text}>{text}</p>
-                      ))}
-                  </div>
-                </div>
-                <div className={styles.generalInfoTableItem}>
-                  <p className={styles.generalInfoTableKey}>参加区分</p>
-                  <p className={styles.generalInfoTableValue}>
-                    {projectCategoryToUiText(myProjectState.myProject.category)}
-                  </p>
-                </div>
-                <div className={styles.generalInfoTableItem}>
-                  <p className={styles.generalInfoTableKey}>企画属性</p>
-                  <p className={styles.generalInfoTableValue}>
-                    {myProjectState.myProject.attributes.length === 0
+              <Table keyFlexGrow={1} valueFlexGrow={3}>
+                <Table.Row
+                  keyElement="企画名"
+                  valueElement={`${myProjectState.myProject.name} (${myProjectState.myProject.kana_name})`}
+                />
+                <Table.Row
+                  keyElement="団体名"
+                  valueElement={`${myProjectState.myProject.group_name} (${myProjectState.myProject.kana_group_name})`}
+                />
+                <Table.Row
+                  keyElement="概要"
+                  valueElement={
+                    <Paragraph
+                      text={myProjectState.myProject.description}
+                      parseUrl={false}
+                    />
+                  }
+                />
+                <Table.Row
+                  keyElement="参加区分"
+                  valueElement={projectCategoryToUiText(
+                    myProjectState.myProject.category
+                  )}
+                />
+                <Table.Row
+                  keyElement="企画属性"
+                  valueElement={
+                    myProjectState.myProject.attributes.length === 0
                       ? "なし"
                       : myProjectState.myProject.attributes
                           .map((attribute) =>
@@ -186,26 +190,22 @@ const ProjectIndex: PageFC = () => {
                               projectAttribute: attribute,
                             })
                           )
-                          .join(" / ")}
-                  </p>
-                </div>
+                          .join(" / ")
+                  }
+                />
                 {!myProjectState.isPending && (
                   <>
-                    <div className={styles.generalInfoTableItem}>
-                      <p className={styles.generalInfoTableKey}>責任者</p>
-                      <p className={styles.generalInfoTableValue}>
-                        {`${myProjectState.myProject.owner_name.last} ${myProjectState.myProject.owner_name.first}`}
-                      </p>
-                    </div>
-                    <div className={styles.generalInfoTableItem}>
-                      <p className={styles.generalInfoTableKey}>副責任者</p>
-                      <p className={styles.generalInfoTableValue}>
-                        {`${myProjectState.myProject.subowner_name.last} ${myProjectState.myProject.subowner_name.first}`}
-                      </p>
-                    </div>
+                    <Table.Row
+                      keyElement="責任者"
+                      valueElement={`${myProjectState.myProject.owner_name.last} ${myProjectState.myProject.owner_name.first}`}
+                    />
+                    <Table.Row
+                      keyElement="副責任者"
+                      valueElement={`${myProjectState.myProject.subowner_name.last} ${myProjectState.myProject.subowner_name.first}`}
+                    />
                   </>
                 )}
-              </div>
+              </Table>
               {IN_PROJECT_CREATION_PERIOD &&
                 // FIXME: ad-hoc
                 myProjectState.myProject.category !== "stage" && (
