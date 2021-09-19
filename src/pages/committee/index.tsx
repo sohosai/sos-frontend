@@ -88,7 +88,7 @@ const Committee: PageFC = () => {
             <li className={styles.panelWrapper} key={link.href.pathname}>
               <Link href={link.href}>
                 <a>
-                  <Panel style={{ padding: "24px" }}>
+                  <Panel style={{ padding: "18px 24px" }} hoverStyle="gray">
                     <div className={styles.panelInner}>
                       <div className={styles.panelContentRight}>
                         <div className={styles.panelIconBg} aria-hidden>
