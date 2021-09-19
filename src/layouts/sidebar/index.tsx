@@ -46,9 +46,7 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
             }) && (
               <Link
                 href={
-                  router.pathname.startsWith(
-                    pagesPath.committee.$url().pathname
-                  )
+                  layout === "committee"
                     ? pagesPath.$url()
                     : pagesPath.committee.$url()
                 }
@@ -56,11 +54,7 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
                 <a className={styles.switchLayoutButton}>
                   <i className={`jam-icons jam-refresh ${styles.switchIcon}`} />
                   <p className={styles.switchText}>
-                    {router.pathname.startsWith(
-                      pagesPath.committee.$url().pathname
-                    )
-                      ? "一般ページへ"
-                      : "実委人ページへ"}
+                    {layout === "committee" ? "一般ページへ" : "実委人ページへ"}
                   </p>
                 </a>
               </Link>
