@@ -54,7 +54,7 @@
     "prettier": "2.4.1",
     "react-dropzone": "11.4.2",
     "react-twitter-widgets": "1.10.0",
-    "sass": "1.42.0",
+    "sass": "1.42.1",
     "sass-loader": "10.2.0",
     "style-loader": "2.0.0",
     "ts-node": "10.2.1",
