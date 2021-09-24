@@ -20,6 +20,7 @@
   transition: background-color 200ms;
   color: $color-text-sub;
   transition: color 150ms;
+  outline: none;
 
   &:after {
     content: "";
@@ -34,7 +35,8 @@
     transform-origin: right;
   }
 
-  &:hover {
+  &:hover,
+  &:focus-within {
     background-color: $color-gray-50;
   }
 
