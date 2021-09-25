@@ -39,7 +39,8 @@ const getFormAnswerSharedFile = async ({
 
     return { blob: (await res.blob()) as Blob, filename }
   } catch (err) {
-    const body = await err.response?.json()
+    // FIXME: any
+    const body = await (err as any).response?.json()
 
     switch (body?.error?.info?.type) {
       case "FILE_SHARING_NOT_FOUND":
