@@ -46,7 +46,8 @@ const createFileDistribution = async ({
       .json()
     return distribution
   } catch (err) {
-    const body = await err.response?.json()
+    // FIXME: any
+    const body = await (err as any).response?.json()
 
     switch (body.error?.info?.type) {
       case "INVALID_PROJECT_CODE":

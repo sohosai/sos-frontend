@@ -134,7 +134,8 @@ const ListProjectForms: PageFC = () => {
         )
       } catch (err) {
         setError("unknown")
-        const body = await err.response?.json()
+        // FIXME: any
+        const body = await (err as any).response?.json()
         throw body ?? err
       }
     })()

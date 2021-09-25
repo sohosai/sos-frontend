@@ -166,7 +166,8 @@ const CommitteeFileUpload: PageFC = () => {
         }
       } catch (err) {
         setSubmitting(false)
-        const body = await err.response?.json()
+        // FIXME: any
+        const body = await (err as any).response?.json()
         addToast({ title: "不明なエラーが発生しました", kind: "error" })
         reportError("failed to create file / file distribution", body ?? err)
       }
