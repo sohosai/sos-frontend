@@ -28,6 +28,14 @@ export const getStaticProps: GetStaticProps<
   { id: string }
 > = async ({ params }) => {
   const announcement = params ? await getAnnouncement({ id: params.id }) : null
+
+  if (!announcement) {
+    return {
+      notFound: true,
+      revalidate: 60,
+    }
+  }
+
   return {
     props: {
       announcement,

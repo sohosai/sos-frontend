@@ -172,12 +172,28 @@ const AnswerForm: PageFC = () => {
                 idToken: await authState.firebaseUser.getIdToken(),
               })
 
-              if (fileUploadRes.error) {
+              if (fileUploadRes && "errorCode" in fileUploadRes) {
                 setProcessing(false)
-                switch (fileUploadRes.error) {
+
+                switch (fileUploadRes.errorCode) {
                   case "outOfFileUsageQuota": {
                     addToast({
                       title: "ファイルアップロードの容量上限に達しています",
+                      kind: "error",
+                    })
+                    break
+                  }
+                  case "timeout": {
+                    addToast({
+                      title: "ファイルをアップロードできませんでした",
+                      descriptions: ["通信環境をご確認ください"],
+                      kind: "error",
+                    })
+                    break
+                  }
+                  default: {
+                    addToast({
+                      title: "ファイルのアップロードに失敗しました",
                       kind: "error",
                     })
                     break
