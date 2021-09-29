@@ -99,7 +99,8 @@ const AcceptSubowner: PageFC = () => {
       addToast({ title: "副責任者登録が完了しました", kind: "success" })
       router.push(pagesPath.project.$url())
     } catch (err) {
-      const body = await err.response?.json()
+      // FIXME: any
+      const body = await (err as any).response?.json()
       addToast({ title: "エラーが発生しました", kind: "error" })
       reportError(
         "failed to create new project with unknown error",

@@ -24,7 +24,8 @@ const getPendingProject = async ({
       .json()
     return { pendingProject: pending_project }
   } catch (err) {
-    const body = await err.response?.json()
+    // FIXME: any
+    const body = await (err as any).response?.json()
     if (body.status === 404) {
       return { pendingProject: null }
     }

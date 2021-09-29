@@ -95,7 +95,8 @@ const Init: PageFC = () => {
     } catch (err) {
       setProcessing(false)
 
-      const body = await err.response?.json()
+      // FIXME: any
+      const body = await (err as any).response?.json()
 
       if (!body) {
         addToast({ title: "エラーが発生しました", kind: "error" })

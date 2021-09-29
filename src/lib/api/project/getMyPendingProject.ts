@@ -18,7 +18,8 @@ const getMyPendingProject = async ({
       .json()
     return { myPendingProject: pendingProject }
   } catch (err) {
-    const body = await err.response?.json()
+    // FIXME: any
+    const body = await (err as any).response?.json()
     if (body.error?.info?.type === "PENDING_PROJECT_NOT_FOUND") {
       return { myPendingProject: "notFound" }
     }

@@ -32,7 +32,8 @@ const answerRegistrationForm = async ({
       .json()
     return { answer }
   } catch (error) {
-    const body = await error.response?.json()
+    // FIXME: any
+    const body = await (error as any).response?.json()
     throw body ?? error
   }
 }
