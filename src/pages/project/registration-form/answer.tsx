@@ -248,7 +248,8 @@ const AnswerRegistrationForm: PageFC = () => {
             })
           }
 
-          switch (err.error?.info?.type) {
+          // FIXME: any
+          switch ((err as any).error?.info?.type) {
             case "ALREADY_ANSWERED_REGISTRATION_FORM": {
               addToast({
                 title: "既に回答している登録申請です",
@@ -262,7 +263,8 @@ const AnswerRegistrationForm: PageFC = () => {
             }
             case "INVALID_FORM_ANSWER_ITEM": {
               const invalidFormAnswerItemId: string | undefined =
-                err.error?.info?.id
+                // FIXME: any
+                (err as any).error?.info?.id
               const invalidFormAnswerItem = registrationForm?.items.find(
                 (item) => item.id === invalidFormAnswerItemId
               )

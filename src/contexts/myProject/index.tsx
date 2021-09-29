@@ -179,7 +179,8 @@ const MyProjectContextCore = (authState: AuthNeueState): MyProjectContext => {
           return
         }
       } catch (err) {
-        const body = await err.response?.json()
+        // FIXME: any
+        const body = await (err as any).response?.json()
         setMyProjectState({
           error: true,
           myProject: null,

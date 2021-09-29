@@ -23,7 +23,6 @@ const createFile = async ({
     const { files } = await client({ idToken })
       .post("file/create", {
         body,
-        timeout: 30000,
       })
       .json()
     return { files }

@@ -14,7 +14,8 @@ const getMyProject = async ({
     const { project } = await client({ idToken }).get("me/project/get").json()
     return { myProject: project }
   } catch (err) {
-    const body = await err.response?.json()
+    // FIXME: any
+    const body = await (err as any).response?.json()
     if (body.error?.info?.type === "PROJECT_NOT_FOUND") {
       return { myProject: "notFound" }
     }

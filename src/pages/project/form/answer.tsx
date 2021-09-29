@@ -237,7 +237,8 @@ const AnswerForm: PageFC = () => {
         } catch (err) {
           setProcessing(false)
 
-          const body = await err.response?.json()
+          // FIXME: any
+          const body = await (err as any).response?.json()
           if (body) {
             const reportError = (message = "failed to answer form") => {
               reportErrorHandler(message, {

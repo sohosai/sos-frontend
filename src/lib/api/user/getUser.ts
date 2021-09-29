@@ -22,7 +22,8 @@ const getUser = async ({
       .json()
     return { user }
   } catch (err) {
-    const body = await err.response?.json()
+    // FIXME: any
+    const body = await (err as any).response?.json()
     throw body ?? err
   }
 }

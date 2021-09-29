@@ -60,7 +60,8 @@ const FileDistributionsForProject: PageFC = () => {
         })
         setDistributions(fetchedDistributions)
       } catch (err) {
-        const body = await err.response?.json()
+        // FIXME: any
+        const body = await (err as any).response?.json()
         addToast({ title: "不明なエラーが発生しました", kind: "error" })
         reportError(
           "failed to list file distributions for the project",

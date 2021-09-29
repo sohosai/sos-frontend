@@ -73,7 +73,8 @@ const UserDetails: PageFC = () => {
         })
         setUser(fetchedUser)
       } catch (err) {
-        if (err?.error?.info?.type === "USER_NOT_FOUND") {
+        // FIXME: any
+        if ((err as any)?.error?.info?.type === "USER_NOT_FOUND") {
           setError("notFound")
           addToast({ title: "ユーザーが見つかりませんでした", kind: "error" })
           return

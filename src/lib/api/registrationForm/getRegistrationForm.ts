@@ -39,7 +39,8 @@ const getRegistrationForm = async ({
         .json()
       return { registrationForm: registration_form }
     } catch (error) {
-      const body = await error.response?.json()
+      // FIXME: any
+      const body = await (error as any).response?.json()
       throw body ?? error
     }
   }
@@ -56,7 +57,8 @@ const getRegistrationForm = async ({
         .json()
       return { registrationForm: registration_form }
     } catch (error) {
-      const body = await error.response?.json()
+      // FIXME: any
+      const body = await (error as any).response?.json()
       throw body ?? error
     }
   }
