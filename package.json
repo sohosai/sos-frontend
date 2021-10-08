@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@react-spring/web": "9.2.4",
+    "@react-spring/web": "9.2.6",
     "@sentry/nextjs": "6.13.1",
     "dayjs": "1.10.7",
     "ky": "0.28.5",
