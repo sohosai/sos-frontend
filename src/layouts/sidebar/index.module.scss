@@ -11,16 +11,37 @@
 
 .bottomWrapper {
   margin: 0 32px 40px;
+
+  @include mobile {
+    display: none;
+  }
+}
+
+.logotypeWrapper {
+  display: flex;
+  align-items: center;
 }
 
 .logotype {
+  width: 100%;
   color: $color-brand;
   font-weight: bold;
   font-size: 21px;
   line-height: 28px;
   margin-top: 32px;
-  padding: 0 32px;
   margin-bottom: 64px;
+  padding: 0 32px;
+
+  @include mobile {
+    width: auto;
+    line-height: 24px;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.logotypeKana {
+  letter-spacing: -1px;
 }
 
 .stagingNotice {
@@ -33,6 +54,11 @@
   color: white;
   background-color: $color-brand;
   font-size: 1rem;
+
+  @include mobile {
+    margin-top: 4px;
+    padding: 0;
+  }
 }
 
 .switchLayoutButton {
@@ -77,4 +103,13 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+@include mobile {
+  .topWrapper {
+    padding: 10px 30px 8px 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }

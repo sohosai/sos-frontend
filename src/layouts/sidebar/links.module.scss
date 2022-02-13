@@ -13,6 +13,7 @@
 .link {
   height: 48px;
   padding-left: 32px;
+  padding-right: 16px;
   position: relative;
   display: flex;
   flex-direction: row;
@@ -21,6 +22,10 @@
   color: $color-text-sub;
   transition: color 150ms;
   outline: none;
+
+  @include mobile {
+    height: 40px;
+  }
 
   &:after {
     content: "";

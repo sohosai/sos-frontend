@@ -1,4 +1,5 @@
 @import "../styles/variables";
+@import "../styles/mixins";
 
 .wrapper {
   position: fixed;
@@ -8,6 +9,11 @@
   left: 0;
   display: flex;
   background-color: $color-gray-50;
+
+  @include mobile {
+    overflow-y: auto;
+    display: block;
+  }
 }
 
 .sidebar {
@@ -16,6 +22,10 @@
   background-color: white;
   box-shadow: 8px 0px 16px 0px $color-gray-100;
   border-right: 1px solid $color-gray-100;
+
+  @include mobile {
+    width: 100%;
+  }
 }
 
 .mainArea {
