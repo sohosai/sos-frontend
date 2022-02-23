@@ -14,7 +14,7 @@ import {
 import { assignUserRoleToEmail } from "../../lib/api/user/assignUserRoleToEmail"
 import { reportError } from "../../lib/errorTracking/reportError"
 
-import styles from "./api-caller.module.scss"
+import styles from "./assign-role.module.scss"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
