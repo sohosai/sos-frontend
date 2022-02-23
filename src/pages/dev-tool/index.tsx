@@ -24,6 +24,17 @@ const Meta: PageFC = () => {
 
   const links: Link[] = [
     {
+      href: pagesPath.dev_tool.assign_role.$url(),
+      title: "管理者権限付与",
+      icon: "users",
+      visible: () =>
+        authState?.status === "bothSignedIn" &&
+        isUserRoleHigherThanIncluding({
+          userRole: authState.sosUser.role,
+          criteria: "administrator",
+        }),
+    },
+    {
       href: pagesPath.dev_tool.metadata.$url(),
       title: "メタデータ",
       icon: "activity",
