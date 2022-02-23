@@ -1,4 +1,4 @@
-import type { PageFC } from "next"
+import { PageFC } from "next"
 import Link from "next/link"
 
 import styles from "./index.module.scss"
@@ -9,7 +9,7 @@ import { isUserRoleHigherThanIncluding } from "src/types/models/user/userRole"
 
 import { pagesPath } from "src/utils/$path"
 
-const Committee: PageFC = () => {
+const Meta: PageFC = () => {
   const { authState } = useAuthNeue()
 
   type Link = {
@@ -24,49 +24,9 @@ const Committee: PageFC = () => {
 
   const links: Link[] = [
     {
-      href: pagesPath.committee.project.$url(),
-      title: "企画",
-      icon: "universe",
-      visible: () => true,
-    },
-    {
-      href: pagesPath.committee.form.$url(),
-      title: "申請",
-      icon: "task-list",
-      visible: () => true,
-    },
-    {
-      href: pagesPath.committee.registration_form.$url(),
-      title: "登録申請",
-      icon: "task-list-dashed",
-      visible: () => true,
-    },
-    {
-      href: pagesPath.committee.file.$url(),
-      title: "ファイル配布",
-      icon: "files",
-      visible: () =>
-        authState?.status === "bothSignedIn" &&
-        isUserRoleHigherThanIncluding({
-          userRole: authState.sosUser.role,
-          criteria: "committee",
-        }),
-    },
-    {
-      href: pagesPath.committee.user.$url(),
-      title: "ユーザー",
-      icon: "users",
-      visible: () =>
-        authState?.status === "bothSignedIn" &&
-        isUserRoleHigherThanIncluding({
-          userRole: authState.sosUser.role,
-          criteria: "committee_operator",
-        }),
-    },
-    {
-      href: pagesPath.dev_tool.$url(),
-      title: "開発者ツール",
-      icon: "wrench",
+      href: pagesPath.dev_tool.metadata.$url(),
+      title: "メタデータ",
+      icon: "activity",
       visible: () =>
         authState?.status === "bothSignedIn" &&
         isUserRoleHigherThanIncluding({
@@ -78,8 +38,8 @@ const Committee: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
-      <Head title="実委人トップページ" />
-      <h1 className={styles.title}>実委人トップページ</h1>
+      <Head title="開発者ツール" />
+      <h1 className={styles.title}>開発者ツール</h1>
       <ul className={styles.panelsWrapper}>
         {links.map((link) => {
           if (!link.visible()) return
@@ -112,7 +72,7 @@ const Committee: PageFC = () => {
     </div>
   )
 }
-Committee.layout = "committee"
-Committee.rbpac = { type: "higherThanIncluding", role: "committee" }
+Meta.layout = "committee"
+Meta.rbpac = { type: "higherThanIncluding", role: "administrator" }
 
-export default Committee
+export default Meta

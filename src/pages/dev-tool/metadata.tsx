@@ -1,7 +1,7 @@
 import { PageFC } from "next"
 import { useState, useEffect } from "react"
 
-import styles from "./meta.module.scss"
+import styles from "./metadata.module.scss"
 import { Head, Panel, Spinner } from "src/components"
 import {
   healthCheck,
@@ -10,7 +10,7 @@ import {
   BuildInfo,
 } from "src/lib/api/meta"
 
-const Meta: PageFC = () => {
+const Metadata: PageFC = () => {
   const [healthCheckRes, setHealthCheckRes] = useState<Response | "error">()
   const [livenessRes, setLivenessRes] = useState<Response | "error">()
   const [buildInfo, setBuildInfo] = useState<BuildInfo | "error">()
@@ -49,8 +49,8 @@ const Meta: PageFC = () => {
 
   return (
     <div className={styles.wrapper}>
-      <Head title="開発者ツール" />
-      <h1 className={styles.title}>開発者ツール</h1>
+      <Head title="メタデータ" />
+      <h1 className={styles.title}>メタデータ</h1>
       {!healthCheckRes || !livenessRes || !buildInfo ? (
         <Panel>
           <div className={styles.emptyWrapper}>
@@ -139,7 +139,7 @@ const Meta: PageFC = () => {
     </div>
   )
 }
-Meta.layout = "committee"
-Meta.rbpac = { type: "public" }
+Metadata.layout = "committee"
+Metadata.rbpac = { type: "higherThanIncluding", role: "administrator" }
 
-export default Meta
+export default Metadata
