@@ -9,7 +9,7 @@ import { isUserRoleHigherThanIncluding } from "src/types/models/user/userRole"
 
 import { pagesPath } from "src/utils/$path"
 
-const Meta: PageFC = () => {
+const DevTool: PageFC = () => {
   const { authState } = useAuthNeue()
 
   type Link = {
@@ -83,7 +83,7 @@ const Meta: PageFC = () => {
     </div>
   )
 }
-Meta.layout = "committee"
-Meta.rbpac = { type: "higherThanIncluding", role: "administrator" }
+DevTool.layout = "committee"
+DevTool.rbpac = { type: "higherThanIncluding", role: "administrator" }
 
-export default Meta
+export default DevTool
