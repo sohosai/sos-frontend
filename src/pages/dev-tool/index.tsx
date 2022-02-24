@@ -35,6 +35,17 @@ const DevTool: PageFC = () => {
         }),
     },
     {
+      href: pagesPath.dev_tool.api_caller.$url(),
+      title: "API Caller",
+      icon: "terminal",
+      visible: () =>
+        authState?.status === "bothSignedIn" &&
+        isUserRoleHigherThanIncluding({
+          userRole: authState.sosUser.role,
+          criteria: "administrator",
+        }),
+    },
+    {
       href: pagesPath.dev_tool.metadata.$url(),
       title: "メタデータ",
       icon: "activity",
