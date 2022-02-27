@@ -20,6 +20,12 @@
 .logotypeWrapper {
   display: flex;
   align-items: center;
+
+  @include mobile {
+    width: 110px;
+    flex-basis: 110px;
+    flex-shrink: 0;
+  }
 }
 
 .logotype {
@@ -34,9 +40,12 @@
 
   @include mobile {
     width: auto;
-    line-height: 24px;
     margin: 0;
     padding: 0;
+
+    &.notStaging {
+      line-height: 24px;
+    }
   }
 }
 
@@ -56,6 +65,7 @@
   font-size: 1rem;
 
   @include mobile {
+    border-radius: 8px;
     margin-top: 4px;
     padding: 0;
   }

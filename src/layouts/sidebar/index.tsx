@@ -22,13 +22,18 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
     <div className={styles.wrapper}>
       <div className={styles.topWrapper}>
         <Link href={pagesPath.$url()}>
-          <a>
-            <p className={styles.logotype}>
+          <a className={styles.logotypeWrapper}>
+            <p
+              className={`${styles.logotype} ${
+                process.env.NEXT_PUBLIC_DEPLOY_ENV === "staging" &&
+                styles.notStaging
+              }`}
+            >
               雙峰祭
               <br />
-              オンライン
+              <span className={styles.logotypeKana}>オンライン</span>
               <br />
-              システム
+              <span className={styles.logotypeKana}>システム</span>
               {process.env.NEXT_PUBLIC_DEPLOY_ENV === "staging" && (
                 <span className={styles.stagingNotice}>テスト環境</span>
               )}

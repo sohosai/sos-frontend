@@ -77,7 +77,7 @@
 }
 
 @mixin mobile {
-  $mobile: 1000px;
+  $mobile: 960px;
   @media screen and (max-width: ($mobile)) {
     @content;
   }
