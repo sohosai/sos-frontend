@@ -13,7 +13,10 @@
   margin: 0 32px 40px;
 
   @include mobile {
-    display: none;
+    margin-bottom: 4px;
+    gap: 8px;
+    display: flex;
+    justify-content: right;
   }
 }
 
@@ -81,6 +84,14 @@
   transition: background-color 200ms;
   @include flexCenter;
 
+  @include mobile {
+    min-width: 150px;
+    max-width: 200px;
+    height: 30px;
+    flex-grow: 1;
+    border-radius: 8px;
+  }
+
   &:hover {
     background-color: $color-brand-tint-200;
   }
@@ -98,6 +109,15 @@
   border-radius: 10px;
   transition: background-color 200ms;
   @include flexCenter;
+
+  @include mobile {
+    min-width: 80px;
+    max-width: 200px;
+    height: 30px;
+    padding: 0 8px;
+    flex-grow: 1;
+    border-radius: 8px;
+  }
 
   &:hover {
     background-color: $color-gray-50;
@@ -117,7 +137,7 @@
 
 @include mobile {
   .topWrapper {
-    padding: 10px 30px 8px 30px;
+    padding: 10px 30px 6px 30px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
