@@ -18,9 +18,12 @@
     width: 100%;
     height: 100%;
     display: grid;
+    justify-content: right;
     grid-auto-flow: column;
+    gap: 0 min(2%, 40px);
 
     li {
+      width: 100%;
       display: flex;
       justify-content: right;
     }
