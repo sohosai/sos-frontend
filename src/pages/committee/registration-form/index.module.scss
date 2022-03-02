@@ -9,6 +9,10 @@
   @include pageTitle;
 }
 
+.newFormButton {
+  margin-bottom: 24px;
+}
+
 .emptyWrapper {
   @include emptyWrapper;
 }
