@@ -4,6 +4,7 @@ import utc from "dayjs/plugin/utc"
 import { saveAs } from "file-saver"
 import type { PageFC } from "next"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { useState, useEffect } from "react"
 
 import { listForms } from "../../../lib/api/form/listForms"
@@ -29,6 +30,7 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 
 const ListForms: PageFC = () => {
+  const router = useRouter()
   const { authState } = useAuthNeue()
   const { addToast } = useToastDispatcher()
 
@@ -137,6 +139,20 @@ const ListForms: PageFC = () => {
                       })()}
                     </span>
                   </p>
+                  <Tooltip title="申請を編集する">
+                    <div>
+                      <IconButton
+                        icon="pencil"
+                        onClick={() =>
+                          router.push(
+                            pagesPath.committee.form.edit.$url({
+                              query: { id: form.id },
+                            })
+                          )
+                        }
+                      />
+                    </div>
+                  </Tooltip>
                   <Tooltip title="回答をCSVでダウンロード">
                     <div>
                       <IconButton
