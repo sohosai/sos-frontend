@@ -250,9 +250,6 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       <ul
         className={styles.links}
         style={{
-          gridTemplateColumns: `repeat(${
-            enabledLinks.length / Math.min(enabledLinks.length, 4)
-          }, 1fr)`,
           gridTemplateRows: `repeat(${Math.min(enabledLinks.length, 4)}, 1fr)`,
         }}
       >

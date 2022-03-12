@@ -1,7 +1,7 @@
 import type { PageOptions } from "next"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useState, FC } from "react"
+import { useEffect, useState, FC } from "react"
 
 import { useAuthNeue } from "../../contexts/auth"
 
@@ -20,6 +20,10 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
   const openMobileMenu = () => {
     setIsOpenedMobileMenu(!isOpenedMobileMenu)
   }
+
+  useEffect(() =>
+    router.events.on("routeChangeComplete", () => setIsOpenedMobileMenu(false))
+  )
 
   if (layout === "empty") return null
 

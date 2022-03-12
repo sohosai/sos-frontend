@@ -2,10 +2,15 @@
 @import "../../styles/mixins";
 
 .wrapper {
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
   height: 100%;
+
+  @include mobile {
+    display: block;
+  }
 }
 
 .topWrapper {
@@ -18,6 +23,11 @@
 }
 
 .content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+
   @include mobile {
     width: 100%;
     margin-top: -10px;
