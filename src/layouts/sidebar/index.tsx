@@ -41,14 +41,13 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
                 <wbr />
                 <span className={styles.logotypeKana}>システム</span>
               </span>
-              {process.env.NEXT_PUBLIC_DEPLOY_ENV === "staging" ||
-                (true && (
-                  <span className={styles.stagingNotice}>
-                    テスト
-                    <wbr />
-                    環境
-                  </span>
-                ))}
+              {process.env.NEXT_PUBLIC_DEPLOY_ENV === "staging" && (
+                <span className={styles.stagingNotice}>
+                  テスト
+                  <wbr />
+                  環境
+                </span>
+              )}
             </p>
           </a>
         </Link>
