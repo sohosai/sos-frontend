@@ -159,7 +159,6 @@
 .mobileMenuIcon {
   width: 24px;
   height: 20px;
-  transition: color 150ms;
   cursor: pointer;
   position: relative;
 
@@ -169,7 +168,7 @@
     background-color: $color-gray-400;
     border-radius: 4px;
     display: inline-block;
-    transition: all 0.5s;
+    transition: all 150ms;
     box-sizing: border-box;
     position: absolute;
     left: 0;

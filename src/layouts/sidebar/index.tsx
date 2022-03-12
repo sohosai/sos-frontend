@@ -28,12 +28,7 @@ const Sidebar: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       <div className={styles.topWrapper}>
         <Link href={pagesPath.$url()}>
           <a className={styles.logotypeWrapper}>
-            <p
-              className={`${styles.logotype} ${
-                process.env.NEXT_PUBLIC_DEPLOY_ENV === "staging" &&
-                styles.notStaging
-              }`}
-            >
+            <p className={styles.logotype}>
               <span className={styles.mainLogotype}>
                 雙峰祭
                 <br />
