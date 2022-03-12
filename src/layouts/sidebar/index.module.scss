@@ -2,18 +2,46 @@
 @import "../../styles/mixins";
 
 .wrapper {
-  display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
   height: 100%;
 }
 
+.topWrapper {
+  @include mobile {
+    padding: 20px 30px 20px 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.content {
+  @include mobile {
+    width: 100%;
+    margin-top: -10px;
+    padding-bottom: 10px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.06);
+    position: absolute;
+    background: white;
+    z-index: 1;
+    opacity: 0;
+    transition: visibility 200ms, opacity 200ms;
+    visibility: hidden;
+
+    &[data-opened="true"] {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}
+
 .bottomWrapper {
-  margin: 0 32px 40px;
+  margin: 32px 40px;
 
   @include mobile {
-    margin-bottom: 4px;
+    margin: 8px 30px 0 30px;
     gap: 8px;
     display: flex;
     justify-content: right;
@@ -23,12 +51,6 @@
 .logotypeWrapper {
   display: flex;
   align-items: center;
-
-  @include mobile {
-    width: 110px;
-    flex-basis: 110px;
-    flex-shrink: 0;
-  }
 }
 
 .logotype {
@@ -42,13 +64,18 @@
   padding: 0 32px;
 
   @include mobile {
-    width: auto;
     margin: 0;
     padding: 0;
+    display: flex;
+  }
+}
 
-    &.notStaging {
-      line-height: 24px;
-    }
+.mainLogotype {
+  width: 5em;
+  display: block;
+
+  @include mobile {
+    width: 100%;
   }
 }
 
@@ -68,9 +95,10 @@
   font-size: 1rem;
 
   @include mobile {
-    border-radius: 8px;
-    margin-top: 4px;
-    padding: 0;
+    line-height: 1.4em;
+    text-align: center;
+    margin: 4px 0 4px 2px;
+    padding: 8px 2px;
   }
 }
 
@@ -83,14 +111,6 @@
   color: white;
   transition: background-color 200ms;
   @include flexCenter;
-
-  @include mobile {
-    min-width: 150px;
-    max-width: 200px;
-    height: 30px;
-    flex-grow: 1;
-    border-radius: 8px;
-  }
 
   &:hover {
     background-color: $color-brand-tint-200;
@@ -110,17 +130,89 @@
   transition: background-color 200ms;
   @include flexCenter;
 
+  &:hover {
+    background-color: $color-gray-50;
+  }
+}
+
+.switchLayoutButton,
+.mypageButtonWrapper {
   @include mobile {
     min-width: 80px;
     max-width: 200px;
-    height: 30px;
-    padding: 0 8px;
+    height: 36px;
+    padding: 0 10px;
     flex-grow: 1;
     border-radius: 8px;
   }
+}
 
-  &:hover {
-    background-color: $color-gray-50;
+.mobileMenuIconWrapper {
+  display: none;
+  align-items: center;
+
+  @include mobile {
+    display: flex;
+  }
+}
+
+.mobileMenuIcon {
+  width: 24px;
+  height: 20px;
+  transition: color 150ms;
+  cursor: pointer;
+  position: relative;
+
+  span {
+    width: 100%;
+    height: 3px;
+    background-color: $color-gray-400;
+    border-radius: 4px;
+    display: inline-block;
+    transition: all 0.5s;
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+
+    &:nth-of-type(1) {
+      top: 0;
+    }
+
+    &:nth-of-type(2) {
+      top: calc(50% - 1.5px);
+    }
+
+    &:nth-of-type(3) {
+      bottom: 0;
+    }
+  }
+
+  &[data-active="true"] {
+    span:nth-of-type(1) {
+      transform: translateY(8.5px) rotate(-45deg);
+    }
+
+    span:nth-of-type(2) {
+      left: 50%;
+      opacity: 0;
+      animation: active-btn-bar 0.8s forwards;
+    }
+
+    @keyframes active-btn-bar {
+      100% {
+        height: 0;
+      }
+    }
+
+    span:nth-of-type(3) {
+      transform: translateY(-8.5px) rotate(45deg);
+    }
+  }
+
+  i {
+    height: 1em;
+    font-size: 2.5em;
+    display: block;
   }
 }
 
@@ -133,13 +225,4 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-@include mobile {
-  .topWrapper {
-    padding: 10px 30px 6px 30px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
 }

@@ -20,7 +20,7 @@
   width: 260px;
   flex-shrink: 0;
   background-color: white;
-  box-shadow: 8px 0px 16px 0px $color-gray-100;
+  box-shadow: 0px 8px 16px 0px $color-gray-100;
   border-right: 1px solid $color-gray-100;
 
   @include mobile {
