@@ -1,5 +1,6 @@
 import { FormId } from "../form"
 import type { ProjectId } from "../project"
+import type { ProjectQuery } from "../project/projectQuery"
 import type { UserId } from "../user"
 
 export type FileId = string
@@ -7,6 +8,10 @@ export type FileId = string
 export type Mime = string
 
 export type FileDistributionId = string
+
+export type FileCondition = Readonly<{
+  query: ProjectQuery
+}>
 
 export type FileSharingId = string
 
@@ -22,6 +27,7 @@ export type File = Readonly<{
 
 export type FileDistribution = Readonly<{
   id: FileDistributionId
+  condition: FileCondition
   created_at: number
   author_id: UserId
   name: string

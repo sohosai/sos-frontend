@@ -12,6 +12,7 @@ import {
   FormItemSpacer,
   Head,
   Panel,
+  ProjectQuerySelector,
   Textarea,
   TextField,
 } from "src/components"
@@ -22,12 +23,26 @@ import { createFile } from "src/lib/api/file/createFile"
 import { createFileDistribution } from "src/lib/api/file/createFileDistribution"
 import { reportError } from "src/lib/errorTracking/reportError"
 
+import type {
+  ProjectCategory,
+  ProjectAttribute,
+} from "../../../types/models/project"
+
 import { pagesPath } from "src/utils/$path"
 
 type Inputs = {
   name: string
   description: string
   projectCodes: string
+
+  categories: {
+    [key in ProjectCategory]: boolean
+  }
+  attributes: {
+    [key in ProjectAttribute]: boolean
+  }
+  attributesAndOr: "or" | "and"
+
   // 複数ファイル対応を考えて
   file: FileList
 }
@@ -49,6 +64,21 @@ const CommitteeFileUpload: PageFC = () => {
   } = useForm<Inputs>({
     reValidateMode: "onBlur",
     criteriaMode: "all",
+    defaultValues: {
+      categories: {
+        general: false,
+        stage: false,
+        cooking: false,
+        food: false,
+      },
+      attributes: {
+        academic: false,
+        artistic: false,
+        outdoor: false,
+        committee: false,
+      },
+      attributesAndOr: "or",
+    },
   })
 
   const onSubmit = async ({
@@ -56,12 +86,55 @@ const CommitteeFileUpload: PageFC = () => {
     description,
     projectCodes,
     file,
+    categories,
+    attributes,
+    attributesAndOr,
   }: Inputs) => {
     if (authState?.status !== "bothSignedIn") return
 
     const projectCodeArray = Array.from(
       new Set(projectCodes.split(/[,\n]/).filter((str) => str))
     )
+
+    const categoriesArray = Object.entries(categories)
+      .map(([category, value]) => {
+        if (!value) return
+        return category as ProjectCategory
+      })
+      .filter((nullable): nullable is ProjectCategory => Boolean(nullable))
+
+    const nonEmptyCategoriesArray = categoriesArray.length
+      ? categoriesArray
+      : ([null] as const)
+
+    const attributesArray = Object.entries(attributes)
+      .map(([attribute, value]) => {
+        if (!value) return
+        return attribute as ProjectAttribute
+      })
+      .filter((nullable): nullable is ProjectAttribute => Boolean(nullable))
+
+    const query =
+      attributesAndOr === "or"
+        ? nonEmptyCategoriesArray
+            .map((category: ProjectCategory | null) => {
+              if (!attributesArray.length)
+                return {
+                  category,
+                  attributes: [],
+                }
+
+              return attributesArray.map((attribute) => ({
+                category,
+                attributes: [attribute],
+              }))
+            })
+            .flat()
+        : nonEmptyCategoriesArray.map((category: ProjectCategory | null) => ({
+            category,
+            attributes: attributesArray,
+          }))
+
 
     const formData = new FormData()
     Array.from(file).map((f) => {
