@@ -62,6 +62,7 @@ type Inputs = {
     [key in ProjectAttribute]: boolean
   }
   attributesAndOr: "or" | "and"
+  projectCodes: string
   items: FormItem[]
 }
 
@@ -97,6 +98,7 @@ const NewForm: PageFC = () => {
         committee: false,
       },
       attributesAndOr: "or",
+      projectCodes: "",
       items: [],
     },
   })
@@ -111,6 +113,7 @@ const NewForm: PageFC = () => {
     description,
     starts_at,
     ends_at,
+    projectCodes,
     categories,
     attributes,
     attributesAndOr,
@@ -127,6 +130,10 @@ const NewForm: PageFC = () => {
       addToast({ title: "質問項目を追加してください", kind: "error" })
       return
     }
+
+    const projectCodeArray = Array.from(
+      new Set(projectCodes.split(/[,\n]/).filter((str) => str))
+    )
 
     const categoriesArray = Object.entries(categories)
       .map(([category, value]) => {
@@ -192,7 +199,7 @@ const NewForm: PageFC = () => {
             condition: {
               query,
               // TODO:
-              includes: [],
+              includes: projectCodeArray,
               excludes: [],
             },
             items,
@@ -456,6 +463,26 @@ const NewForm: PageFC = () => {
                 attributesAndOr: register("attributesAndOr"),
               }}
             />
+          </Panel>
+        </div>
+        <div className={styles.sectionWrapper}>
+          <Panel>
+            <FormItemSpacer>
+              <Textarea
+                label="対象企画"
+                description={[
+                  "企画番号を改行またはコンマ区切りで入力してください",
+                ]}
+                placeholder={"GI032\nCI038\nGO056\nGI071"}
+                rows={6}
+                required
+                error={[errors.projectCodes?.types?.required && "必須項目です"]}
+                register={register("projectCodes", {
+                  required: true,
+                  setValueAs: (value) => value?.trim(),
+                })}
+              />
+            </FormItemSpacer>
           </Panel>
         </div>
         <div className={styles.sectionWrapper}>
