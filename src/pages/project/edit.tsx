@@ -216,11 +216,7 @@ const EditProjectInfo: PageFC = () => {
         setError("noMyProject")
         return
       }
-      if (
-        !IN_PROJECT_CREATION_PERIOD ||
-        // FIXME: ad-hoc
-        isStage(myProjectState.myProject.category)
-      ) {
+      if (!IN_PROJECT_CREATION_PERIOD) {
         setError("outOfProjectCreationPeriod")
         return
       }

@@ -92,9 +92,7 @@ const ProjectIndex: PageFC = () => {
           {myProjectState.isPending && (
             <section className={styles.section} data-section="isPending">
               <Panel>
-                {IN_PROJECT_CREATION_PERIOD &&
-                // FIXME: ad-hoc
-                !isStage(myProjectState.myProject.category) ? (
+                {IN_PROJECT_CREATION_PERIOD ? (
                   <>
                     <p>あなたの企画は仮登録状態です</p>
                     <p>
@@ -207,23 +205,21 @@ const ProjectIndex: PageFC = () => {
                   </>
                 )}
               </Table>
-              {IN_PROJECT_CREATION_PERIOD &&
-                // FIXME: ad-hoc
-                !isStage(myProjectState.myProject.category) && (
-                  <div className={styles.generalInfoEditButton}>
-                    <Tooltip title="企画募集期間中は基本情報を編集できます">
-                      <div className={styles.generalInfoEditButtonInner}>
-                        <Link href={pagesPath.project.edit.$url()}>
-                          <a>
-                            <Button icon="pencil" kind="secondary">
-                              編集する
-                            </Button>
-                          </a>
-                        </Link>
-                      </div>
-                    </Tooltip>
-                  </div>
-                )}
+              {IN_PROJECT_CREATION_PERIOD && (
+                <div className={styles.generalInfoEditButton}>
+                  <Tooltip title="企画募集期間中は基本情報を編集できます">
+                    <div className={styles.generalInfoEditButtonInner}>
+                      <Link href={pagesPath.project.edit.$url()}>
+                        <a>
+                          <Button icon="pencil" kind="secondary">
+                            編集する
+                          </Button>
+                        </a>
+                      </Link>
+                    </div>
+                  </Tooltip>
+                </div>
+              )}
             </Panel>
           </section>
           <section className={styles.section} data-section="registrationForms">
