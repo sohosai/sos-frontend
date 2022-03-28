@@ -801,7 +801,7 @@ const NewRegistrationForm: PageFC = () => {
 NewRegistrationForm.layout = "committee"
 NewRegistrationForm.rbpac = {
   type: "higherThanIncluding",
-  role: "administrator",
+  role: "committee_operator",
 }
 
 export default NewRegistrationForm
