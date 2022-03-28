@@ -2,9 +2,13 @@ import dayjs from "dayjs"
 import { PageFC } from "next"
 import { useRouter } from "next/router"
 import { useState, useEffect, FC } from "react"
+import { useForm } from "react-hook-form"
 
 import styles from "./details.module.scss"
 import {
+  Button,
+  Dropdown,
+  FormItemSpacer,
   Head,
   IconButton,
   Panel,
@@ -16,11 +20,21 @@ import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
 import { getUser } from "src/lib/api/user/getUser"
+import { updateUser } from "src/lib/api/user/updateUser"
 import { User, userCategoryTypeToUiText } from "src/types/models/user"
-import { userRoleToUiText } from "src/types/models/user/userRole"
+import {
+  isUserRoleHigherThanIncluding,
+  UserRole,
+  userRoleToUiText,
+} from "src/types/models/user/userRole"
+import { pagesPath } from "src/utils/$path"
 
 export type Query = {
   id: string
+}
+
+type Inputs = {
+  role: UserRole | ""
 }
 
 const UserDetails: PageFC = () => {
@@ -30,6 +44,18 @@ const UserDetails: PageFC = () => {
 
   const [user, setUser] = useState<User>()
   const [error, setError] = useState<"notFound" | "unknown">()
+  const [processing, setProcessing] = useState(false)
+  const [isEligibleToChangeUserRole, setIsEligibleToChangeUserRole] =
+    useState(false)
+  const [roleOptions, setRoleOptions] = useState<
+    { value: string; label: string }[]
+  >([])
+
+  const { register, handleSubmit } = useForm<Inputs>({
+    mode: "onBlur",
+    criteriaMode: "all",
+    shouldFocusError: true,
+  })
 
   const { id: userId } = router.query as Partial<Query>
 
@@ -56,9 +82,114 @@ const UserDetails: PageFC = () => {
     </div>
   )
 
+  const defaultRoleOptions = [
+    {
+      value: "",
+      label: "選択してください",
+    },
+    {
+      value: "general",
+      label: "一般",
+    },
+    {
+      value: "committee",
+      label: "実委人",
+    },
+    {
+      value: "committee_operator",
+      label: "実委人(管理者)",
+    },
+    {
+      value: "administrator",
+      label: "SOS管理者",
+    },
+  ]
+
+  const onSubmit = async ({ role }: Inputs) => {
+    if (
+      authState === null ||
+      authState.firebaseUser == null ||
+      authState.sosUser == null ||
+      user == null
+    ) {
+      addToast({ title: "不明なエラーが発生しました", kind: "error" })
+      return
+    }
+
+    if (role === "") {
+      addToast({ title: "権限を選択してください", kind: "error" })
+      return
+    }
+
+    if (user.id === authState.sosUser.id) {
+      addToast({
+        title: "自分自身の権限を変更することはできません",
+        kind: "error",
+      })
+      return
+    }
+
+    const idToken = await authState.firebaseUser.getIdToken()
+
+    if (
+      process.browser &&
+      window.confirm("このユーザーの権限を変更しますか?")
+    ) {
+      setProcessing(true)
+
+      try {
+        const res = await updateUser({
+          props: {
+            id: user.id,
+            role,
+          },
+          idToken,
+        })
+
+        if ("errorCode" in res) {
+          setProcessing(false)
+
+          switch (res.errorCode) {
+            case "userNotFound":
+              addToast({
+                title: "ユーザーが見つかりませんでした",
+                kind: "error",
+              })
+              break
+            case "timeout":
+              addToast({
+                title: "権限の付与を完了できませんでした",
+                descriptions: ["通信環境などをご確認ください"],
+                kind: "error",
+              })
+              break
+          }
+          return
+        }
+
+        setProcessing(false)
+        addToast({ title: "権限を変更しました", kind: "success" })
+
+        router.push(pagesPath.committee.user.$url())
+      } catch (err) {
+        setProcessing(false)
+        addToast({ title: "不明なエラーが発生しました", kind: "error" })
+      }
+    }
+  }
+
   useEffect(() => {
     ;(async () => {
       if (authState?.status !== "bothSignedIn") return
+
+      if (
+        isUserRoleHigherThanIncluding({
+          userRole: authState.sosUser.role,
+          criteria: "administrator",
+        })
+      ) {
+        setIsEligibleToChangeUserRole(true)
+      }
 
       setError(undefined)
       if (!userId || typeof userId !== "string") {
@@ -72,6 +203,9 @@ const UserDetails: PageFC = () => {
           idToken: await authState.firebaseUser.getIdToken(),
         })
         setUser(fetchedUser)
+        setRoleOptions(
+          defaultRoleOptions.filter((role) => role.value !== fetchedUser.role)
+        )
       } catch (err) {
         // FIXME: any
         if ((err as any)?.error?.info?.type === "USER_NOT_FOUND") {
@@ -181,6 +315,32 @@ const UserDetails: PageFC = () => {
               </Table>
             </Panel>
           </section>
+          {isEligibleToChangeUserRole && (
+            <section className={styles.section}>
+              <Panel>
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                  <FormItemSpacer>
+                    <Dropdown
+                      label="権限を変更する"
+                      options={roleOptions}
+                      required
+                      register={register("role")}
+                    />
+                  </FormItemSpacer>
+                  <FormItemSpacer>
+                    <Button
+                      type="submit"
+                      icon="rocket"
+                      processing={processing}
+                      fullWidth={true}
+                    >
+                      権限を変更する
+                    </Button>
+                  </FormItemSpacer>
+                </form>
+              </Panel>
+            </section>
+          )}
         </div>
       ) : (
         <Panel>
