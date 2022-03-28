@@ -56,6 +56,7 @@ const NewProject: PageFC = () => {
     formState: { errors },
     handleSubmit,
     watch,
+    setValue,
   } = useForm<Inputs>({
     criteriaMode: "all",
     mode: "onBlur",
@@ -69,6 +70,16 @@ const NewProject: PageFC = () => {
       agreeTerms: false,
     },
   })
+
+  const artisticRegister = () => {
+    if (!isStage(watch("category"))) {
+      return register("attributes.artistic")
+    }
+    if (watch("attributes.artistic")) {
+      setValue("attributes.artistic", false)
+    }
+    return undefined
+  }
 
   const onSubmit = async ({
     name,
@@ -301,8 +312,15 @@ const NewProject: PageFC = () => {
                     <FormItemSpacer>
                       <Checkbox
                         label="芸術祭参加枠での参加を希望する"
+                        descriptions={
+                          isStage(watch("category"))
+                            ? [
+                                "ステージ企画は芸術祭参加枠での参加を希望できません",
+                              ]
+                            : []
+                        }
                         checked={watch("attributes.artistic")}
-                        register={register("attributes.artistic")}
+                        register={artisticRegister()}
                       />
                     </FormItemSpacer>
                     <FormItemSpacer
