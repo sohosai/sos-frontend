@@ -21,7 +21,12 @@ import { useAuthNeue } from "src/contexts/auth"
 import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"
 
-import { ProjectCategory, ProjectAttribute } from "src/types/models/project"
+import {
+  ProjectCategory,
+  ProjectAttribute,
+  projectCategoryToUiText,
+  isStage,
+} from "src/types/models/project"
 
 import { awesomeCharacterCount } from "src/utils/awesomeCharacterCount"
 import { isKana, katakanaToHiragana } from "src/utils/jpKana"
@@ -123,7 +128,8 @@ const NewProject: PageFC = () => {
               {!myProjectState?.error &&
               (myProjectState?.myProject === null ||
                 // FIXME: ad-hoc
-                (myProjectState?.myProject.category === "stage" &&
+                (myProjectState &&
+                  isStage(myProjectState.myProject.category) &&
                   myProjectState.isPending)) ? (
                 <form
                   className={styles.form}
@@ -252,8 +258,28 @@ const NewProject: PageFC = () => {
                             label: "選択してください",
                           },
                           {
-                            value: "general",
-                            label: "一般企画",
+                            value: "general_physical",
+                            label: projectCategoryToUiText("general_physical"),
+                          },
+                          {
+                            value: "general_online",
+                            label: projectCategoryToUiText("general_online"),
+                          },
+                          {
+                            value: "stage_physical",
+                            label: projectCategoryToUiText("stage_physical"),
+                          },
+                          {
+                            value: "stage_online",
+                            label: projectCategoryToUiText("stage_online"),
+                          },
+                          {
+                            value: "food_physical",
+                            label: projectCategoryToUiText("food_physical"),
+                          },
+                          {
+                            value: "cooking_physical",
+                            label: projectCategoryToUiText("cooking_physical"),
                           },
                         ]}
                         error={[

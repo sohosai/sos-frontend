@@ -73,10 +73,12 @@ const NewRegistrationForm: PageFC = () => {
     shouldFocusError: true,
     defaultValues: {
       categories: {
-        general: false,
-        stage: false,
-        cooking: false,
-        food: false,
+        general_physical: false,
+        general_online: false,
+        stage_physical: false,
+        stage_online: false,
+        food_physical: false,
+        cooking_physical: false,
       },
       attributes: {
         academic: false,
@@ -354,20 +356,24 @@ const NewRegistrationForm: PageFC = () => {
             <Panel>
               <ProjectQuerySelector
                 checked={{
-                  general: watch("categories.general"),
-                  stage: watch("categories.stage"),
-                  cooking: watch("categories.cooking"),
-                  food: watch("categories.food"),
+                  general_physical: watch("categories.general_physical"),
+                  general_online: watch("categories.general_online"),
+                  stage_physical: watch("categories.stage_physical"),
+                  stage_online: watch("categories.stage_online"),
+                  food_physical: watch("categories.food_physical"),
+                  cooking_physical: watch("categories.cooking_physical"),
                   academic: watch("attributes.academic"),
                   artistic: watch("attributes.artistic"),
                   outdoor: watch("attributes.outdoor"),
                   committee: watch("attributes.committee"),
                 }}
                 registers={{
-                  general: register("categories.general"),
-                  stage: register("categories.stage"),
-                  cooking: register("categories.cooking"),
-                  food: register("categories.food"),
+                  general_physical: register("categories.general_physical"),
+                  general_online: register("categories.general_online"),
+                  stage_physical: register("categories.stage_physical"),
+                  stage_online: register("categories.stage_online"),
+                  food_physical: register("categories.food_physical"),
+                  cooking_physical: register("categories.cooking_physical"),
                   academic: register("attributes.academic"),
                   artistic: register("attributes.artistic"),
                   outdoor: register("attributes.outdoor"),

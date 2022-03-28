@@ -22,6 +22,7 @@ import { listMyRegistrationForms } from "src/lib/api/registrationForm/listMyRegi
 import {
   projectCategoryToUiText,
   projectAttributeToUiText,
+  isStage,
 } from "src/types/models/project"
 import { RegistrationForm } from "src/types/models/registrationForm"
 
@@ -93,7 +94,7 @@ const ProjectIndex: PageFC = () => {
               <Panel>
                 {IN_PROJECT_CREATION_PERIOD &&
                 // FIXME: ad-hoc
-                myProjectState.myProject.category !== "stage" ? (
+                !isStage(myProjectState.myProject.category) ? (
                   <>
                     <p>あなたの企画は仮登録状態です</p>
                     <p>
@@ -208,7 +209,7 @@ const ProjectIndex: PageFC = () => {
               </Table>
               {IN_PROJECT_CREATION_PERIOD &&
                 // FIXME: ad-hoc
-                myProjectState.myProject.category !== "stage" && (
+                !isStage(myProjectState.myProject.category) && (
                   <div className={styles.generalInfoEditButton}>
                     <Tooltip title="企画募集期間中は基本情報を編集できます">
                       <div className={styles.generalInfoEditButtonInner}>
