@@ -12,7 +12,7 @@ import {
   Button,
   Dropdown,
 } from "../components"
-import type { UserCategoryType } from "../types/models/user"
+import type { UserType } from "../types/models/user"
 
 import { pagesPath } from "../utils/$path"
 import { isKana, katakanaToHiragana } from "../utils/jpKana"
@@ -28,8 +28,7 @@ type Inputs = Readonly<{
   kanaNameFirst: string
   kanaNameLast: string
   phoneNumber: string
-  affiliation: string
-  category: UserCategoryType
+  type: UserType
 }>
 
 const Init: PageFC = () => {
@@ -56,8 +55,7 @@ const Init: PageFC = () => {
     kanaNameFirst,
     kanaNameLast,
     phoneNumber,
-    category,
-    affiliation,
+    type,
   }: Inputs) => {
     setProcessing(true)
 
@@ -71,13 +69,7 @@ const Init: PageFC = () => {
         last: katakanaToHiragana(kanaNameLast),
       },
       phone_number: "+81" + phoneNumber.replaceAll("-", "").slice(1),
-      category:
-        category === "undergraduate_student"
-          ? {
-              type: "undergraduate_student" as const,
-              affiliation,
-            }
-          : { type: category },
+      type,
     }
 
     try {
@@ -251,30 +243,13 @@ const Init: PageFC = () => {
                     { value: "graduate_student", label: "院生" },
                     { value: "academic_staff", label: "教職員" },
                   ]}
-                  error={[errors?.category?.types?.required && "必須項目です"]}
+                  error={[errors?.type?.types?.required && "必須項目です"]}
                   required
-                  register={register("category", {
+                  register={register("type", {
                     required: true,
                   })}
                 />
               </FormItemSpacer>
-              {watch("category") === "undergraduate_student" && (
-                <FormItemSpacer>
-                  <TextField
-                    type="text"
-                    label="所属学群・学類"
-                    placeholder="〇〇学群 〇〇学類"
-                    error={[
-                      errors?.affiliation?.types?.required && "必須項目です",
-                    ]}
-                    required
-                    register={register("affiliation", {
-                      required: true,
-                      setValueAs: (value) => value?.trim(),
-                    })}
-                  />
-                </FormItemSpacer>
-              )}
             </fieldset>
             <div className={styles.submitButton}>
               <Button

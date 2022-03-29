@@ -21,7 +21,7 @@ import { useToastDispatcher } from "src/contexts/toast"
 
 import { getUser } from "src/lib/api/user/getUser"
 import { updateUser } from "src/lib/api/user/updateUser"
-import { User, userCategoryTypeToUiText } from "src/types/models/user"
+import { User, userTypeToUiText } from "src/types/models/user"
 import {
   isUserRoleHigherThanIncluding,
   UserRole,
@@ -251,11 +251,7 @@ const UserDetails: PageFC = () => {
               <Table>
                 <Table.Row
                   keyElement="所属"
-                  valueElement={
-                    user.category.type === "undergraduate_student"
-                      ? `学群生 / ${user.category.affiliation}`
-                      : `${userCategoryTypeToUiText(user.category.type)}`
-                  }
+                  valueElement={userTypeToUiText(user.type)}
                 />
                 <Table.Row
                   keyElement="メールアドレス"
