@@ -12,7 +12,7 @@ import {
   Button,
   Dropdown,
 } from "../components"
-import type { UserType } from "../types/models/user"
+import type { UserCategory } from "../types/models/user"
 
 import { pagesPath } from "../utils/$path"
 import { isKana, katakanaToHiragana } from "../utils/jpKana"
@@ -28,7 +28,7 @@ type Inputs = Readonly<{
   kanaNameFirst: string
   kanaNameLast: string
   phoneNumber: string
-  type: UserType
+  category: UserCategory
 }>
 
 const Init: PageFC = () => {
@@ -55,7 +55,7 @@ const Init: PageFC = () => {
     kanaNameFirst,
     kanaNameLast,
     phoneNumber,
-    type,
+    category,
   }: Inputs) => {
     setProcessing(true)
 
@@ -69,7 +69,7 @@ const Init: PageFC = () => {
         last: katakanaToHiragana(kanaNameLast),
       },
       phone_number: "+81" + phoneNumber.replaceAll("-", "").slice(1),
-      type,
+      category,
     }
 
     try {
@@ -243,9 +243,9 @@ const Init: PageFC = () => {
                     { value: "graduate_student", label: "院生" },
                     { value: "academic_staff", label: "教職員" },
                   ]}
-                  error={[errors?.type?.types?.required && "必須項目です"]}
+                  error={[errors?.category?.types?.required && "必須項目です"]}
                   required
-                  register={register("type", {
+                  register={register("category", {
                     required: true,
                   })}
                 />

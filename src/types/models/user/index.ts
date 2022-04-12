@@ -8,7 +8,7 @@ export type User = Readonly<{
   email: string
   phone_number: string
   role: UserRole
-  type: UserType
+  category: UserCategory
 }>
 
 export type UserId = string
@@ -23,18 +23,18 @@ export type UserKanaName = Readonly<{
   last: string
 }>
 
-export type UserType =
+export type UserCategory =
   | "undergraduate_student"
   | "graduate_student"
   | "academic_staff"
 
-export const userTypeToUiText = (userType: UserType): string => {
+export const userCategoryToUiText = (userCategory: UserCategory): string => {
   const map: {
-    [key in UserType]: string
+    [key in UserCategory]: string
   } = {
     undergraduate_student: "学群生",
     graduate_student: "院生",
     academic_staff: "教職員",
   }
-  return map[userType]
+  return map[userCategory]
 }

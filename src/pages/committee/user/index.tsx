@@ -9,7 +9,7 @@ import { exportUsers } from "../../../lib/api/user/exportUsers"
 import { listUsers } from "../../../lib/api/user/listUsers"
 
 import { reportError } from "../../../lib/errorTracking/reportError"
-import { User, userTypeToUiText } from "../../../types/models/user"
+import { User, userCategoryToUiText } from "../../../types/models/user"
 import { userRoleToUiText } from "../../../types/models/user/userRole"
 
 import { pagesPath } from "../../../utils/$path"
@@ -97,7 +97,7 @@ const ListUsers: PageFC = () => {
                 <p className={styles.headCell}>所属</p>
               </div>
               <ul>
-                {users.map(({ name, role, type, id }) => {
+                {users.map(({ name, role, category, id }) => {
                   return (
                     <li key={id} className={styles.rowWrapper}>
                       <Link
@@ -113,7 +113,7 @@ const ListUsers: PageFC = () => {
                             {userRoleToUiText(role)}
                           </p>
                           <p className={styles.cell}>
-                            {userTypeToUiText(type)}
+                            {userCategoryToUiText(category)}
                           </p>
                         </a>
                       </Link>

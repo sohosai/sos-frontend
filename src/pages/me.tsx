@@ -4,7 +4,7 @@ import { Button, Head, Panel } from "../components"
 import { useAuthNeue } from "../contexts/auth"
 
 import styles from "./me.module.scss"
-import { userTypeToUiText } from "src/types/models/user"
+import { userCategoryToUiText } from "src/types/models/user"
 
 const Mypage: PageFC = () => {
   const { authState, signout } = useAuthNeue()
@@ -33,7 +33,7 @@ const Mypage: PageFC = () => {
                   <i
                     className={`jam-icons jam-id-card ${styles.panelTextIcon}`}
                   />
-                  {userTypeToUiText(authState.sosUser.type)}
+                  {userCategoryToUiText(authState.sosUser.category)}
                 </p>
               </Panel>
             </div>
