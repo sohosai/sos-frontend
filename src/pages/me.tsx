@@ -4,7 +4,7 @@ import { Button, Head, Panel } from "../components"
 import { useAuthNeue } from "../contexts/auth"
 
 import styles from "./me.module.scss"
-import { userCategoryTypeToUiText } from "src/types/models/user"
+import { userCategoryToUiText } from "src/types/models/user"
 
 const Mypage: PageFC = () => {
   const { authState, signout } = useAuthNeue()
@@ -33,11 +33,7 @@ const Mypage: PageFC = () => {
                   <i
                     className={`jam-icons jam-id-card ${styles.panelTextIcon}`}
                   />
-                  {authState.sosUser.category.type === "undergraduate_student"
-                    ? `${userCategoryTypeToUiText(
-                        authState.sosUser.category.type
-                      )} / ${authState.sosUser.category.affiliation}`
-                    : userCategoryTypeToUiText(authState.sosUser.category.type)}
+                  {userCategoryToUiText(authState.sosUser.category)}
                 </p>
               </Panel>
             </div>
