@@ -1,0 +1,19 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.topText {
+  margin-bottom: 12px;
+}
+
+.name {
+  margin-bottom: 4px;
+}
+
+.arbitrary {
+  margin-left: 0.5em;
+  color: $color-brand;
+}
+
+.description {
+  color: $color-text-sub;
+}
