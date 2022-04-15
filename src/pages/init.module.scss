@@ -5,6 +5,10 @@
   min-height: 100%;
   padding: 64px 0;
   @include flexCenter;
+
+  @include mobile {
+    padding: 32px 0;
+  }
 }
 
 .formWrapper {

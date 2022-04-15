@@ -21,7 +21,12 @@ import { useAuthNeue } from "src/contexts/auth"
 import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"
 
-import { ProjectCategory, ProjectAttribute } from "src/types/models/project"
+import {
+  ProjectCategory,
+  ProjectAttribute,
+  projectCategoryToUiText,
+  isStage,
+} from "src/types/models/project"
 
 import { awesomeCharacterCount } from "src/utils/awesomeCharacterCount"
 import { isKana, katakanaToHiragana } from "src/utils/jpKana"
@@ -51,6 +56,7 @@ const NewProject: PageFC = () => {
     formState: { errors },
     handleSubmit,
     watch,
+    setValue,
   } = useForm<Inputs>({
     criteriaMode: "all",
     mode: "onBlur",
@@ -64,6 +70,16 @@ const NewProject: PageFC = () => {
       agreeTerms: false,
     },
   })
+
+  const artisticRegister = () => {
+    if (!isStage(watch("category"))) {
+      return register("attributes.artistic")
+    }
+    if (watch("attributes.artistic")) {
+      setValue("attributes.artistic", false)
+    }
+    return undefined
+  }
 
   const onSubmit = async ({
     name,
@@ -120,11 +136,7 @@ const NewProject: PageFC = () => {
         <Panel>
           {IN_PROJECT_CREATION_PERIOD ? (
             <>
-              {!myProjectState?.error &&
-              (myProjectState?.myProject === null ||
-                // FIXME: ad-hoc
-                (myProjectState?.myProject.category === "stage" &&
-                  myProjectState.isPending)) ? (
+              {!myProjectState?.error && myProjectState?.myProject === null ? (
                 <form
                   className={styles.form}
                   onSubmit={handleSubmit(onSubmit)}
@@ -252,8 +264,28 @@ const NewProject: PageFC = () => {
                             label: "選択してください",
                           },
                           {
-                            value: "general",
-                            label: "一般企画",
+                            value: "general_physical",
+                            label: projectCategoryToUiText("general_physical"),
+                          },
+                          {
+                            value: "general_online",
+                            label: projectCategoryToUiText("general_online"),
+                          },
+                          {
+                            value: "stage_physical",
+                            label: projectCategoryToUiText("stage_physical"),
+                          },
+                          {
+                            value: "stage_online",
+                            label: projectCategoryToUiText("stage_online"),
+                          },
+                          {
+                            value: "food_physical",
+                            label: projectCategoryToUiText("food_physical"),
+                          },
+                          {
+                            value: "cooking_physical",
+                            label: projectCategoryToUiText("cooking_physical"),
                           },
                         ]}
                         error={[
@@ -275,8 +307,15 @@ const NewProject: PageFC = () => {
                     <FormItemSpacer>
                       <Checkbox
                         label="芸術祭参加枠での参加を希望する"
+                        descriptions={
+                          isStage(watch("category"))
+                            ? [
+                                "ステージ企画は芸術祭参加枠での参加を希望できません",
+                              ]
+                            : []
+                        }
                         checked={watch("attributes.artistic")}
-                        register={register("attributes.artistic")}
+                        register={artisticRegister()}
                       />
                     </FormItemSpacer>
                     <FormItemSpacer

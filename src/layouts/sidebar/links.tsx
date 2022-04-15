@@ -31,7 +31,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       pathname: string
       hash?: string
     }
-    title: string
+    title: string[]
     icon: string
     visible: () => boolean
     active: () => boolean
@@ -43,7 +43,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
     default: [
       {
         href: pagesPath.$url(),
-        title: "トップページ",
+        title: ["トップ", "ページ"],
         icon: "home",
         visible: () =>
           authState.status !== "firebaseSignedIn" &&
@@ -52,21 +52,21 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       },
       {
         href: pagesPath.login.$url(),
-        title: "ログイン",
+        title: ["ログイン"],
         icon: "log-in-alt",
         visible: () => authState.status === "signedOut",
         active: () => router.pathname === pagesPath.login.$url().pathname,
       },
       {
         href: pagesPath.signup.$url(),
-        title: "ユーザー登録",
+        title: ["ユーザー", "登録"],
         icon: "user-plus",
         visible: () => authState.status === "signedOut",
         active: () => router.pathname === pagesPath.signup.$url().pathname,
       },
       {
         href: pagesPath.email_verification.$url(),
-        title: "メールアドレス確認",
+        title: ["メール", "アドレス", "確認"],
         icon: "envelope",
         visible: () => Boolean(authState.firebaseUser?.emailVerified === false),
         active: () =>
@@ -74,7 +74,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       },
       {
         href: pagesPath.init.$url(),
-        title: "アカウント情報登録",
+        title: ["アカウント", "情報登録"],
         icon: "user-circle",
         visible: () =>
           authState.status === "firebaseSignedIn" &&
@@ -83,14 +83,14 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       },
       {
         href: pagesPath.project.new.$url(),
-        title: "企画応募",
+        title: ["企画応募"],
         icon: "write",
         visible: () => authState.status === "bothSignedIn",
         active: () => router.pathname === pagesPath.project.new.$url().pathname,
       },
       {
         href: pagesPath.project.$url(),
-        title: "企画",
+        title: ["企画"],
         icon: "universe",
         visible: () =>
           authState.status === "bothSignedIn" &&
@@ -106,7 +106,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       },
       {
         href: pagesPath.project.form.$url(),
-        title: "申請",
+        title: ["申請"],
         icon: "task-list",
         visible: () =>
           authState.status === "bothSignedIn" &&
@@ -117,7 +117,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       },
       {
         href: pagesPath.project.file.$url(),
-        title: "ファイル配布",
+        title: ["ファイル", "配布"],
         icon: "files",
         visible: () =>
           authState.status === "bothSignedIn" &&
@@ -128,7 +128,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       },
       {
         href: pagesPath.me.$url(),
-        title: "マイページ",
+        title: ["マイ", "ページ"],
         icon: "user-circle",
         visible: () => authState.status === "bothSignedIn",
         active: () => router.pathname === pagesPath.me.$url().pathname,
@@ -137,7 +137,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
     committee: [
       {
         href: pagesPath.committee.$url(),
-        title: "実委人トップページ",
+        title: ["実委人", "トップページ"],
         icon: "home",
         visible: () =>
           Boolean(
@@ -151,7 +151,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       },
       {
         href: pagesPath.committee.project.$url(),
-        title: "企画",
+        title: ["企画"],
         icon: "universe",
         visible: () =>
           authState.status === "bothSignedIn" &&
@@ -166,7 +166,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       },
       {
         href: pagesPath.committee.form.$url(),
-        title: "申請",
+        title: ["申請"],
         icon: "task-list",
         visible: () =>
           Boolean(
@@ -181,7 +181,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       },
       {
         href: pagesPath.committee.registration_form.$url(),
-        title: "登録申請",
+        title: ["登録申請"],
         icon: "task-list-dashed",
         visible: () =>
           Boolean(
@@ -198,7 +198,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       },
       {
         href: pagesPath.committee.file.$url(),
-        title: "ファイル配布",
+        title: ["ファイル", "配布"],
         icon: "files",
         visible: () =>
           Boolean(
@@ -213,7 +213,7 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
       },
       {
         href: pagesPath.committee.user.$url(),
-        title: "ユーザー",
+        title: ["ユーザー"],
         icon: "users",
         visible: () =>
           Boolean(
@@ -227,8 +227,8 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
           router.pathname.startsWith(pagesPath.committee.user.$url().pathname),
       },
       {
-        href: pagesPath.meta.$url(),
-        title: "開発者ツール",
+        href: pagesPath.dev_tool.$url(),
+        title: ["開発者", "ツール"],
         icon: "wrench",
         visible: () =>
           Boolean(
@@ -238,23 +238,37 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
                 criteria: "administrator",
               })
           ),
-        active: () => router.pathname === pagesPath.meta.$url().pathname,
+        active: () =>
+          router.pathname.startsWith(pagesPath.dev_tool.$url().pathname),
       },
     ],
   }
 
+  const enabledLinks = links[layout].filter(({ visible }) => visible())
+
   return (
     <menu className={styles.wrapper}>
-      <ul className={styles.links}>
-        {links[layout].map(({ href, title, icon, visible, active }, index) => {
-          if (!visible()) return
+      <ul
+        className={styles.links}
+        style={{
+          gridTemplateRows: `repeat(${Math.min(enabledLinks.length, 4)}, 1fr)`,
+        }}
+      >
+        {enabledLinks.map(({ href, title, icon, visible, active }, index) => {
+          const text: (string | JSX.Element)[] = []
+          title.forEach((value, index) => {
+            text.push(value)
+            if (index < title.length - 1) {
+              text.push(<wbr />)
+            }
+          })
 
           return (
             <li key={index}>
               <Link href={href}>
                 <a className={styles.link} data-active={active()}>
                   <i className={`jam-icons jam-${icon} ${styles.linkIcon}`} />
-                  <p className={styles.label}>{title}</p>
+                  <p className={styles.label}>{text}</p>
                 </a>
               </Link>
             </li>

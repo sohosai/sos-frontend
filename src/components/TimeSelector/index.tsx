@@ -68,6 +68,7 @@ const TimeSelector: FC<TimeSelector.Props> = ({
               errorTypes?.hour?.min && "不正な値です",
               errorTypes?.hour?.max && "不正な値です",
             ]}
+            bySide={true}
           />
         </div>
         <div className={styles.dropdown}>
@@ -97,6 +98,7 @@ const TimeSelector: FC<TimeSelector.Props> = ({
               errorTypes?.minute?.min && "不正な値です",
               errorTypes?.minute?.max && "不正な値です",
             ]}
+            bySide={true}
           />
         </div>
       </div>

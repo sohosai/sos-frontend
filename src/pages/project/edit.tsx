@@ -21,7 +21,11 @@ import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"
 
 import { reportError } from "src/lib/errorTracking"
-import { ProjectCategory, ProjectAttribute } from "src/types/models/project"
+import {
+  ProjectCategory,
+  ProjectAttribute,
+  isStage,
+} from "src/types/models/project"
 
 import { awesomeCharacterCount } from "src/utils/awesomeCharacterCount"
 import { isKana, katakanaToHiragana } from "src/utils/jpKana"
@@ -212,11 +216,7 @@ const EditProjectInfo: PageFC = () => {
         setError("noMyProject")
         return
       }
-      if (
-        !IN_PROJECT_CREATION_PERIOD ||
-        // FIXME: ad-hoc
-        myProjectState.myProject.category === "stage"
-      ) {
+      if (!IN_PROJECT_CREATION_PERIOD) {
         setError("outOfProjectCreationPeriod")
         return
       }

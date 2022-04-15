@@ -9,7 +9,7 @@ import { exportUsers } from "../../../lib/api/user/exportUsers"
 import { listUsers } from "../../../lib/api/user/listUsers"
 
 import { reportError } from "../../../lib/errorTracking/reportError"
-import { User, userCategoryTypeToUiText } from "../../../types/models/user"
+import { User, userCategoryToUiText } from "../../../types/models/user"
 import { userRoleToUiText } from "../../../types/models/user/userRole"
 
 import { pagesPath } from "../../../utils/$path"
@@ -113,9 +113,7 @@ const ListUsers: PageFC = () => {
                             {userRoleToUiText(role)}
                           </p>
                           <p className={styles.cell}>
-                            {category.type === "undergraduate_student"
-                              ? category.affiliation
-                              : userCategoryTypeToUiText(category.type)}
+                            {userCategoryToUiText(category)}
                           </p>
                         </a>
                       </Link>
