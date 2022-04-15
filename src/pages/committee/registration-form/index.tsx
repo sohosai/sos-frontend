@@ -88,7 +88,7 @@ const RegistrationForms: PageFC = () => {
       if (
         isUserRoleHigherThanIncluding({
           userRole: authState.sosUser.role,
-          criteria: "administrator",
+          criteria: "committee_operator",
         })
       ) {
         setIsEligibleToCreateNewRegistrationForm(true)
