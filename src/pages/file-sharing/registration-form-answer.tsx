@@ -116,6 +116,9 @@ const RegistrationFormAnswerSharedFile: PageFC = () => {
   )
 }
 RegistrationFormAnswerSharedFile.layout = "committee"
-RegistrationFormAnswerSharedFile.rbpac = { type: "higherThanIncluding", role: "committee" }
+RegistrationFormAnswerSharedFile.rbpac = {
+  type: "higherThanIncluding",
+  role: "committee",
+}
 
 export default RegistrationFormAnswerSharedFile
