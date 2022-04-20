@@ -31,7 +31,6 @@ import { getRegistrationForm } from "src/lib/api/registrationForm/getRegistratio
 import { updateRegistrationFormAnswer } from "src/lib/api/registrationForm/updateRegistrationFormAnswer"
 import { reportError as reportErrorHandler } from "src/lib/errorTracking"
 import {
-  FormAnswerItem,
   FormAnswerItemInForm,
   FormAnswerItemInFormWithRealFiles,
 } from "src/types/models/form/answerItem"
@@ -145,7 +144,6 @@ const AnswerRegistrationForm: PageFC = () => {
     }
 
     if (updateMode) {
-      /*
       if (
         window.confirm(
           [
@@ -156,6 +154,22 @@ const AnswerRegistrationForm: PageFC = () => {
       ) {
         setProcessing(true)
 
+        /**
+         * ファイルとして `File` ではなくバックから返ってきた `fileId` が入った items
+         */
+        const itemsWithUploadedFiles: Array<FormAnswerItemInForm> = items.map(
+          (item) => {
+            if (item.type === "file") {
+              return {
+                item_id: item.item_id,
+                type: "file",
+                answer: [],
+              }
+            }
+            return item
+          }
+        )
+
         const requestProps = {
           ...(myProjectState.isPending === false
             ? {
@@ -163,24 +177,89 @@ const AnswerRegistrationForm: PageFC = () => {
               }
             : { pendingProjectId: myProjectState.myProject.id }),
           registrationFormId,
-          items: items.map((item) => {
-            if (item.type === "checkbox") {
-              return {
-                ...item,
-                answer: Object.entries(item.answer).reduce(
-                  (acc, [id, value]) => {
-                    if (value) acc.push(id)
-                    return acc
-                  },
-                  [] as string[]
-                ),
-              }
-            }
-            return item
-          }),
+          items: itemsWithUploadedFiles,
         }
 
         try {
+          const fileUploadFormData = new FormData()
+          items.map((item) => {
+            if (item.type === "file" && item.answer?.length) {
+              item.answer.map((f) =>
+                fileUploadFormData.append(
+                  // name ディレクティブに FormItemId を入れて区別する
+                  item.item_id,
+                  f,
+                  encodeURIComponent(f.name)
+                )
+              )
+            }
+          })
+          if (
+            // ファイルが1つ以上存在する
+            !fileUploadFormData.values().next().done
+          ) {
+            try {
+              const fileUploadRes = await createFile({
+                props: {
+                  body: fileUploadFormData,
+                },
+                idToken: await authState.firebaseUser.getIdToken(),
+              })
+
+              if (fileUploadRes && "errorCode" in fileUploadRes) {
+                setProcessing(false)
+
+                switch (fileUploadRes.errorCode) {
+                  case "outOfFileUsageQuota": {
+                    addToast({
+                      title: "ファイルアップロードの容量上限に達しています",
+                      kind: "error",
+                    })
+                    break
+                  }
+                  case "timeout": {
+                    addToast({
+                      title: "ファイルをアップロードできませんでした",
+                      descriptions: ["通信環境をご確認ください"],
+                      kind: "error",
+                    })
+                    break
+                  }
+                  default: {
+                    addToast({
+                      title: "ファイルのアップロードに失敗しました",
+                      kind: "error",
+                    })
+                    break
+                  }
+                }
+                return
+              }
+
+              itemsWithUploadedFiles.map((item) => {
+                if (item.type === "file") {
+                  item.answer = fileUploadRes.files
+                    // name ディレクティブで当該 formItem に紐付けられたファイルだけ区別する
+                    .filter((f) => f.name === item.item_id)
+                    .map((f) => ({ file_id: f.file.id }))
+                }
+              })
+            } catch (err) {
+              setProcessing(false)
+              addToast({
+                title: "ファイルのアップロードに失敗しました",
+                kind: "error",
+              })
+              reportErrorHandler(
+                "failed to upload file before answering form",
+                {
+                  error: err,
+                }
+              )
+              return
+            }
+          }
+
           const res = await updateRegistrationFormAnswer({
             ...requestProps,
             idToken: await authState.firebaseUser.getIdToken(),
@@ -256,7 +335,6 @@ const AnswerRegistrationForm: PageFC = () => {
           })
         }
       }
-      */
     } else {
       console.log(items)
       if (window.confirm("回答を送信しますか?")) {
@@ -363,26 +441,6 @@ const AnswerRegistrationForm: PageFC = () => {
               return
             }
           }
-
-          /*const requestProps = {
-            pendingProjectId: myProjectState.myProject.id,
-            registrationFormId: registrationFormId,
-            items: itemsWithUploadedFiles.map((item) => {
-              if (item.type === "checkbox") {
-                return {
-                  ...item,
-                  answer: Object.entries(item.answer).reduce(
-                    (acc, [id, value]) => {
-                      if (value) acc.push(id)
-                      return acc
-                    },
-                    [] as string[]
-                  ),
-                }
-              }
-              return item
-            }) as FormAnswerItem[]
-          }*/
 
           await answerRegistrationForm({
             ...requestProps,
