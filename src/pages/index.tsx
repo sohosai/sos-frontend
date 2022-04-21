@@ -8,11 +8,7 @@ import { Timeline } from "react-twitter-widgets"
 
 import styles from "./index.module.scss"
 import { Button, Panel, Icon } from "src/components"
-import {
-  STAGE_GUIDANCE_URL,
-  GENERAL_PROJECT_GUIDANCE_URL,
-  GENERAL_PROJECT_GUIDANCE_2_URL,
-} from "src/constants/links"
+import { PROJECT_APPLICATION_GUIDELINES_URL } from "src/constants/links"
 import { getAnnouncements } from "src/lib/contentful"
 import { Announcement } from "src/types/models/announcement"
 import { pagesPath, staticPath } from "src/utils/$path"
@@ -39,33 +35,6 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.pageTitle}>雙峰祭オンラインシステム</h1>
-      <section className={styles.section} data-section="online-announcement">
-        <div className={styles.panelRowWrapper}>
-          <div className={styles.panelWrapper}>
-            <Panel>
-              <h2 className={styles.panelTitle}>対面開催中止のお知らせ</h2>
-              <div className={styles.onlineDescriptions}>
-                <p className={styles.onlineAnnouncementDate}>2021/05/19</p>
-                <p className={styles.panelText}>
-                  令和3年11月6日と11月7日に開催を予定しておりました学園祭について、新型コロナウイルスの感染が拡大している状況に鑑み対面開催の中止を決定いたしました。詳細については資料をご覧ください。
-                </p>
-                <p className={styles.panelText}>
-                  今後も学園祭について情報発信を行ってまいりますので、何卒ご理解のほどよろしくお願い申し上げます。
-                </p>
-              </div>
-              <a
-                href={staticPath.docs["雙峰祭対面開催中止のお知らせ_pdf"]}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button icon="download" kind="secondary">
-                  資料(PDF)
-                </Button>
-              </a>
-            </Panel>
-          </div>
-        </div>
-      </section>
       <section className={styles.section} data-section="new-projects">
         <h2 className={styles.sectionTitle}>企画募集</h2>
         <div className={styles.panelRowWrapper}>
@@ -73,73 +42,18 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
             <Panel>
               <div className={styles.sectionInPanel}>
                 <p className={styles.panelText}>
-                  募集要項には対面開催中止に伴う前回学園祭からの変更点等が記載されておりますので、企画応募をご検討の皆様は必ずご確認ください
+                  雙峰祭での企画実施をお考えの方は、雙峰祭公式サイトで掲載している応募要項をご確認の上、期間内にご応募ください。
                 </p>
-                <p className={styles.panelText}>
-                  雙峰祭ガイダンスは雙峰祭オンラインシステムの使い方を説明した動画です
-                </p>
-                <p className={styles.panelText}>
-                  企画登録の際にぜひご確認ください
-                </p>
-              </div>
-              <div className={styles.sectionInPanel}>
-                <h3 className={styles.panelTitle}>一般企画</h3>
                 <div className={styles.newProjectsParagraph}></div>
+
                 <a
-                  href={staticPath.docs["オンライン一般企画用募集要項_pdf"]}
+                  href={PROJECT_APPLICATION_GUIDELINES_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.applicationGuideLinkItem}
                 >
-                  <Button kind="secondary" icon="download">
+                  <Button kind="secondary" icon="arrow-up-right">
                     募集要項
-                  </Button>
-                </a>
-                <a
-                  href={GENERAL_PROJECT_GUIDANCE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.applicationGuideLinkItem}
-                >
-                  <Button kind="secondary" icon="arrow-up-right">
-                    雙峰祭ガイダンス1
-                  </Button>
-                </a>
-                <a
-                  href={GENERAL_PROJECT_GUIDANCE_2_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.applicationGuideLinkItem}
-                >
-                  <Button kind="secondary" icon="arrow-up-right">
-                    雙峰祭ガイダンス2
-                  </Button>
-                </a>
-              </div>
-              <div className={styles.sectionInPanel}>
-                <h3 className={styles.panelTitle}>オンラインステージ</h3>
-                <a
-                  href={
-                    staticPath.docs[
-                      "オンラインステージ企画用募集要項_210519_pdf"
-                    ]
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.applicationGuideLinkItem}
-                >
-                  <Button kind="secondary" icon="download">
-                    募集要項
-                  </Button>
-                </a>
-                <a
-                  href={STAGE_GUIDANCE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.applicationGuideLinkItem}
-                >
-                  <Button kind="secondary" icon="arrow-up-right">
-                    雙峰祭ガイダンス
                   </Button>
                 </a>
               </div>
