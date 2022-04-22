@@ -42,7 +42,7 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
             <Panel>
               <div className={styles.sectionInPanel}>
                 <p className={styles.panelText}>
-                  雙峰祭での企画実施をお考えの方は、雙峰祭公式サイトで掲載している応募要項をご確認の上、期間内にご応募ください。
+                  雙峰祭での企画実施をお考えの方は、雙峰祭公式サイトで掲載している募集要項をご確認の上、期間内にご応募ください。
                 </p>
                 <div className={styles.newProjectsParagraph}></div>
 
