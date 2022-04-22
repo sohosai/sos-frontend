@@ -100,7 +100,7 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
         <div className={styles.panelRowWrapper} data-cols="2">
           <div className={styles.panelWrapper}>
             <Panel>
-              {announcements?.length ? (
+              {announcements?.length && announcements?.length !== 0 && (
                 <ul className={styles.announcementsList}>
                   {announcements.map(({ id, date, title }) => (
                     <li className={styles.announcementsListItem} key={id}>
@@ -115,9 +115,10 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
                     </li>
                   ))}
                 </ul>
-              ) : (
-                "お知らせの取得に失敗しました"
               )}
+              {announcements?.length === 0
+                ? "お知らせはありません"
+                : "お知らせの取得に失敗しました"}
               <div className={styles.moreAnnouncements}>
                 <Link href={pagesPath.announcement.list._page(1).$url()}>
                   <a className={styles.moreAnnouncementsLink}>
