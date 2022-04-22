@@ -8,7 +8,10 @@ import { Timeline } from "react-twitter-widgets"
 
 import styles from "./index.module.scss"
 import { Button, Panel, Icon } from "src/components"
-import { PROJECT_APPLICATION_GUIDELINES_URL } from "src/constants/links"
+import {
+  HYBRID_ANNOUNCEMENT_URL,
+  PROJECT_APPLICATION_GUIDELINES_URL,
+} from "src/constants/links"
 import { getAnnouncements } from "src/lib/contentful"
 import { Announcement } from "src/types/models/announcement"
 import { pagesPath, staticPath } from "src/utils/$path"
@@ -35,6 +38,37 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.pageTitle}>雙峰祭オンラインシステム</h1>
+      <section className={styles.section} data-section="hybrid-announcement">
+        <div className={styles.panelRowWrapper}>
+          <div className={styles.panelWrapper}>
+            <Panel>
+              <h2 className={styles.panelTitle}>
+                第48回筑波大学学園祭の実施形態に関するお知らせ
+              </h2>
+              <div className={styles.sectionInPanel}>
+                <p className={styles.panelText}>
+                  第48回筑波大学学園祭「雙峰祭」は、学内者限定の対面と、オンラインを組み合わせた新形態で開催する予定でございます。
+                </p>
+                <p className={styles.panelText}>
+                  詳しくはリンク先の資料をご覧下さい。
+                </p>
+                <div className={styles.newProjectsParagraph}></div>
+
+                <a
+                  href={HYBRID_ANNOUNCEMENT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.applicationGuideLinkItem}
+                >
+                  <Button kind="secondary" icon="arrow-up-right">
+                    詳細情報
+                  </Button>
+                </a>
+              </div>
+            </Panel>
+          </div>
+        </div>
+      </section>
       <section className={styles.section} data-section="new-projects">
         <h2 className={styles.sectionTitle}>企画募集</h2>
         <div className={styles.panelRowWrapper}>
