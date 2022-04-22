@@ -19,8 +19,8 @@ export const PROJECT_CREATION_PERIOD_ENDS_AT = dayjs.tz(
 // FIXME: ad-hoc
 const isInProjectCreationPeriod = () => {
   if (
-    process.env.NEXT_PUBLIC_DEPLOY_ENV === "dev" /* ||
-    process.env.NEXT_PUBLIC_DEPLOY_ENV === "staging"*/
+    process.env.NEXT_PUBLIC_DEPLOY_ENV === "dev" ||
+    process.env.NEXT_PUBLIC_DEPLOY_ENV === "staging"
   ) {
     return true
   }
