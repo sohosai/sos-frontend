@@ -1,0 +1,44 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+}
+
+.sectionWrapper {
+  &:not(:last-of-type) {
+    margin-bottom: 48px;
+  }
+
+  &:last-of-type {
+    margin-bottom: 64px;
+  }
+}
+
+.dateTimeInputLabel {
+  margin-bottom: 8px;
+}
+
+.dateTimeInputWrapper {
+  display: flex;
+  align-items: flex-start;
+}
+
+.dateTimeInputItem {
+  max-width: 8em;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+
+  &:not(:last-of-type) {
+    margin-right: 16px;
+  }
+}
