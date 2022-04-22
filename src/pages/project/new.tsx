@@ -1,6 +1,7 @@
 import { PageFC } from "next"
 import { useRouter } from "next/router"
 
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import {
   Button,
@@ -8,6 +9,7 @@ import {
   Dropdown,
   FormItemSpacer,
   Head,
+  IconButton,
   Panel,
   Spinner,
   Textarea,
@@ -16,6 +18,7 @@ import {
 import { pagesPath } from "../../utils/$path"
 
 import styles from "./new.module.scss"
+import { Modal } from "src/components/Modal"
 import { IN_PROJECT_CREATION_PERIOD } from "src/constants/datetime"
 import { useAuthNeue } from "src/contexts/auth"
 import { useMyProject } from "src/contexts/myProject"
@@ -50,6 +53,10 @@ const NewProject: PageFC = () => {
   const { addToast } = useToastDispatcher()
 
   const router = useRouter()
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const toggleModal = () => setIsModalOpen((cur) => !cur)
 
   const {
     register,
@@ -296,6 +303,53 @@ const NewProject: PageFC = () => {
                           required: true,
                         })}
                       />
+                      <div
+                        className={styles.aboutCategory}
+                        onClick={toggleModal}
+                      >
+                        <IconButton icon="info" />
+                        <p>参加区分の詳細はこちらをご覧ください</p>
+                      </div>
+                      {isModalOpen && (
+                        <Modal close={toggleModal}>
+                          <h2 className={styles.modalTitle}>参加区分詳細</h2>
+                          <div className={styles.category}>
+                            <h3>・対面一般企画</h3>
+                            <p>飲食物を取り扱わない、雙峰祭当日に行う企画</p>
+                          </div>
+                          <div className={styles.category}>
+                            <h3>・オンライン一般企画</h3>
+                            <p>
+                              オンラインでコンテンツを配信することのみを行う企画
+                            </p>
+                          </div>
+                          <div className={styles.category}>
+                            <h3>・対面ステージ企画</h3>
+                            <p>
+                              雙峰祭当日にUNITEDステージもしくは1Aステージにてパフォーマンスを行う企画
+                            </p>
+                          </div>
+                          <div className={styles.category}>
+                            <h3>・オンラインステージ企画</h3>
+                            <p>
+                              大学会館にてステージパフォーマンスの事前収録を行い、その動画を雙峰祭当日に配信する企画
+                            </p>
+                          </div>
+                          <div className={styles.category}>
+                            <h3>・飲食物取扱い企画</h3>
+                            <p>
+                              調理企画には該当しないものの、飲食物の提供を行う企画
+                            </p>
+                          </div>
+                          <div className={styles.category}>
+                            <h3>・調理企画</h3>
+                            <p>
+                              一般企画用募集要項 p.46
+                              で定義されている「調理」を行う企画
+                            </p>
+                          </div>
+                        </Modal>
+                      )}
                     </FormItemSpacer>
                     <FormItemSpacer>
                       <Checkbox
