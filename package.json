@@ -10,7 +10,7 @@
     "next": "12.0.4",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-hook-form": "7.12.2",
+    "react-hook-form": "7.20.4",
     "uuid": "8.3.2",
     "validator": "13.7.0"
   },
