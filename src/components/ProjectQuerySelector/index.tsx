@@ -3,9 +3,10 @@ import { FC } from "react"
 import type { UseFormRegisterReturn } from "react-hook-form"
 
 import { Checkbox } from "../"
-import type {
+import {
   ProjectCategory,
   ProjectAttribute,
+  projectCategoryToUiText,
 } from "../../types/models/project"
 
 import { Dropdown } from "../Dropdown"
@@ -35,16 +36,44 @@ const ProjectQuerySelector: FC<ProjectQuerySelector.Props> = ({
         </p>
         <div className={styles.checkbox}>
           <Checkbox
-            checked={checked.general}
-            label="一般企画"
-            register={registers?.general}
+            checked={checked.general_physical}
+            label={projectCategoryToUiText("general_physical")}
+            register={registers?.general_physical}
           />
         </div>
         <div className={styles.checkbox}>
           <Checkbox
-            checked={checked.stage}
-            label="ステージ企画"
-            register={registers?.stage}
+            checked={checked.general_online}
+            label={projectCategoryToUiText("general_online")}
+            register={registers?.general_online}
+          />
+        </div>
+        <div className={styles.checkbox}>
+          <Checkbox
+            checked={checked.stage_physical}
+            label={projectCategoryToUiText("stage_physical")}
+            register={registers?.stage_physical}
+          />
+        </div>
+        <div className={styles.checkbox}>
+          <Checkbox
+            checked={checked.stage_online}
+            label={projectCategoryToUiText("stage_online")}
+            register={registers?.stage_online}
+          />
+        </div>
+        <div className={styles.checkbox}>
+          <Checkbox
+            checked={checked.food_physical}
+            label={projectCategoryToUiText("food_physical")}
+            register={registers?.food_physical}
+          />
+        </div>
+        <div className={styles.checkbox}>
+          <Checkbox
+            checked={checked.cooking_physical}
+            label={projectCategoryToUiText("cooking_physical")}
+            register={registers?.cooking_physical}
           />
         </div>
       </div>

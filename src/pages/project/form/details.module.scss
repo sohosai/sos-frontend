@@ -1,0 +1,57 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+}
+
+.formGeneralInfoWrapper {
+  margin-bottom: 32px;
+}
+
+.formName {
+  font-size: 1.5em;
+}
+
+.formDescription {
+  color: $color-text-sub;
+
+  &:first-of-type {
+    margin-top: 16px;
+  }
+}
+
+.formItems {
+  margin-bottom: 32px;
+}
+
+.checkboxesTitle {
+  margin-bottom: 8px;
+}
+
+.checkboxWrapper {
+  &:not(:last-of-type) {
+    margin-bottom: 8px;
+  }
+}
+
+.checkboxDescriptions {
+  margin-top: 8px;
+}
+
+.checkboxDescription {
+  color: $color-text-sub;
+}
+
+.checkboxesError {
+  margin-top: 8px;
+  color: $color-caution;
+}
