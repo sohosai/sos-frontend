@@ -315,7 +315,9 @@ const NewProject: PageFC = () => {
                           <h2 className={styles.modalTitle}>参加区分詳細</h2>
                           <div className={styles.category}>
                             <h3>・対面一般企画</h3>
-                            <p>飲食物を取り扱わない、雙峰祭当日に行う企画</p>
+                            <p>
+                              飲食物を取り扱わない、雙峰祭当日に屋内の教室で行う企画
+                            </p>
                           </div>
                           <div className={styles.category}>
                             <h3>・オンライン一般企画</h3>
@@ -326,7 +328,7 @@ const NewProject: PageFC = () => {
                           <div className={styles.category}>
                             <h3>・対面ステージ企画</h3>
                             <p>
-                              雙峰祭当日にUNITEDステージもしくは1Aステージにてパフォーマンスを行う企画
+                              雙峰祭当日にUNITEDステージもしくは1Aステージにてステージパフォーマンスを行う企画
                             </p>
                           </div>
                           <div className={styles.category}>
