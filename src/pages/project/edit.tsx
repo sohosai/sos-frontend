@@ -387,6 +387,7 @@ const EditProjectInfo: PageFC = () => {
                 </FormItemSpacer>
                 <FormItemSpacer>
                   <Checkbox
+                    onChange={() => false}
                     label="学術参加枠での参加を希望する"
                     checked={watch("attributes.academic")}
                     register={register("attributes.academic")}
@@ -394,10 +395,16 @@ const EditProjectInfo: PageFC = () => {
                 </FormItemSpacer>
                 <FormItemSpacer>
                   <Checkbox
+                    onChange={() => false}
                     label="芸術祭参加枠での参加を希望する"
                     checked={watch("attributes.artistic")}
                     register={register("attributes.artistic")}
                   />
+                </FormItemSpacer>
+                <FormItemSpacer>
+                  <span className={styles.descriptionsWrapper}>
+                    企画登録後の企画属性の変更はできません
+                  </span>
                 </FormItemSpacer>
               </fieldset>
               <div className={styles.submitButtonWrapper}>
