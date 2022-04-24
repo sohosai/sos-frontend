@@ -21,11 +21,6 @@ import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"
 
 import { reportError } from "src/lib/errorTracking"
-import {
-  ProjectCategory,
-  ProjectAttribute,
-  isStage,
-} from "src/types/models/project"
 
 import { awesomeCharacterCount } from "src/utils/awesomeCharacterCount"
 import { isKana, katakanaToHiragana } from "src/utils/jpKana"
@@ -40,10 +35,6 @@ type Inputs = {
   groupName: string
   kanaGroupName: string
   description: string
-  category: ProjectCategory
-  attributes: {
-    [attribute in ProjectAttribute]: boolean
-  }
 }
 
 const EditProjectInfo: PageFC = () => {
@@ -75,8 +66,6 @@ const EditProjectInfo: PageFC = () => {
     groupName,
     kanaGroupName,
     description,
-    attributes,
-    category,
   }: Inputs) => {
     if (authState?.status !== "bothSignedIn") return
     if (myProjectState === null || myProjectState.myProject === null) return
@@ -98,14 +87,6 @@ const EditProjectInfo: PageFC = () => {
           groupName,
           kanaGroupName: katakanaToHiragana(kanaGroupName),
           description,
-          category,
-          attributes: Object.entries(attributes).reduce(
-            (acc, [attribute, value]) => {
-              if (value) acc.push(attribute as ProjectAttribute)
-              return acc
-            },
-            [] as ProjectAttribute[]
-          ),
         }
 
         const handleResponse = (
@@ -200,8 +181,6 @@ const EditProjectInfo: PageFC = () => {
             groupName,
             kanaGroupName,
             description,
-            attributes,
-            category,
           },
         })
       }
@@ -226,23 +205,6 @@ const EditProjectInfo: PageFC = () => {
       setValue("groupName", myProjectState.myProject.group_name)
       setValue("kanaGroupName", myProjectState.myProject.kana_group_name)
       setValue("description", myProjectState.myProject.description)
-      setValue("category", myProjectState.myProject.category)
-      setValue(
-        "attributes",
-        myProjectState.myProject.attributes.reduce(
-          (acc, cur) => {
-            acc[cur] = true
-            return acc
-          },
-          {
-            academic: false as boolean,
-            artistic: false as boolean,
-            committee: false as boolean,
-            outdoor: false as boolean,
-          }
-        ),
-        { shouldValidate: true }
-      )
     })()
   }, [authState, myProjectState, setValue])
 
@@ -386,24 +348,8 @@ const EditProjectInfo: PageFC = () => {
                   />
                 </FormItemSpacer>
                 <FormItemSpacer>
-                  <Checkbox
-                    onChange={() => false}
-                    label="学術参加枠での参加を希望する"
-                    checked={watch("attributes.academic")}
-                    register={register("attributes.academic")}
-                  />
-                </FormItemSpacer>
-                <FormItemSpacer>
-                  <Checkbox
-                    onChange={() => false}
-                    label="芸術祭参加枠での参加を希望する"
-                    checked={watch("attributes.artistic")}
-                    register={register("attributes.artistic")}
-                  />
-                </FormItemSpacer>
-                <FormItemSpacer>
                   <span className={styles.descriptionsWrapper}>
-                    企画登録後の企画属性の変更はできません
+                    ※企画登録後の参加区分・企画属性の変更はできません
                   </span>
                 </FormItemSpacer>
               </fieldset>
