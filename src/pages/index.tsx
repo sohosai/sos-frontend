@@ -9,6 +9,7 @@ import { Timeline } from "react-twitter-widgets"
 import styles from "./index.module.scss"
 import { Button, Panel, Icon } from "src/components"
 import {
+  GUIDANCE_URL,
   HYBRID_ANNOUNCEMENT_URL,
   PROJECT_APPLICATION_GUIDELINES_URL,
 } from "src/constants/links"
@@ -78,6 +79,12 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
                 <p className={styles.panelText}>
                   雙峰祭での企画実施をお考えの方は、雙峰祭公式サイトで掲載している募集要項をご確認の上、期間内にご応募ください。
                 </p>
+                <p className={styles.panelText}>
+                  また、企画応募に先立ち特に知っていただきたい事について纏めた雙峰祭ガイダンスも公開しております。
+                </p>
+                <p className={styles.panelText}>
+                  雙峰祭オンラインシステムの使用方法についても動画内で説明しておりますので、併せてご覧ください。
+                </p>
                 <div className={styles.links}>
                   <a
                     href={PROJECT_APPLICATION_GUIDELINES_URL}
@@ -87,6 +94,17 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
                   >
                     <Button kind="secondary" icon="arrow-up-right">
                       募集要項
+                    </Button>
+                  </a>
+
+                  <a
+                    href={GUIDANCE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.applicationGuideLinkItem}
+                  >
+                    <Button kind="secondary" icon="arrow-up-right">
+                      雙峰祭ガイダンス
                     </Button>
                   </a>
                 </div>
