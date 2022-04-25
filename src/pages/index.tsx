@@ -115,6 +115,8 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
                     </li>
                   ))}
                 </ul>
+              ) : announcements?.length === 0 ? (
+                "お知らせはありません"
               ) : (
                 "お知らせの取得に失敗しました"
               )}
