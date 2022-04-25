@@ -37,3 +37,30 @@
 .submitButtonWrapper {
   margin-top: 48px;
 }
+
+.aboutCategory {
+  display: flex;
+  align-items: center;
+
+  p {
+    color: $color-text-sub;
+    cursor: pointer;
+  }
+}
+
+.modalTitle {
+  margin-bottom: 1em;
+}
+
+.category {
+  margin-bottom: 0.7em;
+
+  h3 {
+    margin-bottom: 0.3em;
+  }
+
+  p {
+    margin-bottom: 0.3em;
+    margin-inline-start: 2em;
+  }
+}

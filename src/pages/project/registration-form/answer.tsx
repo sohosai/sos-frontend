@@ -34,6 +34,7 @@ import {
   FormAnswerItemInForm,
   FormAnswerItemInFormWithRealFiles,
 } from "src/types/models/form/answerItem"
+import { isStage } from "src/types/models/project"
 import { RegistrationForm } from "src/types/models/registrationForm"
 
 import { pagesPath } from "src/utils/$path"
@@ -144,14 +145,13 @@ const AnswerRegistrationForm: PageFC = () => {
     }
 
     if (updateMode) {
-      if (
-        window.confirm(
-          [
+      const message = isStage(myProjectState.myProject.category)
+        ? "回答を更新しますか?"
+        : [
             "企画基本情報を編集すると企画登録の完了日時が現在の日時に更新され、先着順で企画数を制限する教室貸出などで不利になる可能性があります",
             "送信してよろしいですか?",
           ].join("\n")
-        )
-      ) {
+      if (window.confirm(message)) {
         setProcessing(true)
 
         /**
@@ -336,7 +336,6 @@ const AnswerRegistrationForm: PageFC = () => {
         }
       }
     } else {
-      console.log(items)
       if (window.confirm("回答を送信しますか?")) {
         setProcessing(true)
 
