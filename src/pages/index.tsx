@@ -14,7 +14,7 @@ import {
 } from "src/constants/links"
 import { getAnnouncements } from "src/lib/contentful"
 import { Announcement } from "src/types/models/announcement"
-import { pagesPath, staticPath } from "src/utils/$path"
+import { pagesPath } from "src/utils/$path"
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -52,18 +52,18 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
                 <p className={styles.panelText}>
                   詳しくはリンク先の資料をご覧下さい。
                 </p>
-                <div className={styles.newProjectsParagraph}></div>
-
-                <a
-                  href={HYBRID_ANNOUNCEMENT_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.applicationGuideLinkItem}
-                >
-                  <Button kind="secondary" icon="arrow-up-right">
-                    詳細情報
-                  </Button>
-                </a>
+                <div className={styles.links}>
+                  <a
+                    href={HYBRID_ANNOUNCEMENT_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.applicationGuideLinkItem}
+                  >
+                    <Button kind="secondary" icon="arrow-up-right">
+                      詳細情報
+                    </Button>
+                  </a>
+                </div>
               </div>
             </Panel>
           </div>
@@ -78,18 +78,18 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
                 <p className={styles.panelText}>
                   雙峰祭での企画実施をお考えの方は、雙峰祭公式サイトで掲載している募集要項をご確認の上、期間内にご応募ください。
                 </p>
-                <div className={styles.newProjectsParagraph}></div>
-
-                <a
-                  href={PROJECT_APPLICATION_GUIDELINES_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.applicationGuideLinkItem}
-                >
-                  <Button kind="secondary" icon="arrow-up-right">
-                    募集要項
-                  </Button>
-                </a>
+                <div className={styles.links}>
+                  <a
+                    href={PROJECT_APPLICATION_GUIDELINES_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.applicationGuideLinkItem}
+                  >
+                    <Button kind="secondary" icon="arrow-up-right">
+                      募集要項
+                    </Button>
+                  </a>
+                </div>
               </div>
             </Panel>
           </div>
