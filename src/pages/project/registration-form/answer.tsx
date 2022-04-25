@@ -336,7 +336,6 @@ const AnswerRegistrationForm: PageFC = () => {
         }
       }
     } else {
-      console.log(items)
       if (window.confirm("回答を送信しますか?")) {
         setProcessing(true)
 
