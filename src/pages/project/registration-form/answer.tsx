@@ -798,6 +798,8 @@ const AnswerRegistrationForm: PageFC = () => {
                               `items.${index}.answer` as const,
                               {
                                 required: formItem.is_required,
+                                setValueAs: (value: string) =>
+                                  value?.length ? value : null,
                               }
                             )}
                             errors={[
