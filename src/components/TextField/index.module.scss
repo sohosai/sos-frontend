@@ -51,3 +51,9 @@
 .error {
   color: $color-caution;
 }
+
+.warning {
+  color: $color-text-sub;
+  font-weight: bold;
+  margin-top: 4px;
+}
