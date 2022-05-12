@@ -14,7 +14,7 @@ const EmailVerification: PageFC = () => {
     undefined | "mailSent" | "error"
   >(undefined)
 
-  const { sendEmailVerification } = useAuthNeue()
+  const { sendEmailVerification, signout } = useAuthNeue()
   const { addToast } = useToastDispatcher()
 
   const resendVerification = () => {
@@ -69,6 +69,21 @@ const EmailVerification: PageFC = () => {
                   fullWidth={true}
                 >
                   確認メールを再送する
+                </Button>
+              </div>
+              <div className={styles.logoutButtonWrapper}>
+                <Button
+                  icon="log-out-alt"
+                  kind="secondary"
+                  size="small"
+                  fullWidth={true}
+                  onClick={() => {
+                    if (window.confirm("ログアウトしますか?")) {
+                      signout()
+                    }
+                  }}
+                >
+                  ログアウト
                 </Button>
               </div>
             </>
