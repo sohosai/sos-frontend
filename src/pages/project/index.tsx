@@ -164,6 +164,10 @@ const ProjectIndex: PageFC = () => {
                   valueElement={`${myProjectState.myProject.group_name} (${myProjectState.myProject.kana_group_name})`}
                 />
                 <Table.Row
+                  keyElement="企画番号"
+                  valueElement={myProjectState.myProject.id}
+                />
+                <Table.Row
                   keyElement="概要"
                   valueElement={
                     <Paragraph
