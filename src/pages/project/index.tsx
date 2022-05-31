@@ -156,16 +156,16 @@ const ProjectIndex: PageFC = () => {
             <Panel>
               <Table keyFlexGrow={1} valueFlexGrow={3}>
                 <Table.Row
+                  keyElement="企画番号"
+                  valueElement={myProjectState.myProject.id}
+                />
+                <Table.Row
                   keyElement="企画名"
                   valueElement={`${myProjectState.myProject.name} (${myProjectState.myProject.kana_name})`}
                 />
                 <Table.Row
                   keyElement="団体名"
                   valueElement={`${myProjectState.myProject.group_name} (${myProjectState.myProject.kana_group_name})`}
-                />
-                <Table.Row
-                  keyElement="企画番号"
-                  valueElement={myProjectState.myProject.id}
                 />
                 <Table.Row
                   keyElement="概要"
