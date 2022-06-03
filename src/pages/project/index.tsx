@@ -156,7 +156,7 @@ const ProjectIndex: PageFC = () => {
             <h2 className={styles.sectionTitle}>基本情報</h2>
             <Panel>
               <Table keyFlexGrow={1} valueFlexGrow={3}>
-                {(myProjectState.myProject as Project).code.length > 0 && (
+                {(myProjectState.myProject as Project).code && (
                   <Table.Row
                     keyElement="企画番号"
                     valueElement={(myProjectState.myProject as Project).code}
