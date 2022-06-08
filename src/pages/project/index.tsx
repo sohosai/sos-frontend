@@ -23,6 +23,7 @@ import {
   projectCategoryToUiText,
   projectAttributeToUiText,
   isStage,
+  Project,
 } from "src/types/models/project"
 import { RegistrationForm } from "src/types/models/registrationForm"
 
@@ -155,6 +156,12 @@ const ProjectIndex: PageFC = () => {
             <h2 className={styles.sectionTitle}>基本情報</h2>
             <Panel>
               <Table keyFlexGrow={1} valueFlexGrow={3}>
+                {(myProjectState.myProject as Project).code && (
+                  <Table.Row
+                    keyElement="企画番号"
+                    valueElement={(myProjectState.myProject as Project).code}
+                  />
+                )}
                 <Table.Row
                   keyElement="企画名"
                   valueElement={`${myProjectState.myProject.name} (${myProjectState.myProject.kana_name})`}
