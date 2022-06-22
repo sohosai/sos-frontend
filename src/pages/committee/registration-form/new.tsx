@@ -4,7 +4,7 @@ import timezone from "dayjs/plugin/timezone"
 import utc from "dayjs/plugin/utc"
 import { PageFC } from "next"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { useForm, useFieldArray } from "react-hook-form"
 
@@ -305,12 +305,22 @@ const NewRegistrationForm: PageFC = () => {
     if (fields[indexA] && fields[indexB]) swap(indexA, indexB)
   }
 
+  const [isInProjectCreationPeriod, setIsInProjectCreationPeriod] =
+    useState(false)
+
+  useEffect(() => {
+    ;(async () => {
+      setIsInProjectCreationPeriod(await IN_PROJECT_CREATION_PERIOD)
+      console.log(await IN_PROJECT_CREATION_PERIOD)
+    })()
+  }, [isInProjectCreationPeriod])
+
   return (
     <div className={styles.wrapper}>
       <Head title="新しい登録申請を作成" />
       <h1 className={styles.title}>新しい登録申請を作成</h1>
 
-      {(await IN_PROJECT_CREATION_PERIOD) ? (
+      {isInProjectCreationPeriod ? (
         <Panel>
           <div className={styles.emptyWrapper}>
             <p>企画募集期間中のため登録申請を作成できません</p>

@@ -1,7 +1,7 @@
 import { PageFC } from "next"
 import { useRouter } from "next/router"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import {
   Button,
@@ -135,13 +135,22 @@ const NewProject: PageFC = () => {
     }
   }
 
+  const [isInProjectCreationPeriod, setIsInProjectCreationPeriod] =
+    useState(false)
+
+  useEffect(() => {
+    ;(async () => {
+      setIsInProjectCreationPeriod(await IN_PROJECT_CREATION_PERIOD)
+    })()
+  }, [isInProjectCreationPeriod])
+
   return (
     <div className={styles.wrapper}>
       <Head title="企画応募" />
       <h1 className={styles.title}>企画応募</h1>
       <div className={styles.panelWrapper}>
         <Panel>
-          {IN_PROJECT_CREATION_PERIOD ? (
+          {isInProjectCreationPeriod ? (
             <>
               {!myProjectState?.error && myProjectState?.myProject === null ? (
                 <form
