@@ -11,7 +11,7 @@ export type PendingProject = Readonly<{
   description: string
   category: ProjectCategory
   attributes: ProjectAttribute[]
-  exceptional_complete_deadline: Date | null
+  exceptional_complete_deadline?: Date | null
 }>
 
 export type Project = Readonly<{
