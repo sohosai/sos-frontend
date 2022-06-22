@@ -311,7 +311,6 @@ const NewRegistrationForm: PageFC = () => {
   useEffect(() => {
     ;(async () => {
       setIsInProjectCreationPeriod(await IN_PROJECT_CREATION_PERIOD)
-      console.log(await IN_PROJECT_CREATION_PERIOD)
     })()
   }, [isInProjectCreationPeriod])
 
