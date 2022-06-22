@@ -1,7 +1,7 @@
 import { PageFC } from "next"
 import { useRouter } from "next/router"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import {
   Button,
@@ -15,11 +15,11 @@ import {
   Textarea,
   TextField,
 } from "../../components"
+import { IN_PROJECT_CREATION_PERIOD } from "../../lib/api/getProjectCreationAvailability"
 import { pagesPath } from "../../utils/$path"
 
 import styles from "./new.module.scss"
 import { Modal } from "src/components/Modal"
-import { IN_PROJECT_CREATION_PERIOD } from "src/constants/datetime"
 import { useAuthNeue } from "src/contexts/auth"
 import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"
@@ -135,13 +135,22 @@ const NewProject: PageFC = () => {
     }
   }
 
+  const [isInProjectCreationPeriod, setIsInProjectCreationPeriod] =
+    useState(false)
+
+  useEffect(() => {
+    ;(async () => {
+      setIsInProjectCreationPeriod(await IN_PROJECT_CREATION_PERIOD)
+    })()
+  }, [isInProjectCreationPeriod])
+
   return (
     <div className={styles.wrapper}>
       <Head title="企画応募" />
       <h1 className={styles.title}>企画応募</h1>
       <div className={styles.panelWrapper}>
         <Panel>
-          {IN_PROJECT_CREATION_PERIOD ? (
+          {isInProjectCreationPeriod ? (
             <>
               {!myProjectState?.error && myProjectState?.myProject === null ? (
                 <form
