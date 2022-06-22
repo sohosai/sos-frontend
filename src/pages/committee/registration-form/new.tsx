@@ -310,7 +310,7 @@ const NewRegistrationForm: PageFC = () => {
       <Head title="新しい登録申請を作成" />
       <h1 className={styles.title}>新しい登録申請を作成</h1>
 
-      {IN_PROJECT_CREATION_PERIOD ? (
+      {(await IN_PROJECT_CREATION_PERIOD) ? (
         <Panel>
           <div className={styles.emptyWrapper}>
             <p>企画募集期間中のため登録申請を作成できません</p>

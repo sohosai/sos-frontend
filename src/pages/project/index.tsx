@@ -61,6 +61,9 @@ const ProjectIndex: PageFC = () => {
   const [registrationFormsCompleted, setRegistrationFormsCompleted] =
     useState(false)
 
+  const [isInProjectCreationPeriod, setIsInProjectCreationPeriod] =
+    useState(false)
+
   useEffect(() => {
     ;(async () => {
       if (authState?.status !== "bothSignedIn") return
@@ -81,8 +84,10 @@ const ProjectIndex: PageFC = () => {
       setRegistrationFormsCompleted(
         !fetchedRegistrationForms.some(({ has_answer }) => has_answer === false)
       )
+
+      setIsInProjectCreationPeriod(await IN_PROJECT_CREATION_PERIOD)
     })()
-  }, [authState, myProjectState])
+  }, [authState, myProjectState, isInProjectCreationPeriod])
 
   return (
     <div className={styles.wrapper}>
@@ -93,7 +98,10 @@ const ProjectIndex: PageFC = () => {
           {myProjectState.isPending && (
             <section className={styles.section} data-section="isPending">
               <Panel>
-                {IN_PROJECT_CREATION_PERIOD ? (
+                {isInProjectCreationPeriod ||
+                new Date() <
+                  (myProjectState.myProject.exceptional_complete_deadline ??
+                    new Date(0)) ? (
                   <>
                     <p>あなたの企画は仮登録状態です</p>
                     <p>

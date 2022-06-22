@@ -195,7 +195,7 @@ const EditProjectInfo: PageFC = () => {
         setError("noMyProject")
         return
       }
-      if (!IN_PROJECT_CREATION_PERIOD) {
+      if (!(await IN_PROJECT_CREATION_PERIOD)) {
         setError("outOfProjectCreationPeriod")
         return
       }
