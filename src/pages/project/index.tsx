@@ -220,7 +220,7 @@ const ProjectIndex: PageFC = () => {
                   </>
                 )}
               </Table>
-              {IN_PROJECT_CREATION_PERIOD && (
+              {isInProjectCreationPeriod && (
                 <div className={styles.generalInfoEditButton}>
                   <Tooltip title="企画募集期間中は基本情報を編集できます">
                     <div className={styles.generalInfoEditButtonInner}>
