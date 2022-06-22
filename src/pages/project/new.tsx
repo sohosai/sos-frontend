@@ -15,11 +15,11 @@ import {
   Textarea,
   TextField,
 } from "../../components"
+import { IN_PROJECT_CREATION_PERIOD } from "../../lib/api/getProjectCreationAvailability"
 import { pagesPath } from "../../utils/$path"
 
 import styles from "./new.module.scss"
 import { Modal } from "src/components/Modal"
-import { IN_PROJECT_CREATION_PERIOD } from "src/constants/datetime"
 import { useAuthNeue } from "src/contexts/auth"
 import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"

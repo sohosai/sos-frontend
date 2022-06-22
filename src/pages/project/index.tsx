@@ -2,6 +2,7 @@ import { PageFC } from "next"
 import Link from "next/link"
 import { VFC, useEffect, useState } from "react"
 
+import { IN_PROJECT_CREATION_PERIOD } from "../../lib/api/getProjectCreationAvailability"
 import styles from "./index.module.scss"
 import {
   Button,
@@ -13,7 +14,6 @@ import {
   Paragraph,
   Table,
 } from "src/components"
-import { IN_PROJECT_CREATION_PERIOD } from "src/constants/datetime"
 import { useAuthNeue } from "src/contexts/auth"
 import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"

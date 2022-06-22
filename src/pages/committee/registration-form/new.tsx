@@ -22,7 +22,7 @@ import {
   TextField,
   Tooltip,
 } from "../../../components/"
-import { IN_PROJECT_CREATION_PERIOD } from "../../../constants/datetime"
+import { IN_PROJECT_CREATION_PERIOD } from "../../../lib/api/getProjectCreationAvailability"
 import { createRegistrationForm } from "../../../lib/api/registrationForm/createRegistrationForm"
 import { reportError } from "../../../lib/errorTracking/reportError"
 import type { FormItem } from "../../../types/models/form/item"
