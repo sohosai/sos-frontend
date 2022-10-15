@@ -15,7 +15,7 @@ import {
 } from "src/constants/links"
 import { getAnnouncements } from "src/lib/contentful"
 import { Announcement } from "src/types/models/announcement"
-import { pagesPath } from "src/utils/$path"
+import { pagesPath, staticPath } from "src/utils/$path"
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -62,6 +62,52 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
                   >
                     <Button kind="secondary" icon="arrow-up-right">
                       詳細情報
+                    </Button>
+                  </a>
+                </div>
+              </div>
+            </Panel>
+          </div>
+        </div>
+      </section>
+      <section className={styles.section} data-section="manuals">
+        <h2 className={styles.sectionTitle}>屋内企画・調理マニュアル</h2>
+        <div className={styles.panelRowWrapper}>
+          <div className={styles.panelWrapper}>
+            <Panel>
+              <div className={styles.sectionInPanel}>
+                <p className={styles.panelText}>
+                  企画を実施する上で必要となる情報がまとめられたマニュアルでございます。
+                </p>
+                <p className={styles.panelText}>
+                  企画実施に向けて提出するべき申請や禁止事項、その他各種情報が記載されていますので、ご確認のほどよろしくお願いいたします。
+                </p>
+                <p className={styles.panelText}>
+                  一般企画・飲食物取り扱い企画の方は屋内企画マニュアルを、調理企画の方は屋内調理マニュアルをご確認ください。
+                </p>
+                <p className={styles.panelText}>
+                  ご質問等ございましたらお気軽にご連絡ください。
+                </p>
+                <div className={styles.links}>
+                  <a
+                    href={staticPath.docs.manual_general_pdf}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.applicationGuideLinkItem}
+                  >
+                    <Button kind="secondary" icon="arrow-up-right">
+                      屋内企画マニュアル
+                    </Button>
+                  </a>
+
+                  <a
+                    href={staticPath.docs.manual_cooking_pdf}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.applicationGuideLinkItem}
+                  >
+                    <Button kind="secondary" icon="arrow-up-right">
+                      屋内調理マニュアル
                     </Button>
                   </a>
                 </div>
