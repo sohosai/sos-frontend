@@ -1,14 +1,13 @@
 import { useState, useEffect, createContext, useContext, FC } from "react"
 
+import { acceptSubowner as acceptSubownerApi } from "../../lib/api/project/acceptSubowner"
+import { createPendingProject as createPendingProjectApi } from "../../lib/api/project/createPendingProject"
+import { getMyPendingProject } from "../../lib/api/project/getMyPendingProject"
+import { getMyProject } from "../../lib/api/project/getMyProject"
+import { updateProjectInfo as updateProjectInfoApi } from "../../lib/api/project/updateProjectInfo"
 import type { Project, PendingProject } from "../../types/models/project"
 
 import { AuthNeueState, useAuthNeue } from "../auth"
-
-import { getMyProject } from "../../lib/api/project/getMyProject"
-import { getMyPendingProject } from "../../lib/api/project/getMyPendingProject"
-import { createPendingProject as createPendingProjectApi } from "../../lib/api/project/createPendingProject"
-import { acceptSubowner as acceptSubownerApi } from "../../lib/api/project/acceptSubowner"
-import { updateProjectInfo as updateProjectInfoApi } from "../../lib/api/project/updateProjectInfo"
 
 type MyProjectState =
   | {
@@ -180,7 +179,8 @@ const MyProjectContextCore = (authState: AuthNeueState): MyProjectContext => {
           return
         }
       } catch (err) {
-        const body = await err.response?.json()
+        // FIXME: any
+        const body = await (err as any).response?.json()
         setMyProjectState({
           error: true,
           myProject: null,

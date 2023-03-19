@@ -1,7 +1,10 @@
-const withTM = require("next-transpile-modules")(["ky"])
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+})
 const { withSentryConfig } = require("@sentry/nextjs")
-
+const withPlugins = require("next-compose-plugins")
 const { createSecureHeaders } = require("next-secure-headers")
+const withTM = require("next-transpile-modules")(["ky"])
 
 if (
   !process.env.NEXT_PUBLIC_DEPLOY_ENV ||
@@ -33,6 +36,14 @@ if (
   process.exit(1)
 }
 
+if (
+  process.env.NEXT_PUBLIC_DEPLOY_ENV !== "dev" &&
+  (!process.env.CONTENTFUL_SPACE_ID || !process.env.CONTENTFUL_TOKEN)
+) {
+  console.error("ERROR: Contentful config needed in deploy env other than dev.")
+  process.exit(1)
+}
+
 if (!process.env.NEXT_PUBLIC_FRONTEND_URL) {
   console.error("ERROR: NEXT_PUBLIC_FRONTEND_URL env variable needed.")
   process.exit(1)
@@ -54,11 +65,19 @@ if (!/^https?:\/\/.+\/$/.test(process.env.NEXT_PUBLIC_FRONTEND_URL)) {
 const config = {
   reactStrictMode: true,
   trailingSlash: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   async headers() {
     return [{ source: "/(.*)", headers: createSecureHeaders() }]
   },
 }
 
-module.exports = process.env.NEXT_PUBLIC_SENTRY_DSN
-  ? withSentryConfig(withTM(config))
-  : withTM(config)
+module.exports = withPlugins(
+  [
+    [withBundleAnalyzer],
+    process.env.NEXT_PUBLIC_SENTRY_DSN ? [withSentryConfig] : null,
+    [withTM],
+  ].filter((plugin) => plugin != null),
+  config
+)

@@ -13,7 +13,7 @@ declare namespace Icon {
 
 const Icon: FC<Icon.Props> = ({
   icon,
-  className,
+  className = "",
   ariaHidden,
   ariaLabel,
   ...rest

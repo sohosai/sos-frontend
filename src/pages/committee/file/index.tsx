@@ -1,22 +1,18 @@
-import { useState, useEffect } from "react"
-
 import { PageFC } from "next"
 import Link from "next/link"
+import { useState, useEffect } from "react"
 
+import styles from "./index.module.scss"
+import { Button, Head, Panel, Spinner } from "src/components"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
+import { listFileDistributions } from "src/lib/api/file/listFileDistributions"
+import { reportError } from "src/lib/errorTracking/reportError"
 import type { FileDistribution } from "src/types/models/files"
 import { isUserRoleHigherThanIncluding } from "src/types/models/user/userRole"
 
-import { listFileDistributions } from "src/lib/api/file/listFileDistributions"
-import { reportError } from "src/lib/errorTracking/reportError"
-
 import { pagesPath } from "src/utils/$path"
-
-import { Button, Head, Panel, Spinner } from "src/components"
-
-import styles from "./index.module.scss"
 
 const CommitteeFileDistributionList: PageFC = () => {
   const { authState } = useAuthNeue()

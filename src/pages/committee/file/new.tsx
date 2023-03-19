@@ -1,17 +1,10 @@
 import { PageFC } from "next"
 import { useRouter } from "next/router"
+import { useState } from "react"
 
 import { useForm } from "react-hook-form"
 
-import { useAuthNeue } from "src/contexts/auth"
-import { useToastDispatcher } from "src/contexts/toast"
-
-import { createFile } from "src/lib/api/file/createFile"
-import { createFileDistribution } from "src/lib/api/file/createFileDistribution"
-import { reportError } from "src/lib/errorTracking/reportError"
-
-import { pagesPath } from "src/utils/$path"
-
+import styles from "./new.module.scss"
 import {
   Button,
   Dropzone,
@@ -22,8 +15,14 @@ import {
   Textarea,
   TextField,
 } from "src/components"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
 
-import styles from "./new.module.scss"
+import { createFile } from "src/lib/api/file/createFile"
+import { createFileDistribution } from "src/lib/api/file/createFileDistribution"
+import { reportError } from "src/lib/errorTracking/reportError"
+
+import { pagesPath } from "src/utils/$path"
 
 type Inputs = {
   name: string
@@ -37,6 +36,8 @@ const CommitteeFileUpload: PageFC = () => {
   const { authState } = useAuthNeue()
   const { addToast } = useToastDispatcher()
   const router = useRouter()
+
+  const [submitting, setSubmitting] = useState(false)
 
   const {
     register,
@@ -68,17 +69,41 @@ const CommitteeFileUpload: PageFC = () => {
     })
 
     if (process.browser && window.confirm("ファイルを送信しますか?")) {
+      setSubmitting(true)
+
       try {
         const createdFiles = await createFile({
           props: { body: formData },
           idToken: await authState.firebaseUser.getIdToken(),
         })
 
-        if (createdFiles.error === "outOfFileUsageQuota") {
-          addToast({
-            title: "ファイルアップロードの容量上限に達しています",
-            kind: "error",
-          })
+        if (createdFiles && "errorCode" in createdFiles) {
+          setSubmitting(false)
+
+          switch (createdFiles.errorCode) {
+            case "outOfFileUsageQuota": {
+              addToast({
+                title: "ファイルアップロードの容量上限に達しています",
+                kind: "error",
+              })
+              break
+            }
+            case "timeout": {
+              addToast({
+                title: "ファイルをアップロードできませんでした",
+                descriptions: ["通信環境をご確認ください"],
+                kind: "error",
+              })
+              break
+            }
+            default: {
+              addToast({
+                title: "ファイルのアップロードに失敗しました",
+                kind: "error",
+              })
+              break
+            }
+          }
           return
         }
 
@@ -95,6 +120,7 @@ const CommitteeFileUpload: PageFC = () => {
           },
           idToken: await authState.firebaseUser.getIdToken(),
         })
+        setSubmitting(false)
 
         switch (createdFileDistribution.errorCode) {
           case "duplicatedProject":
@@ -139,7 +165,9 @@ const CommitteeFileUpload: PageFC = () => {
           }
         }
       } catch (err) {
-        const body = await err.response?.json()
+        setSubmitting(false)
+        // FIXME: any
+        const body = await (err as any).response?.json()
         addToast({ title: "不明なエラーが発生しました", kind: "error" })
         reportError("failed to create file / file distribution", body ?? err)
       }
@@ -235,7 +263,12 @@ const CommitteeFileUpload: PageFC = () => {
           </Panel>
         </div>
         <div className={styles.submitButtonWrapper}>
-          <Button type="submit" fullWidth icon="paper-plane">
+          <Button
+            type="submit"
+            processing={submitting}
+            fullWidth
+            icon="paper-plane"
+          >
             ファイルを配布する
           </Button>
         </div>

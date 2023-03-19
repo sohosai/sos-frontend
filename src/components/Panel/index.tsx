@@ -1,8 +1,7 @@
 import { CSSProperties, FC } from "react"
 
-import { dataset } from "src/utils/dataset"
-
 import styles from "./index.module.scss"
+import { dataset } from "src/utils/dataset"
 
 declare namespace Panel {
   type Props = Readonly<{
@@ -14,7 +13,7 @@ declare namespace Panel {
 
 const Panel: FC<Panel.Props> = ({
   style,
-  className,
+  className = "",
   hoverStyle = "none",
   children,
 }) => {

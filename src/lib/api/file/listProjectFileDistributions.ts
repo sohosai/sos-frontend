@@ -1,6 +1,5 @@
-import { client } from "../client"
-
 import type { DistributedFile } from "../../../types/models/files"
+import { client } from "../client"
 
 declare namespace listProjectFileDistributions {
   type Props = Readonly<{
@@ -25,7 +24,8 @@ const listProjectFileDistributions = async ({
       .json()
     return distributed_files
   } catch (err) {
-    const body = await err.response?.json()
+    // FIXME: any
+    const body = await (err as any).response?.json()
     throw body ?? err
   }
 }

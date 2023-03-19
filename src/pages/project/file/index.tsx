@@ -1,22 +1,24 @@
-import { useState, useEffect } from "react"
-
+import dayjs from "dayjs"
+import timezone from "dayjs/plugin/timezone"
+import utc from "dayjs/plugin/utc"
 import { PageFC } from "next"
 import Link from "next/link"
+import { useState, useEffect } from "react"
 
+import styles from "./index.module.scss"
+import { Head, Icon, Panel, Spinner } from "src/components"
 import { useAuthNeue } from "src/contexts/auth"
 import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"
 
-import { DistributedFile } from "src/types/models/files"
-
 import { listProjectFileDistributions } from "src/lib/api/file/listProjectFileDistributions"
 import { reportError } from "src/lib/errorTracking/reportError"
+import { DistributedFile } from "src/types/models/files"
 
 import { pagesPath } from "src/utils/$path"
 
-import { Head, Icon, Panel, Spinner } from "src/components"
-
-import styles from "./index.module.scss"
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const FileDistributionsForProject: PageFC = () => {
   const { authState } = useAuthNeue()
@@ -58,7 +60,8 @@ const FileDistributionsForProject: PageFC = () => {
         })
         setDistributions(fetchedDistributions)
       } catch (err) {
-        const body = await err.response?.json()
+        // FIXME: any
+        const body = await (err as any).response?.json()
         addToast({ title: "不明なエラーが発生しました", kind: "error" })
         reportError(
           "failed to list file distributions for the project",
@@ -89,7 +92,8 @@ const FileDistributionsForProject: PageFC = () => {
                     <a>
                       <Panel
                         style={{
-                          padding: "24px 32px",
+                          paddingTop: "16px",
+                          paddingBottom: "16px",
                         }}
                         hoverStyle="gray"
                       >
@@ -97,10 +101,17 @@ const FileDistributionsForProject: PageFC = () => {
                           <p className={styles.distributionName}>
                             {distribution.name}
                           </p>
-                          <Icon
-                            icon="arrow-right"
-                            className={styles.rowArrowIcon}
-                          />
+                          <p className={styles.distributedAt}>
+                            {dayjs
+                              .tz(distribution.distributed_at, "Asia/Tokyo")
+                              .format("M/D HH:mm")}
+                          </p>
+                          <div className={styles.arrowIcon}>
+                            <Icon
+                              icon="arrow-right"
+                              className={styles.rowArrowIcon}
+                            />
+                          </div>
                         </div>
                       </Panel>
                     </a>

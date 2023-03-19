@@ -1,25 +1,8 @@
-import { useState } from "react"
-
 import { PageFC } from "next"
 import { useRouter } from "next/router"
-
-import { pagesPath } from "../../utils/$path"
+import { useState, useEffect } from "react"
 
 import { useForm } from "react-hook-form"
-
-import { useAuthNeue } from "src/contexts/auth"
-import { useMyProject } from "src/contexts/myProject"
-import { useToastDispatcher } from "src/contexts/toast"
-
-import { ProjectCategory, ProjectAttribute } from "src/types/models/project"
-
-import { reportError } from "src/lib/errorTracking"
-
-import { IN_PROJECT_CREATION_PERIOD } from "src/constants/datetime"
-
-import { isKana, katakanaToHiragana } from "src/utils/jpKana"
-import { awesomeCharacterCount } from "src/utils/awesomeCharacterCount"
-
 import {
   Button,
   Checkbox,
@@ -29,9 +12,18 @@ import {
   Textarea,
   TextField,
 } from "../../components"
+import { IN_PROJECT_CREATION_PERIOD } from "../../lib/api/getProjectCreationAvailability"
+import { pagesPath } from "../../utils/$path"
 
 import styles from "./edit.module.scss"
-import { useEffect } from "react"
+import { useAuthNeue } from "src/contexts/auth"
+import { useMyProject } from "src/contexts/myProject"
+import { useToastDispatcher } from "src/contexts/toast"
+
+import { reportError } from "src/lib/errorTracking"
+
+import { awesomeCharacterCount } from "src/utils/awesomeCharacterCount"
+import { isKana, katakanaToHiragana } from "src/utils/jpKana"
 
 type PromiseType<T extends Promise<any>> = T extends Promise<infer P>
   ? P
@@ -43,10 +35,6 @@ type Inputs = {
   groupName: string
   kanaGroupName: string
   description: string
-  category: ProjectCategory
-  attributes: {
-    [attribute in ProjectAttribute]: boolean
-  }
 }
 
 const EditProjectInfo: PageFC = () => {
@@ -78,8 +66,6 @@ const EditProjectInfo: PageFC = () => {
     groupName,
     kanaGroupName,
     description,
-    attributes,
-    category,
   }: Inputs) => {
     if (authState?.status !== "bothSignedIn") return
     if (myProjectState === null || myProjectState.myProject === null) return
@@ -101,14 +87,6 @@ const EditProjectInfo: PageFC = () => {
           groupName,
           kanaGroupName: katakanaToHiragana(kanaGroupName),
           description,
-          category,
-          attributes: Object.entries(attributes).reduce(
-            (acc, [attribute, value]) => {
-              if (value) acc.push(attribute as ProjectAttribute)
-              return acc
-            },
-            [] as ProjectAttribute[]
-          ),
         }
 
         const handleResponse = (
@@ -203,8 +181,6 @@ const EditProjectInfo: PageFC = () => {
             groupName,
             kanaGroupName,
             description,
-            attributes,
-            category,
           },
         })
       }
@@ -219,11 +195,7 @@ const EditProjectInfo: PageFC = () => {
         setError("noMyProject")
         return
       }
-      if (
-        !IN_PROJECT_CREATION_PERIOD ||
-        // FIXME: ad-hoc
-        myProjectState.myProject.category === "stage"
-      ) {
+      if (!(await IN_PROJECT_CREATION_PERIOD)) {
         setError("outOfProjectCreationPeriod")
         return
       }
@@ -233,23 +205,6 @@ const EditProjectInfo: PageFC = () => {
       setValue("groupName", myProjectState.myProject.group_name)
       setValue("kanaGroupName", myProjectState.myProject.kana_group_name)
       setValue("description", myProjectState.myProject.description)
-      setValue("category", myProjectState.myProject.category)
-      setValue(
-        "attributes",
-        myProjectState.myProject.attributes.reduce(
-          (acc, cur) => {
-            acc[cur] = true
-            return acc
-          },
-          {
-            academic: false as boolean,
-            artistic: false as boolean,
-            committee: false as boolean,
-            outdoor: false as boolean,
-          }
-        ),
-        { shouldValidate: true }
-      )
     })()
   }, [authState, myProjectState, setValue])
 
@@ -393,18 +348,9 @@ const EditProjectInfo: PageFC = () => {
                   />
                 </FormItemSpacer>
                 <FormItemSpacer>
-                  <Checkbox
-                    label="学術参加枠での参加を希望する"
-                    checked={watch("attributes.academic")}
-                    register={register("attributes.academic")}
-                  />
-                </FormItemSpacer>
-                <FormItemSpacer>
-                  <Checkbox
-                    label="芸術祭参加枠での参加を希望する"
-                    checked={watch("attributes.artistic")}
-                    register={register("attributes.artistic")}
-                  />
+                  <span className={styles.descriptionsWrapper}>
+                    ※企画登録後の参加区分・企画属性の変更はできません
+                  </span>
                 </FormItemSpacer>
               </fieldset>
               <div className={styles.submitButtonWrapper}>

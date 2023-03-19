@@ -1,12 +1,9 @@
+import { animated, SpringValue } from "@react-spring/web"
 import { FC } from "react"
 
-import { animated, SpringValue } from "@react-spring/web"
-
-import { useToastConsumer } from "src/contexts/toast/"
-
-import { Toast } from "src/components/"
-
 import styles from "./index.module.scss"
+import { Toast } from "src/components/"
+import { useToastConsumer } from "src/contexts/toast/"
 
 const AnimatedToast = animated(Toast)
 

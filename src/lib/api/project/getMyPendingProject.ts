@@ -1,6 +1,5 @@
-import { client } from "../client"
-
 import type { PendingProject } from "../../../types/models/project"
+import { client } from "../client"
 
 declare namespace getMyPendingProject {
   type Props = Readonly<{
@@ -19,7 +18,8 @@ const getMyPendingProject = async ({
       .json()
     return { myPendingProject: pendingProject }
   } catch (err) {
-    const body = await err.response?.json()
+    // FIXME: any
+    const body = await (err as any).response?.json()
     if (body.error?.info?.type === "PENDING_PROJECT_NOT_FOUND") {
       return { myPendingProject: "notFound" }
     }

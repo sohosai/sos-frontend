@@ -1,6 +1,5 @@
-import { client } from "../client"
-
 import type { User } from "../../../types/models/user"
+import { client } from "../client"
 
 declare namespace getUser {
   type Props = Readonly<{
@@ -23,7 +22,8 @@ const getUser = async ({
       .json()
     return { user }
   } catch (err) {
-    const body = await err.response?.json()
+    // FIXME: any
+    const body = await (err as any).response?.json()
     throw body ?? err
   }
 }

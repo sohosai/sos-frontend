@@ -36,7 +36,8 @@ const getProjectFileDistribution = async ({
       .json()
     return { distributedFile: distributed_file, errorCode: null }
   } catch (err) {
-    const body = await err.response?.json()
+    // FIXME: any
+    const body = await (err as any).response?.json()
 
     switch (body?.error?.info?.type) {
       case "FILE_DISTRIBUTION_NOT_FOUND":

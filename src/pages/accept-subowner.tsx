@@ -1,18 +1,6 @@
-import { useState, useEffect } from "react"
-
 import { PageFC } from "next"
 import { useRouter } from "next/router"
-
-import { useAuthNeue } from "src/contexts/auth"
-import { useMyProject } from "src/contexts/myProject"
-import { useToastDispatcher } from "src/contexts/toast"
-
-import { PendingProject } from "../types/models/project"
-
-import { getPendingProject } from "../lib/api/project/getPendingProject"
-import { reportError } from "../lib/errorTracking/reportError"
-
-import { pagesPath } from "../utils/$path"
+import { useState, useEffect } from "react"
 
 import {
   Button,
@@ -22,8 +10,14 @@ import {
   Spinner,
   Tooltip,
 } from "../components"
-
+import { getPendingProject } from "../lib/api/project/getPendingProject"
+import { reportError } from "../lib/errorTracking/reportError"
+import { PendingProject } from "../types/models/project"
+import { pagesPath } from "../utils/$path"
 import styles from "./accept-subowner.module.scss"
+import { useAuthNeue } from "src/contexts/auth"
+import { useMyProject } from "src/contexts/myProject"
+import { useToastDispatcher } from "src/contexts/toast"
 
 export type Query = {
   pendingProjectId: string
@@ -105,7 +99,8 @@ const AcceptSubowner: PageFC = () => {
       addToast({ title: "副責任者登録が完了しました", kind: "success" })
       router.push(pagesPath.project.$url())
     } catch (err) {
-      const body = await err.response?.json()
+      // FIXME: any
+      const body = await (err as any).response?.json()
       addToast({ title: "エラーが発生しました", kind: "error" })
       reportError(
         "failed to create new project with unknown error",

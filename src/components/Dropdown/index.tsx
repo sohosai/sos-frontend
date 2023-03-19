@@ -2,9 +2,8 @@ import { FC } from "react"
 
 import { UseFormRegisterReturn } from "react-hook-form"
 
+import { Paragraph } from "../"
 import { dataset } from "../../utils/dataset"
-
-import { ParagraphWithUrlParsing } from "../"
 
 import styles from "./index.module.scss"
 
@@ -21,6 +20,7 @@ declare namespace Dropdown {
     descriptionUrlParsing?: boolean
     error?: Array<string | false | undefined> | string | false
     fullWidth?: boolean
+    bySide?: boolean
     register?: UseFormRegisterReturn
   }> &
     JSX.IntrinsicElements["select"]
@@ -35,6 +35,7 @@ const Dropdown: FC<Dropdown.Props> = ({
   descriptionUrlParsing = false,
   error,
   fullWidth = true,
+  bySide = false,
   register,
   ...rest
 }) => {
@@ -59,6 +60,7 @@ const Dropdown: FC<Dropdown.Props> = ({
         {...dataset({ error: Boolean(errors.length) })}
         {...register}
         {...rest}
+        data-by-side={bySide}
       >
         {options.map(({ value, label }, index) => (
           <option value={value} key={index}>
@@ -69,7 +71,7 @@ const Dropdown: FC<Dropdown.Props> = ({
       {Boolean(descriptions?.length + errors?.length) && (
         <div className={styles.bottomText}>
           {descriptionUrlParsing ? (
-            <ParagraphWithUrlParsing
+            <Paragraph
               text={descriptions}
               normalTextClassName={styles.description}
             />

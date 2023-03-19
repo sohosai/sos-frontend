@@ -1,13 +1,13 @@
 import { client } from "../client"
 
+import { FormAnswerItemInForm } from "src/types/models/form/answerItem"
 import type { RegistrationFormAnswer } from "src/types/models/registrationForm"
-import { FormAnswerItem } from "src/types/models/form/answerItem"
 
 declare namespace answerRegistrationForm {
   type Props = Readonly<{
     pendingProjectId: string
     registrationFormId: string
-    items: FormAnswerItem[]
+    items: FormAnswerItemInForm[]
     idToken: string
   }>
 }
@@ -26,13 +26,28 @@ const answerRegistrationForm = async ({
         json: {
           pending_project_id: pendingProjectId,
           registration_form_id: registrationFormId,
-          items,
+          items: items.map((item) => {
+            if (item.type === "checkbox") {
+              return {
+                ...item,
+                answer: Object.entries(item.answer).reduce(
+                  (acc: string[], [id, value]) => {
+                    if (value) acc.push(id)
+                    return acc
+                  },
+                  []
+                ),
+              }
+            }
+            return item
+          }),
         },
       })
       .json()
     return { answer }
   } catch (error) {
-    const body = await error.response?.json()
+    // FIXME: any
+    const body = await (error as any).response?.json()
     throw body ?? error
   }
 }

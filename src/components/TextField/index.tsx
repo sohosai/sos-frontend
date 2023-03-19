@@ -2,9 +2,8 @@ import { FC } from "react"
 
 import { UseFormRegisterReturn } from "react-hook-form"
 
+import { Paragraph } from "../"
 import { dataset } from "../../utils/dataset"
-
-import { ParagraphWithUrlParsing } from "../"
 
 import styles from "./index.module.scss"
 
@@ -15,6 +14,7 @@ declare namespace TextField {
     description?: string[] | string
     descriptionUrlParsing?: boolean
     error?: Array<string | false | undefined> | string | false
+    warning?: Array<string | false | undefined> | string | false
     register?: UseFormRegisterReturn
   }> &
     JSX.IntrinsicElements["input"]
@@ -29,6 +29,7 @@ const TextField: FC<TextField.Props> = ({
   description,
   descriptionUrlParsing = false,
   error,
+  warning,
   autoComplete,
   register,
   ...restAttributes
@@ -37,6 +38,9 @@ const TextField: FC<TextField.Props> = ({
     Array.isArray(description) ? description : [description]
   ).filter((text): text is string => Boolean(text))
   const errors = (Array.isArray(error) ? error : [error]).filter(
+    (text): text is string => Boolean(text)
+  )
+  const warnings = (Array.isArray(warning) ? warning : [warning]).filter(
     (text): text is string => Boolean(text)
   )
 
@@ -62,7 +66,7 @@ const TextField: FC<TextField.Props> = ({
       {Boolean(descriptions?.length + errors?.length) && (
         <div className={styles.bottomText}>
           {descriptionUrlParsing ? (
-            <ParagraphWithUrlParsing
+            <Paragraph
               text={descriptions}
               normalTextClassName={styles.description}
             />
@@ -78,6 +82,16 @@ const TextField: FC<TextField.Props> = ({
           {errors.map((text, index) => (
             <p className={styles.error} key={index}>
               {text}
+            </p>
+          ))}
+          {warnings.map((text, index) => (
+            <p className={styles.warning} key={index}>
+              {text.split("\n").map((line, lineIndex) => (
+                <>
+                  {line}
+                  {lineIndex < text.split("\n").length && <br />}
+                </>
+              ))}
             </p>
           ))}
         </div>

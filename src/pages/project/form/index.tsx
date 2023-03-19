@@ -1,24 +1,23 @@
-import { useState, useEffect, FC } from "react"
-
+import dayjs from "dayjs"
+import timezone from "dayjs/plugin/timezone"
+import utc from "dayjs/plugin/utc"
 import type { PageFC } from "next"
 import Link from "next/link"
+import { useState, useEffect, FC } from "react"
 
+import { Head, Panel, Spinner } from "../../../components"
+import { useAuthNeue } from "../../../contexts/auth"
+import { useMyProject } from "../../../contexts/myProject"
 import { listProjectForms } from "../../../lib/api/form/listProjectForms"
 
 import { Form } from "../../../types/models/form"
 
-import { useAuthNeue } from "../../../contexts/auth"
-import { useMyProject } from "../../../contexts/myProject"
-
-import dayjs from "dayjs"
-import utc from "dayjs/plugin/utc"
-import timezone from "dayjs/plugin/timezone"
-
-import { Head, Panel, Spinner } from "../../../components"
-
 import { pagesPath } from "../../../utils/$path"
 
 import styles from "./index.module.scss"
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 type FormWithHasAnswerFlag = Form & { has_answer: boolean }
 
@@ -36,7 +35,7 @@ const FormRow: FC<FormRowProps> = ({ form, outOfAnswerPeriod = false }) => {
         paddingTop: "16px",
         paddingBottom: "16px",
       }}
-      hoverStyle={answerable ? "gray" : "none"}
+      hoverStyle={answerable || form.has_answer ? "gray" : "none"}
     >
       <div className={styles.formRowInner}>
         <p className={styles.formName} title={form.name}>
@@ -69,7 +68,24 @@ const FormRow: FC<FormRowProps> = ({ form, outOfAnswerPeriod = false }) => {
           </a>
         </Link>
       ) : (
-        <FormRowInner />
+        <>
+          {(() => {
+            if (form.has_answer)
+              return (
+                <Link
+                  href={pagesPath.project.form.details.$url({
+                    query: { formId: form.id },
+                  })}
+                >
+                  <a>
+                    <FormRowInner />
+                  </a>
+                </Link>
+              )
+
+            return <FormRowInner />
+          })()}
+        </>
       )}
     </div>
   )
@@ -135,16 +151,12 @@ const ListProjectForms: PageFC = () => {
         )
       } catch (err) {
         setError("unknown")
-        const body = await err.response?.json()
+        // FIXME: any
+        const body = await (err as any).response?.json()
         throw body ?? err
       }
     })()
   }, [authState, myProjectState])
-
-  useEffect(() => {
-    dayjs.extend(utc)
-    dayjs.extend(timezone)
-  }, [])
 
   return (
     <div className={styles.wrapper}>

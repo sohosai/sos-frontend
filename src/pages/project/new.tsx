@@ -1,34 +1,38 @@
 import { PageFC } from "next"
 import { useRouter } from "next/router"
 
-import { pagesPath } from "../../utils/$path"
-
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-
-import { useAuthNeue } from "src/contexts/auth"
-import { useMyProject } from "src/contexts/myProject"
-import { useToastDispatcher } from "src/contexts/toast"
-
-import { ProjectCategory, ProjectAttribute } from "src/types/models/project"
-
-import { IN_PROJECT_CREATION_PERIOD } from "src/constants/datetime"
-
-import { isKana, katakanaToHiragana } from "src/utils/jpKana"
-import { awesomeCharacterCount } from "src/utils/awesomeCharacterCount"
-
 import {
   Button,
   Checkbox,
   Dropdown,
   FormItemSpacer,
   Head,
+  IconButton,
   Panel,
   Spinner,
   Textarea,
   TextField,
 } from "../../components"
+import { IN_PROJECT_CREATION_PERIOD } from "../../lib/api/getProjectCreationAvailability"
+import { pagesPath } from "../../utils/$path"
 
 import styles from "./new.module.scss"
+import { Modal } from "src/components/Modal"
+import { useAuthNeue } from "src/contexts/auth"
+import { useMyProject } from "src/contexts/myProject"
+import { useToastDispatcher } from "src/contexts/toast"
+
+import {
+  ProjectCategory,
+  ProjectAttribute,
+  projectCategoryToUiText,
+  isStage,
+} from "src/types/models/project"
+
+import { awesomeCharacterCount } from "src/utils/awesomeCharacterCount"
+import { isKana, katakanaToHiragana } from "src/utils/jpKana"
 
 type Inputs = {
   name: string
@@ -50,11 +54,16 @@ const NewProject: PageFC = () => {
 
   const router = useRouter()
 
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const toggleModal = () => setIsModalOpen((cur) => !cur)
+
   const {
     register,
     formState: { errors },
     handleSubmit,
     watch,
+    setValue,
   } = useForm<Inputs>({
     criteriaMode: "all",
     mode: "onBlur",
@@ -68,6 +77,16 @@ const NewProject: PageFC = () => {
       agreeTerms: false,
     },
   })
+
+  const artisticRegister = () => {
+    if (!isStage(watch("category"))) {
+      return register("attributes.artistic")
+    }
+    if (watch("attributes.artistic")) {
+      setValue("attributes.artistic", false)
+    }
+    return undefined
+  }
 
   const onSubmit = async ({
     name,
@@ -116,19 +135,24 @@ const NewProject: PageFC = () => {
     }
   }
 
+  const [isInProjectCreationPeriod, setIsInProjectCreationPeriod] =
+    useState(false)
+
+  useEffect(() => {
+    ;(async () => {
+      setIsInProjectCreationPeriod(await IN_PROJECT_CREATION_PERIOD)
+    })()
+  }, [isInProjectCreationPeriod])
+
   return (
     <div className={styles.wrapper}>
       <Head title="企画応募" />
       <h1 className={styles.title}>企画応募</h1>
       <div className={styles.panelWrapper}>
         <Panel>
-          {IN_PROJECT_CREATION_PERIOD ? (
+          {isInProjectCreationPeriod ? (
             <>
-              {!myProjectState?.error &&
-              (myProjectState?.myProject === null ||
-                // FIXME: ad-hoc
-                (myProjectState?.myProject.category === "stage" &&
-                  myProjectState.isPending)) ? (
+              {!myProjectState?.error && myProjectState?.myProject === null ? (
                 <form
                   className={styles.form}
                   onSubmit={handleSubmit(onSubmit)}
@@ -256,8 +280,28 @@ const NewProject: PageFC = () => {
                             label: "選択してください",
                           },
                           {
-                            value: "general",
-                            label: "一般企画",
+                            value: "general_physical",
+                            label: projectCategoryToUiText("general_physical"),
+                          },
+                          {
+                            value: "general_online",
+                            label: projectCategoryToUiText("general_online"),
+                          },
+                          {
+                            value: "stage_physical",
+                            label: projectCategoryToUiText("stage_physical"),
+                          },
+                          {
+                            value: "stage_online",
+                            label: projectCategoryToUiText("stage_online"),
+                          },
+                          {
+                            value: "food_physical",
+                            label: projectCategoryToUiText("food_physical"),
+                          },
+                          {
+                            value: "cooking_physical",
+                            label: projectCategoryToUiText("cooking_physical"),
                           },
                         ]}
                         error={[
@@ -268,6 +312,55 @@ const NewProject: PageFC = () => {
                           required: true,
                         })}
                       />
+                      <div
+                        className={styles.aboutCategory}
+                        onClick={toggleModal}
+                      >
+                        <IconButton icon="info" />
+                        <p>参加区分の詳細はこちらをご覧ください</p>
+                      </div>
+                      {isModalOpen && (
+                        <Modal close={toggleModal}>
+                          <h2 className={styles.modalTitle}>参加区分詳細</h2>
+                          <div className={styles.category}>
+                            <h3>・対面一般企画</h3>
+                            <p>
+                              飲食物を取り扱わない、雙峰祭当日に屋内の教室で行う企画
+                            </p>
+                          </div>
+                          <div className={styles.category}>
+                            <h3>・オンライン一般企画</h3>
+                            <p>
+                              オンラインでコンテンツを配信することのみを行う企画
+                            </p>
+                          </div>
+                          <div className={styles.category}>
+                            <h3>・対面ステージ企画</h3>
+                            <p>
+                              雙峰祭当日にUNITEDステージもしくは1Aステージにてステージパフォーマンスを行う企画
+                            </p>
+                          </div>
+                          <div className={styles.category}>
+                            <h3>・オンラインステージ企画</h3>
+                            <p>
+                              大学会館にてステージパフォーマンスの事前収録を行い、その動画を雙峰祭当日に配信する企画
+                            </p>
+                          </div>
+                          <div className={styles.category}>
+                            <h3>・飲食物取扱い企画</h3>
+                            <p>
+                              調理企画には該当しないものの、飲食物の提供を行う企画
+                            </p>
+                          </div>
+                          <div className={styles.category}>
+                            <h3>・調理企画</h3>
+                            <p>
+                              一般企画用募集要項 p.46
+                              で定義されている「調理」を行う企画
+                            </p>
+                          </div>
+                        </Modal>
+                      )}
                     </FormItemSpacer>
                     <FormItemSpacer>
                       <Checkbox
@@ -279,8 +372,15 @@ const NewProject: PageFC = () => {
                     <FormItemSpacer>
                       <Checkbox
                         label="芸術祭参加枠での参加を希望する"
+                        descriptions={
+                          isStage(watch("category"))
+                            ? [
+                                "ステージ企画は芸術祭参加枠での参加を希望できません",
+                              ]
+                            : []
+                        }
                         checked={watch("attributes.artistic")}
-                        register={register("attributes.artistic")}
+                        register={artisticRegister()}
                       />
                     </FormItemSpacer>
                     <FormItemSpacer

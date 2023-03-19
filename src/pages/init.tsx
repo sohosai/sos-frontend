@@ -1,18 +1,8 @@
-import { useState } from "react"
-
 import { PageFC } from "next"
 import { useRouter } from "next/router"
-
-import { pagesPath } from "../utils/$path"
+import { useState } from "react"
 
 import { useForm } from "react-hook-form"
-
-import type { UserCategoryType } from "../types/models/user"
-
-import { useAuthNeue } from "src/contexts/auth"
-import { useToastDispatcher } from "src/contexts/toast"
-
-import { reportError } from "src/lib/errorTracking/reportError"
 
 import {
   Panel,
@@ -22,10 +12,15 @@ import {
   Button,
   Dropdown,
 } from "../components"
+import type { UserCategory } from "../types/models/user"
 
+import { pagesPath } from "../utils/$path"
 import { isKana, katakanaToHiragana } from "../utils/jpKana"
-
 import styles from "./init.module.scss"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
+
+import { reportError } from "src/lib/errorTracking/reportError"
 
 type Inputs = Readonly<{
   nameFirst: string
@@ -33,8 +28,7 @@ type Inputs = Readonly<{
   kanaNameFirst: string
   kanaNameLast: string
   phoneNumber: string
-  affiliation: string
-  category: UserCategoryType
+  category: UserCategory
 }>
 
 const Init: PageFC = () => {
@@ -62,7 +56,6 @@ const Init: PageFC = () => {
     kanaNameLast,
     phoneNumber,
     category,
-    affiliation,
   }: Inputs) => {
     setProcessing(true)
 
@@ -76,13 +69,7 @@ const Init: PageFC = () => {
         last: katakanaToHiragana(kanaNameLast),
       },
       phone_number: "+81" + phoneNumber.replaceAll("-", "").slice(1),
-      category:
-        category === "undergraduate_student"
-          ? {
-              type: "undergraduate_student" as const,
-              affiliation,
-            }
-          : { type: category },
+      category,
     }
 
     try {
@@ -100,7 +87,8 @@ const Init: PageFC = () => {
     } catch (err) {
       setProcessing(false)
 
-      const body = await err.response?.json()
+      // FIXME: any
+      const body = await (err as any).response?.json()
 
       if (!body) {
         addToast({ title: "エラーが発生しました", kind: "error" })
@@ -262,23 +250,6 @@ const Init: PageFC = () => {
                   })}
                 />
               </FormItemSpacer>
-              {watch("category") === "undergraduate_student" && (
-                <FormItemSpacer>
-                  <TextField
-                    type="text"
-                    label="所属学群・学類"
-                    placeholder="〇〇学群 〇〇学類"
-                    error={[
-                      errors?.affiliation?.types?.required && "必須項目です",
-                    ]}
-                    required
-                    register={register("affiliation", {
-                      required: true,
-                      setValueAs: (value) => value?.trim(),
-                    })}
-                  />
-                </FormItemSpacer>
-              )}
             </fieldset>
             <div className={styles.submitButton}>
               <Button

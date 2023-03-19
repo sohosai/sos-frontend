@@ -2,15 +2,15 @@ import { FC } from "react"
 
 import type { UseFormRegisterReturn } from "react-hook-form"
 
-import type {
+import { Checkbox } from "../"
+import {
   ProjectCategory,
   ProjectAttribute,
+  projectCategoryToUiText,
 } from "../../types/models/project"
 
-import { Checkbox } from "../"
-
-import styles from "./index.module.scss"
 import { Dropdown } from "../Dropdown"
+import styles from "./index.module.scss"
 
 declare namespace ProjectQuerySelector {
   type Props = Readonly<{
@@ -36,38 +36,49 @@ const ProjectQuerySelector: FC<ProjectQuerySelector.Props> = ({
         </p>
         <div className={styles.checkbox}>
           <Checkbox
-            checked={checked.general}
-            label="一般企画"
-            register={registers?.general}
+            checked={checked.general_physical}
+            label={projectCategoryToUiText("general_physical")}
+            register={registers?.general_physical}
           />
         </div>
         <div className={styles.checkbox}>
           <Checkbox
-            checked={checked.stage}
-            label="ステージ企画"
-            register={registers?.stage}
+            checked={checked.general_online}
+            label={projectCategoryToUiText("general_online")}
+            register={registers?.general_online}
           />
         </div>
         <div className={styles.checkbox}>
           <Checkbox
-            checked={checked.cooking}
-            label="調理企画"
-            register={registers?.cooking}
+            checked={checked.stage_physical}
+            label={projectCategoryToUiText("stage_physical")}
+            register={registers?.stage_physical}
           />
         </div>
         <div className={styles.checkbox}>
           <Checkbox
-            checked={checked.food}
-            label="飲食物取扱企画"
-            register={registers?.food}
+            checked={checked.stage_online}
+            label={projectCategoryToUiText("stage_online")}
+            register={registers?.stage_online}
+          />
+        </div>
+        <div className={styles.checkbox}>
+          <Checkbox
+            checked={checked.food_physical}
+            label={projectCategoryToUiText("food_physical")}
+            register={registers?.food_physical}
+          />
+        </div>
+        <div className={styles.checkbox}>
+          <Checkbox
+            checked={checked.cooking_physical}
+            label={projectCategoryToUiText("cooking_physical")}
+            register={registers?.cooking_physical}
           />
         </div>
       </div>
       <div className={styles.selectorsWrapper}>
-        <p className={styles.selectorsTitle}>
-          {/* TODO: これで良いか検討 */}
-          企画属性
-        </p>
+        <p className={styles.selectorsTitle}>企画属性</p>
         <p className={styles.selectorsDescription}>
           選択しない場合全ての企画が対象となります
         </p>
@@ -93,20 +104,6 @@ const ProjectQuerySelector: FC<ProjectQuerySelector.Props> = ({
             checked={checked.artistic}
             label="芸術祭参加枠"
             register={registers?.artistic}
-          />
-        </div>
-        <div className={styles.checkbox}>
-          <Checkbox
-            checked={checked.outdoor}
-            label="屋外企画"
-            register={registers?.outdoor}
-          />
-        </div>
-        <div className={styles.checkbox}>
-          <Checkbox
-            checked={checked.committee}
-            label="委員会企画"
-            register={registers?.committee}
           />
         </div>
       </div>

@@ -1,5 +1,9 @@
 install:
+ifeq ("$(INSTALL_MODE)", "skip")
+	@echo "Skipping 'yarn install'..."
+else
 	yarn install
+endif
 
 dev: install pathpida
 	yarn next dev -p 3131
@@ -10,10 +14,7 @@ build: install pathpida
 start: install
 	yarn next start -p 3131
 
-export: build
-	yarn next export
-
-lint: install
+lint: install pathpida
 	yarn eslint .
 
 lint.fix: install
@@ -42,9 +43,5 @@ pathpida: install
 
 pathpida.watch: install
 	yarn pathpida --enableStatic --watch
-
-scaffold.announcement: install
-	yarn ts-node -r tsconfig-paths/register bin/scaffoldAnnouncement
-	yarn prettier --write src/constants/announcements.ts
 
 .PHONY: install $(MAKECMDGOALS)

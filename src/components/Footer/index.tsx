@@ -1,16 +1,14 @@
+import Link from "next/link"
 import { FC } from "react"
 
-import Link from "next/link"
-
-import { pagesPath } from "src/utils/$path"
+import styles from "./index.module.scss"
 import {
   SOHOSAI_COM,
   TWITTER_KIKAKURENRAKUN,
   INSTAGRAM,
   FACEBOOK,
 } from "src/constants/links"
-
-import styles from "./index.module.scss"
+import { pagesPath } from "src/utils/$path"
 
 export const Footer: FC = () => (
   <footer className={styles.wrapper}>

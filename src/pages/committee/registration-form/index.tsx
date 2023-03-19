@@ -1,29 +1,34 @@
+import dayjs from "dayjs"
+import timezone from "dayjs/plugin/timezone"
+import utc from "dayjs/plugin/utc"
+import { saveAs } from "file-saver"
+import { PageFC } from "next"
+import Link from "next/link"
 import { useState, useEffect } from "react"
 
-import { PageFC } from "next"
-
-import type { RegistrationForm } from "src/types/models/registrationForm"
-
+import { pagesPath } from "../../../utils/$path"
+import styles from "./index.module.scss"
+import {
+  Button,
+  Head,
+  IconButton,
+  Panel,
+  Spinner,
+  Tooltip,
+} from "src/components"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
-import { listRegistrationForms } from "src/lib/api/registrationForm/listRegistrationForms"
 import { exportRegistrationFormAnswers as exportRegistrationFormAnswersApi } from "src/lib/api/registrationForm/exportRegistrationFormAnswers"
+import { listRegistrationForms } from "src/lib/api/registrationForm/listRegistrationForms"
 import { reportError } from "src/lib/errorTracking/reportError"
 
-import dayjs from "dayjs"
-import utc from "dayjs/plugin/utc"
-import timezone from "dayjs/plugin/timezone"
-dayjs.extend(utc)
-dayjs.extend(timezone)
-
-import { saveAs } from "file-saver"
-
+import type { RegistrationForm } from "src/types/models/registrationForm"
+import { isUserRoleHigherThanIncluding } from "src/types/models/user/userRole"
 import { createCsvBlob } from "src/utils/createCsvBlob"
 
-import { Head, IconButton, Panel, Spinner, Tooltip } from "src/components"
-
-import styles from "./index.module.scss"
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const RegistrationForms: PageFC = () => {
   const { authState } = useAuthNeue()
@@ -35,6 +40,10 @@ const RegistrationForms: PageFC = () => {
   const [exportingRegistrationForms, setExportingRegistrationForms] = useState<{
     [registrationFormId: string]: boolean
   }>({})
+  const [
+    isEligibleToCreateNewRegistrationForm,
+    setIsEligibleToCreateNewRegistrationForm,
+  ] = useState(false)
 
   const exportAnswers = async ({
     registrationFormId,
@@ -76,6 +85,15 @@ const RegistrationForms: PageFC = () => {
     ;(async () => {
       if (authState?.status !== "bothSignedIn") return
 
+      if (
+        isUserRoleHigherThanIncluding({
+          userRole: authState.sosUser.role,
+          criteria: "administrator",
+        })
+      ) {
+        setIsEligibleToCreateNewRegistrationForm(true)
+      }
+
       try {
         const { registrationForms: fetchedRegistrationForms } =
           await listRegistrationForms({
@@ -94,6 +112,15 @@ const RegistrationForms: PageFC = () => {
     <div className={styles.wrapper}>
       <Head title="登録申請" />
       <h1 className={styles.title}>登録申請</h1>
+      {isEligibleToCreateNewRegistrationForm && (
+        <div className={styles.newFormButton}>
+          <Link href={pagesPath.committee.registration_form.new.$url()}>
+            <a>
+              <Button icon="plus">登録申請を新規作成</Button>
+            </a>
+          </Link>
+        </div>
+      )}
       {registrationForms?.length && !error ? (
         <ul className={styles.registrationForms}>
           {registrationForms.map(({ name, id }) => (

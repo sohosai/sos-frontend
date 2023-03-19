@@ -1,15 +1,12 @@
+import { PageFC } from "next"
 import { useState } from "react"
 
-import { PageFC } from "next"
-
+import { Button, Head, Panel } from "../components"
+import styles from "./email-verification.module.scss"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
 import { reportError } from "src/lib/errorTracking/reportError"
-
-import { Button, Head, Panel } from "../components"
-
-import styles from "./email-verification.module.scss"
 
 const EmailVerification: PageFC = () => {
   const [processing, setProcessing] = useState(false)
@@ -17,7 +14,7 @@ const EmailVerification: PageFC = () => {
     undefined | "mailSent" | "error"
   >(undefined)
 
-  const { sendEmailVerification } = useAuthNeue()
+  const { sendEmailVerification, signout } = useAuthNeue()
   const { addToast } = useToastDispatcher()
 
   const resendVerification = () => {
@@ -72,6 +69,21 @@ const EmailVerification: PageFC = () => {
                   fullWidth={true}
                 >
                   確認メールを再送する
+                </Button>
+              </div>
+              <div className={styles.logoutButtonWrapper}>
+                <Button
+                  icon="log-out-alt"
+                  kind="secondary"
+                  size="small"
+                  fullWidth={true}
+                  onClick={() => {
+                    if (window.confirm("ログアウトしますか?")) {
+                      signout()
+                    }
+                  }}
+                >
+                  ログアウト
                 </Button>
               </div>
             </>

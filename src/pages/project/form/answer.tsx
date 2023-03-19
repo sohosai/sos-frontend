@@ -1,26 +1,19 @@
-import { useState, useEffect } from "react"
-
 import { PageFC } from "next"
 import { useRouter } from "next/router"
+import { useState, useEffect } from "react"
 
 import { useForm, useFieldArray } from "react-hook-form"
 
-import { useAuthNeue } from "src/contexts/auth"
-import { useMyProject } from "src/contexts/myProject"
-import { useToastDispatcher } from "src/contexts/toast"
-
+import { createFile } from "../../../lib/api/file/createFile"
+import { answerForm } from "../../../lib/api/form/answerForm"
+import { getProjectForm } from "../../../lib/api/form/getProjectForm"
 import { Form } from "../../../types/models/form"
 import {
   FormAnswerItemInForm,
   FormAnswerItemInFormWithRealFiles,
 } from "../../../types/models/form/answerItem"
-
-import { getProjectForm } from "../../../lib/api/form/getProjectForm"
-import { createFile } from "../../../lib/api/file/createFile"
-import { reportError as reportErrorHandler } from "src/lib/errorTracking/reportError"
-
 import { pagesPath } from "../../../utils/$path"
-
+import styles from "./answer.module.scss"
 import {
   Button,
   Checkbox,
@@ -28,15 +21,17 @@ import {
   FormItemSpacer,
   Head,
   Panel,
-  ParagraphWithUrlParsing,
+  Paragraph,
   Spinner,
   Textarea,
   TextField,
 } from "src/components"
 import { FileFormItem } from "src/components/FormItem"
+import { useAuthNeue } from "src/contexts/auth"
+import { useMyProject } from "src/contexts/myProject"
+import { useToastDispatcher } from "src/contexts/toast"
 
-import styles from "./answer.module.scss"
-import { answerForm } from "../../../lib/api/form/answerForm"
+import { reportError as reportErrorHandler } from "src/lib/errorTracking/reportError"
 
 export type Query = {
   formId: string
@@ -177,12 +172,28 @@ const AnswerForm: PageFC = () => {
                 idToken: await authState.firebaseUser.getIdToken(),
               })
 
-              if (fileUploadRes.error) {
+              if (fileUploadRes && "errorCode" in fileUploadRes) {
                 setProcessing(false)
-                switch (fileUploadRes.error) {
+
+                switch (fileUploadRes.errorCode) {
                   case "outOfFileUsageQuota": {
                     addToast({
                       title: "ファイルアップロードの容量上限に達しています",
+                      kind: "error",
+                    })
+                    break
+                  }
+                  case "timeout": {
+                    addToast({
+                      title: "ファイルをアップロードできませんでした",
+                      descriptions: ["通信環境をご確認ください"],
+                      kind: "error",
+                    })
+                    break
+                  }
+                  default: {
+                    addToast({
+                      title: "ファイルのアップロードに失敗しました",
                       kind: "error",
                     })
                     break
@@ -226,11 +237,12 @@ const AnswerForm: PageFC = () => {
         } catch (err) {
           setProcessing(false)
 
-          const body = await err.response?.json()
+          // FIXME: any
+          const body = await (err as any).response?.json()
           if (body) {
             const reportError = (message = "failed to answer form") => {
               reportErrorHandler(message, {
-                error: err,
+                error: body,
                 form: form,
                 body: requestProps,
               })
@@ -245,7 +257,7 @@ const AnswerForm: PageFC = () => {
                 break
               case "INVALID_FORM_ANSWER": {
                 const invalidFormAnswerItemId: string | undefined =
-                  err.error?.info?.id
+                  body.error?.info?.id
                 const invalidFormAnswerItem = form?.items.find(
                   (item) => item.id === invalidFormAnswerItemId
                 )
@@ -374,7 +386,7 @@ const AnswerForm: PageFC = () => {
             <Panel>
               <h2 className={styles.formName}>{form.name}</h2>
               {form.description && (
-                <ParagraphWithUrlParsing
+                <Paragraph
                   text={form.description}
                   normalTextClassName={styles.formDescription}
                 />
@@ -474,7 +486,7 @@ const AnswerForm: PageFC = () => {
                             ))}
                             {Boolean(formItem.description.length) && (
                               <div className={styles.checkboxDescriptions}>
-                                <ParagraphWithUrlParsing
+                                <Paragraph
                                   text={formItem.description}
                                   normalTextClassName={
                                     styles.checkboxDescription
@@ -517,7 +529,11 @@ const AnswerForm: PageFC = () => {
                             required={formItem.is_required}
                             register={register(
                               `items.${index}.answer` as const,
-                              { required: formItem.is_required }
+                              {
+                                required: formItem.is_required,
+                                setValueAs: (value: string) =>
+                                  value?.length ? value : null,
+                              }
                             )}
                           />
                         )

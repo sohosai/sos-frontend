@@ -1,10 +1,8 @@
 import { ReactElement } from "react"
 
-import { FormItem } from "src/types/models/form/item"
-
-import { Dropzone, FileList, ParagraphWithUrlParsing } from "src/components"
-
 import styles from "./file.module.scss"
+import { Dropzone, FileList, Paragraph } from "src/components"
+import { FormItem } from "src/types/models/form/item"
 
 type Props<T> = {
   formItem: Extract<FormItem, { type: "file" }>
@@ -29,7 +27,7 @@ const FileFormItem = function <T>({
         </p>
         {formItem.description && Boolean(formItem.description?.length) && (
           <div className={styles.description}>
-            <ParagraphWithUrlParsing text={formItem.description} />
+            <Paragraph text={formItem.description} />
           </div>
         )}
       </div>

@@ -1,15 +1,13 @@
 import type { PageFC } from "next"
 import Link from "next/link"
 
+import styles from "./index.module.scss"
+import { Head, Panel } from "src/components"
 import { useAuthNeue } from "src/contexts/auth"
 
 import { isUserRoleHigherThanIncluding } from "src/types/models/user/userRole"
 
 import { pagesPath } from "src/utils/$path"
-
-import { Head, Panel } from "src/components"
-
-import styles from "./index.module.scss"
 
 const Committee: PageFC = () => {
   const { authState } = useAuthNeue()
@@ -66,7 +64,7 @@ const Committee: PageFC = () => {
         }),
     },
     {
-      href: pagesPath.meta.$url(),
+      href: pagesPath.dev_tool.$url(),
       title: "開発者ツール",
       icon: "wrench",
       visible: () =>
@@ -90,7 +88,7 @@ const Committee: PageFC = () => {
             <li className={styles.panelWrapper} key={link.href.pathname}>
               <Link href={link.href}>
                 <a>
-                  <Panel style={{ padding: "24px" }}>
+                  <Panel style={{ padding: "18px 24px" }} hoverStyle="gray">
                     <div className={styles.panelInner}>
                       <div className={styles.panelContentRight}>
                         <div className={styles.panelIconBg} aria-hidden>

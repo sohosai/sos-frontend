@@ -1,17 +1,14 @@
-import { useState } from "react"
-
 import { PageFC } from "next"
+import { useState } from "react"
 
 import { useForm } from "react-hook-form"
 
+import { Button, FormItemSpacer, Head, TextField, Panel } from "../components"
+import styles from "./signup.module.scss"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
 import { reportError } from "src/lib/errorTracking/reportError"
-
-import { Button, FormItemSpacer, Head, TextField, Panel } from "../components"
-
-import styles from "./signup.module.scss"
 
 type Inputs = Readonly<{
   email: string
@@ -26,6 +23,7 @@ const Signup: PageFC = () => {
     formState: { errors },
     setError,
     handleSubmit,
+    watch,
   } = useForm<Inputs>({
     criteriaMode: "all",
     mode: "onBlur",
@@ -85,6 +83,14 @@ const Signup: PageFC = () => {
       })
   }
 
+  const email = watch().email
+  const emailWarning = email
+    ? !watch().email.match(/^s[012][0-9]{6}@/) &&
+      watch().email.match(/@s\.tsukuba\.ac\.jp/)
+      ? "invalidSAddress"
+      : null
+    : null
+
   return (
     <div className={styles.wrapper}>
       <Head title="ユーザー登録" />
@@ -113,6 +119,10 @@ const Signup: PageFC = () => {
                       "使用できないメールアドレスです",
                     errors?.email?.type === "emailAlreadyInUse" &&
                       "このメールアドレスはユーザー登録済みです",
+                  ]}
+                  warning={[
+                    emailWarning === "invalidSAddress" &&
+                      "学生に発行されたsアドレスではない可能性があります。\nこのまま実行しますか？",
                   ]}
                   placeholder="xxx@s.tsukuba.ac.jp"
                   required

@@ -1,27 +1,23 @@
-import { useState, useEffect } from "react"
-
+import dayjs from "dayjs"
+import { saveAs } from "file-saver"
 import type { PageFC } from "next"
 import Link from "next/link"
+import { useState, useEffect } from "react"
 
-import { useAuthNeue } from "src/contexts/auth"
-import { useToastDispatcher } from "src/contexts/toast"
-
-import { User, userCategoryTypeToUiText } from "../../../types/models/user"
-import { userRoleToUiText } from "../../../types/models/user/userRole"
-
-import { listUsers } from "../../../lib/api/user/listUsers"
+import { Button, Head, Panel, Spinner } from "../../../components"
 import { exportUsers } from "../../../lib/api/user/exportUsers"
-import { reportError } from "../../../lib/errorTracking/reportError"
+import { listUsers } from "../../../lib/api/user/listUsers"
 
-import { saveAs } from "file-saver"
-import dayjs from "dayjs"
+import { reportError } from "../../../lib/errorTracking/reportError"
+import { User, userCategoryToUiText } from "../../../types/models/user"
+import { userRoleToUiText } from "../../../types/models/user/userRole"
 
 import { pagesPath } from "../../../utils/$path"
 import { createCsvBlob } from "../../../utils/createCsvBlob"
 
-import { Button, Head, Panel, Spinner } from "../../../components"
-
 import styles from "./index.module.scss"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
 
 const ListUsers: PageFC = () => {
   const { authState } = useAuthNeue()
@@ -60,7 +56,14 @@ const ListUsers: PageFC = () => {
       if (idToken) {
         listUsers({ idToken })
           .then(({ users: fetchedUsers }) => {
-            setUsers(fetchedUsers)
+            setUsers(
+              fetchedUsers.sort((a, b) =>
+                a.kana_name.last + a.kana_name.first >
+                b.kana_name.last + b.kana_name.first
+                  ? 1
+                  : -1
+              )
+            )
           })
           .catch(async (e) => {
             const body = await e.response?.json()
@@ -110,9 +113,7 @@ const ListUsers: PageFC = () => {
                             {userRoleToUiText(role)}
                           </p>
                           <p className={styles.cell}>
-                            {category.type === "undergraduate_student"
-                              ? category.affiliation
-                              : userCategoryTypeToUiText(category.type)}
+                            {userCategoryToUiText(category)}
                           </p>
                         </a>
                       </Link>

@@ -13,7 +13,7 @@ const exportRegistrationFormAnswers = async ({
   registrationFormId,
   idToken,
 }: exportRegistrationFormAnswers.Props): Promise<string> => {
-  const fileSharingPage = pagesPath.file_sharing.form_answer.$url({
+  const fileSharingPage = pagesPath.file_sharing.registration_form_answer.$url({
     query: { answerId: "{answer_id}", sharingIds: "{sharing_ids}" },
   })
 
@@ -40,7 +40,8 @@ const exportRegistrationFormAnswers = async ({
       })
       .text()
   } catch (err) {
-    const body = await err.response?.json()
+    // FIXME: any
+    const body = await (err as any).response?.json()
     throw body ?? err
   }
 }

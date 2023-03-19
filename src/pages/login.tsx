@@ -1,19 +1,14 @@
+import { PageFC } from "next"
+import Link from "next/link"
 import { useState } from "react"
 
-import { PageFC } from "next"
-
+import { useForm } from "react-hook-form"
+import { Button, FormItemSpacer, Head, TextField, Panel } from "../components"
 import { pagesPath } from "../utils/$path"
 
-import { useForm } from "react-hook-form"
-
-import Link from "next/link"
-
+import styles from "./login.module.scss"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
-
-import { Button, FormItemSpacer, Head, TextField, Panel } from "../components"
-
-import styles from "./login.module.scss"
 
 type Inputs = Readonly<{
   email: string

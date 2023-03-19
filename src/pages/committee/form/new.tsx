@@ -1,30 +1,14 @@
-import { useEffect, useState } from "react"
-
+import dayjs from "dayjs"
+import customParseFormat from "dayjs/plugin/customParseFormat"
+import timezone from "dayjs/plugin/timezone"
+import utc from "dayjs/plugin/utc"
 import { PageFC } from "next"
 import { useRouter } from "next/router"
+import { useState } from "react"
 
 import { useForm, useFieldArray } from "react-hook-form"
 
 import { v4 as uuid } from "uuid"
-
-import dayjs from "dayjs"
-import customParseFormat from "dayjs/plugin/customParseFormat"
-import utc from "dayjs/plugin/utc"
-import timezone from "dayjs/plugin/timezone"
-
-import type {
-  ProjectCategory,
-  ProjectAttribute,
-} from "../../../types/models/project"
-import type { FormItem } from "../../../types/models/form/item"
-
-import { createForm } from "../../../lib/api/form/createForm"
-import { reportError } from "../../../lib/errorTracking/reportError"
-
-import { useAuthNeue } from "src/contexts/auth"
-import { useToastDispatcher } from "src/contexts/toast"
-
-import { pagesPath } from "../../../utils/$path"
 
 import {
   Button,
@@ -39,8 +23,22 @@ import {
   TextField,
   Tooltip,
 } from "../../../components/"
+import { createForm } from "../../../lib/api/form/createForm"
+import { reportError } from "../../../lib/errorTracking/reportError"
+import type { FormItem } from "../../../types/models/form/item"
+import type {
+  ProjectCategory,
+  ProjectAttribute,
+} from "../../../types/models/project"
 
+import { pagesPath } from "../../../utils/$path"
 import styles from "./new.module.scss"
+import { useAuthNeue } from "src/contexts/auth"
+import { useToastDispatcher } from "src/contexts/toast"
+
+dayjs.extend(customParseFormat)
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 type Inputs = {
   title: string
@@ -87,10 +85,12 @@ const NewForm: PageFC = () => {
     shouldFocusError: true,
     defaultValues: {
       categories: {
-        general: false,
-        stage: false,
-        cooking: false,
-        food: false,
+        general_physical: false,
+        general_online: false,
+        stage_physical: false,
+        stage_online: false,
+        food_physical: false,
+        cooking_physical: false,
       },
       attributes: {
         academic: false,
@@ -333,12 +333,6 @@ const NewForm: PageFC = () => {
     if (fields[indexA] && fields[indexB]) swap(indexA, indexB)
   }
 
-  useEffect(() => {
-    dayjs.extend(customParseFormat)
-    dayjs.extend(utc)
-    dayjs.extend(timezone)
-  }, [])
-
   return (
     <div className={styles.wrapper}>
       <Head title="新しい申請を作成" />
@@ -443,20 +437,24 @@ const NewForm: PageFC = () => {
           <Panel>
             <ProjectQuerySelector
               checked={{
-                general: watch("categories.general"),
-                stage: watch("categories.stage"),
-                cooking: watch("categories.cooking"),
-                food: watch("categories.food"),
+                general_physical: watch("categories.general_physical"),
+                general_online: watch("categories.general_online"),
+                stage_physical: watch("categories.stage_physical"),
+                stage_online: watch("categories.stage_online"),
+                food_physical: watch("categories.food_physical"),
+                cooking_physical: watch("categories.cooking_physical"),
                 academic: watch("attributes.academic"),
                 artistic: watch("attributes.artistic"),
                 outdoor: watch("attributes.outdoor"),
                 committee: watch("attributes.committee"),
               }}
               registers={{
-                general: register("categories.general"),
-                stage: register("categories.stage"),
-                cooking: register("categories.cooking"),
-                food: register("categories.food"),
+                general_physical: register("categories.general_physical"),
+                general_online: register("categories.general_online"),
+                stage_physical: register("categories.stage_physical"),
+                stage_online: register("categories.stage_online"),
+                food_physical: register("categories.food_physical"),
+                cooking_physical: register("categories.cooking_physical"),
                 academic: register("attributes.academic"),
                 artistic: register("attributes.artistic"),
                 outdoor: register("attributes.outdoor"),

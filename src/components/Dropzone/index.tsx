@@ -8,9 +8,8 @@ import {
   FieldPath,
 } from "react-hook-form"
 
-import { dataset } from "src/utils/dataset"
-
 import styles from "./index.module.scss"
+import { dataset } from "src/utils/dataset"
 
 declare namespace Dropzone {
   type Props<T> = {

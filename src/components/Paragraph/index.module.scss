@@ -1,0 +1,9 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.url {
+  line-height: 1.5em;
+  color: $color-brand;
+
+  @include hoverUnderline($color-brand);
+}
