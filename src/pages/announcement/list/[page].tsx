@@ -114,7 +114,15 @@ export const getStaticProps: GetStaticProps<
 
 const AnnouncementsList: PageFC<
   InferGetStaticPropsType<typeof getStaticProps>
-> = ({ totalPages, pageIndex, announcements }) => {
+> = ({
+  totalPages,
+  pageIndex,
+  announcements,
+}: {
+  totalPages: number
+  pageIndex: number
+  announcements: Array<Announcement>
+}) => {
   return (
     <div className={styles.wrapper}>
       <Head title="お知らせ一覧" />
