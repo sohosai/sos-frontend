@@ -1,5 +1,6 @@
 import { FC } from "react"
 
+import { v4 as uuid } from "uuid"
 import isURL, { IsURLOptions } from "validator/lib/isURL"
 
 import styles from "./index.module.scss"
@@ -39,7 +40,7 @@ const Paragraph: FC<Paragraph.Props> = ({
           protocols: ["http", "https"],
           ...isURLOptions,
         }) ? (
-          <div className={urlWrapperDivClassName}>
+          <div className={urlWrapperDivClassName} key={uuid()}>
             <a
               href={
                 !dangerouslyDisableForceExternal && !txt.startsWith("http")

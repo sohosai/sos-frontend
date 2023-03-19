@@ -1,14 +1,20 @@
+@import "../../styles/mixins";
+
 .label {
   margin-bottom: 8px;
 }
 
 .dropdownWrapper {
   display: flex;
-  align-items: flex-start;
 }
 
 .dropdown {
   &:not(:last-of-type) {
     margin-right: 16px;
+  }
+
+  @include mobile {
+    max-width: 100px;
+    flex-grow: 1;
   }
 }

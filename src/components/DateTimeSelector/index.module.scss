@@ -1,7 +1,21 @@
+@import "../../styles/mixins";
+
 .selectorsWrapper {
   display: flex;
+
+  @include mobile {
+    justify-content: left;
+  }
 }
 
 .dateSelectorWrapper {
   margin-right: 16px;
+}
+
+@include mobile {
+  .dateSelectorWrapper,
+  .timeSelectorWrapper {
+    max-width: calc(100px * 2 + 16px);
+    flex-grow: 1;
+  }
 }
