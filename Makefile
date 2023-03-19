@@ -33,7 +33,7 @@ typecheck.watch: install pathpida
 	yarn tsc --noEmit --watch
 
 storybook: install pathpida
-	yarn start-storybook -s public -p 6161
+	NODE_OPTIONS=--openssl-legacy-provider yarn start-storybook -s public -p 6161
 
 build.storybook: install pathpida
 	yarn build-storybook -s public
