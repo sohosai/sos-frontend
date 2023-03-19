@@ -21,7 +21,7 @@ function MyApp({
   Component: AppProps["Component"] & PageOptions
   pageProps: AppProps["pageProps"]
 }): ReactElement {
-  useIfSupported()
+  // useIfSupported()
 
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_DEPLOY_ENV === "staging") {
