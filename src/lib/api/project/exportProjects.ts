@@ -1,4 +1,5 @@
 import { client } from "../client"
+import { projectCategoryToUiText } from "src/types/models/project"
 
 declare namespace exportProjects {
   type Props = Readonly<{
@@ -36,10 +37,12 @@ const exportProjects = async ({
         field_attribute_artistic: "芸術祭参加枠",
         field_attribute_committee: "委員会企画",
         field_attribute_outdoor: "屋外企画",
-        category_general: "一般企画",
-        category_stage: "ステージ企画",
-        category_cooking: "調理企画",
-        category_food: "飲食物取扱企画",
+        category_general_physical: projectCategoryToUiText("general_physical"),
+        category_general_online: projectCategoryToUiText("general_online"),
+        category_stage_physical: projectCategoryToUiText("stage_physical"),
+        category_stage_online: projectCategoryToUiText("stage_online"),
+        category_food_physical: projectCategoryToUiText("food_physical"),
+        category_cooking_physical: projectCategoryToUiText("cooking_physical"),
       },
     })
     .text()

@@ -1,3 +1,5 @@
+@import "./variables";
+
 @mixin flexCenter {
   display: flex;
   align-items: center;
@@ -23,6 +25,10 @@
   @include mainAreaWidth();
   margin-top: 64px;
   margin-bottom: 32px;
+
+  @include mobile {
+    margin-top: 32px;
+  }
 }
 
 @mixin pageTitle {
@@ -67,5 +73,12 @@
       transform: scaleX(1);
       transform-origin: left;
     }
+  }
+}
+
+@mixin mobile {
+  $mobile: 960px;
+  @media screen and (max-width: ($mobile)) {
+    @content;
   }
 }

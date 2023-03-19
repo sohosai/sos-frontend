@@ -11,10 +11,12 @@ export const Index: Story<ProjectQuerySelector.Props> = (options) => (
   <ProjectQuerySelector
     {...options}
     checked={{
-      general: true,
-      stage: false,
-      cooking: true,
-      food: false,
+      general_physical: true,
+      general_online: true,
+      stage_physical: false,
+      stage_online: false,
+      cooking_physical: true,
+      food_physical: true,
       academic: true,
       artistic: true,
       outdoor: false,

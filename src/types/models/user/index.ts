@@ -23,29 +23,18 @@ export type UserKanaName = Readonly<{
   last: string
 }>
 
-export type UserCategoryType =
+export type UserCategory =
   | "undergraduate_student"
   | "graduate_student"
   | "academic_staff"
 
-export type UserCategory =
-  | Readonly<{
-      type: Extract<UserCategoryType, "undergraduate_student">
-      affiliation: string
-    }>
-  | Readonly<{
-      type: Exclude<UserCategoryType, "undergraduate_student">
-    }>
-
-export const userCategoryTypeToUiText = (
-  userCategoryType: UserCategoryType
-): string => {
+export const userCategoryToUiText = (userCategory: UserCategory): string => {
   const map: {
-    [key in UserCategoryType]: string
+    [key in UserCategory]: string
   } = {
     undergraduate_student: "学群生",
     graduate_student: "院生",
     academic_staff: "教職員",
   }
-  return map[userCategoryType]
+  return map[userCategory]
 }
