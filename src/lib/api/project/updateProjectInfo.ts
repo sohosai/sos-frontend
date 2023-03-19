@@ -26,8 +26,6 @@ declare namespace updateProjectInfo {
         groupName: string
         kanaGroupName: string
         description: string
-        category: ProjectCategory
-        attributes: ProjectAttribute[]
       }
     }>
 
@@ -62,8 +60,6 @@ async function updateProjectInfo(
             group_name: props.body.groupName,
             kana_group_name: props.body.kanaGroupName,
             description: props.body.description,
-            category: props.body.category,
-            attributes: props.body.attributes,
           },
         })
         .json()
@@ -98,8 +94,6 @@ async function updateProjectInfo(
             group_name: props.body.groupName,
             kana_group_name: props.body.kanaGroupName,
             description: props.body.description,
-            category: props.body.category,
-            attributes: props.body.attributes,
           },
         })
         .json()

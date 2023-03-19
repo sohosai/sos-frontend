@@ -13,7 +13,7 @@ const exportRegistrationFormAnswers = async ({
   registrationFormId,
   idToken,
 }: exportRegistrationFormAnswers.Props): Promise<string> => {
-  const fileSharingPage = pagesPath.file_sharing.form_answer.$url({
+  const fileSharingPage = pagesPath.file_sharing.registration_form_answer.$url({
     query: { answerId: "{answer_id}", sharingIds: "{sharing_ids}" },
   })
 
