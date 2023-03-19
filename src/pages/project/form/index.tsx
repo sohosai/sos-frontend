@@ -35,7 +35,7 @@ const FormRow: FC<FormRowProps> = ({ form, outOfAnswerPeriod = false }) => {
         paddingTop: "16px",
         paddingBottom: "16px",
       }}
-      hoverStyle={answerable ? "gray" : "none"}
+      hoverStyle={answerable || form.has_answer ? "gray" : "none"}
     >
       <div className={styles.formRowInner}>
         <p className={styles.formName} title={form.name}>
@@ -68,7 +68,24 @@ const FormRow: FC<FormRowProps> = ({ form, outOfAnswerPeriod = false }) => {
           </a>
         </Link>
       ) : (
-        <FormRowInner />
+        <>
+          {(() => {
+            if (form.has_answer)
+              return (
+                <Link
+                  href={pagesPath.project.form.details.$url({
+                    query: { formId: form.id },
+                  })}
+                >
+                  <a>
+                    <FormRowInner />
+                  </a>
+                </Link>
+              )
+
+            return <FormRowInner />
+          })()}
+        </>
       )}
     </div>
   )
