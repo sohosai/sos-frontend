@@ -15,7 +15,7 @@
     "validator": "13.7.0"
   },
   "devDependencies": {
-    "@babel/core": "7.15.8",
+    "@babel/core": "7.16.0",
     "@material-ui/core": "4.12.3",
     "@next/bundle-analyzer": "12.0.4",
     "@storybook/addon-actions": "6.3.10",
@@ -28,9 +28,12 @@
     "@types/react": "17.0.28",
     "@types/uuid": "8.3.1",
     "@types/validator": "13.6.5",
+    "@typescript-eslint/eslint-plugin": "4.31.0",
+    "@typescript-eslint/parser": "4.31.0",
+    "babel-loader": "8.2.3",
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "@typescript-eslint/parser": "4.33.0",
-    "babel-loader": "8.2.2",
+    "babel-loader": "8.2.3",
     "change-case": "4.1.2",
     "contentful": "9.1.4",
     "css-loader": "5.2.7",
