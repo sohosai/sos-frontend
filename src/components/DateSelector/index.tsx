@@ -70,6 +70,7 @@ const DateSelector: FC<DateSelector.Props> = ({
               errorTypes?.month?.min && "不正な値です",
               errorTypes?.month?.max && "不正な値です",
             ]}
+            bySide={true}
           />
         </div>
         <div className={styles.dropdown}>
@@ -100,6 +101,7 @@ const DateSelector: FC<DateSelector.Props> = ({
               errorTypes?.day?.min && "不正な値です",
               errorTypes?.day?.max && "不正な値です",
             ]}
+            bySide={true}
           />
         </div>
       </div>

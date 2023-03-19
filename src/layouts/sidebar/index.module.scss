@@ -7,20 +7,90 @@
   justify-content: space-between;
   width: 100%;
   height: 100%;
+
+  @include mobile {
+    display: block;
+  }
+}
+
+.topWrapper {
+  @include mobile {
+    padding: 20px 30px 20px 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+
+  @include mobile {
+    width: 100%;
+    margin-top: -10px;
+    padding-bottom: 10px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.06);
+    position: absolute;
+    background: white;
+    z-index: 1;
+    opacity: 0;
+    transition: visibility 200ms, opacity 200ms;
+    visibility: hidden;
+
+    &[data-opened="true"] {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
 }
 
 .bottomWrapper {
-  margin: 0 32px 40px;
+  margin: 32px 40px;
+
+  @include mobile {
+    margin: 8px 30px 0 30px;
+    gap: 8px;
+    display: flex;
+    justify-content: right;
+  }
+}
+
+.logotypeWrapper {
+  display: flex;
+  align-items: center;
 }
 
 .logotype {
+  width: 100%;
   color: $color-brand;
   font-weight: bold;
   font-size: 21px;
   line-height: 28px;
   margin-top: 32px;
-  padding: 0 32px;
   margin-bottom: 64px;
+  padding: 0 32px;
+
+  @include mobile {
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+}
+
+.mainLogotype {
+  width: 5em;
+  display: block;
+
+  @include mobile {
+    width: 100%;
+  }
+}
+
+.logotypeKana {
+  letter-spacing: -1px;
 }
 
 .stagingNotice {
@@ -33,6 +103,13 @@
   color: white;
   background-color: $color-brand;
   font-size: 1rem;
+
+  @include mobile {
+    line-height: 1.4em;
+    text-align: center;
+    margin: 4px 0 4px 2px;
+    padding: 8px 2px;
+  }
 }
 
 .switchLayoutButton {
@@ -65,6 +142,86 @@
 
   &:hover {
     background-color: $color-gray-50;
+  }
+}
+
+.switchLayoutButton,
+.mypageButtonWrapper {
+  @include mobile {
+    min-width: 80px;
+    max-width: 200px;
+    height: 36px;
+    padding: 0 10px;
+    flex-grow: 1;
+    border-radius: 8px;
+  }
+}
+
+.mobileMenuIconWrapper {
+  display: none;
+  align-items: center;
+
+  @include mobile {
+    display: flex;
+  }
+}
+
+.mobileMenuIcon {
+  width: 24px;
+  height: 20px;
+  cursor: pointer;
+  position: relative;
+
+  span {
+    width: 100%;
+    height: 3px;
+    background-color: $color-gray-400;
+    border-radius: 4px;
+    display: inline-block;
+    transition: all 150ms;
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+
+    &:nth-of-type(1) {
+      top: 0;
+    }
+
+    &:nth-of-type(2) {
+      top: calc(50% - 1.5px);
+    }
+
+    &:nth-of-type(3) {
+      bottom: 0;
+    }
+  }
+
+  &[data-active="true"] {
+    span:nth-of-type(1) {
+      transform: translateY(8.5px) rotate(-45deg);
+    }
+
+    span:nth-of-type(2) {
+      left: 50%;
+      opacity: 0;
+      animation: active-btn-bar 0.8s forwards;
+    }
+
+    @keyframes active-btn-bar {
+      100% {
+        height: 0;
+      }
+    }
+
+    span:nth-of-type(3) {
+      transform: translateY(-8.5px) rotate(45deg);
+    }
+  }
+
+  i {
+    height: 1em;
+    font-size: 2.5em;
+    display: block;
   }
 }
 

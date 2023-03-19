@@ -11,6 +11,7 @@ export type PendingProject = Readonly<{
   description: string
   category: ProjectCategory
   attributes: ProjectAttribute[]
+  exceptional_complete_deadline?: Date | null
 }>
 
 export type Project = Readonly<{
@@ -36,9 +37,19 @@ export type PendingProjectId = string
 
 export type ProjectId = string
 
-export type ProjectCategory = "general" | "stage" | "cooking" | "food"
+export type ProjectCategory =
+  | "general_physical"
+  | "general_online"
+  | "stage_physical"
+  | "stage_online"
+  | "food_physical"
+  | "cooking_physical"
 
 export type ProjectAttribute = "academic" | "artistic" | "committee" | "outdoor"
+
+export const isStage = (category: ProjectCategory): boolean => {
+  return category === "stage_physical" || category === "stage_online"
+}
 
 export const projectCategoryToUiText = (
   projectCategory: ProjectCategory
@@ -46,10 +57,12 @@ export const projectCategoryToUiText = (
   const dict: {
     [category in ProjectCategory]: string
   } = {
-    general: "一般企画",
-    stage: "ステージ企画",
-    cooking: "調理企画",
-    food: "飲食物取扱企画",
+    general_physical: "対面一般企画",
+    general_online: "オンライン一般企画",
+    stage_physical: "対面ステージ企画",
+    stage_online: "オンラインステージ企画",
+    food_physical: "飲食物取扱い企画",
+    cooking_physical: "調理企画",
   }
   return dict[projectCategory]
 }

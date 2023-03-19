@@ -2,7 +2,7 @@ import { HTTPError, TimeoutError } from "ky"
 
 import { client } from "../client"
 
-import { FormAnswerItem } from "src/types/models/form/answerItem"
+import { FormAnswerItemInForm } from "src/types/models/form/answerItem"
 import type { RegistrationFormAnswer } from "src/types/models/registrationForm"
 
 declare namespace updateRegistrationFormAnswer {
@@ -19,7 +19,7 @@ declare namespace updateRegistrationFormAnswer {
     Readonly<{
       idToken: string
       registrationFormId: string
-      items: FormAnswerItem[]
+      items: FormAnswerItemInForm[]
     }>
 
   type ErrorType = {
@@ -62,7 +62,21 @@ const updateRegistrationFormAnswer = async (
           json: {
             project_id: props.projectId,
             registration_form_id: props.registrationFormId,
-            items: props.items,
+            items: props.items.map((item) => {
+              if (item.type === "checkbox") {
+                return {
+                  ...item,
+                  answer: Object.entries(item.answer).reduce(
+                    (acc: string[], [id, value]) => {
+                      if (value) acc.push(id)
+                      return acc
+                    },
+                    []
+                  ),
+                }
+              }
+              return item
+            }),
           },
         })
         .json()

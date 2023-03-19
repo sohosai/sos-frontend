@@ -23,6 +23,7 @@ const Signup: PageFC = () => {
     formState: { errors },
     setError,
     handleSubmit,
+    watch,
   } = useForm<Inputs>({
     criteriaMode: "all",
     mode: "onBlur",
@@ -82,6 +83,14 @@ const Signup: PageFC = () => {
       })
   }
 
+  const email = watch().email
+  const emailWarning = email
+    ? !watch().email.match(/^s[012][0-9]{6}@/) &&
+      watch().email.match(/@s\.tsukuba\.ac\.jp/)
+      ? "invalidSAddress"
+      : null
+    : null
+
   return (
     <div className={styles.wrapper}>
       <Head title="ユーザー登録" />
@@ -110,6 +119,10 @@ const Signup: PageFC = () => {
                       "使用できないメールアドレスです",
                     errors?.email?.type === "emailAlreadyInUse" &&
                       "このメールアドレスはユーザー登録済みです",
+                  ]}
+                  warning={[
+                    emailWarning === "invalidSAddress" &&
+                      "学生に発行されたsアドレスではない可能性があります。\nこのまま実行しますか？",
                   ]}
                   placeholder="xxx@s.tsukuba.ac.jp"
                   required
