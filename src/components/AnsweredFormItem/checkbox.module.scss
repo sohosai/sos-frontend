@@ -1,0 +1,19 @@
+@import "src/styles/variables";
+
+.title {
+  margin-bottom: 8px;
+}
+
+.checkboxWrapper {
+  &:not(:last-of-type) {
+    margin-bottom: 8px;
+  }
+}
+
+.descriptions {
+  margin-top: 8px;
+}
+
+.description {
+  color: $color-text-sub;
+}

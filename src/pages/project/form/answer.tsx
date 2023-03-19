@@ -529,7 +529,11 @@ const AnswerForm: PageFC = () => {
                             required={formItem.is_required}
                             register={register(
                               `items.${index}.answer` as const,
-                              { required: formItem.is_required }
+                              {
+                                required: formItem.is_required,
+                                setValueAs: (value: string) =>
+                                  value?.length ? value : null,
+                              }
                             )}
                           />
                         )

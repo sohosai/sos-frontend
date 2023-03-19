@@ -7,6 +7,7 @@ import { useForm, useFieldArray } from "react-hook-form"
 import styles from "./answer.module.scss"
 import {
   Button,
+  Checkbox,
   FormItemSpacer,
   Head,
   Panel,
@@ -14,6 +15,7 @@ import {
   Spinner,
 } from "src/components"
 import {
+  FileFormItem,
   IntegerFormItem,
   RadioFormItem,
   TextFormItem,
@@ -22,12 +24,17 @@ import { useAuthNeue } from "src/contexts/auth"
 import { useMyProject } from "src/contexts/myProject"
 import { useToastDispatcher } from "src/contexts/toast"
 
+import { createFile } from "src/lib/api/file/createFile"
 import { answerRegistrationForm } from "src/lib/api/registrationForm/answerRegistrationForm"
 import { getMyRegistrationFormAnswer } from "src/lib/api/registrationForm/getMyRegistrationFormAnswer"
 import { getRegistrationForm } from "src/lib/api/registrationForm/getRegistrationForm"
 import { updateRegistrationFormAnswer } from "src/lib/api/registrationForm/updateRegistrationFormAnswer"
 import { reportError as reportErrorHandler } from "src/lib/errorTracking"
-import { FormAnswerItemInForm } from "src/types/models/form/answerItem"
+import {
+  FormAnswerItemInForm,
+  FormAnswerItemInFormWithRealFiles,
+} from "src/types/models/form/answerItem"
+import { isStage } from "src/types/models/project"
 import { RegistrationForm } from "src/types/models/registrationForm"
 
 import { pagesPath } from "src/utils/$path"
@@ -40,8 +47,8 @@ export type Query = {
 type Inputs = {
   items: Array<
     Extract<
-      FormAnswerItemInForm,
-      { type: "text" | "integer" | "checkbox" | "radio" }
+      FormAnswerItemInFormWithRealFiles,
+      { type: "text" | "integer" | "checkbox" | "radio" | "file" }
     >
   >
 }
@@ -62,6 +69,9 @@ const AnswerRegistrationForm: PageFC = () => {
     | "timeout"
     | "unknown"
   >()
+  const [formItemErrors, setFormItemErrors] = useState<
+    Array<"minChecks" | "maxChecks" | null>
+  >([])
   const [processing, setProcessing] = useState(false)
 
   const { id: registrationFormId, update: updateMode = false } =
@@ -73,6 +83,7 @@ const AnswerRegistrationForm: PageFC = () => {
     handleSubmit,
     formState: { errors },
     setValue,
+    watch,
   } = useForm<Inputs>({
     mode: "onBlur",
     criteriaMode: "all",
@@ -93,16 +104,71 @@ const AnswerRegistrationForm: PageFC = () => {
     if (!myProjectState?.myProject) return
     if (!registrationFormId) return
 
+    const curFormItemErrors = formItemErrors
+
+    items.map((item, index) => {
+      if (item.type === "checkbox") {
+        const formItem = registrationForm?.items[index]
+        if (formItem?.type !== "checkbox") {
+          addToast({ title: "エラーが発生しました", kind: "error" })
+          return
+        }
+
+        const checkedCount = Object.entries(item.answer).reduce(
+          (acc, [_, value]) => {
+            if (value) return ++acc
+            return acc
+          },
+          0
+        )
+
+        if (
+          formItem.min_checks != undefined &&
+          checkedCount < formItem.min_checks
+        ) {
+          curFormItemErrors[index] = "minChecks"
+        } else if (
+          formItem.max_checks != undefined &&
+          checkedCount > formItem.max_checks
+        ) {
+          curFormItemErrors[index] = "maxChecks"
+        } else {
+          curFormItemErrors[index] = null
+        }
+      }
+    })
+
+    setFormItemErrors(curFormItemErrors)
+
+    if (curFormItemErrors.find((error) => Boolean(error))) {
+      return
+    }
+
     if (updateMode) {
-      if (
-        window.confirm(
-          [
+      const message = isStage(myProjectState.myProject.category)
+        ? "回答を更新しますか?"
+        : [
             "企画基本情報を編集すると企画登録の完了日時が現在の日時に更新され、先着順で企画数を制限する教室貸出などで不利になる可能性があります",
             "送信してよろしいですか?",
           ].join("\n")
-        )
-      ) {
+      if (window.confirm(message)) {
         setProcessing(true)
+
+        /**
+         * ファイルとして `File` ではなくバックから返ってきた `fileId` が入った items
+         */
+        const itemsWithUploadedFiles: Array<FormAnswerItemInForm> = items.map(
+          (item) => {
+            if (item.type === "file") {
+              return {
+                item_id: item.item_id,
+                type: "file",
+                answer: [],
+              }
+            }
+            return item
+          }
+        )
 
         const requestProps = {
           ...(myProjectState.isPending === false
@@ -111,24 +177,89 @@ const AnswerRegistrationForm: PageFC = () => {
               }
             : { pendingProjectId: myProjectState.myProject.id }),
           registrationFormId,
-          items: items.map((item) => {
-            if (item.type === "checkbox") {
-              return {
-                ...item,
-                answer: Object.entries(item.answer).reduce(
-                  (acc, [id, value]) => {
-                    if (value) acc.push(id)
-                    return acc
-                  },
-                  [] as string[]
-                ),
-              }
-            }
-            return item
-          }),
+          items: itemsWithUploadedFiles,
         }
 
         try {
+          const fileUploadFormData = new FormData()
+          items.map((item) => {
+            if (item.type === "file" && item.answer?.length) {
+              item.answer.map((f) =>
+                fileUploadFormData.append(
+                  // name ディレクティブに FormItemId を入れて区別する
+                  item.item_id,
+                  f,
+                  encodeURIComponent(f.name)
+                )
+              )
+            }
+          })
+          if (
+            // ファイルが1つ以上存在する
+            !fileUploadFormData.values().next().done
+          ) {
+            try {
+              const fileUploadRes = await createFile({
+                props: {
+                  body: fileUploadFormData,
+                },
+                idToken: await authState.firebaseUser.getIdToken(),
+              })
+
+              if (fileUploadRes && "errorCode" in fileUploadRes) {
+                setProcessing(false)
+
+                switch (fileUploadRes.errorCode) {
+                  case "outOfFileUsageQuota": {
+                    addToast({
+                      title: "ファイルアップロードの容量上限に達しています",
+                      kind: "error",
+                    })
+                    break
+                  }
+                  case "timeout": {
+                    addToast({
+                      title: "ファイルをアップロードできませんでした",
+                      descriptions: ["通信環境をご確認ください"],
+                      kind: "error",
+                    })
+                    break
+                  }
+                  default: {
+                    addToast({
+                      title: "ファイルのアップロードに失敗しました",
+                      kind: "error",
+                    })
+                    break
+                  }
+                }
+                return
+              }
+
+              itemsWithUploadedFiles.map((item) => {
+                if (item.type === "file") {
+                  item.answer = fileUploadRes.files
+                    // name ディレクティブで当該 formItem に紐付けられたファイルだけ区別する
+                    .filter((f) => f.name === item.item_id)
+                    .map((f) => ({ file_id: f.file.id }))
+                }
+              })
+            } catch (err) {
+              setProcessing(false)
+              addToast({
+                title: "ファイルのアップロードに失敗しました",
+                kind: "error",
+              })
+              reportErrorHandler(
+                "failed to upload file before answering form",
+                {
+                  error: err,
+                }
+              )
+              return
+            }
+          }
+
           const res = await updateRegistrationFormAnswer({
             ...requestProps,
             idToken: await authState.firebaseUser.getIdToken(),
@@ -208,27 +339,108 @@ const AnswerRegistrationForm: PageFC = () => {
       if (window.confirm("回答を送信しますか?")) {
         setProcessing(true)
 
-        const requestProps = {
-          pendingProjectId: myProjectState.myProject.id,
-          registrationFormId: registrationFormId,
-          items: items.map((item) => {
-            if (item.type === "checkbox") {
+        /**
+         * ファイルとして `File` ではなくバックから返ってきた `fileId` が入った items
+         */
+        const itemsWithUploadedFiles: Array<FormAnswerItemInForm> = items.map(
+          (item) => {
+            if (item.type === "file") {
               return {
-                ...item,
-                answer: Object.entries(item.answer).reduce(
-                  (acc, [id, value]) => {
-                    if (value) acc.push(id)
-                    return acc
-                  },
-                  [] as string[]
-                ),
+                item_id: item.item_id,
+                type: "file",
+                answer: [],
               }
             }
             return item
-          }),
+          }
+        )
+
+        const requestProps = {
+          pendingProjectId: myProjectState.myProject.id,
+          registrationFormId: registrationFormId,
+          items: itemsWithUploadedFiles,
         }
 
         try {
+          const fileUploadFormData = new FormData()
+          items.map((item) => {
+            if (item.type === "file" && item.answer?.length) {
+              item.answer.map((f) =>
+                fileUploadFormData.append(
+                  // name ディレクティブに FormItemId を入れて区別する
+                  item.item_id,
+                  f,
+                  encodeURIComponent(f.name)
+                )
+              )
+            }
+          })
+          if (
+            // ファイルが1つ以上存在する
+            !fileUploadFormData.values().next().done
+          ) {
+            try {
+              const fileUploadRes = await createFile({
+                props: {
+                  body: fileUploadFormData,
+                },
+                idToken: await authState.firebaseUser.getIdToken(),
+              })
+
+              if (fileUploadRes && "errorCode" in fileUploadRes) {
+                setProcessing(false)
+
+                switch (fileUploadRes.errorCode) {
+                  case "outOfFileUsageQuota": {
+                    addToast({
+                      title: "ファイルアップロードの容量上限に達しています",
+                      kind: "error",
+                    })
+                    break
+                  }
+                  case "timeout": {
+                    addToast({
+                      title: "ファイルをアップロードできませんでした",
+                      descriptions: ["通信環境をご確認ください"],
+                      kind: "error",
+                    })
+                    break
+                  }
+                  default: {
+                    addToast({
+                      title: "ファイルのアップロードに失敗しました",
+                      kind: "error",
+                    })
+                    break
+                  }
+                }
+                return
+              }
+
+              itemsWithUploadedFiles.map((item) => {
+                if (item.type === "file") {
+                  item.answer = fileUploadRes.files
+                    // name ディレクティブで当該 formItem に紐付けられたファイルだけ区別する
+                    .filter((f) => f.name === item.item_id)
+                    .map((f) => ({ file_id: f.file.id }))
+                }
+              })
+            } catch (err) {
+              setProcessing(false)
+              addToast({
+                title: "ファイルのアップロードに失敗しました",
+                kind: "error",
+              })
+              reportErrorHandler(
+                "failed to upload file before answering form",
+                {
+                  error: err,
+                }
+              )
+              return
+            }
+          }
+
           await answerRegistrationForm({
             ...requestProps,
             idToken: await authState.firebaseUser.getIdToken(),
@@ -357,6 +569,13 @@ const AnswerRegistrationForm: PageFC = () => {
                   answer: null,
                 }
               }
+              case "file": {
+                return {
+                  item_id: formItem.id,
+                  type: "file" as const,
+                  answer: null,
+                }
+              }
             }
           })
           .filter(
@@ -426,6 +645,25 @@ const AnswerRegistrationForm: PageFC = () => {
                     { shouldValidate: true }
                   )
                   break
+                case "checkbox": {
+                  const formItem = fetchedRegistrationForm.items[index]
+                  if (formItem.type !== "checkbox") {
+                    addToast({ title: "エラーが発生しました", kind: "error" })
+                    setGeneralError("unknown")
+                    return
+                  }
+                  setValue(
+                    `items.${index}.answer` as const,
+                    Object.fromEntries(
+                      formItem.boxes.map(({ id }) => [
+                        id,
+                        answerItem.answer.includes(id),
+                      ])
+                    ),
+                    { shouldValidate: true }
+                  )
+                  break
+                }
                 case "radio":
                   setValue(
                     `items.${index}.answer` as const,
@@ -439,6 +677,9 @@ const AnswerRegistrationForm: PageFC = () => {
                     answerItem.answer,
                     { shouldValidate: true }
                   )
+                  break
+                case "file":
+                  //TODO
                   break
               }
             })
@@ -510,6 +751,46 @@ const AnswerRegistrationForm: PageFC = () => {
                             ]}
                           />
                         )}
+                        {formItem.type === "checkbox" && (
+                          <>
+                            <p className={styles.checkboxesTitle}>
+                              {formItem.name}
+                            </p>
+                            {formItem.boxes.map(({ id, label }) => (
+                              <div className={styles.checkboxWrapper} key={id}>
+                                <Checkbox
+                                  label={label}
+                                  checked={
+                                    watch(
+                                      `items.${index}.answer.${id}` as const
+                                    ) ?? false
+                                  }
+                                  register={register(
+                                    `items.${index}.answer.${id}` as const
+                                  )}
+                                />
+                              </div>
+                            ))}
+                            {Boolean(formItem.description.length) && (
+                              <div className={styles.checkboxDescriptions}>
+                                <Paragraph
+                                  text={formItem.description}
+                                  normalTextClassName={
+                                    styles.checkboxDescription
+                                  }
+                                />
+                              </div>
+                            )}
+                            <p className={styles.checkboxesError}>
+                              {(() => {
+                                if (formItemErrors[index] === "maxChecks")
+                                  return `最大${formItem.max_checks}つしか選択できません`
+                                if (formItemErrors[index] === "minChecks")
+                                  return `最低${formItem.min_checks}つ選択してください`
+                              })()}
+                            </p>
+                          </>
+                        )}
                         {formItem.type === "radio" && (
                           <RadioFormItem
                             formItem={formItem}
@@ -517,6 +798,8 @@ const AnswerRegistrationForm: PageFC = () => {
                               `items.${index}.answer` as const,
                               {
                                 required: formItem.is_required,
+                                setValueAs: (value: string) =>
+                                  value?.length ? value : null,
                               }
                             )}
                             errors={[
@@ -546,6 +829,21 @@ const AnswerRegistrationForm: PageFC = () => {
                                 ?.max &&
                                 `${formItem.max}以下で入力してください`,
                             ]}
+                          />
+                        )}
+                        {formItem.type === "file" && (
+                          <FileFormItem
+                            formItem={formItem}
+                            control={control}
+                            name={`items.${index}.answer` as const}
+                            errors={[
+                              (errors?.items?.[index]?.answer as any)?.types
+                                ?.required && "必須項目です",
+                            ]}
+                            files={
+                              (watch(`items.${index}.answer` as const) ??
+                                []) as File[]
+                            }
                           />
                         )}
                       </>
