@@ -35,6 +35,8 @@ export const getStaticProps: GetStaticProps<{
 
 const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   announcements,
+}: {
+  announcements: Array<Announcement>
 }) => {
   return (
     <div className={styles.wrapper}>
