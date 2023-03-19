@@ -45,7 +45,7 @@ export const getStaticProps: GetStaticProps<
 }
 
 const AnnouncementPage: PageFC<InferGetStaticPropsType<typeof getStaticProps>> =
-  ({ announcement }) => {
+  ({ announcement }: { announcement: Announcement | null }) => {
     const router = useRouter()
 
     return (
