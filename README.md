@@ -97,11 +97,11 @@ make build.storybook // ビルド
 Contentful CLI を利用して本番環境で使用されている Content models をインポートすることができる([ドキュメント](https://www.contentful.com/developers/docs/tutorials/cli/import-and-export/)参照)
 
 ```
-contentful-cli login // ログイン
+contentful login // ログイン
 
-contentful-cli space use // 操作対象 Space を選択
+contentful space use // 操作対象 Space を選択
 
-contentful-cli import --content-file etc/contentful-models.json
+contentful space import --content-file etc/contentful-models.json
 ```
 
 インポートされた `Announcement` type の Entry を作成することでお知らせを追加できる
