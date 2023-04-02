@@ -23,9 +23,6 @@ Index.argTypes = {
     },
     defaultValue: "This is the text to be copied",
   },
-  size: {
-    defaultValue: "default",
-  },
   tooltipText: {
     control: {
       type: "text",

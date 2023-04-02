@@ -18,9 +18,6 @@ export const Index: Story<{ [attribute in ProjectAttribute]: boolean }> = ({
   />
 )
 Index.argTypes = {
-  attributes: {
-    table: { disable: true },
-  },
   academic: {
     control: {
       type: "boolean",
