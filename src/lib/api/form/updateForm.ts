@@ -1,7 +1,8 @@
 import { HTTPError, TimeoutError } from "ky"
 
-import type { Form } from "../../../types/models/form"
+import type { Form, FormCondition } from "../../../types/models/form"
 import { client } from "../client"
+import { FormItem } from "src/types/models/form/item"
 
 declare namespace updateForm {
   type Props = Readonly<{
@@ -11,6 +12,8 @@ declare namespace updateForm {
       description: string
       starts_at: number
       ends_at: number
+      condition: FormCondition
+      items: FormItem[]
     }
     idToken: string
   }>
