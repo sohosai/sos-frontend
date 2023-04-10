@@ -21,15 +21,16 @@ const CheckboxFormItem: FC<Props> = ({
 }) => (
   <>
     <p className={styles.title}>{formItem.name}</p>
-    {formItem.boxes.map(({ id, label }, index) => (
-      <div className={styles.checkboxWrapper} key={id}>
-        <Checkbox
-          label={label}
-          checked={checked[index]}
-          register={registers[index]}
-        />
-      </div>
-    ))}
+    {typeof formItem.boxes !== "string" &&
+      formItem.boxes.map(({ id, label }, index) => (
+        <div className={styles.checkboxWrapper} key={id}>
+          <Checkbox
+            label={label}
+            checked={checked[index]}
+            register={registers[index]}
+          />
+        </div>
+      ))}
     {Boolean(formItem.description.length) && (
       <div className={styles.descriptions}>
         <Paragraph

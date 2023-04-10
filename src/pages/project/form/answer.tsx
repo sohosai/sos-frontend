@@ -343,9 +343,12 @@ const AnswerForm: PageFC = () => {
                     return {
                       item_id: formItem.id,
                       type: "checkbox" as const,
-                      answer: Object.fromEntries(
-                        formItem.boxes.map(({ id }) => [id, false])
-                      ),
+                      answer:
+                        typeof formItem.boxes === "string"
+                          ? []
+                          : Object.fromEntries(
+                              formItem.boxes.map(({ id }) => [id, false])
+                            ),
                     }
                   }
                   case "radio": {
@@ -469,21 +472,25 @@ const AnswerForm: PageFC = () => {
                             <p className={styles.checkboxesTitle}>
                               {formItem.name}
                             </p>
-                            {formItem.boxes.map(({ id, label }) => (
-                              <div className={styles.checkboxWrapper} key={id}>
-                                <Checkbox
-                                  label={label}
-                                  checked={
-                                    watch(
+                            {typeof formItem.boxes !== "string" &&
+                              formItem.boxes.map(({ id, label }) => (
+                                <div
+                                  className={styles.checkboxWrapper}
+                                  key={id}
+                                >
+                                  <Checkbox
+                                    label={label}
+                                    checked={
+                                      watch(
+                                        `items.${index}.answer.${id}` as const
+                                      ) ?? false
+                                    }
+                                    register={register(
                                       `items.${index}.answer.${id}` as const
-                                    ) ?? false
-                                  }
-                                  register={register(
-                                    `items.${index}.answer.${id}` as const
-                                  )}
-                                />
-                              </div>
-                            ))}
+                                    )}
+                                  />
+                                </div>
+                              ))}
                             {Boolean(formItem.description.length) && (
                               <div className={styles.checkboxDescriptions}>
                                 <Paragraph
@@ -517,10 +524,12 @@ const AnswerForm: PageFC = () => {
                                 value: "",
                                 label: "選択してください",
                               },
-                              ...formItem.buttons.map(({ id, label }) => ({
-                                value: id,
-                                label,
-                              })),
+                              ...(typeof formItem.buttons !== "string"
+                                ? formItem.buttons.map(({ id, label }) => ({
+                                    value: id,
+                                    label,
+                                  }))
+                                : []),
                             ]}
                             error={[
                               (errors?.items?.[index]?.answer as any)?.types

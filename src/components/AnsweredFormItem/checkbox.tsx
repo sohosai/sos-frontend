@@ -12,15 +12,16 @@ type Props = {
 const AnsweredCheckboxFormItem: FC<Props> = ({ formItem, checkedItemList }) => (
   <>
     <p className={styles.title}>{formItem.name}</p>
-    {formItem.boxes.map(({ id, label }) => (
-      <div className={styles.checkboxWrapper} key={id}>
-        <Checkbox
-          label={label}
-          checked={checkedItemList.includes(id)}
-          readOnly
-        />
-      </div>
-    ))}
+    {typeof formItem.boxes !== "string" &&
+      formItem.boxes.map(({ id, label }) => (
+        <div className={styles.checkboxWrapper} key={id}>
+          <Checkbox
+            label={label}
+            checked={checkedItemList.includes(id)}
+            readOnly
+          />
+        </div>
+      ))}
     {Boolean(formItem.description.length) && (
       <div className={styles.descriptions}>
         <Paragraph

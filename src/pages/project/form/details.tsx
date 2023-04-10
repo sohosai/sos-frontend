@@ -195,9 +195,12 @@ const FormAnswerDetails: PageFC = () => {
                         (item) => item.item_id === formItem.id
                       )
                       if (answer?.type !== "radio") return
-                      const selectedAnswer = formItem.buttons.find(
-                        (item) => item.id === answer.answer
-                      )
+                      const selectedAnswer =
+                        typeof formItem.buttons === "string"
+                          ? undefined
+                          : formItem.buttons.find(
+                              (item) => item.id === answer.answer
+                            )
                       return (
                         <AnsweredRadioFormItem
                           formItem={formItem}

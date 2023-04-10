@@ -6,13 +6,14 @@ import {
   UseControllerProps,
   Control,
   FieldPath,
+  FieldValues,
 } from "react-hook-form"
 
 import styles from "./index.module.scss"
 import { dataset } from "src/utils/dataset"
 
 declare namespace Dropzone {
-  type Props<T> = {
+  type Props<T extends FieldValues> = {
     label?: string
     descriptions?: string[]
     /**
@@ -28,7 +29,7 @@ declare namespace Dropzone {
   }
 }
 
-const Dropzone = function <T>({
+const Dropzone = function <T extends FieldValues>({
   label,
   descriptions,
   name,
@@ -44,10 +45,14 @@ const Dropzone = function <T>({
   )
 
   const [dropping, setDropping] = useState(false)
-
+  console.log(typeof control)
   const {
     field: { onChange, value },
-  } = useController({ name, control, rules })
+  } = useController({
+    name,
+    control,
+    rules,
+  })
 
   const { getRootProps, getInputProps } = useDropzone({
     ...dropzoneOptions,

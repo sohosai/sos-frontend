@@ -21,10 +21,12 @@ const RadioFormItem: FC<Props> = ({ formItem, register, errors }) => (
         value: "",
         label: "選択してください",
       },
-      ...formItem.buttons.map(({ id, label }) => ({
-        value: id,
-        label,
-      })),
+      ...(typeof formItem.buttons !== "string"
+        ? formItem.buttons.map(({ id, label }) => ({
+            value: id,
+            label,
+          }))
+        : []),
     ]}
     error={errors}
     required={formItem.is_required}

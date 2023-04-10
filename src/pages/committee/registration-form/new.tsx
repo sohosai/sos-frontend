@@ -262,6 +262,7 @@ const NewRegistrationForm: PageFC = () => {
           name: "",
           description: "",
           conditions: null,
+          boxes: "",
         })
         break
       }
@@ -273,6 +274,7 @@ const NewRegistrationForm: PageFC = () => {
           conditions: null,
           type: "radio",
           is_required: false,
+          buttons: "",
         })
         break
       }

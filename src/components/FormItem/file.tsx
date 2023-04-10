@@ -1,15 +1,16 @@
 import { ReactElement } from "react"
 
+import { FieldValues } from "react-hook-form"
 import styles from "./file.module.scss"
 import { Dropzone, FileList, Paragraph } from "src/components"
 import { FormItem } from "src/types/models/form/item"
 
-type Props<T> = {
+type Props<T extends FieldValues> = {
   formItem: Extract<FormItem, { type: "file" }>
   files: File[]
 } & Pick<Dropzone.Props<T>, "control" | "name" | "errors">
 
-const FileFormItem = function <T>({
+const FileFormItem = function <T extends FieldValues>({
   formItem,
   control,
   name,
