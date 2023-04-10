@@ -14,6 +14,7 @@ import { createCsvBlob } from "../../../utils/createCsvBlob"
 import styles from "./index.module.scss"
 import {
   Button,
+  Dropdown,
   Head,
   IconButton,
   Panel,
@@ -40,6 +41,11 @@ const ListForms: PageFC = () => {
   }>({})
   const [isEligibleToCreateNewForm, setIsEligibleToCreateNewForm] =
     useState(false)
+
+  type SortOrder = "asc" | "desc" | ""
+  type SortTarget = "name" | "starts_at" | "ends_at"
+  const [sortOrder, setSortOrder] = useState<SortOrder>("")
+  const [sortTarget, setSortTarget] = useState<SortTarget>("name")
 
   const downloadFormAnswersCsv = async (form: Form) => {
     if (authState === null || authState.firebaseUser === null) return
@@ -90,6 +96,35 @@ const ListForms: PageFC = () => {
     })()
   }, [authState])
 
+  const sortForm = (sortTarget: SortTarget, sortOrder: SortOrder) => {
+    if (forms && sortOrder !== "") {
+      setForms(
+        [...forms].sort((x: Form, y: Form) => {
+          const result =
+            x[sortTarget] > y[sortTarget]
+              ? 1
+              : x[sortTarget] < y[sortTarget]
+              ? -1
+              : 0
+          if (sortOrder === "asc") return result
+          else return -result
+        })
+      )
+    }
+  }
+
+  const onChangeSortOrder = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const order = event.target.value as SortOrder
+    setSortOrder(order)
+    sortForm(sortTarget, order)
+  }
+
+  const onChangeSortTarget = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const target = event.target.value as SortTarget
+    setSortTarget(target)
+    sortForm(target, sortOrder)
+  }
+
   return (
     <div className={styles.wrapper}>
       <Head title="申請一覧" />
@@ -105,6 +140,53 @@ const ListForms: PageFC = () => {
       )}
       {forms?.length ? (
         <>
+          <Panel
+            style={{
+              paddingTop: "16px",
+              paddingBottom: "16px",
+              marginBottom: "32px",
+            }}
+          >
+            <p className={styles.sortLabel}>ソート</p>
+            <div style={{ display: "flex" }}>
+              <Dropdown
+                options={[
+                  {
+                    label: "申請名",
+                    value: "name",
+                  },
+                  {
+                    label: "申請開始日時",
+                    value: "starts_at",
+                  },
+                  {
+                    label: "申請終了日時",
+                    value: "ends_at",
+                  },
+                ]}
+                style={{ width: "150px", margin: "0 10px" }}
+                onChange={onChangeSortTarget}
+              />
+              <Dropdown
+                options={[
+                  {
+                    label: "-",
+                    value: "",
+                  },
+                  {
+                    label: "昇順",
+                    value: "asc",
+                  },
+                  {
+                    label: "降順",
+                    value: "desc",
+                  },
+                ]}
+                style={{ width: "150px", margin: "0 10px" }}
+                onChange={onChangeSortOrder}
+              />
+            </div>
+          </Panel>
           {forms.map((form) => (
             <div className={styles.formRowWrapper} key={form.id}>
               <Panel
