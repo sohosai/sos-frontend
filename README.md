@@ -30,7 +30,7 @@ VSCode の場合は recommended extensions を導入
 
 [Firebase](https://console.firebase.google.com/) の新規プロジェクトを作成
 
-Google Analyticsはオフ
+Google Analyticsは有効化しない
 
 コンソールから Authentication を有効化、Signin-method のうち Email/Password を有効化
 
