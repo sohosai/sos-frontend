@@ -1,9 +1,12 @@
+import dayjs from "dayjs"
+import timezone from "dayjs/plugin/timezone"
+import utc from "dayjs/plugin/utc"
 import { PageFC } from "next"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 
 import styles from "./index.module.scss"
-import { Button, Head, Panel, Spinner } from "src/components"
+import { Button, Head, Icon, Panel, Spinner } from "src/components"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
 
@@ -13,6 +16,9 @@ import type { FileDistribution } from "src/types/models/files"
 import { isUserRoleHigherThanIncluding } from "src/types/models/user/userRole"
 
 import { pagesPath } from "src/utils/$path"
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const CommitteeFileDistributionList: PageFC = () => {
   const { authState } = useAuthNeue()
@@ -68,17 +74,38 @@ const CommitteeFileDistributionList: PageFC = () => {
             <ul className={styles.list}>
               {distributions.map((distribution) => (
                 <li key={distribution.id} className={styles.rowWrapper}>
-                  <Panel
-                    style={{
-                      padding: "20px 32px",
-                    }}
+                  <Link
+                    href={pagesPath.committee.file.distribution.$url({
+                      query: { distributionId: distribution.id },
+                    })}
                   >
-                    <div className={styles.rowInner}>
-                      <p className={styles.distributionName}>
-                        {distribution.name}
-                      </p>
-                    </div>
-                  </Panel>
+                    <a>
+                      <Panel
+                        style={{
+                          paddingTop: "16px",
+                          paddingBottom: "16px",
+                        }}
+                        hoverStyle="gray"
+                      >
+                        <div className={styles.rowInner}>
+                          <p className={styles.distributionName}>
+                            {distribution.name}
+                          </p>
+                          <p className={styles.distributedAt}>
+                            {dayjs
+                              .tz(distribution.created_at, "Asia/Tokyo")
+                              .format("M/D HH:mm")}
+                          </p>
+                          <div className={styles.arrowIcon}>
+                            <Icon
+                              icon="arrow-right"
+                              className={styles.rowArrowIcon}
+                            />
+                          </div>
+                        </div>
+                      </Panel>
+                    </a>
+                  </Link>
                 </li>
               ))}
             </ul>
