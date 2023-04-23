@@ -2,6 +2,12 @@ import type { PageOptions } from "next"
 import type { AppProps } from "next/app"
 import Head from "next/head"
 import { ReactElement, useEffect } from "react"
+
+import { AuthProvider } from "../contexts/auth"
+import { MyProjectProvider } from "../contexts/myProject"
+
+import { useIfSupported } from "../hooks/useIfSupported"
+
 import { Layout } from "../layouts/layout"
 import { ToastProvider } from "src/contexts/toast"
 
@@ -54,9 +60,13 @@ function MyApp({
         )}
       </Head>
       <ToastProvider>
-        <Layout layout={Component.layout}>
-          <Component {...pageProps} />
-        </Layout>
+        <AuthProvider rbpac={Component.rbpac}>
+          <MyProjectProvider>
+            <Layout layout={Component.layout}>
+              <Component {...pageProps} />
+            </Layout>
+          </MyProjectProvider>
+        </AuthProvider>
       </ToastProvider>
     </>
   )
