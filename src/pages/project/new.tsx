@@ -42,7 +42,7 @@ type Inputs = {
   description: string
   category: ProjectCategory
   attributes: {
-    [attribute in ProjectAttribute]: boolean
+    [attribute in ProjectAttribute]: boolean | null
   }
   agreeTerms: boolean
 }
@@ -71,8 +71,8 @@ const NewProject: PageFC = () => {
       attributes: {
         academic: false,
         artistic: false,
-        outdoor: false,
-        indoor: false,
+        outdoor: null,
+        indoor: null,
         committee: false,
       },
       agreeTerms: false,
@@ -368,7 +368,9 @@ const NewProject: PageFC = () => {
                           },
                         ]}
                         error={[
-                          errors.category?.types?.required && "必須項目です",
+                          watch("attributes.indoor") === false &&
+                            watch("attributes.outdoor") === false &&
+                            "必須項目です",
                         ]}
                         required
                         onChange={(event) => {
@@ -380,13 +382,15 @@ const NewProject: PageFC = () => {
                           } else if (answer === "indoor") {
                             setValue("attributes.indoor", true)
                           }
+                          console.log({ indoor: watch("attributes.indoor") })
+                          console.log({ outdoor: watch("attributes.outdoor") })
                         }}
                       />
                     </FormItemSpacer>
                     <FormItemSpacer>
                       <Checkbox
                         label="学術参加枠での参加を希望する"
-                        checked={watch("attributes.academic")}
+                        checked={watch("attributes.academic") ?? false}
                         register={register("attributes.academic")}
                       />
                     </FormItemSpacer>
@@ -400,7 +404,7 @@ const NewProject: PageFC = () => {
                               ]
                             : []
                         }
-                        checked={watch("attributes.artistic")}
+                        checked={watch("attributes.artistic") ?? false}
                         register={artisticRegister()}
                       />
                     </FormItemSpacer>
