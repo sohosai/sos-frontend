@@ -9,13 +9,17 @@ import { Timeline } from "react-twitter-widgets"
 import styles from "./index.module.scss"
 import { Button, Panel, Icon } from "src/components"
 import {
-  GUIDANCE_URL,
-  HYBRID_ANNOUNCEMENT_URL,
+  ANNOUNCEMENT_URL,
   PROJECT_APPLICATION_GUIDELINES_URL,
+  STAGE_PROJECT_APPLICATION_GUIDELINES_URL,
+  PROJECT_COMMITMENT_FORM_URL,
+  STAGE_PROJECT_COMMITMENT_FORM_URL,
+  PLAN_FORM_TEMPLATE_URL,
+  PLAN_FORM_EXAMPLE_URL,
 } from "src/constants/links"
 import { getAnnouncements } from "src/lib/contentful"
 import { Announcement } from "src/types/models/announcement"
-import { pagesPath, staticPath } from "src/utils/$path"
+import { pagesPath } from "src/utils/$path"
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -41,29 +45,88 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.pageTitle}>雙峰祭オンラインシステム</h1>
-      <section className={styles.section} data-section="hybrid-announcement">
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>第49回筑波大学学園祭 募集要項</h2>
+        <div className={styles.panelRowWrapper}>
+          <Panel>
+            <div className={styles.sectionInPanel}>
+              <p className={styles.panelText}>
+                第49回筑波大学学園祭「雙峰祭」は、対面で開催する予定でございます。
+              </p>
+              <p className={styles.panelText}>
+                雙峰祭での企画実施をお考えの方は、雙峰祭公式サイトで掲載している募集要項をご確認の上、期間内にご応募ください。
+              </p>
+              <p className={styles.panelText}>
+                詳しくはリンク先の資料をご覧下さい。
+              </p>
+              <div className={styles.links}>
+                <a
+                  href={ANNOUNCEMENT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.applicationGuideLinkItem}
+                >
+                  <Button kind="secondary" icon="arrow-up-right">
+                    詳細情報
+                  </Button>
+                </a>
+                <a
+                  href={PROJECT_APPLICATION_GUIDELINES_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.applicationGuideLinkItem}
+                >
+                  <Button kind="secondary" icon="arrow-up-right">
+                    一般企画 募集要項 (PDF)
+                  </Button>
+                </a>
+                <a
+                  href={STAGE_PROJECT_APPLICATION_GUIDELINES_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.applicationGuideLinkItem}
+                >
+                  <Button kind="secondary" icon="arrow-up-right">
+                    ステージ企画 募集要項 (PDF)
+                  </Button>
+                </a>
+              </div>
+            </div>
+          </Panel>
+        </div>
+      </section>
+      <section className={styles.section} data-section="commitment">
+        <h2 className={styles.sectionTitle}>誓約書のご提出について</h2>
         <div className={styles.panelRowWrapper}>
           <div className={styles.panelWrapper}>
             <Panel>
-              <h2 className={styles.panelTitle}>
-                第48回筑波大学学園祭の実施形態に関するお知らせ
-              </h2>
               <div className={styles.sectionInPanel}>
                 <p className={styles.panelText}>
-                  第48回筑波大学学園祭「雙峰祭」は、学内者限定の対面と、オンラインを組み合わせた新形態で開催する予定でございます。
+                  企画運営を行っていただくにあたり、いくつかの事項を了承していただく必要がございます。
                 </p>
                 <p className={styles.panelText}>
-                  詳しくはリンク先の資料をご覧下さい。
+                  企画応募時に誓約書のご提出が必要となりますので、ご準備のほどよろしくお願いいたします。
                 </p>
                 <div className={styles.links}>
                   <a
-                    href={HYBRID_ANNOUNCEMENT_URL}
+                    href={PROJECT_COMMITMENT_FORM_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.applicationGuideLinkItem}
                   >
                     <Button kind="secondary" icon="arrow-up-right">
-                      詳細情報
+                      一般企画 誓約書 (PDF)
+                    </Button>
+                  </a>
+
+                  <a
+                    href={STAGE_PROJECT_COMMITMENT_FORM_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.applicationGuideLinkItem}
+                  >
+                    <Button kind="secondary" icon="arrow-up-right">
+                      ステージ企画 誓約書 (PDF)
                     </Button>
                   </a>
                 </div>
@@ -72,87 +135,40 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
           </div>
         </div>
       </section>
-      <section className={styles.section} data-section="manuals">
-        <h2 className={styles.sectionTitle}>屋内企画・調理マニュアル</h2>
+      <section className={styles.section} data-section="plan-template">
+        <h2 className={styles.sectionTitle}>企画書のご提出について</h2>
         <div className={styles.panelRowWrapper}>
           <div className={styles.panelWrapper}>
             <Panel>
               <div className={styles.sectionInPanel}>
                 <p className={styles.panelText}>
-                  企画を実施する上で必要となる情報がまとめられたマニュアルでございます。
+                  企画を応募する際には、企画書をご提出していただく必要があります。
                 </p>
                 <p className={styles.panelText}>
-                  企画実施に向けて提出するべき申請や禁止事項、その他各種情報が記載されていますので、ご確認のほどよろしくお願いいたします。
-                </p>
-                <p className={styles.panelText}>
-                  一般企画・飲食物取り扱い企画の方は屋内企画マニュアルを、調理企画の方は屋内調理マニュアルをご確認ください。
+                  記載例を準備しておりますので、企画書テンプレートを利用して運営する企画の詳細についてお知らせください。
                 </p>
                 <p className={styles.panelText}>
                   ご質問等ございましたらお気軽にご連絡ください。
                 </p>
                 <div className={styles.links}>
                   <a
-                    href={staticPath.docs.manual_general_pdf}
+                    href={PLAN_FORM_TEMPLATE_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.applicationGuideLinkItem}
                   >
                     <Button kind="secondary" icon="arrow-up-right">
-                      屋内企画マニュアル
+                      企画書テンプレート (Word)
                     </Button>
                   </a>
-
                   <a
-                    href={staticPath.docs.manual_cooking_pdf}
+                    href={PLAN_FORM_EXAMPLE_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.applicationGuideLinkItem}
                   >
                     <Button kind="secondary" icon="arrow-up-right">
-                      屋内調理マニュアル
-                    </Button>
-                  </a>
-                </div>
-              </div>
-            </Panel>
-          </div>
-        </div>
-      </section>
-      <section className={styles.section} data-section="new-projects">
-        <h2 className={styles.sectionTitle}>企画募集</h2>
-        <div className={styles.panelRowWrapper}>
-          <div className={styles.panelWrapper}>
-            <Panel>
-              <div className={styles.sectionInPanel}>
-                <p className={styles.panelText}>
-                  雙峰祭での企画実施をお考えの方は、雙峰祭公式サイトで掲載している募集要項をご確認の上、期間内にご応募ください。
-                </p>
-                <p className={styles.panelText}>
-                  また、企画応募に先立ち特に知っていただきたい事について纏めた雙峰祭ガイダンスも公開しております。
-                </p>
-                <p className={styles.panelText}>
-                  雙峰祭オンラインシステムの使用方法についても動画内で説明しておりますので、併せてご覧ください。
-                </p>
-                <div className={styles.links}>
-                  <a
-                    href={PROJECT_APPLICATION_GUIDELINES_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.applicationGuideLinkItem}
-                  >
-                    <Button kind="secondary" icon="arrow-up-right">
-                      募集要項
-                    </Button>
-                  </a>
-
-                  <a
-                    href={GUIDANCE_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.applicationGuideLinkItem}
-                  >
-                    <Button kind="secondary" icon="arrow-up-right">
-                      雙峰祭ガイダンス
+                      企画書（記載例）
                     </Button>
                   </a>
                 </div>
