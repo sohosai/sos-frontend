@@ -11,10 +11,7 @@ const getProjectCreationAvailability = async (): Promise<{
 }
 
 const isInProjectCreationPeriod = async (category: ProjectCategory) => {
-  if (
-    process.env.NEXT_PUBLIC_DEPLOY_ENV === "dev" ||
-    process.env.NEXT_PUBLIC_DEPLOY_ENV === "staging"
-  ) {
+  if (process.env.NEXT_PUBLIC_DEPLOY_ENV === "dev") {
     return true
   }
 
