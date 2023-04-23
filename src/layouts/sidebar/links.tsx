@@ -22,25 +22,32 @@ export const Links: FC<Pick<PageOptions, "layout">> = ({ layout }) => {
     active: () => boolean
   }
 
-  const links = [
-    {
-      href: pagesPath.$url(),
-      title: ["トップ", "ページ"],
-      icon: "home",
-      visible: () => true,
-      active: () => router.pathname === pagesPath.$url().pathname,
-    },
-  ]
+  const links: {
+    [layoutName in Exclude<PageOptions["layout"], "empty">]: Link[]
+  } = {
+    default: [
+      {
+        href: pagesPath.$url(),
+        title: ["トップ", "ページ"],
+        icon: "home",
+        visible: () => true,
+        active: () => router.pathname === pagesPath.$url().pathname,
+      },
+    ],
+    committee: [],
+  }
+
+  const enabledLinks = links[layout].filter(({ visible }) => visible())
 
   return (
     <menu className={styles.wrapper}>
       <ul
         className={styles.links}
         style={{
-          gridTemplateRows: `repeat(${Math.min(links.length, 4)}, 1fr)`,
+          gridTemplateRows: `repeat(${Math.min(enabledLinks.length, 4)}, 1fr)`,
         }}
       >
-        {links.map(({ href, title, icon, active }, index) => {
+        {enabledLinks.map(({ href, title, icon, active }, index) => {
           const text: (string | JSX.Element)[] = []
           title.forEach((value, index) => {
             text.push(value)
