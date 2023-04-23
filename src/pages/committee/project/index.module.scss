@@ -1,0 +1,113 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  margin-bottom: 32px;
+}
+
+.downloadButtonWrapper {
+  margin-bottom: 24px;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+}
+
+.rowWrapper {
+  &:not(:last-of-type) {
+    margin-bottom: 12px;
+  }
+
+  &:hover,
+  &:focus-within {
+    .projectCodeCopyButton {
+      opacity: 1;
+    }
+  }
+}
+
+.rowInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @include mobile {
+    flex-direction: column;
+    justify-content: start;
+  }
+}
+
+.projectName {
+  width: 900em;
+  flex-shrink: 1;
+  margin-right: 16px;
+  @include ellipsis;
+
+  @include mobile {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+.projectCodeWrapper {
+  width: 300em;
+  flex-shrink: 1;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  color: $color-text-sub;
+
+  @include mobile {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+.projectCodeCopyButton {
+  margin-left: 4px;
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
+.projectCategoryAndAttributes {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+
+  @include mobile {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+.projectCategory {
+  margin-right: 8px;
+  width: 12em;
+  color: $color-text-sub;
+  @include ellipsis;
+}
+
+.projectAttributesWrapper {
+  flex-shrink: 0;
+}
+
+.projectAttributeCode {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: $color-gray-100;
+  color: $color-text-sub;
+
+  &:not(:last-of-type) {
+    margin-right: 4px;
+  }
+
+  &[data-active="true"] {
+    background-color: $color-brand;
+    color: white;
+  }
+}

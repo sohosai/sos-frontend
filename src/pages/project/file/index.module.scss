@@ -1,0 +1,43 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+  flex-direction: column;
+}
+
+.rowWrapper {
+  &:not(:last-child) {
+    margin-bottom: 12px;
+  }
+}
+
+.rowInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.distributionName {
+  flex-grow: 2;
+  @include ellipsis;
+}
+
+.distributedAt {
+  flex-grow: 1;
+  flex-shrink: 0;
+  color: $color-text-sub;
+}
+
+.arrowIcon {
+  flex-grow: 0;
+}

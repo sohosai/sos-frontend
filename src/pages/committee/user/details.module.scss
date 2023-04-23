@@ -1,0 +1,83 @@
+@import "src/styles/variables";
+@import "src/styles/mixins";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+}
+
+.section {
+  &:not(:last-child) {
+    margin-bottom: 24px;
+  }
+}
+
+.copyButton {
+  margin-left: 8px;
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
+.userName {
+  font-size: 1.5em;
+  margin-bottom: 8px;
+}
+
+.userKanaName {
+  color: $color-text-sub;
+
+  & + .userRole {
+    margin-top: 12px;
+  }
+}
+
+.userName,
+.userKanaName {
+  display: flex;
+  align-items: center;
+
+  &:hover,
+  &:focus-within {
+    .userNameCopyButton {
+      opacity: 1;
+    }
+  }
+}
+
+.userRole {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background-color: $color-brand-tint-900;
+  color: $color-brand-shade-200;
+  font-size: 0.9em;
+}
+
+.tableRow {
+  &:hover,
+  &:focus-within {
+    .tableRowValueCopyButton {
+      opacity: 1;
+    }
+  }
+}
+
+.tableRowValueCopyButton {
+  margin-left: 4px;
+}
+
+.transformedAddressWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.transformedAddressDescription {
+  color: $color-caution;
+}

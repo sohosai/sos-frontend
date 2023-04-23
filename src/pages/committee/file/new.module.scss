@@ -1,0 +1,18 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.sectionWrapper {
+  margin-bottom: 32px;
+}
+
+.dropzoneWrapper {
+  margin-bottom: 24px;
+}

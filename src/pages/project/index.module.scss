@@ -1,0 +1,80 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+.wrapper {
+  @include mainArea;
+}
+
+.title {
+  @include pageTitle;
+}
+
+.emptyWrapper {
+  @include emptyWrapper;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.sectionTitle {
+  font-size: 1.5em;
+  margin-bottom: 16px;
+}
+
+.timelineWrapper {
+  margin-top: 24px;
+}
+
+.timelineDescription {
+  color: $color-text-sub;
+}
+
+.generalInfoTableItem {
+  &:not(:last-child) {
+    margin-bottom: 24px;
+  }
+}
+
+.generalInfoTableKey {
+  color: $color-text-sub;
+  width: 8em;
+  margin-bottom: 8px;
+}
+
+.generalInfoTableValue {
+  flex-shrink: 1;
+}
+
+.generalInfoEditButton {
+  margin-top: 24px;
+}
+
+.generalInfoEditButtonInner {
+  display: inline-block;
+}
+
+.noRegistrationForms,
+.registrationFormLoading {
+  padding: 16px 0;
+  @include flexCenter;
+}
+
+.registrationFormRowWrapper {
+  &:not(:last-child) {
+    margin-bottom: 16px;
+  }
+}
+
+.registrationFormRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.isAnsweredChip {
+  padding: 4px 12px;
+  border-radius: 4px;
+  background-color: $color-brand-tint-900;
+  color: $color-brand-tint-200;
+}

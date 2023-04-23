@@ -1,0 +1,34 @@
+@import "../styles/variables";
+@import "../styles/mixins";
+
+.wrapper {
+  min-height: 100%;
+  padding: 64px 0;
+  @include flexCenter;
+
+  @include mobile {
+    padding: 32px 0;
+  }
+}
+
+.panelWrapper {
+  max-width: 35em;
+}
+
+.title {
+  font-size: 1.5em;
+  margin-bottom: 32px;
+}
+
+.description {
+  color: $color-text-sub;
+  margin-bottom: 8px;
+}
+
+.resendWrapper {
+  margin-top: 32px;
+}
+
+.logoutButtonWrapper {
+  margin-top: 16px;
+}
