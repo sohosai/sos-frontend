@@ -60,15 +60,6 @@ Index.argTypes = {
   errors: {
     control: { type: "text" },
   },
-  control: {
-    control: false,
-  },
-  rules: {
-    control: false,
-  },
-  name: {
-    control: false,
-  },
   dropzoneOptions: {
     control: false,
   },

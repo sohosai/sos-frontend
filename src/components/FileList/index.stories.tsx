@@ -58,9 +58,6 @@ export const Index: Story<
 )
 
 Index.argTypes = {
-  files: {
-    control: false,
-  },
   fileCount: {
     control: {
       type: "range",

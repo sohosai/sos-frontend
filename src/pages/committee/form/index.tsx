@@ -14,11 +14,13 @@ import { createCsvBlob } from "../../../utils/createCsvBlob"
 import styles from "./index.module.scss"
 import {
   Button,
+  Dropdown,
   Head,
   IconButton,
   Panel,
   Spinner,
   Tooltip,
+  TextField,
 } from "src/components/"
 import { useAuthNeue } from "src/contexts/auth"
 import { useToastDispatcher } from "src/contexts/toast"
@@ -34,12 +36,20 @@ const ListForms: PageFC = () => {
   const { authState } = useAuthNeue()
   const { addToast } = useToastDispatcher()
 
+  const [backupForms, setBackupForms] = useState<Form[] | undefined | null>(
+    null
+  )
   const [forms, setForms] = useState<Form[] | undefined | null>(null)
   const [downloadingForms, setDownloadingForms] = useState<{
     [formId: string]: boolean
   }>({})
   const [isEligibleToCreateNewForm, setIsEligibleToCreateNewForm] =
     useState(false)
+
+  type SortOrder = "asc" | "desc" | ""
+  type SortTarget = "name" | "starts_at" | "ends_at"
+  const [sortOrder, setSortOrder] = useState<SortOrder>("")
+  const [sortTarget, setSortTarget] = useState<SortTarget>("name")
 
   const downloadFormAnswersCsv = async (form: Form) => {
     if (authState === null || authState.firebaseUser === null) return
@@ -81,6 +91,7 @@ const ListForms: PageFC = () => {
       listForms({ idToken: await authState.firebaseUser.getIdToken() })
         .then(({ forms: fetchedForms }) => {
           setForms(fetchedForms)
+          setBackupForms(fetchedForms)
         })
         .catch(async (err) => {
           const body = await err.response?.json()
@@ -89,6 +100,50 @@ const ListForms: PageFC = () => {
         })
     })()
   }, [authState])
+
+  const sortForm = (sortTarget: SortTarget, sortOrder: SortOrder) => {
+    if (forms && sortOrder !== "") {
+      setForms(
+        [...forms].sort((x: Form, y: Form) => {
+          const result =
+            x[sortTarget] > y[sortTarget]
+              ? 1
+              : x[sortTarget] < y[sortTarget]
+              ? -1
+              : 0
+          if (sortOrder === "asc") return result
+          else return -result
+        })
+      )
+    }
+  }
+
+  const onChangeSortOrder = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const order = event.target.value as SortOrder
+    setSortOrder(order)
+    sortForm(sortTarget, order)
+  }
+
+  const onChangeSortTarget = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const target = event.target.value as SortTarget
+    setSortTarget(target)
+    sortForm(target, sortOrder)
+  }
+
+  const onChangeSearchField = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const text = event.target.value
+    if (!backupForms) return
+    if (text === "") {
+      setForms(backupForms)
+      return
+    }
+    const regexp = new RegExp(text)
+    setForms(
+      backupForms.filter((form) => {
+        return form.name.match(regexp)
+      })
+    )
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -102,6 +157,68 @@ const ListForms: PageFC = () => {
             </a>
           </Link>
         </div>
+      )}
+      {backupForms?.length !== 0 && (
+        <Panel
+          style={{
+            paddingTop: "16px",
+            paddingBottom: "16px",
+            marginBottom: "32px",
+          }}
+        >
+          <div style={{ display: "flex" }}>
+            <div>
+              <p className={styles.sortLabel}>ソート</p>
+              <div style={{ display: "flex" }}>
+                <Dropdown
+                  options={[
+                    {
+                      label: "申請名",
+                      value: "name",
+                    },
+                    {
+                      label: "申請開始日時",
+                      value: "starts_at",
+                    },
+                    {
+                      label: "申請終了日時",
+                      value: "ends_at",
+                    },
+                  ]}
+                  style={{ width: "150px", margin: "0 10px" }}
+                  onChange={onChangeSortTarget}
+                />
+                <Dropdown
+                  options={[
+                    {
+                      label: "-",
+                      value: "",
+                    },
+                    {
+                      label: "昇順",
+                      value: "asc",
+                    },
+                    {
+                      label: "降順",
+                      value: "desc",
+                    },
+                  ]}
+                  style={{ width: "150px", margin: "0 10px" }}
+                  onChange={onChangeSortOrder}
+                />
+              </div>
+            </div>
+            <div>
+              <p className={styles.sortLabel}>検索</p>
+              <TextField
+                type="text"
+                placeholder="絞り込む"
+                onChange={onChangeSearchField}
+                style={{ margin: "0 10px", width: "250px" }}
+              />
+            </div>
+          </div>
+        </Panel>
       )}
       {forms?.length ? (
         <>
@@ -175,6 +292,8 @@ const ListForms: PageFC = () => {
                 <>
                   <Spinner />
                 </>
+              ) : backupForms?.length ? (
+                <p>条件を満たす申請が見つかりませんでした</p>
               ) : (
                 <p>申請が作成されていません</p>
               )}

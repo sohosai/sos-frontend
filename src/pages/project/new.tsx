@@ -42,7 +42,7 @@ type Inputs = {
   description: string
   category: ProjectCategory
   attributes: {
-    [attribute in ProjectAttribute]: boolean
+    [attribute in ProjectAttribute]: boolean | null
   }
   agreeTerms: boolean
 }
@@ -71,7 +71,8 @@ const NewProject: PageFC = () => {
       attributes: {
         academic: false,
         artistic: false,
-        outdoor: false,
+        outdoor: null,
+        indoor: null,
         committee: false,
       },
       agreeTerms: false,
@@ -280,28 +281,26 @@ const NewProject: PageFC = () => {
                             label: "選択してください",
                           },
                           {
-                            value: "general_physical",
-                            label: projectCategoryToUiText("general_physical"),
+                            value: "general",
+                            label: projectCategoryToUiText("general"),
                           },
                           {
-                            value: "general_online",
-                            label: projectCategoryToUiText("general_online"),
+                            value: "cooking_requiring_preparation_area",
+                            label: projectCategoryToUiText(
+                              "cooking_requiring_preparation_area"
+                            ),
                           },
                           {
-                            value: "stage_physical",
-                            label: projectCategoryToUiText("stage_physical"),
+                            value: "cooking",
+                            label: projectCategoryToUiText("cooking"),
                           },
                           {
-                            value: "stage_online",
-                            label: projectCategoryToUiText("stage_online"),
+                            value: "food",
+                            label: projectCategoryToUiText("food"),
                           },
                           {
-                            value: "food_physical",
-                            label: projectCategoryToUiText("food_physical"),
-                          },
-                          {
-                            value: "cooking_physical",
-                            label: projectCategoryToUiText("cooking_physical"),
+                            value: "stage",
+                            label: projectCategoryToUiText("stage"),
                           },
                         ]}
                         error={[
@@ -323,28 +322,18 @@ const NewProject: PageFC = () => {
                         <Modal close={toggleModal}>
                           <h2 className={styles.modalTitle}>参加区分詳細</h2>
                           <div className={styles.category}>
-                            <h3>・対面一般企画</h3>
+                            <h3>・一般企画（食品取扱い企画を除く）</h3>
                             <p>
                               飲食物を取り扱わない、雙峰祭当日に屋内の教室で行う企画
                             </p>
                           </div>
                           <div className={styles.category}>
-                            <h3>・オンライン一般企画</h3>
-                            <p>
-                              オンラインでコンテンツを配信することのみを行う企画
-                            </p>
+                            <h3>・調理を行う企画（仕込場が必要）</h3>
+                            <p>調理を行い、仕込場が必要な企画</p>
                           </div>
                           <div className={styles.category}>
-                            <h3>・対面ステージ企画</h3>
-                            <p>
-                              雙峰祭当日にUNITEDステージもしくは1Aステージにてステージパフォーマンスを行う企画
-                            </p>
-                          </div>
-                          <div className={styles.category}>
-                            <h3>・オンラインステージ企画</h3>
-                            <p>
-                              大学会館にてステージパフォーマンスの事前収録を行い、その動画を雙峰祭当日に配信する企画
-                            </p>
+                            <h3>・調理を行う企画（仕込場が不要）</h3>
+                            <p>調理を行うものの、仕込場が不要な企画</p>
                           </div>
                           <div className={styles.category}>
                             <h3>・飲食物取扱い企画</h3>
@@ -353,19 +342,55 @@ const NewProject: PageFC = () => {
                             </p>
                           </div>
                           <div className={styles.category}>
-                            <h3>・調理企画</h3>
+                            <h3>・ステージ企画</h3>
                             <p>
-                              一般企画用募集要項 p.46
-                              で定義されている「調理」を行う企画
+                              UNITEDステージ・大学会館・1Aステージを使用する、学術参加枠を含む企画
                             </p>
                           </div>
                         </Modal>
                       )}
                     </FormItemSpacer>
                     <FormItemSpacer>
+                      <Dropdown
+                        label="企画場所"
+                        options={[
+                          {
+                            value: "",
+                            label: "選択してください",
+                          },
+                          {
+                            value: "outdoor",
+                            label: "屋外企画",
+                          },
+                          {
+                            value: "indoor",
+                            label: "屋内企画",
+                          },
+                        ]}
+                        error={[
+                          watch("attributes.indoor") === false &&
+                            watch("attributes.outdoor") === false &&
+                            "必須項目です",
+                        ]}
+                        required
+                        onChange={(event) => {
+                          const answer = event.target.value
+                          setValue("attributes.indoor", false)
+                          setValue("attributes.outdoor", false)
+                          if (answer === "outdoor") {
+                            setValue("attributes.outdoor", true)
+                          } else if (answer === "indoor") {
+                            setValue("attributes.indoor", true)
+                          }
+                          console.log({ indoor: watch("attributes.indoor") })
+                          console.log({ outdoor: watch("attributes.outdoor") })
+                        }}
+                      />
+                    </FormItemSpacer>
+                    <FormItemSpacer>
                       <Checkbox
                         label="学術参加枠での参加を希望する"
-                        checked={watch("attributes.academic")}
+                        checked={watch("attributes.academic") ?? false}
                         register={register("attributes.academic")}
                       />
                     </FormItemSpacer>
@@ -379,7 +404,7 @@ const NewProject: PageFC = () => {
                               ]
                             : []
                         }
-                        checked={watch("attributes.artistic")}
+                        checked={watch("attributes.artistic") ?? false}
                         register={artisticRegister()}
                       />
                     </FormItemSpacer>
