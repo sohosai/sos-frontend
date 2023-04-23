@@ -38,17 +38,21 @@ export type PendingProjectId = string
 export type ProjectId = string
 
 export type ProjectCategory =
-  | "general_physical"
-  | "general_online"
-  | "stage_physical"
-  | "stage_online"
-  | "food_physical"
-  | "cooking_physical"
+  | "general"
+  | "cooking_requiring_preparation_area"
+  | "cooking"
+  | "food"
+  | "stage"
 
-export type ProjectAttribute = "academic" | "artistic" | "committee" | "outdoor"
+export type ProjectAttribute =
+  | "academic"
+  | "artistic"
+  | "committee"
+  | "outdoor"
+  | "indoor"
 
 export const isStage = (category: ProjectCategory): boolean => {
-  return category === "stage_physical" || category === "stage_online"
+  return category === "stage"
 }
 
 export const projectCategoryToUiText = (
@@ -57,12 +61,11 @@ export const projectCategoryToUiText = (
   const dict: {
     [category in ProjectCategory]: string
   } = {
-    general_physical: "対面一般企画",
-    general_online: "オンライン一般企画",
-    stage_physical: "対面ステージ企画",
-    stage_online: "オンラインステージ企画",
-    food_physical: "飲食物取扱い企画",
-    cooking_physical: "調理企画",
+    general: "一般企画（食品取扱い企画を除く）",
+    cooking_requiring_preparation_area: "調理を行う企画（仕込場が必要）",
+    cooking: "調理を行う企画（仕込場が不要）",
+    food: "飲食物取扱い企画",
+    stage: "ステージ企画",
   }
   return dict[projectCategory]
 }
@@ -80,6 +83,7 @@ export const projectAttributeToUiText = ({
     academic: "学術参加枠",
     artistic: "芸術祭参加枠",
     outdoor: "屋外企画",
+    indoor: "屋内企画",
     committee: "委員会企画",
   }
   const truncatedDict: {
@@ -88,6 +92,7 @@ export const projectAttributeToUiText = ({
     academic: "学",
     artistic: "芸",
     outdoor: "外",
+    indoor: "内",
     committee: "委",
   }
 

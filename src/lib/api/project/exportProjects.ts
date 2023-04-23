@@ -37,12 +37,14 @@ const exportProjects = async ({
         field_attribute_artistic: "芸術祭参加枠",
         field_attribute_committee: "委員会企画",
         field_attribute_outdoor: "屋外企画",
-        category_general_physical: projectCategoryToUiText("general_physical"),
-        category_general_online: projectCategoryToUiText("general_online"),
-        category_stage_physical: projectCategoryToUiText("stage_physical"),
-        category_stage_online: projectCategoryToUiText("stage_online"),
-        category_food_physical: projectCategoryToUiText("food_physical"),
-        category_cooking_physical: projectCategoryToUiText("cooking_physical"),
+        field_attribute_indoor: "屋内企画",
+        category_general: projectCategoryToUiText("general"),
+        category_stage: projectCategoryToUiText("stage"),
+        category_food: projectCategoryToUiText("food"),
+        category_cooking_requiring_preparation_area: projectCategoryToUiText(
+          "cooking_requiring_preparation_area"
+        ),
+        category_cooking: projectCategoryToUiText("cooking"),
       },
     })
     .text()
