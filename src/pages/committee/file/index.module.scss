@@ -27,3 +27,18 @@
   display: flex;
   align-items: center;
 }
+
+.distributionName {
+  flex-grow: 2;
+  @include ellipsis;
+}
+
+.distributedAt {
+  flex-grow: 1;
+  flex-shrink: 0;
+  color: $color-text-sub;
+}
+
+.arrowIcon {
+  flex-grow: 0;
+}
