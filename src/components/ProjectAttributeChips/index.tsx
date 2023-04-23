@@ -20,6 +20,7 @@ const projectAttributes: ProjectAttribute[] = [
   "academic",
   "artistic",
   "outdoor",
+  "indoor",
   "committee",
 ]
 
@@ -29,6 +30,7 @@ const projectAttributeCode: {
   academic: "学",
   artistic: "芸",
   outdoor: "外",
+  indoor: "内",
   committee: "委",
 }
 
