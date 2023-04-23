@@ -25,6 +25,6 @@ const isInProjectCreationPeriod = async (category: ProjectCategory) => {
 }
 
 // NOTE: It is only valid under a provisional assumption that project creation periods are identical for all categories
-const IN_PROJECT_CREATION_PERIOD = isInProjectCreationPeriod("general_online")
+const IN_PROJECT_CREATION_PERIOD = isInProjectCreationPeriod("general")
 
 export { getProjectCreationAvailability, IN_PROJECT_CREATION_PERIOD }
