@@ -45,6 +45,46 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.pageTitle}>雙峰祭オンラインシステム</h1>
+      <section className={styles.section} data-section="timeline">
+        <h2 className={styles.sectionTitle}>お知らせ</h2>
+        <div className={styles.panelRowWrapper}>
+          <div className={styles.panelWrapper}>
+            <Panel>
+              {announcements?.length ? (
+                <ul className={styles.announcementsList}>
+                  {announcements.map(({ id, date, title }) => (
+                    <li className={styles.announcementsListItem} key={id}>
+                      <Link href={pagesPath.announcement._id(id).$url()}>
+                        <a className={styles.announcementRow}>
+                          <p className={styles.announcementTitle}>{title}</p>
+                          <p className={styles.announcementDate}>
+                            {dayjs(date).format("YYYY/M/D HH:mm")}
+                          </p>
+                        </a>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : announcements?.length === 0 ? (
+                "お知らせはありません"
+              ) : (
+                "お知らせの取得に失敗しました"
+              )}
+              <div className={styles.moreAnnouncements}>
+                <Link href={pagesPath.announcement.list._page(1).$url()}>
+                  <a className={styles.moreAnnouncementsLink}>
+                    <Icon
+                      icon="arrow-right"
+                      className={styles.moreAnnouncementsLinkIcon}
+                    />
+                    お知らせ一覧
+                  </a>
+                </Link>
+              </div>
+            </Panel>
+          </div>
+        </div>
+      </section>
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>第49回筑波大学学園祭 募集要項</h2>
         <div className={styles.panelRowWrapper}>
@@ -93,46 +133,6 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
               </div>
             </div>
           </Panel>
-        </div>
-      </section>
-      <section className={styles.section} data-section="timeline">
-        <h2 className={styles.sectionTitle}>お知らせ</h2>
-        <div className={styles.panelRowWrapper}>
-          <div className={styles.panelWrapper}>
-            <Panel>
-              {announcements?.length ? (
-                <ul className={styles.announcementsList}>
-                  {announcements.map(({ id, date, title }) => (
-                    <li className={styles.announcementsListItem} key={id}>
-                      <Link href={pagesPath.announcement._id(id).$url()}>
-                        <a className={styles.announcementRow}>
-                          <p className={styles.announcementTitle}>{title}</p>
-                          <p className={styles.announcementDate}>
-                            {dayjs(date).format("YYYY/M/D HH:mm")}
-                          </p>
-                        </a>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              ) : announcements?.length === 0 ? (
-                "お知らせはありません"
-              ) : (
-                "お知らせの取得に失敗しました"
-              )}
-              <div className={styles.moreAnnouncements}>
-                <Link href={pagesPath.announcement.list._page(1).$url()}>
-                  <a className={styles.moreAnnouncementsLink}>
-                    <Icon
-                      icon="arrow-right"
-                      className={styles.moreAnnouncementsLinkIcon}
-                    />
-                    お知らせ一覧
-                  </a>
-                </Link>
-              </div>
-            </Panel>
-          </div>
         </div>
       </section>
       <section className={styles.section} data-section="commitment">
