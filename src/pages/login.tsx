@@ -100,7 +100,7 @@ const Login: PageFC = () => {
                     errors?.email?.type === "userDisabled" &&
                       "アカウントが無効化されています",
                   ]}
-                  placeholder="xxx@s.tsukuba.ac.jp"
+                  placeholder="xxx@u.tsukuba.ac.jp"
                   required
                   register={register("email", {
                     required: true,
