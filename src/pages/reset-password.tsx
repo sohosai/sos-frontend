@@ -109,7 +109,7 @@ const ResetPassword: PageFC = () => {
                       errors?.email?.type === "userNotFound" &&
                         "ユーザーが見つかりません",
                     ]}
-                    placeholder="xxx@s.tsukuba.ac.jp"
+                    placeholder="xxx@u.tsukuba.ac.jp"
                     required
                     register={register("email", {
                       required: true,
