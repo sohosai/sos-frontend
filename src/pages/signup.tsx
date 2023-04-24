@@ -124,7 +124,7 @@ const Signup: PageFC = () => {
                     emailWarning === "invalidSAddress" &&
                       "学生に発行されたsアドレスではない可能性があります。\nこのまま実行しますか？",
                   ]}
-                  placeholder="xxx@s.tsukuba.ac.jp"
+                  placeholder="xxx@u.tsukuba.ac.jp"
                   required
                   register={register("email", {
                     required: true,

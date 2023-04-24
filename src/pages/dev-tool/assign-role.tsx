@@ -120,7 +120,7 @@ const AssignRole: PageFC = () => {
               <TextField
                 type="text"
                 label="権限を付与するユーザーのメールアドレス"
-                placeholder="xxx@s.tsukuba.ac.jp"
+                placeholder="xxx@u.tsukuba.ac.jp"
                 required
                 error={[
                   errors.email?.types?.required && "必須項目です",
