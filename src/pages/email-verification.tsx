@@ -52,8 +52,8 @@ const EmailVerification: PageFC = () => {
                 メールに記載されたリンクをクリックして登録を完了してください
               </p>
               <p className={styles.description}>
-                受信できない場合、noreply@
-                {process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN}
+                {/* TODO: ここ、どう考えても環境変数にするべきだけど知らん知らん!!! ごめん..... */}
+                受信できない場合、system@sohosai.com
                 からのメールが迷惑メールフォルダに配信されていないかご確認ください
               </p>
               <p className={styles.description}>
@@ -99,8 +99,9 @@ const EmailVerification: PageFC = () => {
           {emailVerificationStatus === "error" && (
             <>
               <h1 className={styles.title}>確認メールを再送できませんでした</h1>
-              <p className={styles.description}>管理者にお問い合わせください</p>
-              {/* TODO: 問い合わせへの動線 */}
+              <p className={styles.description}>
+                しばらく時間を置いてから再度お試しください
+              </p>
             </>
           )}
         </Panel>
