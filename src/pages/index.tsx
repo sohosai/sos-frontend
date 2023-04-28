@@ -4,8 +4,6 @@ import utc from "dayjs/plugin/utc"
 import type { PageFC, GetStaticProps, InferGetStaticPropsType } from "next"
 import Link from "next/link"
 
-import { Timeline } from "react-twitter-widgets"
-
 import styles from "./index.module.scss"
 import { Button, Panel, Icon } from "src/components"
 import {
@@ -212,33 +210,6 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
                     </Button>
                   </a>
                 </div>
-              </div>
-            </Panel>
-          </div>
-        </div>
-      </section>
-      <section className={styles.section} data-section="tweet">
-        <h2 className={styles.sectionTitle}>企画連絡アカウント</h2>
-        <div className={styles.panelRowWrapper}>
-          <div className={styles.panelWrapper}>
-            <Panel>
-              <div className={styles.twitterWrapper}>
-                <Timeline
-                  dataSource={{
-                    sourceType: "profile",
-                    screenName: "kikakurenrakun",
-                  }}
-                  options={{
-                    lang: "en",
-                    height: "600",
-                    dnt: true,
-                    /**
-                     * ad-hoc workaround
-                     * @see https://github.com/andrewsuzuki/react-twitter-widgets/issues/45
-                     */
-                    id: "profile:TwitterDev",
-                  }}
-                />
               </div>
             </Panel>
           </div>
