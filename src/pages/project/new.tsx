@@ -324,7 +324,7 @@ const NewProject: PageFC = () => {
                           <div className={styles.category}>
                             <h3>・一般企画（食品取扱い企画を除く）</h3>
                             <p>
-                              飲食物を取り扱わない、雙峰祭当日に屋内の教室で行う企画
+                              飲食物を取り扱わない、ステージ企画に該当しない企画
                             </p>
                           </div>
                           <div className={styles.category}>
