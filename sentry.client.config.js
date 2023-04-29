@@ -17,7 +17,7 @@ Sentry.init({
   replaysOnErrorSampleRate: 1.0,
   integrations: [
     new CaptureConsole({ levels: ["warn", "error", "debug", "assert"] }),
-    new ExtraErrorData({ depth: 10 }),
+    new ExtraErrorData({ depth: 50 }),
     new Sentry.Replay(),
   ],
   // Note: if you want to override the automatic release value, do not set a
