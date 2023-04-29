@@ -44,7 +44,7 @@
     "eslint-plugin-react-hooks": "4.6.0",
     "file-saver": "2.0.5",
     "firebase": "8.10.0",
-    "husky": "4.3.8",
+    "husky": "^8.0.0",
     "lint-staged": "11.2.6",
     "next-compose-plugins": "2.2.1",
     "next-secure-headers": "2.2.0",
@@ -76,5 +76,8 @@
     "*.{js,jsx,ts,tsx}": [
       "eslint"
     ]
+  },
+  "scripts": {
+    "prepare": "husky install"
   }
 }
