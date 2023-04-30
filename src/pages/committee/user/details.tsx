@@ -257,36 +257,13 @@ const UserDetails: PageFC = () => {
                   keyElement="メールアドレス"
                   valueElement={
                     <>
-                      {user.email.endsWith("@u.tsukuba.ac.jp") ? (
-                        <div>
-                          <div className={styles.transformedAddressWrapper}>
-                            <p>
-                              {user.email.replace(
-                                "@u.tsukuba.ac.jp",
-                                "@s.tsukuba.ac.jp"
-                              )}
-                            </p>
-                            <CopyButton
-                              string={user.email.replace(
-                                "@u.tsukuba.ac.jp",
-                                "@s.tsukuba.ac.jp"
-                              )}
-                              className={styles.tableRowValueCopyButton}
-                            />
-                          </div>
-                          <p className={styles.transformedAddressDescription}>
-                            uアドレスで登録されているため、sアドレスに変換して表示しています
-                          </p>
-                        </div>
-                      ) : (
-                        <>
-                          <p>{user.email}</p>
-                          <CopyButton
-                            string={user.email}
-                            className={styles.tableRowValueCopyButton}
-                          />
-                        </>
-                      )}
+                      <>
+                        <p>{user.email}</p>
+                        <CopyButton
+                          string={user.email}
+                          className={styles.tableRowValueCopyButton}
+                        />
+                      </>
                     </>
                   }
                   className={styles.tableRow}
