@@ -79,8 +79,7 @@ const ResetPassword: PageFC = () => {
                 メールに記載されたリンクをクリックしてパスワードを再設定してください
               </p>
               <p className={styles.description}>
-                受信できない場合、noreply@
-                {process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN}
+                受信できない場合、system@sohosai.com
                 からのメールが迷惑メールフォルダに配信されていないかご確認ください
               </p>
             </>
