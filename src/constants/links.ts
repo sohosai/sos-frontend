@@ -1,5 +1,5 @@
 export const SOHOSAI_COM = "https://sohosai.com/"
-export const TWITTER_KIKAKURENRAKUN = "https://twitter.com/kikakurenrakun/"
+export const TWITTER_SOHOSAI = "https://twitter.com/sohosai/"
 export const INSTAGRAM = "https://www.instagram.com/sohosai/"
 export const FACEBOOK = "https://www.facebook.com/sohosai/"
 export const ANNOUNCEMENT_URL =
