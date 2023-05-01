@@ -71,6 +71,18 @@ const EmailVerification: PageFC = () => {
                   確認メールを再送する
                 </Button>
               </div>
+              <hr className={styles.hr} />
+              <p className={styles.description}>
+                2023年5月1日現在、@s・@uアドレスに認証メールが届かない件について、複数の企画者からお問合せをいただいております
+              </p>
+              <p className={styles.description}>
+                ただいま学術情報メディアセンターを含めた関係各所に連絡し対応を行なっておりますが、未だ問題解消の目処が立っておりません
+              </p>
+              <p className={styles.description}>
+                確認メールが届かない企画様は、お手数をおかけいたしますが
+                project49th@sohosai.com
+                にご連絡いただきますようよろしくお願い致します
+              </p>
               <div className={styles.logoutButtonWrapper}>
                 <Button
                   icon="log-out-alt"

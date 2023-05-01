@@ -98,7 +98,7 @@ const ResetPassword: PageFC = () => {
                     label="メールアドレス"
                     autoComplete="email"
                     description={[
-                      "tsukuba.ac.jpで終わるメールアドレスを使用してください",
+                      "tsukuba.ac.jp、またはsohosai.comで終わるメールアドレスを使用してください",
                     ]}
                     error={[
                       errors?.email?.types?.required && "必須項目です",
@@ -113,7 +113,8 @@ const ResetPassword: PageFC = () => {
                     required
                     register={register("email", {
                       required: true,
-                      pattern: /^[\w\-._]+@([\w\-._]+\.)?tsukuba\.ac\.jp$/,
+                      pattern:
+                        /^[\w\-._]+@([\w\-._]+\.)?(tsukuba\.ac\.jp|sohosai\.com)$/,
                     })}
                   />
                 </FormItemSpacer>
