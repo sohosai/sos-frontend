@@ -79,8 +79,7 @@ const ResetPassword: PageFC = () => {
                 メールに記載されたリンクをクリックしてパスワードを再設定してください
               </p>
               <p className={styles.description}>
-                受信できない場合、noreply@
-                {process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN}
+                受信できない場合、system@sohosai.com
                 からのメールが迷惑メールフォルダに配信されていないかご確認ください
               </p>
             </>
@@ -98,7 +97,7 @@ const ResetPassword: PageFC = () => {
                     label="メールアドレス"
                     autoComplete="email"
                     description={[
-                      "tsukuba.ac.jpで終わるメールアドレスを使用してください",
+                      "tsukuba.ac.jp、またはsohosai.comで終わるメールアドレスを使用してください",
                     ]}
                     error={[
                       errors?.email?.types?.required && "必須項目です",
@@ -113,7 +112,8 @@ const ResetPassword: PageFC = () => {
                     required
                     register={register("email", {
                       required: true,
-                      pattern: /^[\w\-._]+@([\w\-._]+\.)?tsukuba\.ac\.jp$/,
+                      pattern:
+                        /^[\w\-._]+@([\w\-._]+\.)?(tsukuba\.ac\.jp|sohosai\.com)$/,
                     })}
                   />
                 </FormItemSpacer>

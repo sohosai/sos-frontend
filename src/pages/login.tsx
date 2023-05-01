@@ -87,7 +87,7 @@ const Login: PageFC = () => {
                   label="メールアドレス"
                   autoComplete="email"
                   description={[
-                    "tsukuba.ac.jpで終わるメールアドレスを使用してください",
+                    "tsukuba.ac.jp、またはsohosai.comで終わるメールアドレスを使用してください",
                   ]}
                   error={[
                     errors?.email?.types?.required && "必須項目です",
@@ -106,8 +106,8 @@ const Login: PageFC = () => {
                     required: true,
                     pattern:
                       process.env.NEXT_PUBLIC_DEPLOY_ENV === "dev"
-                        ? /^[\w\-._+]+@([\w\-._]+\.)?tsukuba\.ac\.jp$/
-                        : /^[\w\-._]+@([\w\-._]+\.)?tsukuba\.ac\.jp$/,
+                        ? /^[\w\-._+]+@([\w\-._]+\.)?(tsukuba\.ac\.jp|sohosai\.com)$/
+                        : /^[\w\-._]+@([\w\-._]+\.)?(tsukuba\.ac\.jp|sohosai\.com)$/,
                   })}
                 />
               </FormItemSpacer>

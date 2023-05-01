@@ -80,7 +80,8 @@ const AssignRole: PageFC = () => {
               break
             case "notUniversityEmailAddress":
               addToast({
-                title: "tsukuba.ac.jpで終わるメールアドレスを入力してください",
+                title:
+                  "tsukuba.ac.jp、またはsohosai.comで終わるメールアドレスを使用してください",
                 kind: "error",
               })
               reportError("failed to create new form", { error: res.error })
@@ -131,8 +132,8 @@ const AssignRole: PageFC = () => {
                   required: true,
                   pattern:
                     process.env.NEXT_PUBLIC_DEPLOY_ENV === "dev"
-                      ? /^[\w\-._+]+@([\w\-._]+\.)?tsukuba\.ac\.jp$/
-                      : /^[\w\-._]+@([\w\-._]+\.)?tsukuba\.ac\.jp$/,
+                      ? /^[\w\-._+]+@([\w\-._]+\.)?(tsukuba\.ac\.jp|sohosai\.com)$/
+                      : /^[\w\-._]+@([\w\-._]+\.)?(tsukuba\.ac\.jp|sohosai\.com)$/,
                   setValueAs: (value) => value?.trim(),
                 })}
               />

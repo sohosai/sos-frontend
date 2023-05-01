@@ -4,7 +4,7 @@ import { FC } from "react"
 import styles from "./index.module.scss"
 import {
   SOHOSAI_COM,
-  TWITTER_KIKAKURENRAKUN,
+  TWITTER_SOHOSAI,
   INSTAGRAM,
   FACEBOOK,
 } from "src/constants/links"
@@ -25,7 +25,7 @@ export const Footer: FC = () => (
     </Link>
     <div className={styles.socialLinks}>
       <a
-        href={TWITTER_KIKAKURENRAKUN}
+        href={TWITTER_SOHOSAI}
         target="_blank"
         rel="noopener noreferrer"
         className={styles.linkItem}
