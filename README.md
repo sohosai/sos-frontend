@@ -30,6 +30,8 @@ VSCode の場合は recommended extensions を導入
 
 [Firebase](https://console.firebase.google.com/) の新規プロジェクトを作成
 
+Google Analyticsは有効化しない
+
 コンソールから Authentication を有効化、Signin-method のうち Email/Password を有効化
 
 Project settings > General > Your Apps から web app を新規追加(nickname 任意/Hosting 不要)
