@@ -9,8 +9,8 @@ Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
   environment: process.env.NEXT_PUBLIC_DEPLOY_ENV,
   normalizeDepth: 10,
-  //エラーが発生していなくても謎の不具合が発生する場合が確認されたため、一時的に全てを対象に
-  replaysSessionSampleRate: 1.0,
+  //エラーが発生していなくても謎の不具合が発生する場合が確認されたため、一時的に全てを対象に→もうReplayなんていらんいらん
+  replaysSessionSampleRate: 0.01,
   replaysOnErrorSampleRate: 1.0,
   integrations: [
     new CaptureConsole({ levels: ["warn", "error", "debug", "assert"] }),
