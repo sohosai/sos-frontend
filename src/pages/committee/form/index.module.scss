@@ -28,13 +28,16 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+
+  @mixin mobile {
+    flex-wrap: wrap;
+  }
 }
 
 .formName {
   flex-grow: 1;
   flex-shrink: 1;
   margin-right: 16px;
-  @include ellipsis;
 }
 
 .formDate {
