@@ -28,7 +28,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  
+
   @mixin mobile {
     flex-wrap: wrap;
   }
