@@ -9,6 +9,7 @@ import { Button, Panel, Icon } from "src/components"
 import {
   ANNOUNCEMENT_URL,
   PROJECT_APPLICATION_GUIDELINES_URL,
+  ENGLISH_PROJECT_APPLICATION_GUIDELINES_URL,
   STAGE_PROJECT_APPLICATION_GUIDELINES_URL,
   PROJECT_COMMITMENT_FORM_URL,
   STAGE_PROJECT_COMMITMENT_FORM_URL,
@@ -126,6 +127,16 @@ const Index: PageFC<InferGetStaticPropsType<typeof getStaticProps>> = ({
                 >
                   <Button kind="secondary" icon="arrow-up-right">
                     ステージ企画 募集要項 (PDF)
+                  </Button>
+                </a>
+                <a
+                  href={ENGLISH_PROJECT_APPLICATION_GUIDELINES_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.applicationGuideLinkItem}
+                >
+                  <Button kind="secondary" icon="arrow-up-right">
+                    Application Guideline (English)
                   </Button>
                 </a>
               </div>
